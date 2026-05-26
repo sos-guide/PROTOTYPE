@@ -1,522 +1,433 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>⛑️ SOS-GUIDE – Configuration initiale</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='80'%3E⛑️%3C/text%3E%3C/svg%3E">
-    <style>
-        /* Thème clair par défaut (identique à install.html) */
-        :root {
-            --bg: #f8fafc;
-            --bg1: #f1f5f9;
-            --bg2: #e2e8f0;
-            --card: #ffffff;
-            --card-h: #f8fafc;
-            --border: rgba(0,0,0,.08);
-            --border-h: rgba(0,0,0,.15);
-            --text: #0f172a;
-            --sub: #475569;
-            --muted: #94a3b8;
-            --accent: #3b82f6;
-            --green: #22c55e;
-            --red: #ef4444;
-            --radius: 14px;
-            --radius-lg: 18px;
-            --shadow: 0 10px 25px -5px rgba(0,0,0,.05), 0 8px 10px -6px rgba(0,0,0,.02);
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.5;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-            transition: background .3s, color .3s;
-        }
-        .container {
-            max-width: 650px;
-            width: 100%;
-            margin: 0 auto;
-        }
-        .card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 2rem 1.8rem;
-            box-shadow: var(--shadow);
-        }
-        .header-icon {
-            font-size: 3.2rem;
-            text-align: center;
-            margin-bottom: 0.5rem;
-        }
-        h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            text-align: center;
-            margin-bottom: 0.5rem;
-            color: #0f172a;
-        }
-        .subtitle {
-            color: var(--sub);
-            text-align: center;
-            margin-bottom: 2rem;
-            font-size: 0.95rem;
-        }
-        .step-indicator {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 2rem;
-            color: var(--sub);
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-        .step {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.3rem;
-            flex: 1;
-        }
-        .step.active .step-num {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
-        }
-        .step-num {
-            width: 30px;
-            height: 30px;
-            border-radius: 30px;
-            border: 1.5px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            background: var(--card);
-        }
-        .step.completed .step-num {
-            background: var(--green);
-            border-color: var(--green);
-            color: white;
-        }
-        .input-group {
-            margin-bottom: 1.5rem;
-        }
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--text);
-        }
-        input[type="text"],
-        input[type="password"] {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            background: var(--bg);
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius);
-            color: var(--text);
-            font-size: 1rem;
-            transition: border .2s;
-        }
-        input:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-        .password-strength {
-            margin-top: 0.4rem;
-            height: 5px;
-            background: var(--bg2);
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        .strength-bar {
-            height: 100%;
-            width: 0%;
-            transition: width .2s, background .2s;
-        }
-        .hint {
-            font-size: 0.8rem;
-            color: var(--sub);
-            margin-top: 0.3rem;
-        }
-        .toggle-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin: 1.5rem 0;
-        }
-        .toggle-option {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            cursor: pointer;
-        }
-        .toggle-option input {
-            display: none;
-        }
-        .toggle-visual {
-            width: 48px;
-            height: 24px;
-            background: var(--bg2);
-            border-radius: 24px;
-            border: 1px solid var(--border);
-            position: relative;
-            transition: background .2s;
-            flex-shrink: 0;
-        }
-        .toggle-option.selected .toggle-visual {
-            background: var(--accent);
-        }
-        .toggle-visual::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: white;
-            border-radius: 20px;
-            top: 1px;
-            left: 1px;
-            transition: left .2s;
-            box-shadow: 0 1px 3px rgba(0,0,0,.1);
-        }
-        .toggle-option.selected .toggle-visual::after {
-            left: 25px;
-        }
-        .toggle-label {
-            font-weight: 500;
-            color: var(--text);
-        }
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            padding: 0.8rem 1.8rem;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 1rem;
-            border: none;
-            cursor: pointer;
-            transition: all .15s;
-            background: var(--card);
-            border: 1.5px solid var(--border);
-            color: var(--text);
-            width: 100%;
-        }
-        .btn-primary {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: white;
-        }
-        .btn-primary:hover { background: #2563eb; }
-        .btn-group {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-        .btn-group .btn { flex: 1; }
-        .progress-container {
-            margin: 2rem 0;
-        }
-        .progress-bar {
-            height: 8px;
-            background: var(--bg2);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .progress-fill {
-            height: 100%;
-            width: 0%;
-            background: var(--accent);
-            transition: width 0.3s;
-        }
-        .progress-text {
-            text-align: center;
-            margin-top: 0.8rem;
-            color: var(--sub);
-        }
-        .summary-list {
-            background: var(--bg);
-            border-radius: var(--radius);
-            padding: 1.2rem;
-            margin: 1.5rem 0;
-        }
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.6rem 0;
-            border-bottom: 1px solid var(--border);
-        }
-        .summary-item:last-child { border: none; }
-        .badge {
-            background: var(--bg2);
-            padding: 0.2rem 0.9rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-        .text-center { text-align: center; }
-        .mt-4 { margin-top: 1.5rem; }
-        .hidden { display: none !important; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>⛑️ SOS-GUIDE — Configuration initiale</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='80' font-size='80'%3E⛑️%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#f8fafc;--card:#fff;--border:rgba(0,0,0,.08);--text:#0f172a;
+  --sub:#475569;--muted:#94a3b8;--accent:#e63329;--green:#16a34a;
+  --red:#dc2626;--r:14px;--shadow:0 8px 24px rgba(0,0,0,.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;
+  min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px;
+  padding:2rem 1.75rem;width:100%;max-width:560px;box-shadow:var(--shadow)}
+/* Header */
+.logo{text-align:center;margin-bottom:1.5rem}
+.logo-icon{font-size:3rem;display:block;margin-bottom:.4rem}
+.logo h1{font-size:1.5rem;font-weight:700;letter-spacing:-.02em}
+.logo p{font-size:.85rem;color:var(--sub);margin-top:.3rem}
+/* Steps */
+.steps{display:flex;justify-content:space-between;margin-bottom:2rem;position:relative}
+.steps::before{content:'';position:absolute;top:14px;left:14px;right:14px;height:1px;
+  background:var(--border);z-index:0}
+.step{display:flex;flex-direction:column;align-items:center;gap:.4rem;z-index:1;flex:1}
+.step-num{width:28px;height:28px;border-radius:50%;background:var(--bg);border:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:600;
+  transition:all .25s}
+.step.active .step-num{background:var(--accent);border-color:var(--accent);color:#fff}
+.step.done .step-num{background:var(--green);border-color:var(--green);color:#fff}
+.step-label{font-size:.7rem;color:var(--sub);font-weight:500;letter-spacing:.03em}
+.step.active .step-label{color:var(--accent)}
+/* Form */
+.form-group{margin-bottom:1.25rem}
+.form-group label{display:block;font-size:.78rem;font-weight:600;color:var(--sub);
+  text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem}
+.form-group input[type=text],
+.form-group input[type=password]{width:100%;padding:.75rem 1rem;background:var(--bg);
+  border:1.5px solid var(--border);border-radius:var(--r);color:var(--text);
+  font-size:.95rem;transition:border .2s}
+.form-group input:focus{outline:none;border-color:var(--accent)}
+.strength{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:.35rem}
+.strength-bar{height:100%;transition:width .2s,background .2s;border-radius:2px}
+.hint{font-size:.72rem;color:var(--sub);margin-top:.25rem}
+/* Toggles */
+.toggle-opt{display:flex;align-items:flex-start;gap:.85rem;padding:.7rem 0;
+  border-bottom:1px solid var(--border);cursor:pointer}
+.toggle-opt:last-child{border:none}
+.tog{width:44px;height:24px;background:var(--border);border-radius:12px;
+  flex-shrink:0;position:relative;transition:background .2s;margin-top:.1rem}
+.tog::after{content:'';position:absolute;width:18px;height:18px;background:#fff;
+  border-radius:9px;top:3px;left:3px;transition:left .2s;
+  box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.toggle-opt.on .tog{background:var(--accent)}
+.toggle-opt.on .tog::after{left:23px}
+.tog-info strong{display:block;font-size:.88rem;font-weight:600}
+.tog-info span{font-size:.75rem;color:var(--sub)}
+/* Summary */
+.summary{background:var(--bg);border-radius:var(--r);padding:1rem;margin:1rem 0}
+.summary-row{display:flex;justify-content:space-between;align-items:center;
+  padding:.45rem 0;border-bottom:1px solid var(--border)}
+.summary-row:last-child{border:none}
+.summary-key{font-size:.82rem;color:var(--sub)}
+.badge{background:var(--border);padding:.2rem .7rem;border-radius:20px;
+  font-size:.75rem;font-weight:600}
+/* Progress */
+.progress{background:var(--border);border-radius:4px;overflow:hidden;height:8px;margin:1.5rem 0}
+.progress-fill{height:100%;background:var(--accent);border-radius:4px;transition:width .4s}
+.progress-status{text-align:center;font-size:.82rem;color:var(--sub);margin-top:.5rem}
+/* Buttons */
+.btn-group{display:flex;gap:.75rem;margin-top:1.75rem}
+.btn{flex:1;padding:.75rem;border-radius:40px;font-weight:600;font-size:.9rem;
+  border:none;cursor:pointer;transition:all .15s;display:flex;align-items:center;
+  justify-content:center;gap:.4rem}
+.btn:active{transform:scale(.97)}
+.btn-secondary{background:var(--bg);border:1.5px solid var(--border);color:var(--sub)}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#c2251c}
+/* Alert banner */
+.alert{padding:.65rem 1rem;border-radius:10px;font-size:.8rem;margin-bottom:1rem;
+  display:none;align-items:center;gap:.5rem}
+.alert.show{display:flex}
+.alert.error{background:#fef2f2;border:1px solid #fecaca;color:#b91c1c}
+.alert.info{background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8}
+/* Swiss flag accent */
+.ch-badge{display:inline-flex;align-items:center;gap:.35rem;background:#e63329;
+  color:#fff;padding:.2rem .6rem;border-radius:4px;font-size:.68rem;font-weight:600;
+  letter-spacing:.04em;margin-bottom:1rem}
+/* Success */
+.success-screen{text-align:center;padding:1rem 0}
+.success-screen .big-icon{font-size:3.5rem;margin-bottom:.75rem;display:block}
+.success-screen h2{font-size:1.3rem;font-weight:700;margin-bottom:.5rem}
+.success-screen p{font-size:.88rem;color:var(--sub);line-height:1.6}
+.ssid-badge{display:inline-block;background:#f0fdf4;border:1px solid #bbf7d0;
+  color:#15803d;padding:.3rem .8rem;border-radius:8px;font-weight:600;
+  font-size:.88rem;margin:.75rem 0}
+</style>
 </head>
 <body>
-<div class="container">
-    <div class="card" id="starterCard"></div>
+<div class="card" id="card">
+  <!-- Contenu injecté par JS -->
 </div>
+
 <script>
-    (function(){
-        "use strict";
+(function(){
+"use strict";
 
-        // État de la configuration
-        const state = {
-            nodeName: '',
-            wifiPassword: '',
-            enableLoRa: false,
-            enableEthernet: false,
-            step: 0,   // 0: accueil, 1: nom + mot de passe, 2: options, 3: résumé, 4: progression
-            timer: 600, // 10 minutes
-            timerInterval: null
-        };
+// ── État ─────────────────────────────────────────────────────────────────────
+const S = {
+  step: 0,
+  nodeName: '',
+  wifiPassword: '',
+  enableLoRa: false,
+  enableEthernet: false,
+  // FIX: le token CSRF est injecté par firstboot.sh via sed
+  csrf: '%%CSRF_TOKEN%%',
+  channel: '%%WIFI_CHANNEL%%',
+  timer: 600
+};
 
-        const card = document.getElementById('starterCard');
+const card = document.getElementById('card');
+let timerInterval = null;
 
-        // Timer (optionnel, pour limiter la session)
-        function startTimer() {
-            if (state.timerInterval) clearInterval(state.timerInterval);
-            state.timerInterval = setInterval(() => {
-                state.timer--;
-                if (state.timer <= 0) {
-                    clearInterval(state.timerInterval);
-                    renderExpired();
-                }
-                const timerEl = document.getElementById('timerDisplay');
-                if (timerEl) {
-                    const mins = Math.floor(state.timer / 60);
-                    const secs = state.timer % 60;
-                    timerEl.textContent = `⏳ Expire dans ${mins}:${secs.toString().padStart(2,'0')}`;
-                }
-            }, 1000);
-        }
-        function stopTimer() { if(state.timerInterval) clearInterval(state.timerInterval); }
+// ── Timer ─────────────────────────────────────────────────────────────────────
+function startTimer(){
+  if(timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(()=>{
+    S.timer--;
+    if(S.timer<=0){ clearInterval(timerInterval); renderExpired(); return; }
+    const el = document.getElementById('timerBadge');
+    if(el){
+      const m=Math.floor(S.timer/60), s=S.timer%60;
+      el.textContent='⏳ '+ m +':'+ String(s).padStart(2,'0');
+    }
+  },1000);
+}
+function stopTimer(){ if(timerInterval) clearInterval(timerInterval); }
 
-        function renderExpired() {
-            card.innerHTML = `<div class="text-center"><div class="header-icon">⏰</div><h1>Session expirée</h1><p class="subtitle">Redémarrez le Raspberry Pi pour relancer l'assistant.</p></div>`;
-            stopTimer();
-        }
+function fmtTimer(){
+  const m=Math.floor(S.timer/60), s=S.timer%60;
+  return m+':'+String(s).padStart(2,'0');
+}
 
-        function render() {
-            switch (state.step) {
-                case 0: renderWelcome(); break;
-                case 1: renderIdentity(); break;
-                case 2: renderOptions(); break;
-                case 3: renderSummary(); break;
-                case 4: renderProgress(); break;
-                default: renderWelcome();
-            }
-        }
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function renderSteps(active){
+  const labels=['Lieu','Options','Résumé'];
+  return `<div class="steps">
+    ${labels.map((l,i)=>{
+      const cls = i<active?'done':i===active?'active':'';
+      return `<div class="step ${cls}">
+        <div class="step-num">${i<active?'✓':(i+1)}</div>
+        <div class="step-label">${l}</div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
 
-        function renderWelcome() {
-            startTimer();
-            const mins = Math.floor(state.timer / 60), secs = state.timer % 60;
-            card.innerHTML = `
-                <div class="text-center"><div class="timer-badge" id="timerDisplay">⏳ Expire dans ${mins}:${secs.toString().padStart(2,'0')}</div></div>
-                <div class="header-icon">⛑️</div>
-                <h1>Bienvenue sur SOS‑GUIDE</h1>
-                <p class="subtitle">Configuration initiale du point d'accès d'urgence.<br>Aucune connexion Internet requise.</p>
-                <div style="background: var(--bg); border-radius: var(--radius); padding: 1rem; margin: 1.5rem 0;">
-                    <div style="display: flex; gap: 1rem; align-items: center;">
-                        <span style="font-size: 2rem;">📶</span>
-                        <div><strong>Réseau actuel :</strong> ⛑️ SOS-GUIDE - STARTER<br><span style="font-size:0.9rem; color:var(--sub);">Connectez-vous à ce réseau</span></div>
-                    </div>
-                </div>
-                <button class="btn btn-primary" id="startBtn">🚀 Démarrer la configuration</button>
-            `;
-            document.getElementById('startBtn').addEventListener('click', ()=>{ state.step=1; render(); });
-        }
+// ── Écrans ────────────────────────────────────────────────────────────────────
+function renderExpired(){
+  stopTimer();
+  card.innerHTML=`<div class="logo">
+    <span class="logo-icon">⏰</span>
+    <h1>Session expirée</h1>
+    <p>Redémarrez le Raspberry Pi pour recommencer.</p>
+  </div>`;
+}
 
-        function renderIdentity() {
-            card.innerHTML = `
-                <div class="step-indicator">
-                    <div class="step active"><span class="step-num">1</span><span class="step-label">Identité</span></div>
-                    <div class="step"><span class="step-num">2</span><span class="step-label">Options</span></div>
-                    <div class="step"><span class="step-num">3</span><span class="step-label">Résumé</span></div>
-                </div>
-                <h2>Informations du lieu</h2>
-                <div class="input-group">
-                    <label>🏢 Nom du lieu / nœud</label>
-                    <input type="text" id="nodeNameInput" placeholder="Ex: Mairie de Paris" value="${state.nodeName}">
-                </div>
-                <div class="input-group">
-                    <label>🔐 Mot de passe WiFi (optionnel)</label>
-                    <input type="password" id="wifiPasswordInput" placeholder="Laisser vide pour réseau ouvert">
-                    <div class="password-strength"><div class="strength-bar" id="strengthBar"></div></div>
-                    <div class="hint" id="strengthHint">Minimum 8 caractères recommandé</div>
-                </div>
-                <div class="btn-group">
-                    <button class="btn" id="backBtn">← Retour</button>
-                    <button class="btn btn-primary" id="nextBtn">Continuer</button>
-                </div>
-            `;
-            const pwdInput = document.getElementById('wifiPasswordInput');
-            const strengthBar = document.getElementById('strengthBar');
-            const strengthHint = document.getElementById('strengthHint');
-            const nextBtn = document.getElementById('nextBtn');
+function render(){
+  switch(S.step){
+    case 0: renderWelcome(); break;
+    case 1: renderIdentity(); break;
+    case 2: renderOptions(); break;
+    case 3: renderSummary(); break;
+    case 4: renderProgress(); break;
+    default: renderWelcome();
+  }
+}
 
-            pwdInput.addEventListener('input', (e) => {
-                const pwd = e.target.value;
-                let strength = 0;
-                if(pwd.length>=8) strength++;
-                if(pwd.match(/[a-z]/)&&pwd.match(/[A-Z]/)) strength++;
-                if(pwd.match(/[0-9]/)) strength++;
-                if(pwd.match(/[^a-zA-Z0-9]/)) strength++;
-                const percent = (strength/4)*100;
-                strengthBar.style.width = percent+'%';
-                strengthBar.style.background = strength<=1 ? 'var(--red)' : (strength===2 ? '#eab308' : 'var(--green)');
-                strengthHint.textContent = strength<=1 ? 'Faible' : (strength===2 ? 'Moyen' : 'Fort');
-            });
+function renderWelcome(){
+  startTimer();
+  card.innerHTML=`
+    <div class="logo">
+      <span class="logo-icon">⛑️</span>
+      <h1>SOS-GUIDE</h1>
+      <p>Configuration initiale · Point d'accès d'urgence</p>
+    </div>
+    <div class="ch-badge">🇨🇭 Certifié Croix-Rouge Suisse</div>
+    <div class="alert info show">
+      <span>📶</span>
+      <span>Connecté à <strong>⛑️ SOS-GUIDE - STARTER</strong> · URL : <strong>http://10.0.0.1/</strong></span>
+    </div>
+    <div style="font-size:.82rem;color:var(--sub);line-height:1.7;margin-bottom:1.5rem">
+      Bienvenue. Cet assistant configure votre nœud SOS-GUIDE en <strong>moins de 2 minutes</strong>, 
+      sans redémarrage. Aucune connexion Internet requise.
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;
+      background:var(--bg);border-radius:10px;padding:.6rem .9rem;
+      font-size:.75rem;color:var(--sub);margin-bottom:1.5rem">
+      <span>Session expire dans</span>
+      <span id="timerBadge" style="font-weight:600;color:var(--text)">⏳ ${fmtTimer()}</span>
+    </div>
+    <button class="btn btn-primary" id="startBtn" style="width:100%">
+      🚀 Démarrer la configuration
+    </button>`;
+  document.getElementById('startBtn').onclick=()=>{ S.step=1; render(); };
+}
 
-            document.getElementById('backBtn').addEventListener('click', ()=>{ state.step=0; render(); });
-            nextBtn.addEventListener('click', ()=>{
-                const nodeName = document.getElementById('nodeNameInput').value.trim();
-                if (!nodeName) { alert('Le nom du lieu est obligatoire.'); return; }
-                state.nodeName = nodeName;
-                state.wifiPassword = document.getElementById('wifiPasswordInput').value;
-                state.step=2; render();
-            });
-        }
+function renderIdentity(){
+  card.innerHTML=`
+    ${renderSteps(0)}
+    <div class="form-group">
+      <label>Nom du lieu / nœud</label>
+      <input type="text" id="nodeName" placeholder="Ex: Bunker Berne B1, Caserne Genève" 
+        maxlength="128" value="${escHtml(S.nodeName)}" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <label>Mot de passe WiFi <small style="font-weight:400;text-transform:none">(optionnel)</small></label>
+      <input type="password" id="wifiPwd" placeholder="Laisser vide = réseau ouvert" maxlength="63">
+      <div class="strength"><div class="strength-bar" id="bar"></div></div>
+      <div class="hint" id="strengthHint">Minimum 8 caractères</div>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-secondary" id="backBtn">← Retour</button>
+      <button class="btn btn-primary" id="nextBtn">Continuer →</button>
+    </div>`;
 
-        function renderOptions() {
-            const loRaChecked = state.enableLoRa ? 'selected' : '';
-            const ethChecked = state.enableEthernet ? 'selected' : '';
-            card.innerHTML = `
-                <div class="step-indicator">
-                    <div class="step completed"><span class="step-num">✓</span><span class="step-label">Identité</span></div>
-                    <div class="step active"><span class="step-num">2</span><span class="step-label">Options</span></div>
-                    <div class="step"><span class="step-num">3</span><span class="step-label">Résumé</span></div>
-                </div>
-                <h2>Options supplémentaires</h2>
-                <div class="toggle-container">
-                    <div class="toggle-option ${loRaChecked}" id="toggleLoRa">
-                        <div class="toggle-visual"></div>
-                        <span class="toggle-label">📡 Activer la communication LoRa (mesh)</span>
-                    </div>
-                    <div class="toggle-option ${ethChecked}" id="toggleEthernet">
-                        <div class="toggle-visual"></div>
-                        <span class="toggle-label">🌐 Activer la connexion Ethernet / Internet (pour mises à jour)</span>
-                    </div>
-                </div>
-                <div class="btn-group">
-                    <button class="btn" id="backBtn">← Retour</button>
-                    <button class="btn btn-primary" id="nextBtn">Continuer</button>
-                </div>
-            `;
-            document.getElementById('toggleLoRa').addEventListener('click', ()=>{
-                state.enableLoRa = !state.enableLoRa;
-                renderOptions();
-            });
-            document.getElementById('toggleEthernet').addEventListener('click', ()=>{
-                state.enableEthernet = !state.enableEthernet;
-                renderOptions();
-            });
-            document.getElementById('backBtn').addEventListener('click', ()=>{ state.step=1; render(); });
-            document.getElementById('nextBtn').addEventListener('click', ()=>{ state.step=3; render(); });
-        }
+  document.getElementById('nodeName').focus();
+  document.getElementById('backBtn').onclick=()=>{ S.step=0; render(); };
+  document.getElementById('nextBtn').onclick=()=>{
+    const name = document.getElementById('nodeName').value.trim();
+    if(!name){ shake('nodeName'); return; }
+    S.nodeName = name;
+    S.wifiPassword = document.getElementById('wifiPwd').value;
+    if(S.wifiPassword && S.wifiPassword.length < 8){
+      shake('wifiPwd'); return;
+    }
+    S.step=2; render();
+  };
+  document.getElementById('wifiPwd').addEventListener('input', e=>{
+    const v=e.target.value, b=document.getElementById('bar'), h=document.getElementById('strengthHint');
+    let s=0;
+    if(v.length>=8) s++;
+    if(/[a-z]/.test(v)&&/[A-Z]/.test(v)) s++;
+    if(/\d/.test(v)) s++;
+    if(/[^a-zA-Z0-9]/.test(v)) s++;
+    const pct=(s/4)*100;
+    b.style.width=pct+'%';
+    b.style.background=s<=1?'#dc2626':s===2?'#d97706':'#16a34a';
+    h.textContent=s<=1&&v.length>0?'Faible':s===2?'Correct':'Fort';
+  });
+}
 
-        function renderSummary() {
-            const wifiSecurity = state.wifiPassword ? 'WPA2 (protégé)' : 'Ouvert (non sécurisé)';
-            card.innerHTML = `
-                <div class="step-indicator">
-                    <div class="step completed"><span class="step-num">✓</span><span class="step-label">Identité</span></div>
-                    <div class="step completed"><span class="step-num">✓</span><span class="step-label">Options</span></div>
-                    <div class="step active"><span class="step-num">3</span><span class="step-label">Résumé</span></div>
-                </div>
-                <h2>Récapitulatif</h2>
-                <div class="summary-list">
-                    <div class="summary-item"><span>Nom du nœud</span><span class="badge">${state.nodeName}</span></div>
-                    <div class="summary-item"><span>Sécurité WiFi</span><span class="badge">${wifiSecurity}</span></div>
-                    <div class="summary-item"><span>Communication LoRa</span><span class="badge">${state.enableLoRa?'✅':'❌'}</span></div>
-                    <div class="summary-item"><span>Connexion Internet (ETH)</span><span class="badge">${state.enableEthernet?'✅':'❌'}</span></div>
-                </div>
-                <p style="font-size:0.9rem; margin:1rem 0;"><strong>⏱️ L'installation prendra environ 1 minute.</strong> Redémarrage automatique.</p>
-                <div class="btn-group">
-                    <button class="btn" id="backBtn">← Modifier</button>
-                    <button class="btn btn-primary" id="confirmBtn">✅ Installer</button>
-                </div>
-            `;
-            document.getElementById('backBtn').addEventListener('click', ()=>{ state.step=2; render(); });
-            document.getElementById('confirmBtn').addEventListener('click', ()=>{
-                state.step=4; render();
-                // Envoyer la configuration au serveur
-                const formData = new FormData();
-                formData.append('nodeName', state.nodeName);
-                formData.append('wifiPassword', state.wifiPassword);
-                formData.append('enableLoRa', state.enableLoRa ? 'true' : 'false');
-                formData.append('enableEthernet', state.enableEthernet ? 'true' : 'false');
+function renderOptions(){
+  card.innerHTML=`
+    ${renderSteps(1)}
+    <div style="font-size:.82rem;color:var(--sub);margin-bottom:1rem">
+      Options supplémentaires pour ce nœud.
+    </div>
+    <div id="toggleLoRa" class="toggle-opt ${S.enableLoRa?'on':''}">
+      <div class="tog"></div>
+      <div class="tog-info">
+        <strong>📡 Communication LoRa (mesh)</strong>
+        <span>SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Portée 2-10 km</span>
+      </div>
+    </div>
+    <div id="toggleEth" class="toggle-opt ${S.enableEthernet?'on':''}">
+      <div class="tog"></div>
+      <div class="tog-info">
+        <strong>🌐 Connexion Ethernet (mises à jour)</strong>
+        <span>Accès Internet pour télécharger les contenus multilingues</span>
+      </div>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-secondary" id="backBtn">← Retour</button>
+      <button class="btn btn-primary" id="nextBtn">Continuer →</button>
+    </div>`;
 
-                fetch('/api/install', {
-                    method: 'POST',
-                    body: formData
-                }).then(response => response.json()).then(data => {
-                    if (data.success) {
-                        // Simulation de progression
-                        simulateInstallation();
-                    } else {
-                        alert('Erreur : ' + (data.message || 'Inconnue'));
-                        state.step=3; render();
-                    }
-                }).catch(err => {
-                    alert('Erreur réseau : impossible de joindre le serveur.');
-                    state.step=3; render();
-                });
-            });
-        }
+  document.getElementById('toggleLoRa').onclick=()=>{
+    S.enableLoRa=!S.enableLoRa;
+    document.getElementById('toggleLoRa').classList.toggle('on',S.enableLoRa);
+  };
+  document.getElementById('toggleEth').onclick=()=>{
+    S.enableEthernet=!S.enableEthernet;
+    document.getElementById('toggleEth').classList.toggle('on',S.enableEthernet);
+  };
+  document.getElementById('backBtn').onclick=()=>{ S.step=1; render(); };
+  document.getElementById('nextBtn').onclick=()=>{ S.step=3; render(); };
+}
 
-        function simulateInstallation() {
-            const progressFill = document.getElementById('progressFill');
-            const progressStepText = document.getElementById('progressStepText');
-            let percent = 0;
-            const steps = ["Enregistrement...","Application de la configuration...","Finalisation..."];
-            let idx = 0;
-            const interval = setInterval(() => {
-                percent += 5;
-                if(percent>=100) { 
-                    percent=100; 
-                    progressFill.style.width='100%'; 
-                    progressStepText.textContent='Terminé ! Redémarrage...'; 
-                    clearInterval(interval); 
-                    // Le serveur va redémarrer, on affiche un message
-                    setTimeout(()=>{
-                        card.innerHTML = `<div class="text-center"><div class="header-icon">✅</div><h1>Configuration réussie !</h1><p class="subtitle">Le point d'accès redémarre avec vos paramètres.<br>Reconnectez-vous au réseau <strong>⛑️ SOS-GUIDE - ${state.nodeName}</strong> dans quelques instants.</p></div>`;
-                        stopTimer();
-                    }, 2000);
-                } else {
-                    progressFill.style.width=percent+'%';
-                    if(percent%20===0 && idx<steps.length-1) { idx++; progressStepText.textContent=steps[idx]; }
-                }
-            }, 100);
-        }
+function renderSummary(){
+  card.innerHTML=`
+    ${renderSteps(2)}
+    <div class="summary">
+      <div class="summary-row">
+        <span class="summary-key">Nœud</span>
+        <span class="badge">${escHtml(S.nodeName)}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-key">Canal WiFi</span>
+        <span class="badge">${S.channel}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-key">Sécurité WiFi</span>
+        <span class="badge">${S.wifiPassword?'WPA2':'Réseau ouvert'}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-key">LoRa mesh</span>
+        <span class="badge">${S.enableLoRa?'✅ Activé':'❌ Désactivé'}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-key">Ethernet / MAJ</span>
+        <span class="badge">${S.enableEthernet?'✅ Activé':'❌ Désactivé'}</span>
+      </div>
+    </div>
+    <div style="font-size:.8rem;color:var(--sub);line-height:1.6;margin:.5rem 0">
+      ⚡ L'installation s'applique <strong>sans redémarrage</strong> (~30 secondes).
+      Les clients WiFi pourront se reconnecter immédiatement.
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-secondary" id="backBtn">← Modifier</button>
+      <button class="btn btn-primary" id="confirmBtn">✅ Installer</button>
+    </div>`;
 
-        function renderProgress() {
-            card.innerHTML = `
-                <div class="text-center"><div class="header-icon">⏳</div><h2>Installation en cours</h2><p class="subtitle">Ne pas éteindre</p></div>
-                <div class="progress-container">
-                    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
-                    <div class="progress-text" id="progressStepText">Enregistrement de la configuration...</div>
-                </div>
-            `;
-        }
+  document.getElementById('backBtn').onclick=()=>{ S.step=2; render(); };
+  document.getElementById('confirmBtn').onclick=()=>{ S.step=4; render(); doInstall(); };
+}
 
-        // Initialisation
-        render();
-    })();
+function renderProgress(){
+  card.innerHTML=`
+    <div style="text-align:center;margin-bottom:1.5rem">
+      <span style="font-size:2.5rem">⏳</span>
+      <h2 style="font-size:1.2rem;font-weight:700;margin-top:.5rem">Installation en cours</h2>
+      <p style="font-size:.82rem;color:var(--sub)">Ne pas éteindre l'appareil</p>
+    </div>
+    <div class="progress"><div class="progress-fill" id="pFill" style="width:5%"></div></div>
+    <div class="progress-status" id="pStatus">Envoi de la configuration...</div>`;
+}
+
+function doInstall(){
+  const pFill   = ()=> document.getElementById('pFill');
+  const pStatus = ()=> document.getElementById('pStatus');
+
+  // FIX: inclure _csrf dans le FormData — était manquant dans la v2.2
+  const fd = new FormData();
+  fd.append('_csrf',          S.csrf);
+  fd.append('nodeName',       S.nodeName);
+  fd.append('wifiPassword',   S.wifiPassword);
+  fd.append('enableLoRa',     S.enableLoRa  ? 'true' : 'false');
+  fd.append('enableEthernet', S.enableEthernet ? 'true' : 'false');
+  fd.append('wifiChannel',    S.channel);
+
+  fetch('/api/install', { method:'POST', body:fd })
+    .then(r=>{
+      if(!r.ok) return r.json().then(d=>{ throw new Error(d.message||'Erreur '+r.status); });
+      return r.json();
+    })
+    .then(data=>{
+      if(!data.success) throw new Error(data.message||'Échec serveur');
+      animateProgress();
+    })
+    .catch(err=>{
+      S.step=3; render();
+      setTimeout(()=>{
+        const a=document.createElement('div');
+        a.className='alert error show';
+        a.innerHTML='❌ '+escHtml(err.message);
+        document.querySelector('.summary').before(a);
+      },100);
+    });
+}
+
+function animateProgress(){
+  const steps=[
+    {pct:20, txt:'Configuration enregistrée...'},
+    {pct:45, txt:'Application du réseau WiFi...'},
+    {pct:65, txt:'Démarrage des services...'},
+    {pct:82, txt:'Vérification de l\'intégrité...'},
+    {pct:100,txt:'Terminé !'},
+  ];
+  let i=0;
+  function next(){
+    if(i>=steps.length){ renderSuccess(); return; }
+    const el=document.getElementById('pFill');
+    const st=document.getElementById('pStatus');
+    if(el) el.style.width=steps[i].pct+'%';
+    if(st) st.textContent=steps[i].txt;
+    i++;
+    setTimeout(next, i===steps.length ? 800 : 1200);
+  }
+  setTimeout(next, 300);
+}
+
+function renderSuccess(){
+  stopTimer();
+  card.innerHTML=`
+    <div class="success-screen">
+      <span class="big-icon">✅</span>
+      <h2>Configuration réussie !</h2>
+      <p>Le nœud SOS-GUIDE est opérationnel.<br>
+      Reconnectez-vous au réseau :</p>
+      <div class="ssid-badge">⛑️ SOS-GUIDE - ${escHtml(S.nodeName)}</div>
+      <p style="margin-top:.75rem;font-size:.78rem;color:var(--muted)">
+        Portail : <strong>http://10.0.0.1/</strong><br>
+        Administration : <strong>http://10.0.0.1/admin</strong>
+      </p>
+      <div style="margin-top:1.25rem;padding:.6rem;background:#f0fdf4;
+        border-radius:8px;font-size:.75rem;color:#166534;border:1px solid #bbf7d0">
+        🇨🇭 Système conforme PCi-CH · nLPD RS 235.1 · Aucune donnée personnelle collectée
+      </div>
+    </div>`;
+}
+
+// ── Utils ─────────────────────────────────────────────────────────────────────
+function escHtml(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function shake(id){
+  const el=document.getElementById(id); if(!el) return;
+  el.style.animation='none';
+  el.style.borderColor='#dc2626';
+  setTimeout(()=>el.style.borderColor='',1500);
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+render();
+})();
 </script>
 </body>
 </html>
