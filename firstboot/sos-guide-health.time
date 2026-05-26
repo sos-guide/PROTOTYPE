@@ -1,0 +1,18 @@
+[Unit]
+Description=SOS-GUIDE — Timer vérification intégrité (toutes les 5 minutes)
+Documentation=https://sos-guide.fr
+Requires=sos-guide-health.service
+
+[Timer]
+# Première exécution 2 minutes après le démarrage (laisser les services s'initialiser)
+OnBootSec=2min
+# Puis toutes les 5 minutes (conformité PRIVACY.md §4.3)
+OnUnitActiveSec=5min
+# Précision : ±30 secondes (économise les ressources CPU sur Pi)
+AccuracySec=30s
+# Persiste entre les redémarrages (détecte les modifications hors-ligne)
+Persistent=true
+Unit=sos-guide-health.service
+
+[Install]
+WantedBy=timers.target
