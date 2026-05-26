@@ -1,4 +1,4 @@
-### **RÉSUMÉ DÉTAILLÉ DU PROJET SOS-GUIDE v2.1**  
+### **RÉSUMÉ DÉTAILLÉ DU PROJET SOS-GUIDE v2.2**  
 **Système de Communication d’Urgence Hors Ligne avec Réseau Mesh LoRa**  
 
 ---
