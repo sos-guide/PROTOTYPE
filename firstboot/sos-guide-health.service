@@ -1,0 +1,21 @@
+[Unit]
+Description=SOS-GUIDE Health Check — Vérification intégrité SHA256 toutes les 5 minutes
+Documentation=https://sos-guide.fr
+After=network.target hostapd.service dnsmasq.service nginx.service
+Requires=sos-guide-health.timer
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/sos-guide-boot-check.sh
+# Pas de réseau requis pour la vérification locale
+PrivateNetwork=no
+# Accès restreint
+NoNewPrivileges=yes
+ProtectSystem=no
+ReadWritePaths=/var/log /run/sos-guide
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=sos-guide-health
+
+[Install]
+WantedBy=multi-user.target
