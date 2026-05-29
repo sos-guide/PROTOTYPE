@@ -1,12 +1,17 @@
 [Unit]
 Description=SOS-GUIDE First Boot – Mode STARTER
 After=network.target
+Before=hostapd.service dnsmasq.service nginx.service
 Wants=network.target
+# FIX v2.3 : Type=simple → Type=oneshot
+# firstboot.sh s'exécute et se termine — Type=simple est réservé aux démons persistants
 
 [Service]
-Type=simple
+Type=oneshot
 ExecStart=/usr/local/bin/firstboot.sh
-RemainAfterExit=yes
+# RemainAfterExit=no : le service est considéré inactif après exécution
+# (cohérent avec Type=oneshot — ne masque pas un éventuel re-démarrage)
+RemainAfterExit=no
 StandardOutput=journal
 StandardError=journal
 
