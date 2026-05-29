@@ -1,7 +1,14 @@
 #!/bin/bash
 # ╔══════════════════════════════════════════════════════════════════════════════╗
-# ║  SOS-GUIDE – Finalisation installation (mode STARTER → PRODUCTION)         ║                              ║
-# ║  Version : 2.2 — Avril 2026                                                ║
+# ║  SOS-GUIDE – Finalisation installation (mode STARTER → PRODUCTION)         ║
+# ║  Version : 2.3 — Mai 2026                                                  ║
+# ║                                                                             ║
+# ║  CORRECTIONS v2.3 :                                                        ║
+# ║  ✅ Idempotence : chattr -i sur les fichiers avant ré-écriture              ║
+# ║     (re-exécution du script ne bloque plus sur les fichiers verrouillés)   ║
+# ║  ✅ Génération automatique de /etc/nginx/.htpasswd avec mdp aléatoire      ║
+# ║     (l'admin /admin était non protégé ou inaccessible sans ce fichier)     ║
+# ║  ✅ chattr +i data/ exclu correctement (config.json doit rester modifiable)║
 # ╚══════════════════════════════════════════════════════════════════════════════╝
 
 set -euo pipefail
@@ -24,6 +31,7 @@ WEB_DIR="/var/www/sos-guide"
 INTEGRITY_HASH="/root/integrity.hash"
 INSTALL_MARKER="/var/lib/sos-guide/installed"
 AUDIT_LOG="/var/log/sos-guide-install.log"
+HTPASSWD_FILE="/etc/nginx/.htpasswd"
 
 # ── Journalisation ────────────────────────────────────────────────────────────
 mkdir -p /var/lib/sos-guide /var/log
@@ -50,6 +58,19 @@ if ! command -v jq &>/dev/null; then
     apt-get update -qq && apt-get install -y -qq jq
 fi
 
+# ── FIX v2.3 : Déverrouillage préalable pour idempotence ─────────────────────
+# Si le script est re-exécuté (changement de config), les fichiers marqués
+# chattr +i bloqueraient toute réécriture. On les déverrouille en amont.
+step "Déverrouillage préalable (idempotence)"
+sep
+if command -v chattr &>/dev/null; then
+    find "$WEB_DIR" -type f ! -path "$WEB_DIR/data/*" \
+        -exec chattr -i {} \; 2>/dev/null || true
+    ok "Fichiers web déverrouillés pour mise à jour"
+else
+    info "chattr non disponible — ignoré"
+fi
+
 # ══════════════════════════════════════════════════════════════════════════════
 # ÉTAPE 1 — LECTURE DE LA CONFIGURATION
 # ══════════════════════════════════════════════════════════════════════════════
@@ -68,7 +89,6 @@ ok "Ethernet   : ${ENABLE_ETHERNET}"
 ok "Canal WiFi : ${WIFI_CHANNEL}"
 
 # ── Détection dynamique des interfaces ────────────────────────────────────────
-# (Corrige le bug B1-W1 : wlan0 hardcodé dans firstboot.sh)
 detect_wifi_iface() {
     for iface in /sys/class/net/*; do
         iface=$(basename "$iface")
@@ -104,13 +124,10 @@ ok "SSID           : ${SSID}"
 
 # ══════════════════════════════════════════════════════════════════════════════
 # ÉTAPE 2 — CONFIGURATION HOSTAPD
-# Changement SSID/WPA → restart hostapd requis (pas reboot système)
-# Délai clients : ~3s max, acceptable en reconfiguration
 # ══════════════════════════════════════════════════════════════════════════════
 step "Configuration hostapd (WiFi AP)"
 sep
 
-# Sauvegarder l'ancienne config pour diff
 HOSTAPD_CONF="/etc/hostapd/hostapd.conf"
 [ -f "$HOSTAPD_CONF" ] && cp "$HOSTAPD_CONF" "${HOSTAPD_CONF}.bak"
 
@@ -132,7 +149,6 @@ ignore_broadcast_ssid=0
 auth_algs=1
 EOF
 
-# Sécurité WPA2 optionnelle
 if [ -n "$WIFI_PASSWORD" ] && [ ${#WIFI_PASSWORD} -ge 8 ]; then
     cat >> "$HOSTAPD_CONF" <<EOF
 wpa=2
@@ -155,7 +171,6 @@ ok "hostapd.conf écrit"
 
 # ══════════════════════════════════════════════════════════════════════════════
 # ÉTAPE 3 — CONFIGURATION DNSMASQ
-# reload = SIGHUP → conserve les baux DHCP existants, pas de coupure
 # ══════════════════════════════════════════════════════════════════════════════
 step "Configuration dnsmasq (DHCP + DNS captif)"
 sep
@@ -185,12 +200,10 @@ ok "dnsmasq.conf écrit"
 
 # ══════════════════════════════════════════════════════════════════════════════
 # ÉTAPE 4 — CONFIGURATION SYSTEMD-NETWORKD
-# networkctl reload → applique sans reboot
 # ══════════════════════════════════════════════════════════════════════════════
 step "Configuration réseau (systemd-networkd)"
 sep
 
-# Interface WiFi AP fixe
 cat > /etc/systemd/network/20-wlan-ap.network <<EOF
 [Match]
 Name=${WIFI_IFACE}
@@ -210,7 +223,6 @@ EOF
 
 ok "Réseau WiFi AP configuré (${LOCAL_IP}/24)"
 
-# Interface Ethernet (optionnelle)
 if [ "$ENABLE_ETHERNET" = "true" ]; then
     cat > "/etc/systemd/network/10-${ETH_IFACE}.network" <<EOF
 [Match]
@@ -232,7 +244,6 @@ fi
 
 # ══════════════════════════════════════════════════════════════════════════════
 # ÉTAPE 5 — CONFIGURATION PHP-FPM + NGINX
-# nginx -s reload → zero-downtime (requêtes en cours terminées proprement)
 # ══════════════════════════════════════════════════════════════════════════════
 step "Configuration Nginx"
 sep
@@ -269,7 +280,6 @@ server {
     location = /canonical.html            { return 302 http://10.0.0.1/; }
     location = /fwlink/                   { return 302 http://10.0.0.1/; }
 
-    # ── Healthcheck (ne log rien, ne cache rien) ────────────────────
     location = /health {
         access_log off;
         default_type text/plain;
@@ -277,8 +287,7 @@ server {
         return 200 "OK\n";
     }
 
-    # ── API reload-network (sécurisée, locale uniquement) ───────────
-    # Permet à admin.php d'appliquer les nouvelles configs sans reboot
+    # ── API reload-network (locale uniquement) ──────────────────────
     location = /api/reload-network {
         allow 127.0.0.1;
         allow ::1;
@@ -287,14 +296,17 @@ server {
         fastcgi_pass unix:/var/run/php/phpPHP_VERSION-fpm.sock;
     }
 
-    # ── Admin protégé par htpasswd ─────────────────────────────────
+    # ── Admin protégé par htpasswd ──────────────────────────────────
     location /admin {
         auth_basic "Administration SOS-GUIDE";
         auth_basic_user_file /etc/nginx/.htpasswd;
         try_files \$uri \$uri/ =404;
+        location ~ \.php$ {
+            include snippets/fastcgi-php.conf;
+            fastcgi_pass unix:/var/run/php/phpPHP_VERSION-fpm.sock;
+        }
     }
 
-    # ── PHP ────────────────────────────────────────────────────────
     location ~ \.php$ {
         include snippets/fastcgi-php.conf;
         fastcgi_pass unix:/var/run/php/phpPHP_VERSION-fpm.sock;
@@ -339,7 +351,6 @@ sed -i "s|phpPHP_VERSION|php${PHP_VERSION}|g" "$NGINX_CONF"
 ln -sf "$NGINX_CONF" /etc/nginx/sites-enabled/
 rm -f /etc/nginx/sites-enabled/default
 
-# Validation syntaxique avant tout rechargement
 if ! nginx -t &>/dev/null; then
     err "Syntaxe nginx invalide — restauration de la config précédente"
     [ -f "${NGINX_CONF}.bak" ] && cp "${NGINX_CONF}.bak" "$NGINX_CONF"
@@ -348,14 +359,53 @@ if ! nginx -t &>/dev/null; then
 fi
 ok "Nginx : syntaxe validée"
 
+# ── FIX v2.3 : Génération automatique du fichier .htpasswd ───────────────────
+# Sans ce fichier, nginx retourne 500 sur /admin (auth_basic_user_file manquant)
+step "Génération du mot de passe administrateur"
+sep
+
+if [ ! -f "$HTPASSWD_FILE" ]; then
+    # Générer un mot de passe fort aléatoire (18 chars alphanum)
+    ADMIN_PASS=$(openssl rand -base64 24 | tr -dc 'a-zA-Z0-9' | head -c 18)
+
+    if command -v htpasswd &>/dev/null; then
+        htpasswd -cb "$HTPASSWD_FILE" admin "$ADMIN_PASS" 2>/dev/null
+    else
+        # Fallback : openssl apr1 (compatible Apache/nginx)
+        HASHED=$(openssl passwd -apr1 "$ADMIN_PASS")
+        echo "admin:${HASHED}" > "$HTPASSWD_FILE"
+    fi
+
+    chmod 640 "$HTPASSWD_FILE"
+    chown root:www-data "$HTPASSWD_FILE"
+
+    # Sauvegarder le mot de passe dans le marqueur d'installation (lisible par root seul)
+    echo "ADMIN_USER=admin" >> "$INSTALL_MARKER.tmp"
+    echo "ADMIN_PASS=${ADMIN_PASS}" >> "$INSTALL_MARKER.tmp"
+
+    ok "Compte admin créé"
+    echo ""
+    echo -e "  ${BOLD}${YELLOW}┌─────────────────────────────────────────────────┐${NC}"
+    echo -e "  ${BOLD}${YELLOW}│  MOT DE PASSE ADMIN (noter maintenant !)        │${NC}"
+    echo -e "  ${BOLD}${YELLOW}│                                                 │${NC}"
+    echo -e "  ${BOLD}${YELLOW}│  URL      : http://${LOCAL_IP}/admin             │${NC}"
+    echo -e "  ${BOLD}${YELLOW}│  Login    : admin                               │${NC}"
+    echo -e "  ${BOLD}${YELLOW}│  Password : ${ADMIN_PASS}           │${NC}"
+    echo -e "  ${BOLD}${YELLOW}│                                                 │${NC}"
+    echo -e "  ${BOLD}${YELLOW}│  Sauvegardé dans : ${INSTALL_MARKER}    │${NC}"
+    echo -e "  ${BOLD}${YELLOW}└─────────────────────────────────────────────────┘${NC}"
+    echo ""
+else
+    ok "Fichier .htpasswd existant conservé (réinstallation)"
+    info "Pour réinitialiser : sudo rm ${HTPASSWD_FILE} && sudo bash $0"
+fi
+
 # ── Endpoint /api/reload-network ──────────────────────────────────────────────
-# Ce fichier PHP permet à admin.php d'appliquer les configs sans reboot
 API_RELOAD="/var/www/sos-guide/api_reload_network.php"
 cat > "$API_RELOAD" <<'PHPEOF'
 <?php
 /**
  * SOS-GUIDE — /api/reload-network
- * Appelé depuis admin.php après modification de la config
  * Accessible uniquement depuis 127.0.0.1 (nginx deny all other)
  */
 header('Content-Type: application/json');
@@ -373,112 +423,66 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$log = [];
-$errors = [];
+$log = []; $errors = [];
 
-// 1. Régénération du hash SHA256 d'intégrité
-$hashResult = shell_exec('sudo /usr/local/bin/sos-guide-regen-hash.sh 2>&1');
-if ($hashResult !== null) {
-    $log[] = 'Hash SHA256 régénéré';
-} else {
-    $errors[] = 'Régénération hash échouée';
-}
+exec('sudo /usr/local/bin/sos-guide-regen-hash.sh 2>&1', $o, $r);
+$r === 0 ? $log[] = 'Hash SHA256 régénéré' : $errors[] = 'Hash: ' . implode(' ', $o);
 
-// 2. Reload nginx (zero-downtime)
-exec('sudo /bin/systemctl reload nginx 2>&1', $out, $ret);
-if ($ret === 0) {
-    $log[] = 'nginx rechargé (zero-downtime)';
-} else {
-    $errors[] = 'nginx reload échoué : ' . implode(' ', $out);
-}
+exec('sudo /bin/systemctl reload nginx 2>&1', $o, $r);
+$r === 0 ? $log[] = 'nginx rechargé (zero-downtime)' : $errors[] = 'nginx: ' . implode(' ', $o);
 
-// 3. Reload dnsmasq (conserve les baux DHCP)
-exec('sudo /bin/systemctl reload dnsmasq 2>&1', $out, $ret);
-if ($ret === 0) {
-    $log[] = 'dnsmasq rechargé (baux conservés)';
-} else {
-    $errors[] = 'dnsmasq reload échoué : ' . implode(' ', $out);
-}
+exec('sudo /bin/systemctl reload dnsmasq 2>&1', $o, $r);
+$r === 0 ? $log[] = 'dnsmasq rechargé (baux conservés)' : $errors[] = 'dnsmasq: ' . implode(' ', $o);
 
-// 4. Restart hostapd UNIQUEMENT si SSID ou WPA ont changé
 $reloadWifi = ($_POST['reload_wifi'] ?? 'false') === 'true';
 if ($reloadWifi) {
-    exec('sudo /bin/systemctl restart hostapd 2>&1', $out, $ret);
-    if ($ret === 0) {
-        $log[] = 'hostapd redémarré (nouveau SSID/WPA appliqué, ~3s)';
-    } else {
-        $errors[] = 'hostapd restart échoué : ' . implode(' ', $out);
-    }
+    exec('sudo /bin/systemctl restart hostapd 2>&1', $o, $r);
+    $r === 0 ? $log[] = 'hostapd redémarré (~3s)' : $errors[] = 'hostapd: ' . implode(' ', $o);
 }
 
-// Journalisation audit
-$entry = [
-    'ts'     => date('c'),
-    'ip'     => $remote,
-    'action' => 'reload-network',
-    'log'    => $log,
-    'errors' => $errors,
-];
+$entry = ['ts' => date('c'), 'ip' => $remote, 'action' => 'reload-network',
+          'log' => $log, 'errors' => $errors];
 file_put_contents('/var/log/sos-guide-admin-audit.log',
     json_encode($entry) . "\n", FILE_APPEND | LOCK_EX);
 
 $success = empty($errors);
 http_response_code($success ? 200 : 207);
-echo json_encode([
-    'success' => $success,
-    'log'     => $log,
-    'errors'  => $errors,
-]);
+echo json_encode(['success' => $success, 'log' => $log, 'errors' => $errors]);
 PHPEOF
 
 chown www-data:www-data "$API_RELOAD"
 chmod 640 "$API_RELOAD"
 ok "api_reload_network.php créé"
 
-# ── Script de régénération du hash (appelé via sudo) ──────────────────────────
+# ── Script de régénération du hash ────────────────────────────────────────────
 cat > /usr/local/bin/sos-guide-regen-hash.sh <<'HASHEOF'
 #!/bin/bash
-# Régénère le hash SHA256 d'intégrité après toute modification
-# Appelé par : admin (sudo), finalize_install.sh, sos-guide-update.sh
 WEB_DIR="/var/www/sos-guide"
 HASH_FILE="/root/integrity.hash"
 TEMP_HASH="${HASH_FILE}.tmp"
-
-find "$WEB_DIR" -type f \( \
-    ! -path "$WEB_DIR/data/config.json" \
-\) -exec sha256sum {} \; > "$TEMP_HASH"
-
-# config.json hashé séparément (contenu variable mais fichier surveillé)
+find "$WEB_DIR" -type f ! -path "$WEB_DIR/data/config.json" \
+    -exec sha256sum {} \; > "$TEMP_HASH"
 sha256sum "$WEB_DIR/data/config.json" >> "$TEMP_HASH" 2>/dev/null || true
 sha256sum /etc/nginx/sites-available/sos-guide >> "$TEMP_HASH" 2>/dev/null || true
-
 mv "$TEMP_HASH" "$HASH_FILE"
 chmod 400 "$HASH_FILE"
 logger "SOS-GUIDE: hash SHA256 régénéré ($(wc -l < "$HASH_FILE") fichiers)"
-echo "Hash régénéré : $(wc -l < "$HASH_FILE") fichiers"
 HASHEOF
-
 chmod 755 /usr/local/bin/sos-guide-regen-hash.sh
 ok "sos-guide-regen-hash.sh installé"
 
-# Autoriser www-data et les scripts à régénérer le hash via sudo
+# ── Sudoers ───────────────────────────────────────────────────────────────────
 SUDOERS_FILE="/etc/sudoers.d/sos-guide-reload"
 cat > "$SUDOERS_FILE" <<'SUDOEOF'
-# SOS-GUIDE — permissions sudo minimales pour le reload à chaud
-# www-data : reload des services réseau (pas de shell, pas de rm, pas de reboot)
 www-data ALL=(root) NOPASSWD: /bin/systemctl reload nginx
 www-data ALL=(root) NOPASSWD: /bin/systemctl reload dnsmasq
 www-data ALL=(root) NOPASSWD: /bin/systemctl restart hostapd
 www-data ALL=(root) NOPASSWD: /usr/local/bin/sos-guide-regen-hash.sh
-
-# Scripts de maintenance
 root ALL=(root) NOPASSWD: /usr/local/bin/sos-guide-regen-hash.sh
 SUDOEOF
-
 chmod 440 "$SUDOERS_FILE"
-# Validation du fichier sudoers avant de l'activer
 if visudo -c -f "$SUDOERS_FILE" &>/dev/null; then
-    ok "sudoers reload-network configuré (permissions minimales)"
+    ok "sudoers configuré"
 else
     err "Fichier sudoers invalide — suppression"
     rm -f "$SUDOERS_FILE"
@@ -486,25 +490,17 @@ fi
 
 # ══════════════════════════════════════════════════════════════════════════════
 # ÉTAPE 6 — FIREWALL IPTABLES
-# Identique à install.sh, pas de changement — vérification d'abord
 # ══════════════════════════════════════════════════════════════════════════════
 step "Firewall iptables"
 sep
 
-iptables -F
-iptables -t nat -F
-iptables -t mangle -F
-
-iptables -P INPUT DROP
-iptables -P FORWARD DROP
-iptables -P OUTPUT ACCEPT
-
+iptables -F; iptables -t nat -F; iptables -t mangle -F
+iptables -P INPUT DROP; iptables -P FORWARD DROP; iptables -P OUTPUT ACCEPT
 iptables -A INPUT -i lo -j ACCEPT
 iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
 iptables -A INPUT -p tcp --tcp-flags ALL NONE -j DROP
 iptables -A INPUT -p tcp --tcp-flags ALL ALL -j DROP
 
-# SSH uniquement sur ETH
 if [ "$ENABLE_ETHERNET" = "true" ]; then
     iptables -A INPUT -i "${ETH_IFACE}" -p tcp --dport 22 \
         -m conntrack --ctstate NEW \
@@ -512,19 +508,16 @@ if [ "$ENABLE_ETHERNET" = "true" ]; then
     ok "SSH autorisé sur ${ETH_IFACE} (3 conn/min)"
 fi
 
-# HTTP/HTTPS avec rate-limiting
 iptables -A INPUT -i "${WIFI_IFACE}" -p tcp --dport 80 \
     -m limit --limit 30/second --limit-burst 200 -j ACCEPT
 iptables -A INPUT -i "${WIFI_IFACE}" -p tcp --dport 443 \
     -m limit --limit 30/second --limit-burst 200 -j ACCEPT
-
 iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 iptables -A INPUT -i "${WIFI_IFACE}" -p udp --dport 67 -j ACCEPT
 iptables -A INPUT -i "${WIFI_IFACE}" -p udp --dport 53 -j ACCEPT
 iptables -A INPUT -i "${WIFI_IFACE}" -p tcp --dport 53 -j ACCEPT
 iptables -A INPUT -i "${WIFI_IFACE}" -j DROP
 
-# Redirections NAT portail captif
 iptables -t nat -A PREROUTING -i "${WIFI_IFACE}" -p tcp --dport 80  \
     -j DNAT --to-destination "${LOCAL_IP}:80"
 iptables -t nat -A PREROUTING -i "${WIFI_IFACE}" -p tcp --dport 443 \
@@ -534,7 +527,6 @@ iptables -t nat -A PREROUTING -i "${WIFI_IFACE}" -p udp --dport 53  \
 iptables -t nat -A PREROUTING -i "${WIFI_IFACE}" -p tcp --dport 53  \
     -j DNAT --to-destination "${LOCAL_IP}:53"
 
-# Isolation totale : WiFi → Internet BLOQUÉ
 iptables -A FORWARD -i "${WIFI_IFACE}" -o "${WIFI_IFACE}" -j DROP
 iptables -A FORWARD -i "${WIFI_IFACE}" -o "${ETH_IFACE}"  -j DROP
 iptables -A FORWARD -i "${WIFI_IFACE}" -j DROP
@@ -543,7 +535,6 @@ mkdir -p /etc/iptables
 netfilter-persistent save &>/dev/null
 ok "Règles iptables sauvegardées"
 
-# Vérification critique isolation
 if ! iptables -C FORWARD -i "${WIFI_IFACE}" -o "${ETH_IFACE}" -j DROP 2>/dev/null; then
     err "CRITIQUE : Règle isolation WiFi→Internet manquante"
     exit 1
@@ -552,7 +543,7 @@ ok "Isolation WiFi → Internet vérifiée ✓"
 
 # ══════════════════════════════════════════════════════════════════════════════
 # ÉTAPE 7 — VERROUILLAGE DES FICHIERS WEB
-# data/ exclu pour permettre les modifications admin
+# FIX v2.3 : data/ explicitement exclu + config.json toujours modifiable
 # ══════════════════════════════════════════════════════════════════════════════
 step "Verrouillage du contenu web (chattr)"
 sep
@@ -560,14 +551,15 @@ sep
 chown -R www-data:www-data "$WEB_DIR"
 chmod -R a-w "$WEB_DIR"
 
-# Verrouillage immuable de tout sauf data/
 if command -v chattr &>/dev/null; then
-    find "$WEB_DIR" -type f ! -path "$WEB_DIR/data/*" -exec chattr +i {} \; 2>/dev/null || true
-    # data/ : writable pour admin mais pas immuable
+    # Verrouiller tous les fichiers sauf data/ (config.json doit rester éditable)
+    find "$WEB_DIR" -type f ! -path "$WEB_DIR/data/*" \
+        -exec chattr +i {} \; 2>/dev/null || true
+    # data/ : déverrouillé explicitement, writable par www-data
     chattr -R -i "$WEB_DIR/data/" 2>/dev/null || true
     chmod 755 "$WEB_DIR/data/"
     chown www-data:www-data "$WEB_DIR/data/"
-    ok "chattr +i : fichiers web verrouillés (data/ exclu)"
+    ok "chattr +i : fichiers web verrouillés (data/ exclu — config.json modifiable)"
 else
     warn "chattr non supporté sur ce système de fichiers"
 fi
@@ -581,148 +573,107 @@ if [ "$ENABLE_LORA" = "true" ]; then
     if systemctl list-unit-files | grep -q "lora-service"; then
         systemctl enable lora-service  2>/dev/null || true
         systemctl start  lora-service  2>/dev/null || true
-        if systemctl is-active --quiet lora-service; then
-            ok "lora-service démarré"
-        else
-            warn "lora-service non actif — vérifier lora-service.py"
-        fi
+        systemctl is-active --quiet lora-service \
+            && ok "lora-service démarré" \
+            || warn "lora-service non actif — vérifier lora-service.py"
     else
-        warn "lora-service.service absent — installer lora-service.py d'abord"
-        info "Générer via : sudo bash /usr/local/bin/sos-guide-install-lora.sh"
+        warn "lora-service.service absent"
     fi
 fi
 
 # ══════════════════════════════════════════════════════════════════════════════
-# ÉTAPE 9 — RELOAD À CHAUD DES SERVICES
-# ⚠️ Ordre critique : networkd → dnsmasq → hostapd → nginx
-# PAS DE REBOOT SYSTÈME
+# ÉTAPE 9 — RELOAD À CHAUD (PAS DE REBOOT SYSTÈME)
 # ══════════════════════════════════════════════════════════════════════════════
 step "Reload à chaud des services (SANS REBOOT SYSTÈME)"
 sep
 
-# Compteur d'erreurs de services
 SVC_ERRORS=0
 
-# ── 9.1 systemd-networkd : applique la nouvelle config IP ─────────────────
+# 9.1 systemd-networkd
 info "Rechargement systemd-networkd..."
 if networkctl reload 2>/dev/null; then
     sleep 1
-    # Vérifier que l'IP est bien sur l'interface WiFi
-    if ip -4 addr show "${WIFI_IFACE}" | grep -q "${LOCAL_IP}"; then
-        ok "systemd-networkd : ${WIFI_IFACE} → ${LOCAL_IP}/24 ✓"
-    else
-        # L'IP peut mettre quelques secondes à apparaître
-        sleep 2
-        if ip -4 addr show "${WIFI_IFACE}" | grep -q "${LOCAL_IP}"; then
-            ok "systemd-networkd : ${WIFI_IFACE} → ${LOCAL_IP}/24 ✓"
-        else
-            warn "IP ${LOCAL_IP} non encore visible sur ${WIFI_IFACE} (normal en reconfiguration)"
-            ip addr add "${LOCAL_IP}/24" dev "${WIFI_IFACE}" 2>/dev/null || true
-        fi
-    fi
+    ip -4 addr show "${WIFI_IFACE}" | grep -q "${LOCAL_IP}" \
+        && ok "systemd-networkd : ${WIFI_IFACE} → ${LOCAL_IP}/24 ✓" \
+        || { sleep 2
+             ip -4 addr show "${WIFI_IFACE}" | grep -q "${LOCAL_IP}" \
+                && ok "systemd-networkd : ${WIFI_IFACE} → ${LOCAL_IP}/24 ✓" \
+                || { warn "IP non visible (ajout manuel)"
+                     ip addr add "${LOCAL_IP}/24" dev "${WIFI_IFACE}" 2>/dev/null || true; }; }
 else
-    warn "networkctl reload non disponible — restart fallback"
-    systemctl restart systemd-networkd 2>/dev/null || true
-    sleep 2
+    systemctl restart systemd-networkd 2>/dev/null || true; sleep 2
 fi
 
-# ── 9.2 dnsmasq : reload = SIGHUP (baux DHCP conservés) ──────────────────
+# 9.2 dnsmasq (SIGHUP conserve les baux)
 info "Rechargement dnsmasq (baux DHCP conservés)..."
 if systemctl reload dnsmasq 2>/dev/null; then
     sleep 1
-    if systemctl is-active --quiet dnsmasq; then
-        ok "dnsmasq : rechargé (SIGHUP) — baux existants maintenus ✓"
-    else
-        err "dnsmasq : arrêté après reload"
-        systemctl start dnsmasq
-        SVC_ERRORS=$((SVC_ERRORS + 1))
-    fi
+    systemctl is-active --quiet dnsmasq \
+        && ok "dnsmasq rechargé ✓" \
+        || { err "dnsmasq arrêté après reload"
+             systemctl start dnsmasq; SVC_ERRORS=$((SVC_ERRORS + 1)); }
 else
-    warn "dnsmasq reload échoué — restart fallback"
     systemctl restart dnsmasq
     sleep 1
-    systemctl is-active --quiet dnsmasq && ok "dnsmasq redémarré (fallback)" \
+    systemctl is-active --quiet dnsmasq \
+        && ok "dnsmasq redémarré (fallback)" \
         || { err "dnsmasq DOWN"; SVC_ERRORS=$((SVC_ERRORS + 1)); }
 fi
 
-# ── 9.3 hostapd : restart requis si SSID/WPA changés ─────────────────────
-# NOTE : restart hostapd ≠ reboot système
-# Les clients WiFi doivent se reconnecter (~3s d'interruption)
-# Ceci est INTENTIONNEL et NÉCESSAIRE pour appliquer un nouveau SSID/WPA
-info "Redémarrage hostapd (nouveau SSID/WPA, ~3s d'interruption WiFi)..."
+# 9.3 hostapd (restart requis si SSID/WPA/canal changé)
+info "Redémarrage hostapd (~3s d'interruption WiFi)..."
 systemctl unmask hostapd 2>/dev/null || true
 systemctl enable hostapd &>/dev/null
-
-# Arrêt propre pour libérer le canal radio
 ip link set "${WIFI_IFACE}" down 2>/dev/null || true
 sleep 1
 ip link set "${WIFI_IFACE}" up   2>/dev/null || true
 sleep 1
-
 if systemctl restart hostapd; then
-    sleep 3  # Délai pour que le beacon soit émis
-    if systemctl is-active --quiet hostapd; then
-        ok "hostapd : redémarré ✓  (SSID '${SSID}' diffusé)"
-    else
-        err "hostapd : erreur après restart"
-        journalctl -u hostapd --no-pager -n 5 | tail -5 | while read -r line; do
-            err "  → $line"
-        done
-        SVC_ERRORS=$((SVC_ERRORS + 1))
-    fi
+    sleep 3
+    systemctl is-active --quiet hostapd \
+        && ok "hostapd redémarré ✓ (SSID '${SSID}')" \
+        || { err "hostapd DOWN après restart"
+             journalctl -u hostapd --no-pager -n 5
+             SVC_ERRORS=$((SVC_ERRORS + 1)); }
 else
-    err "hostapd restart échoué"
-    SVC_ERRORS=$((SVC_ERRORS + 1))
+    err "hostapd restart échoué"; SVC_ERRORS=$((SVC_ERRORS + 1))
 fi
 
-# ── 9.4 PHP-FPM : restart si version PHP a changé ────────────────────────
+# 9.4 PHP-FPM
 info "Rechargement PHP-FPM ${PHP_VERSION}..."
 systemctl enable "php${PHP_VERSION}-fpm" &>/dev/null 2>&1 || true
-if systemctl is-active --quiet "php${PHP_VERSION}-fpm"; then
-    systemctl reload "php${PHP_VERSION}-fpm" 2>/dev/null || \
-    systemctl restart "php${PHP_VERSION}-fpm"
-else
-    systemctl start "php${PHP_VERSION}-fpm"
-fi
 systemctl is-active --quiet "php${PHP_VERSION}-fpm" \
-    && ok "PHP-FPM ${PHP_VERSION} : actif ✓" \
+    && systemctl reload "php${PHP_VERSION}-fpm" 2>/dev/null \
+    || systemctl start "php${PHP_VERSION}-fpm"
+systemctl is-active --quiet "php${PHP_VERSION}-fpm" \
+    && ok "PHP-FPM ${PHP_VERSION} actif ✓" \
     || { err "PHP-FPM ${PHP_VERSION} DOWN"; SVC_ERRORS=$((SVC_ERRORS + 1)); }
 
-# ── 9.5 nginx : reload zero-downtime (requêtes en cours terminées) ────────
+# 9.5 nginx (zero-downtime)
 info "Rechargement nginx (zero-downtime)..."
 if nginx -t &>/dev/null; then
-    if systemctl is-active --quiet nginx; then
-        nginx -s reload
-        sleep 1
-        ok "nginx : rechargé (zero-downtime) ✓"
-    else
-        systemctl start nginx
-        sleep 1
-        systemctl is-active --quiet nginx \
-            && ok "nginx : démarré ✓" \
-            || { err "nginx DOWN"; SVC_ERRORS=$((SVC_ERRORS + 1)); }
-    fi
+    systemctl is-active --quiet nginx \
+        && nginx -s reload || systemctl start nginx
+    sleep 1
+    systemctl is-active --quiet nginx \
+        && ok "nginx actif ✓" \
+        || { err "nginx DOWN"; SVC_ERRORS=$((SVC_ERRORS + 1)); }
 else
-    err "nginx : configuration invalide — reload annulé"
-    SVC_ERRORS=$((SVC_ERRORS + 1))
+    err "nginx config invalide"; SVC_ERRORS=$((SVC_ERRORS + 1))
 fi
 
-# ── 9.6 Vérification de l'AP WiFi ─────────────────────────────────────────
-info "Vérification du mode AP WiFi..."
+# 9.6 Vérification mode AP
+info "Vérification mode AP WiFi..."
 AP_OK=false
 for i in $(seq 1 10); do
-    if iw dev "${WIFI_IFACE}" info 2>/dev/null | grep -q "type AP"; then
-        AP_OK=true
-        break
-    fi
+    iw dev "${WIFI_IFACE}" info 2>/dev/null | grep -q "type AP" && { AP_OK=true; break; }
     sleep 1
 done
 $AP_OK && ok "Interface ${WIFI_IFACE} en mode AP ✓" \
-         || warn "Mode AP non confirmé dans les 10s (peut être normal)"
+         || warn "Mode AP non confirmé dans les 10s"
 
 # ══════════════════════════════════════════════════════════════════════════════
-# ÉTAPE 10 — RÉGÉNÉRATION DU HASH SHA256
-# ⚠️ TOUJOURS en dernier, après toutes les modifications
+# ÉTAPE 10 — HASH SHA256
 # ══════════════════════════════════════════════════════════════════════════════
 step "Régénération du hash SHA256 d'intégrité"
 sep
@@ -730,15 +681,12 @@ sep
 if /usr/local/bin/sos-guide-regen-hash.sh; then
     FILE_COUNT=$(wc -l < "$INTEGRITY_HASH" 2>/dev/null || echo "0")
     ok "Hash SHA256 régénéré — ${FILE_COUNT} fichiers surveillés"
-    ok "Fichier : ${INTEGRITY_HASH}"
 else
-    err "Régénération du hash échouée"
-    SVC_ERRORS=$((SVC_ERRORS + 1))
+    err "Régénération du hash échouée"; SVC_ERRORS=$((SVC_ERRORS + 1))
 fi
 
 # ══════════════════════════════════════════════════════════════════════════════
-# ÉTAPE 11 — NETTOYAGE DU MODE FIRSTBOOT
-# Désactive le service de démarrage initial
+# ÉTAPE 11 — DÉSACTIVATION FIRSTBOOT
 # ══════════════════════════════════════════════════════════════════════════════
 step "Désactivation du service firstboot"
 sep
@@ -747,7 +695,6 @@ systemctl disable sos-guide-firstboot.service 2>/dev/null || true
 rm -f /etc/systemd/system/sos-guide-firstboot.service
 systemctl daemon-reload &>/dev/null
 
-# Marquer l'installation comme terminée
 mkdir -p /var/lib/sos-guide
 {
     echo "date=$(date -Iseconds)"
@@ -755,14 +702,18 @@ mkdir -p /var/lib/sos-guide
     echo "wifi=${WIFI_IFACE}"
     echo "ssid=${SSID}"
     echo "lora=${ENABLE_LORA}"
-    echo "version=2.2"
+    echo "version=2.3"
 } > "$INSTALL_MARKER"
 
+# Fusionner les credentials si générés
+[ -f "$INSTALL_MARKER.tmp" ] && { cat "$INSTALL_MARKER.tmp" >> "$INSTALL_MARKER"; rm "$INSTALL_MARKER.tmp"; }
+chmod 400 "$INSTALL_MARKER"
+
 ok "Mode firstboot désactivé"
-ok "Marqueur d'installation créé : ${INSTALL_MARKER}"
+ok "Marqueur d'installation créé : ${INSTALL_MARKER} (chmod 400)"
 
 # ══════════════════════════════════════════════════════════════════════════════
-# RÉSUMÉ FINAL
+# RÉSUMÉ
 # ══════════════════════════════════════════════════════════════════════════════
 echo ""
 echo -e "  ${BOLD}╔══════════════════════════════════════════════════════════╗${NC}"
@@ -774,31 +725,24 @@ fi
 echo -e "  ${BOLD}╚══════════════════════════════════════════════════════════╝${NC}"
 echo ""
 
-# Vérification finale de tous les services
-echo -e "  ${BOLD}État des services :${NC}"
 for svc in hostapd dnsmasq nginx; do
-    if systemctl is-active --quiet "$svc"; then
-        echo -e "  ${GREEN}✔${NC}  $svc"
-    else
-        echo -e "  ${RED}✘${NC}  $svc  ← vérifier journalctl -u $svc"
-    fi
+    systemctl is-active --quiet "$svc" \
+        && echo -e "  ${GREEN}✔${NC}  $svc" \
+        || echo -e "  ${RED}✘${NC}  $svc  ← journalctl -u $svc"
 done
-if systemctl is-active --quiet "php${PHP_VERSION}-fpm"; then
-    echo -e "  ${GREEN}✔${NC}  php${PHP_VERSION}-fpm"
-else
-    echo -e "  ${RED}✘${NC}  php${PHP_VERSION}-fpm"
-fi
+systemctl is-active --quiet "php${PHP_VERSION}-fpm" \
+    && echo -e "  ${GREEN}✔${NC}  php${PHP_VERSION}-fpm" \
+    || echo -e "  ${RED}✘${NC}  php${PHP_VERSION}-fpm"
 
 echo ""
 echo -e "  ${CYAN}SSID diffusé   :${NC} ${BOLD}${SSID}${NC}"
 echo -e "  ${CYAN}Portail captif :${NC} http://${LOCAL_IP}/"
-echo -e "  ${CYAN}Administration :${NC} http://${LOCAL_IP}/admin"
+echo -e "  ${CYAN}Administration :${NC} http://${LOCAL_IP}/admin  (login: admin)"
+echo -e "  ${CYAN}Credentials    :${NC} ${INSTALL_MARKER}  (root uniquement)"
 echo -e "  ${CYAN}Hash intégrité :${NC} ${INTEGRITY_HASH}"
 echo ""
-echo -e "  ${DIM}⚠  Les clients doivent se reconnecter au WiFi (SSID mis à jour)${NC}"
+echo -e "  ${DIM}⚠  Les clients doivent se reconnecter au WiFi${NC}"
 echo -e "  ${DIM}ℹ  Logs : journalctl -u hostapd -u dnsmasq -u nginx -f${NC}"
-echo -e "  ${DIM}ℹ  Audit admin : /var/log/sos-guide-admin-audit.log${NC}"
 echo ""
 
-# Code de sortie basé sur les erreurs de services
 exit "$SVC_ERRORS"
