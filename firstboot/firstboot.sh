@@ -1,8 +1,8 @@
 #!/bin/bash
 # ╔══════════════════════════════════════════════════════════════════════════════╗
-# ║  SOS-GUIDE First Boot v2.4 — Mode STARTER                                  ║
+# ║  SOS-GUIDE First Boot v2.3 — Mode STARTER                                  ║
 # ║                                                                             ║
-# ║  CORRECTIONS v2.4 :                                                        ║
+# ║  CORRECTIONS v2.3 :                                                        ║
 # ║  FIX BUG-01 : detect_wifi_iface() — vérification /sys/class/net/*/wireless ║
 # ║               avant iw (qui peut ne pas être installé au firstboot)        ║
 # ║  FIX BUG-02 : ETH_IFACE déclarée globale avant detect_wifi, pas locale    ║
