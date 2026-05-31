@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>⛑️ SOS-GUIDE — Configuration initiale</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='80' font-size='80'%3E⛑️%3C/text%3E%3C/svg%3E">
+<!-- QRCode.js — génération locale du QR code de connexion WiFi -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 :root{
   --bg:#f8fafc;--card:#fff;--border:rgba(0,0,0,.08);--text:#0f172a;
@@ -27,12 +29,25 @@ body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,
   background:var(--border);z-index:0}
 .step{display:flex;flex-direction:column;align-items:center;gap:.4rem;z-index:1;flex:1}
 .step-num{width:28px;height:28px;border-radius:50%;background:var(--bg);border:1.5px solid var(--border);
-  display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:600;
-  transition:all .25s}
+  display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:600;transition:all .25s}
 .step.active .step-num{background:var(--accent);border-color:var(--accent);color:#fff}
 .step.done .step-num{background:var(--green);border-color:var(--green);color:#fff}
 .step-label{font-size:.7rem;color:var(--sub);font-weight:500;letter-spacing:.03em}
 .step.active .step-label{color:var(--accent)}
+/* WiFi card — v2.4 */
+.wifi-card{background:var(--bg);border:1.5px solid var(--border);border-radius:14px;
+  padding:1rem 1.25rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:1rem}
+.wifi-info{flex:1;min-width:0}
+.wifi-info .ssid{font-weight:700;font-size:.95rem;margin-bottom:.3rem;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+.wifi-info .pass{font-size:.85rem;color:var(--sub);font-family:monospace;letter-spacing:.04em;
+  display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
+.wifi-info .pass-val{background:var(--card);padding:.2rem .55rem;border-radius:6px;
+  border:1px solid var(--border);font-weight:700;color:var(--text);font-size:1rem;
+  letter-spacing:.12em}
+.wifi-hint{font-size:.72rem;color:var(--sub);margin-top:.5rem;line-height:1.5}
+#qr-container{flex-shrink:0}
+#qr-container canvas,#qr-container img{border-radius:8px;display:block}
 /* Form */
 .form-group{margin-bottom:1.25rem}
 .form-group label{display:block;font-size:.78rem;font-weight:600;color:var(--sub);
@@ -52,8 +67,7 @@ body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,
 .tog{width:44px;height:24px;background:var(--border);border-radius:12px;
   flex-shrink:0;position:relative;transition:background .2s;margin-top:.1rem}
 .tog::after{content:'';position:absolute;width:18px;height:18px;background:#fff;
-  border-radius:9px;top:3px;left:3px;transition:left .2s;
-  box-shadow:0 1px 3px rgba(0,0,0,.15)}
+  border-radius:9px;top:3px;left:3px;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.15)}
 .toggle-opt.on .tog{background:var(--accent)}
 .toggle-opt.on .tog::after{left:23px}
 .tog-info strong{display:block;font-size:.88rem;font-weight:600}
@@ -64,8 +78,7 @@ body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,
   padding:.45rem 0;border-bottom:1px solid var(--border)}
 .summary-row:last-child{border:none}
 .summary-key{font-size:.82rem;color:var(--sub)}
-.badge{background:var(--border);padding:.2rem .7rem;border-radius:20px;
-  font-size:.75rem;font-weight:600}
+.badge{background:var(--border);padding:.2rem .7rem;border-radius:20px;font-size:.75rem;font-weight:600}
 /* Progress */
 .progress{background:var(--border);border-radius:4px;overflow:hidden;height:8px;margin:1.5rem 0}
 .progress-fill{height:100%;background:var(--accent);border-radius:4px;transition:width .4s}
@@ -100,9 +113,7 @@ body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,
 </style>
 </head>
 <body>
-<div class="card" id="card">
-  <!-- Contenu injecté par JS -->
-</div>
+<div class="card" id="card"></div>
 
 <script>
 (function(){
@@ -115,9 +126,10 @@ const S = {
   wifiPassword: '',
   enableLoRa: false,
   enableEthernet: false,
-  // FIX: le token CSRF est injecté par firstboot.sh via sed
-  csrf: '%%CSRF_TOKEN%%',
-  channel: '%%WIFI_CHANNEL%%',
+  csrf: '%%CSRF_TOKEN%%',       // injecté par firstboot.sh
+  channel: '%%WIFI_CHANNEL%%',  // injecté par firstboot.sh
+  starterPass: '%%STARTER_WIFI_PASS%%', // injecté par firstboot.sh
+  starterSsid: '%%STARTER_SSID%%',      // injecté par firstboot.sh
   timer: 600
 };
 
@@ -133,12 +145,11 @@ function startTimer(){
     const el = document.getElementById('timerBadge');
     if(el){
       const m=Math.floor(S.timer/60), s=S.timer%60;
-      el.textContent='⏳ '+ m +':'+ String(s).padStart(2,'0');
+      el.textContent='⏳ '+m+':'+String(s).padStart(2,'0');
     }
   },1000);
 }
 function stopTimer(){ if(timerInterval) clearInterval(timerInterval); }
-
 function fmtTimer(){
   const m=Math.floor(S.timer/60), s=S.timer%60;
   return m+':'+String(s).padStart(2,'0');
@@ -149,13 +160,22 @@ function renderSteps(active){
   const labels=['Lieu','Options','Résumé'];
   return `<div class="steps">
     ${labels.map((l,i)=>{
-      const cls = i<active?'done':i===active?'active':'';
+      const cls=i<active?'done':i===active?'active':'';
       return `<div class="step ${cls}">
         <div class="step-num">${i<active?'✓':(i+1)}</div>
         <div class="step-label">${l}</div>
       </div>`;
     }).join('')}
   </div>`;
+}
+function escHtml(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function shake(id){
+  const el=document.getElementById(id); if(!el) return;
+  el.style.borderColor='#dc2626';
+  setTimeout(()=>{ el.style.borderColor=''; },1500);
 }
 
 // ── Écrans ────────────────────────────────────────────────────────────────────
@@ -179,23 +199,38 @@ function render(){
   }
 }
 
+// ── v2.4 : Écran d'accueil avec QR code WiFi — plus de PIN HDMI ──────────────
 function renderWelcome(){
   startTimer();
-  card.innerHTML=`
+  const ssid = S.starterSsid;
+  const pass = S.starterPass;
+  // Format standard QR code WiFi (iOS, Android)
+  const wifiUri = `WIFI:T:WPA;S:${ssid};P:${pass};;`;
+
+  card.innerHTML = `
     <div class="logo">
       <span class="logo-icon">⛑️</span>
       <h1>SOS-GUIDE</h1>
       <p>Configuration initiale · Point d'accès d'urgence</p>
     </div>
     <div class="ch-badge">🇨🇭 Certifié Croix-Rouge Suisse</div>
-    <div class="alert info show">
-      <span>📶</span>
-      <span>Connecté à <strong>⛑️ SOS-GUIDE - STARTER</strong> · URL : <strong>http://10.0.0.1/</strong></span>
+
+    <div class="wifi-card">
+      <div class="wifi-info">
+        <div class="ssid">📶 ${escHtml(ssid)}</div>
+        <div class="pass">
+          Mot de passe WiFi :
+          <span class="pass-val">${escHtml(pass)}</span>
+        </div>
+        <div class="wifi-hint">
+          1. Scannez le QR code ou connectez-vous manuellement au WiFi ci-dessus.<br>
+          2. Ouvrez <strong>http://10.0.0.1/</strong> dans votre navigateur.<br>
+          3. Configurez le nœud SOS-GUIDE.
+        </div>
+      </div>
+      <div id="qr-container"></div>
     </div>
-    <div style="font-size:.82rem;color:var(--sub);line-height:1.7;margin-bottom:1.5rem">
-      Bienvenue. Cet assistant configure votre nœud SOS-GUIDE en <strong>moins de 2 minutes</strong>, 
-      sans redémarrage. Aucune connexion Internet requise.
-    </div>
+
     <div style="display:flex;justify-content:space-between;align-items:center;
       background:var(--bg);border-radius:10px;padding:.6rem .9rem;
       font-size:.75rem;color:var(--sub);margin-bottom:1.5rem">
@@ -205,7 +240,26 @@ function renderWelcome(){
     <button class="btn btn-primary" id="startBtn" style="width:100%">
       🚀 Démarrer la configuration
     </button>`;
-  document.getElementById('startBtn').onclick=()=>{ S.step=1; render(); };
+
+  document.getElementById('startBtn').onclick = () => { S.step = 1; render(); };
+
+  // Génération QR code WiFi
+  if(typeof QRCode !== 'undefined'){
+    try {
+      new QRCode(document.getElementById('qr-container'), {
+        text: wifiUri,
+        width: 96,
+        height: 96,
+        colorDark: '#0f172a',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    } catch(e) {
+      // Fallback : afficher le texte si QRCode échoue
+      document.getElementById('qr-container').innerHTML =
+        `<div style="font-size:.6rem;color:var(--sub);max-width:96px;word-break:break-all;">${escHtml(wifiUri)}</div>`;
+    }
+  }
 }
 
 function renderIdentity(){
@@ -213,11 +267,11 @@ function renderIdentity(){
     ${renderSteps(0)}
     <div class="form-group">
       <label>Nom du lieu / nœud</label>
-      <input type="text" id="nodeName" placeholder="Ex: Bunker Berne B1, Caserne Genève" 
+      <input type="text" id="nodeName" placeholder="Ex: Bunker Berne B1, Caserne Genève"
         maxlength="128" value="${escHtml(S.nodeName)}" autocomplete="off">
     </div>
     <div class="form-group">
-      <label>Mot de passe WiFi <small style="font-weight:400;text-transform:none">(optionnel)</small></label>
+      <label>Mot de passe WiFi production <small style="font-weight:400;text-transform:none">(optionnel)</small></label>
       <input type="password" id="wifiPwd" placeholder="Laisser vide = réseau ouvert" maxlength="63">
       <div class="strength"><div class="strength-bar" id="bar"></div></div>
       <div class="hint" id="strengthHint">Minimum 8 caractères</div>
@@ -230,17 +284,15 @@ function renderIdentity(){
   document.getElementById('nodeName').focus();
   document.getElementById('backBtn').onclick=()=>{ S.step=0; render(); };
   document.getElementById('nextBtn').onclick=()=>{
-    const name = document.getElementById('nodeName').value.trim();
+    const name=document.getElementById('nodeName').value.trim();
     if(!name){ shake('nodeName'); return; }
-    S.nodeName = name;
-    S.wifiPassword = document.getElementById('wifiPwd').value;
-    if(S.wifiPassword && S.wifiPassword.length < 8){
-      shake('wifiPwd'); return;
-    }
+    S.nodeName=name;
+    S.wifiPassword=document.getElementById('wifiPwd').value;
+    if(S.wifiPassword && S.wifiPassword.length<8){ shake('wifiPwd'); return; }
     S.step=2; render();
   };
-  document.getElementById('wifiPwd').addEventListener('input', e=>{
-    const v=e.target.value, b=document.getElementById('bar'), h=document.getElementById('strengthHint');
+  document.getElementById('wifiPwd').addEventListener('input',e=>{
+    const v=e.target.value,b=document.getElementById('bar'),h=document.getElementById('strengthHint');
     let s=0;
     if(v.length>=8) s++;
     if(/[a-z]/.test(v)&&/[A-Z]/.test(v)) s++;
@@ -256,9 +308,7 @@ function renderIdentity(){
 function renderOptions(){
   card.innerHTML=`
     ${renderSteps(1)}
-    <div style="font-size:.82rem;color:var(--sub);margin-bottom:1rem">
-      Options supplémentaires pour ce nœud.
-    </div>
+    <div style="font-size:.82rem;color:var(--sub);margin-bottom:1rem">Options supplémentaires pour ce nœud.</div>
     <div id="toggleLoRa" class="toggle-opt ${S.enableLoRa?'on':''}">
       <div class="tog"></div>
       <div class="tog-info">
@@ -303,7 +353,7 @@ function renderSummary(){
         <span class="badge">${S.channel}</span>
       </div>
       <div class="summary-row">
-        <span class="summary-key">Sécurité WiFi</span>
+        <span class="summary-key">Sécurité WiFi production</span>
         <span class="badge">${S.wifiPassword?'WPA2':'Réseau ouvert'}</span>
       </div>
       <div class="summary-row">
@@ -317,7 +367,6 @@ function renderSummary(){
     </div>
     <div style="font-size:.8rem;color:var(--sub);line-height:1.6;margin:.5rem 0">
       ⚡ L'installation s'applique <strong>sans redémarrage</strong> (~30 secondes).
-      Les clients WiFi pourront se reconnecter immédiatement.
     </div>
     <div class="btn-group">
       <button class="btn btn-secondary" id="backBtn">← Modifier</button>
@@ -339,18 +388,16 @@ function renderProgress(){
     <div class="progress-status" id="pStatus">Envoi de la configuration...</div>`;
 }
 
+// ── v2.4 : doInstall sans PIN — CSRF uniquement ───────────────────────────────
 function doInstall(){
-  const pFill   = ()=> document.getElementById('pFill');
-  const pStatus = ()=> document.getElementById('pStatus');
-
-  // FIX: inclure _csrf dans le FormData — était manquant dans la v2.2
   const fd = new FormData();
   fd.append('_csrf',          S.csrf);
   fd.append('nodeName',       S.nodeName);
   fd.append('wifiPassword',   S.wifiPassword);
-  fd.append('enableLoRa',     S.enableLoRa  ? 'true' : 'false');
+  fd.append('enableLoRa',     S.enableLoRa   ? 'true' : 'false');
   fd.append('enableEthernet', S.enableEthernet ? 'true' : 'false');
   fd.append('wifiChannel',    S.channel);
+  // Note : pas de 'pin' — supprimé en v2.4
 
   fetch('/api/install', { method:'POST', body:fd })
     .then(r=>{
@@ -374,10 +421,10 @@ function doInstall(){
 
 function animateProgress(){
   const steps=[
-    {pct:20, txt:'Configuration enregistrée...'},
-    {pct:45, txt:'Application du réseau WiFi...'},
-    {pct:65, txt:'Démarrage des services...'},
-    {pct:82, txt:'Vérification de l\'intégrité...'},
+    {pct:20,txt:'Configuration enregistrée...'},
+    {pct:45,txt:'Application du réseau WiFi...'},
+    {pct:65,txt:'Démarrage des services...'},
+    {pct:82,txt:'Vérification de l\'intégrité...'},
     {pct:100,txt:'Terminé !'},
   ];
   let i=0;
@@ -388,9 +435,9 @@ function animateProgress(){
     if(el) el.style.width=steps[i].pct+'%';
     if(st) st.textContent=steps[i].txt;
     i++;
-    setTimeout(next, i===steps.length ? 800 : 1200);
+    setTimeout(next, i===steps.length?800:1200);
   }
-  setTimeout(next, 300);
+  setTimeout(next,300);
 }
 
 function renderSuccess(){
@@ -399,8 +446,7 @@ function renderSuccess(){
     <div class="success-screen">
       <span class="big-icon">✅</span>
       <h2>Configuration réussie !</h2>
-      <p>Le nœud SOS-GUIDE est opérationnel.<br>
-      Reconnectez-vous au réseau :</p>
+      <p>Le nœud SOS-GUIDE est opérationnel.<br>Reconnectez-vous au réseau :</p>
       <div class="ssid-badge">⛑️ SOS-GUIDE - ${escHtml(S.nodeName)}</div>
       <p style="margin-top:.75rem;font-size:.78rem;color:var(--muted)">
         Portail : <strong>http://10.0.0.1/</strong><br>
@@ -408,21 +454,9 @@ function renderSuccess(){
       </p>
       <div style="margin-top:1.25rem;padding:.6rem;background:#f0fdf4;
         border-radius:8px;font-size:.75rem;color:#166534;border:1px solid #bbf7d0">
-        🇨🇭 Système conforme PCi-CH · nLPD RS 235.1 · Aucune donnée personnelle collectée
+        🇨🇭 Conforme PCi-CH · nLPD RS 235.1 · Aucune donnée personnelle collectée
       </div>
     </div>`;
-}
-
-// ── Utils ─────────────────────────────────────────────────────────────────────
-function escHtml(s){
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-}
-function shake(id){
-  const el=document.getElementById(id); if(!el) return;
-  el.style.animation='none';
-  el.style.borderColor='#dc2626';
-  setTimeout(()=>el.style.borderColor='',1500);
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────────
