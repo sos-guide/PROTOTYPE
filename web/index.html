@@ -30,6 +30,11 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 a{color:inherit;text-decoration:none}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-thumb{background:var(--bg2);border-radius:4px}
+/* ─── BANNIÈRE MODE DÉGRADÉ (v2.4) ───────────────────────────────── */
+#integrity-banner{display:none;position:fixed;top:0;left:0;right:0;z-index:9999;
+  background:#7f1d1d;color:#fff;padding:.55rem 1rem;font-size:.78rem;
+  text-align:center;line-height:1.5}
+#integrity-banner.show{display:block}
 /* ─── NAV ─────────────────────────────────────────────────────────── */
 #nav{position:fixed;top:0;left:0;right:0;z-index:800;height:var(--nav-h);display:flex;align-items:center;background:rgba(6,10,18,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 1.25rem;gap:.75rem;transition:background .3s,border-color .3s}
 body.light-mode #nav{background:rgba(240,244,251,.95)}
@@ -119,7 +124,7 @@ body.light-mode .hamburger:hover{background:rgba(0,0,0,.06)}
 .local-map-img{width:100%;max-width:100%;border-radius:12px;margin-top:.5rem;border:1px solid var(--border)}
 .local-contacts{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-top:.5rem}
 .section-title{margin:1rem 0 1rem 0;font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--sub);border-left:3px solid var(--accent);padding-left:.8rem}
-.grid-3, .grid-2, .grid-urgences, .grid-situations, .grid-assos{display:grid;gap:.9rem;margin-bottom:2rem}
+.grid-3,.grid-2,.grid-urgences,.grid-situations,.grid-assos{display:grid;gap:.9rem;margin-bottom:2rem}
 .grid-3{grid-template-columns:repeat(3,1fr)}
 .grid-2{grid-template-columns:repeat(2,1fr)}
 .grid-urgences{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
@@ -133,7 +138,7 @@ body.light-mode .hamburger:hover{background:rgba(0,0,0,.06)}
 .card-titre{font-weight:700;font-size:.95rem;margin-bottom:.15rem;position:relative;z-index:1;color:var(--text)}
 .card-desc{font-size:.7rem;color:var(--sub);position:relative;z-index:1;line-height:1.3}
 .card-emergency{color:#fff;border-color:transparent}
-.card-emergency .card-titre, .card-emergency .card-desc{color:#fff}
+.card-emergency .card-titre,.card-emergency .card-desc{color:#fff}
 .card-emergency::after{filter:brightness(0) invert(1)}
 .card-bleu{background:linear-gradient(135deg,#0a2b5e,#1e3a8a)}
 .card-rouge{background:linear-gradient(135deg,#7f1d1d,#b91c1c)}
@@ -143,21 +148,21 @@ body.light-mode .hamburger:hover{background:rgba(0,0,0,.06)}
 .card-rose{background:linear-gradient(135deg,#881337,#e11d48)}
 .card-cyan{background:linear-gradient(135deg,#0e7490,#06b6d4)}
 .card-slate{background:linear-gradient(135deg,#1e293b,#334155)}
-.card-blanc{background:linear-gradient(135deg,#f8fafc,#e2e8f0); color:#0f172a}
-.card-blanc .card-titre, .card-blanc .card-desc{color:#0f172a; transition:color .15s}
-.card-blanc:hover .card-titre, .card-blanc:hover .card-desc{color:#ffffff}
+.card-blanc{background:linear-gradient(135deg,#f8fafc,#e2e8f0);color:#0f172a}
+.card-blanc .card-titre,.card-blanc .card-desc{color:#0f172a;transition:color .15s}
+.card-blanc:hover .card-titre,.card-blanc:hover .card-desc{color:#ffffff}
 @media(max-width:600px){
   .grid-3,.grid-2,.grid-situations,.grid-assos{grid-template-columns:1fr}
   .grid-urgences{grid-template-columns:1fr}
 }
 /* ─── MODALS ──────────────────────────────────────────────────────── */
-.modal-overlay, .tool-modal-overlay{position:fixed;inset:0;z-index:11000;background:rgba(0,0,0,.92);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;visibility:hidden;opacity:0;transition:visibility .2s,opacity .2s}
-.modal-overlay.active, .tool-modal-overlay.active{visibility:visible;opacity:1}
-.modal-container, .tool-modal-container{background:var(--bg1);border-radius:28px;width:90%;max-width:500px;border:1px solid var(--border);box-shadow:0 32px 64px rgba(0,0,0,.5);overflow:hidden;animation:popIn .2s ease}
-.modal-header, .tool-modal-header{display:flex;justify-content:space-between;align-items:center;padding:1rem 1.5rem;border-bottom:1px solid var(--border);background:var(--bg1)}
-.modal-header h3, .tool-modal-header h3{font-size:1.1rem;font-weight:700}
-.modal-close, .tool-modal-close{width:32px;height:32px;border-radius:40px;background:var(--bg2);color:var(--sub);font-size:1.2rem;display:flex;align-items:center;justify-content:center;cursor:pointer}
-.modal-close:hover, .tool-modal-close:hover{background:rgba(239,68,68,.2);color:var(--red);transform:rotate(90deg)}
+.modal-overlay,.tool-modal-overlay{position:fixed;inset:0;z-index:11000;background:rgba(0,0,0,.92);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;visibility:hidden;opacity:0;transition:visibility .2s,opacity .2s}
+.modal-overlay.active,.tool-modal-overlay.active{visibility:visible;opacity:1}
+.modal-container,.tool-modal-container{background:var(--bg1);border-radius:28px;width:90%;max-width:500px;border:1px solid var(--border);box-shadow:0 32px 64px rgba(0,0,0,.5);overflow:hidden;animation:popIn .2s ease}
+.modal-header,.tool-modal-header{display:flex;justify-content:space-between;align-items:center;padding:1rem 1.5rem;border-bottom:1px solid var(--border);background:var(--bg1)}
+.modal-header h3,.tool-modal-header h3{font-size:1.1rem;font-weight:700}
+.modal-close,.tool-modal-close{width:32px;height:32px;border-radius:40px;background:var(--bg2);color:var(--sub);font-size:1.2rem;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.modal-close:hover,.tool-modal-close:hover{background:rgba(239,68,68,.2);color:var(--red);transform:rotate(90deg)}
 .modal-body{padding:1.8rem 1.5rem;font-size:.95rem;line-height:1.6;color:var(--text)}
 .modal-body ul{margin-left:1.5rem;margin-top:.5rem}
 .modal-body li{margin:.5rem 0}
@@ -182,6 +187,12 @@ body.light-mode .hamburger:hover{background:rgba(0,0,0,.06)}
 </style>
 </head>
 <body>
+
+<!-- ─── BANNIÈRE MODE DÉGRADÉ v2.4 ──────────────────────────────────────── -->
+<div id="integrity-banner">
+  ⚠️ Système en mode dégradé — Contenu en lecture seule — Contactez l'administrateur
+</div>
+
 <nav id="nav"><button class="hamburger" id="hamburgerBtn"><span></span><span></span><span></span></button><div class="nav-logo" id="navLogo"><div class="nav-logo-badge">⛑️</div><strong id="appTitle">SOS-GUIDE</strong></div><div class="nav-right"><button class="nav-btn" id="langBtn">🌐</button><button class="nav-btn" id="themeToggle">🌙</button></div></nav>
 <div id="drawerOverlay" class="drawer-overlay"><div class="drawer"><div class="drawer-header"><span class="drawer-title" id="drawerTitle">Navigation</span><button class="drawer-close" id="drawerCloseBtn">✕</button></div><nav class="drawer-nav" id="drawerNav"></nav><div class="drawer-footer" id="drawerFooter">SOS-GUIDE · version 1.0</div></div></div>
 <div id="languageModal" class="lang-modal-overlay"><div class="lang-modal-container"><div class="lang-modal-header"><button class="lang-modal-close" id="closeModalBtn">✕</button></div><div class="lang-grid" id="flagGrid"></div></div></div>
@@ -194,7 +205,7 @@ body.light-mode .hamburger:hover{background:rgba(0,0,0,.06)}
 <div id="flashFullscreen" class="fullscreen-tool flash-white"><button id="flashStopBtn" class="fullscreen-btn"></button></div>
 <div id="torcheFullscreen" class="fullscreen-tool"><button id="torcheStopBtn" class="fullscreen-btn"></button></div>
 <div id="alerteModal" class="tool-modal-overlay"><div class="tool-modal-container"><div class="tool-modal-header"><h3 id="alerteTitle">🚨 Alerte sonore</h3><button class="tool-modal-close close-alerte">✕</button></div><div class="tool-modal-body"><div class="tool-status" id="sirenStatus"></div><button id="sirenStartStop" class="tool-button"></button></div></div></div>
-<div id="respirationModal" class="tool-modal-overlay"><div class="tool-modal-container"><div class="tool-modal-header"><h3 id="respTitle">🌬️ Respiration guidée</h3><button class="tool-modal-close close-respiration">✕</button></div><div class="tool-modal-body" style="text-align:center"><div id="respirationGuide" style="font-size:1.4rem; margin-bottom:1rem"></div><div id="respirationTimer" style="font-size:2rem; font-weight:800">4</div><button id="respirationStartStop" class="tool-button"></button></div></div></div>
+<div id="respirationModal" class="tool-modal-overlay"><div class="tool-modal-container"><div class="tool-modal-header"><h3 id="respTitle">🌬️ Respiration guidée</h3><button class="tool-modal-close close-respiration">✕</button></div><div class="tool-modal-body" style="text-align:center"><div id="respirationGuide" style="font-size:1.4rem;margin-bottom:1rem"></div><div id="respirationTimer" style="font-size:2rem;font-weight:800">4</div><button id="respirationStartStop" class="tool-button"></button></div></div></div>
 <div id="siffletModal" class="tool-modal-overlay"><div class="tool-modal-container"><div class="tool-modal-header"><h3 id="whistleTitle">🔊 Sifflet d'urgence</h3><button class="tool-modal-close close-sifflet">✕</button></div><div class="tool-modal-body"><div class="tool-status" id="whistleStatus"></div><button id="whistleStartStop" class="tool-button"></button></div></div></div>
 
 <script>
@@ -203,23 +214,47 @@ let langData = null;
 let configData = null;
 let currentLang = 'fr';
 const languages = [
-  {code:'fr', flag:'🇫🇷', label:'Français'},{code:'en', flag:'🇬🇧', label:'English'},{code:'es', flag:'🇪🇸', label:'Español'},
-  {code:'de', flag:'🇩🇪', label:'Deutsch'},{code:'it', flag:'🇮🇹', label:'Italiano'},{code:'pt', flag:'🇵🇹', label:'Português'},
-  {code:'nl', flag:'🇳🇱', label:'Nederlands'},{code:'pl', flag:'🇵🇱', label:'Polski'},{code:'ru', flag:'🇷🇺', label:'Русский'},
-  {code:'ar', flag:'🇸🇦', label:'العربية'},{code:'zh', flag:'🇨🇳', label:'中文'},{code:'ja', flag:'🇯🇵', label:'日本語'},
-  {code:'tr', flag:'🇹🇷', label:'Türkçe'},{code:'el', flag:'🇬🇷', label:'Ελληνικά'},{code:'sv', flag:'🇸🇪', label:'Svenska'},
-  {code:'da', flag:'🇩🇰', label:'Dansk'},{code:'no', flag:'🇳🇴', label:'Norsk'},{code:'fi', flag:'🇫🇮', label:'Suomi'},
-  {code:'cs', flag:'🇨🇿', label:'Čeština'},{code:'hu', flag:'🇭🇺', label:'Magyar'},{code:'ro', flag:'🇷🇴', label:'Română'},
-  {code:'uk', flag:'🇺🇦', label:'Українська'},{code:'he', flag:'🇮🇱', label:'עברית'},{code:'th', flag:'🇹🇭', label:'ไทย'},
-  {code:'vi', flag:'🇻🇳', label:'Tiếng Việt'},{code:'ko', flag:'🇰🇷', label:'한국어'},{code:'hi', flag:'🇮🇳', label:'हिन्दी'}
+  {code:'fr',flag:'🇫🇷',label:'Français'},{code:'en',flag:'🇬🇧',label:'English'},
+  {code:'es',flag:'🇪🇸',label:'Español'},{code:'de',flag:'🇩🇪',label:'Deutsch'},
+  {code:'it',flag:'🇮🇹',label:'Italiano'},{code:'pt',flag:'🇵🇹',label:'Português'},
+  {code:'nl',flag:'🇳🇱',label:'Nederlands'},{code:'pl',flag:'🇵🇱',label:'Polski'},
+  {code:'ru',flag:'🇷🇺',label:'Русский'},{code:'ar',flag:'🇸🇦',label:'العربية'},
+  {code:'zh',flag:'🇨🇳',label:'中文'},{code:'ja',flag:'🇯🇵',label:'日本語'},
+  {code:'tr',flag:'🇹🇷',label:'Türkçe'},{code:'el',flag:'🇬🇷',label:'Ελληνικά'},
+  {code:'sv',flag:'🇸🇪',label:'Svenska'},{code:'da',flag:'🇩🇰',label:'Dansk'},
+  {code:'no',flag:'🇳🇴',label:'Norsk'},{code:'fi',flag:'🇫🇮',label:'Suomi'},
+  {code:'cs',flag:'🇨🇿',label:'Čeština'},{code:'hu',flag:'🇭🇺',label:'Magyar'},
+  {code:'ro',flag:'🇷🇴',label:'Română'},{code:'uk',flag:'🇺🇦',label:'Українська'},
+  {code:'he',flag:'🇮🇱',label:'עברית'},{code:'th',flag:'🇹🇭',label:'ไทย'},
+  {code:'vi',flag:'🇻🇳',label:'Tiếng Việt'},{code:'ko',flag:'🇰🇷',label:'한국어'},
+  {code:'hi',flag:'🇮🇳',label:'हिन्दी'},{code:'rm',flag:'🇨🇭',label:'Rumantsch'}
 ];
 
+// ── v2.4 : Chargement config + détection mode dégradé ─────────────────────────
 async function loadConfig() {
   try {
     const res = await fetch('data/config.json');
     if (res.ok) configData = await res.json();
     else configData = { establishment: {} };
-  } catch(e) { configData = { establishment: {} }; }
+  } catch(e) {
+    configData = { establishment: {} };
+  }
+
+  // v2.4 : vérifier si une alerte d'intégrité est active
+  try {
+    const alertRes = await fetch('INTEGRITY_ALERT.flag', { cache: 'no-store' });
+    if (alertRes.ok) showIntegrityWarning();
+  } catch(e) { /* pas d'alerte — normal */ }
+}
+
+// v2.4 : bannière mode dégradé
+function showIntegrityWarning() {
+  const banner = document.getElementById('integrity-banner');
+  if (banner) banner.classList.add('show');
+  // Décaler la nav pour laisser de la place à la bannière
+  const bannerH = banner ? banner.offsetHeight : 32;
+  const nav = document.getElementById('nav');
+  if (nav) nav.style.top = bannerH + 'px';
 }
 
 async function loadLanguage(lang) {
@@ -235,7 +270,7 @@ async function loadLanguage(lang) {
       applyAll();
     }
   } catch(e) {
-    if(lang !== 'fr') loadLanguage('fr');
+    if (lang !== 'fr') loadLanguage('fr');
     else console.error('Impossible de charger fr.json');
   }
 }
@@ -254,14 +289,59 @@ function formatPhoneNumbersToBadges(html) {
   return div.innerHTML;
 }
 
+// ── v2.4 : buildUrgenceGrid — merge langue + override config.json ─────────────
+function buildUrgenceGrid() {
+  const grid = document.getElementById('urgenceGrid');
+  grid.innerHTML = '';
+
+  // Base depuis la langue chargée
+  let urgences = [...(langData.urgences || [])];
+
+  // Override depuis config.json si des numéros locaux sont définis
+  const est = (configData && configData.establishment) || {};
+
+  if (est.localSamuNumber && est.localSamuNumber.trim()) {
+    const idx = urgences.findIndex(u => u.class === 'samu');
+    if (idx >= 0) urgences[idx] = { ...urgences[idx], number: est.localSamuNumber.trim() };
+  }
+  if (est.localPompiersNumber && est.localPompiersNumber.trim()) {
+    const idx = urgences.findIndex(u => u.class === 'pompiers');
+    if (idx >= 0) urgences[idx] = { ...urgences[idx], number: est.localPompiersNumber.trim() };
+  }
+  if (est.localPoliceNumber && est.localPoliceNumber.trim()) {
+    const idx = urgences.findIndex(u => u.class === 'police');
+    if (idx >= 0) urgences[idx] = { ...urgences[idx], number: est.localPoliceNumber.trim() };
+  }
+
+  const phoneIcon = `<div class="urgence-phone-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.45A2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72c.128.96.347 1.902.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.4a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.353 1.85.572 2.81.7A2 2 0 0 1 22 16z"/></svg></div>`;
+
+  urgences.slice(0, 4).forEach(urg => {
+    const a = document.createElement('a');
+    a.href = `tel:${urg.number}`;
+    a.className = `urgence-card uc-${urg.class}`;
+    a.setAttribute('data-num', urg.number);
+    a.innerHTML = `${phoneIcon}<div class="urgence-info"><div class="urgence-number">${urg.number}</div><div class="urgence-name">${urg.name}</div></div>`;
+    grid.appendChild(a);
+  });
+
+  const fifth = urgences[4];
+  if (fifth) {
+    const a = document.createElement('a');
+    a.href = `tel:${fifth.number}`;
+    a.className = `urgence-card uc-${fifth.class}`;
+    a.setAttribute('data-num', fifth.number);
+    a.innerHTML = `${phoneIcon}<div class="urgence-info"><div class="urgence-number">${fifth.number}</div><div class="urgence-name">${fifth.name}</div></div>`;
+    grid.appendChild(a);
+  }
+}
+
 function applyAll() {
-  if(!langData) return;
-  
-  // Mise à jour des textes statiques
+  if (!langData) return;
+
   if (langData.app?.title) document.getElementById('appTitle').textContent = langData.app.title;
   if (langData.drawer?.title) document.getElementById('drawerTitle').textContent = langData.drawer.title;
   if (langData.drawer?.footer) document.getElementById('drawerFooter').textContent = langData.drawer.footer;
-  
+
   // Drawer
   const drawerNav = document.getElementById('drawerNav');
   drawerNav.innerHTML = '';
@@ -269,110 +349,69 @@ function applyAll() {
     const a = document.createElement('a');
     a.href = link.href;
     a.innerHTML = link.icon + ' ' + link.label;
-    if(link.href.startsWith('#')) {
+    if (link.href.startsWith('#')) {
       a.addEventListener('click', (e) => {
-        e.preventDefault();
-        closeDrawer();
+        e.preventDefault(); closeDrawer();
         const target = document.querySelector(link.href);
-        if(target) target.scrollIntoView({ behavior: 'smooth' });
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
       });
     } else {
-      a.addEventListener('click', (e) => { closeDrawer(); });
+      a.addEventListener('click', () => closeDrawer());
     }
     drawerNav.appendChild(a);
   });
+
   // Splash
   document.querySelector('.splash-title').textContent = langData.splash.title;
   document.querySelector('.splash-sub').innerHTML = langData.splash.subtitle;
   document.getElementById('enterBtnText').textContent = langData.splash.enterButton;
-  // Welcome main
+
+  // Welcome
   document.getElementById('welcomeTitle').textContent = langData.main.welcome.title;
   document.getElementById('welcomeText').textContent = langData.main.welcome.text;
-  
-  // Section locale (construite à partir de config.json et des traductions)
+
+  // Section locale
   const localContainer = document.getElementById('localInfoContainer');
-  const est = configData.establishment || {};
+  const est = configData?.establishment || {};
   const locStrings = langData.local || {};
-  
   let localHtml = '';
   if (est.name && est.address) {
-    localHtml += `<div style="text-align:left; margin-bottom:0.5rem;"><strong>📍 ${est.name}</strong><br><span style="font-size:0.9rem; color:var(--sub);">${est.address}</span></div>`;
+    localHtml += `<div style="text-align:left;margin-bottom:0.5rem"><strong>📍 ${est.name}</strong><br><span style="font-size:0.9rem;color:var(--sub)">${est.address}</span></div>`;
   } else if (est.name) {
     localHtml += `<div><strong>📍 ${est.name}</strong></div>`;
   }
-  
-  // Badges contacts locaux
   const contacts = [];
-  if (est.localCrisisNumber) contacts.push({ label: locStrings.crisis || '📞 Crise', number: est.localCrisisNumber });
-  if (est.localSamuNumber) contacts.push({ label: locStrings.samu || '🚑 SAMU local', number: est.localSamuNumber });
-  if (est.localPompiersNumber) contacts.push({ label: locStrings.fire || '🚒 Pompiers', number: est.localPompiersNumber });
-  if (est.localMairieNumber) contacts.push({ label: locStrings.townhall || '🏛️ Mairie', number: est.localMairieNumber });
-  if (est.localPrefecture) contacts.push({ label: locStrings.prefecture || '🏛️ Préfecture', number: est.localPrefecture });
-  if (est.localCroixRouge) contacts.push({ label: locStrings.redcross || '🔴 Croix-Rouge', number: est.localCroixRouge });
-  if (est.localRadioFreq) contacts.push({ label: locStrings.radio || '📻 Radio', number: est.localRadioFreq }); // radio frequency not a tel but can be displayed
-  
+  if (est.localCrisisNumber)   contacts.push({ label: locStrings.crisis   || '📞 Crise',       number: est.localCrisisNumber });
+  if (est.localSamuNumber)     contacts.push({ label: locStrings.samu     || '🚑 Ambulance',    number: est.localSamuNumber });
+  if (est.localPompiersNumber) contacts.push({ label: locStrings.fire     || '🚒 Pompiers',     number: est.localPompiersNumber });
+  if (est.localPoliceNumber)   contacts.push({ label: locStrings.police   || '🚔 Police',       number: est.localPoliceNumber });
+  if (est.localMairieNumber)   contacts.push({ label: locStrings.townhall || '🏛️ Mairie',       number: est.localMairieNumber });
+  if (est.localPrefecture)     contacts.push({ label: locStrings.prefecture|| '🏛️ Préfecture',  number: est.localPrefecture });
+  if (est.localCroixRouge)     contacts.push({ label: locStrings.redcross || '🔴 Croix-Rouge',  number: est.localCroixRouge });
+  if (est.localRadioFreq)      contacts.push({ label: locStrings.radio    || '📻 Radio',        number: est.localRadioFreq, isFreq: true });
   if (contacts.length > 0) {
     localHtml += `<div class="local-contacts">`;
     contacts.forEach(c => {
-      if (c.number) {
-        // Si c'est une fréquence radio, on peut ne pas en faire un tel:
-        if (c.label.includes('Radio')) {
-          localHtml += `<span class="phone-badge" style="background:var(--bg2); color:var(--text); pointer-events:none;">${c.label}: ${c.number}</span>`;
-        } else {
-          localHtml += `<a href="tel:${c.number}" class="phone-badge">${c.label}: ${c.number}</a>`;
-        }
+      if (c.isFreq) {
+        localHtml += `<span class="phone-badge" style="background:var(--bg2);color:var(--text);pointer-events:none">${c.label}: ${c.number}</span>`;
+      } else {
+        localHtml += `<a href="tel:${c.number}" class="phone-badge">${c.label}: ${c.number}</a>`;
       }
     });
     localHtml += `</div>`;
   }
-  
-  // Message de réassurance
-  if (configData.reassurance && configData.reassurance.message) {
-    localHtml += `<div style="margin-top:0.75rem; padding:0.5rem; background:rgba(59,130,246,0.1); border-radius:12px; font-size:0.9rem; color:var(--accent);">🕊️ ${configData.reassurance.message}</div>`;
+  if (configData?.reassurance?.message) {
+    localHtml += `<div style="margin-top:0.75rem;padding:0.5rem;background:rgba(59,130,246,0.1);border-radius:12px;font-size:0.9rem;color:var(--accent)">🕊️ ${configData.reassurance.message}</div>`;
   }
-  
-  // Carte PNG
-  if (est.lat && est.lon) {
-    // Si on a des coordonnées, on pourrait générer un lien vers une carte statique, mais ici on utilise l'image locale si elle existe
-    // On vérifie si le fichier map_location.png est présent (l'installation le copie)
-    localHtml += `<img src="img/map_location.png" alt="Carte du lieu" class="local-map-img" loading="lazy" onerror="this.style.display='none'">`;
-  } else {
-    // Si pas de coordonnées, on essaie quand même d'afficher l'image si elle existe
-    localHtml += `<img src="img/map_location.png" alt="Carte du lieu" class="local-map-img" loading="lazy" onerror="this.style.display='none'">`;
-  }
-  
-  // Informations complémentaires (point de rassemblement, plan d'évacuation)
-  if (est.localMeetingPoint) {
-    localHtml += `<div style="margin-top:0.5rem; font-size:0.85rem;"><span style="opacity:0.7;">🚶 Point de rassemblement :</span> ${est.localMeetingPoint}</div>`;
-  }
-  if (est.localEvacuationPlan) {
-    localHtml += `<div style="margin-top:0.25rem; font-size:0.85rem;"><span style="opacity:0.7;">🗺️ Plan d'évacuation :</span> ${est.localEvacuationPlan}</div>`;
-  }
-  
+  localHtml += `<img src="img/map_location.png" alt="Carte du lieu" class="local-map-img" loading="lazy" onerror="this.style.display='none'">`;
+  if (est.localMeetingPoint)   localHtml += `<div style="margin-top:0.5rem;font-size:0.85rem"><span style="opacity:0.7">🚶 Point de rassemblement :</span> ${est.localMeetingPoint}</div>`;
+  if (est.localEvacuationPlan) localHtml += `<div style="margin-top:0.25rem;font-size:0.85rem"><span style="opacity:0.7">🗺️ Plan d'évacuation :</span> ${est.localEvacuationPlan}</div>`;
   localContainer.innerHTML = localHtml;
-  
-  // Urgence grid (inchangé)
-  const grid = document.getElementById('urgenceGrid');
-  grid.innerHTML = '';
-  langData.urgences.slice(0,4).forEach(urg => {
-    const a = document.createElement('a');
-    a.href = `tel:${urg.number}`;
-    a.className = `urgence-card uc-${urg.class}`;
-    a.setAttribute('data-num', urg.number);
-    a.innerHTML = `<div class="urgence-phone-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.45A2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72c.128.96.347 1.902.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.4a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.353 1.85.572 2.81.7A2 2 0 0 1 22 16z"/></svg></div><div class="urgence-info"><div class="urgence-number">${urg.number}</div><div class="urgence-name">${urg.name}</div></div>`;
-    grid.appendChild(a);
-  });
-  const fifth = langData.urgences[4];
-  if(fifth) {
-    const a = document.createElement('a');
-    a.href = `tel:${fifth.number}`;
-    a.className = `urgence-card uc-${fifth.class}`;
-    a.setAttribute('data-num', fifth.number);
-    a.innerHTML = `<div class="urgence-phone-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.45A2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72c.128.96.347 1.902.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.4a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.353 1.85.572 2.81.7A2 2 0 0 1 22 16z"/></svg></div><div class="urgence-info"><div class="urgence-number">${fifth.number}</div><div class="urgence-name">${fifth.name}</div></div>`;
-    grid.appendChild(a);
-  }
-  
-  // Sections principales (inchangé)
+
+  // v2.4 : urgence grid via buildUrgenceGrid (override depuis config.json)
+  buildUrgenceGrid();
+
+  // Sections principales
   document.getElementById('principesSection').innerHTML = `<div class="section-title" id="section-principes">${langData.sections.principes}</div><div class="grid-3" id="principesGrid"></div>`;
   const principesGrid = document.getElementById('principesGrid');
   principesGrid.innerHTML = '';
@@ -384,6 +423,7 @@ function applyAll() {
     card.addEventListener('click', () => openModal(p.titre, formatContent(p.contenu)));
     principesGrid.appendChild(card);
   });
+
   document.getElementById('outilsSection').innerHTML = `<div class="section-title" id="section-outils">${langData.sections.outils}</div><div class="grid-2" id="outilsGrid"></div>`;
   const outilsGrid = document.getElementById('outilsGrid');
   outilsGrid.innerHTML = '';
@@ -392,9 +432,10 @@ function applyAll() {
     card.className = 'card';
     card.setAttribute('data-icon', outil.icon);
     card.innerHTML = `<div class="card-icon">${outil.icon}</div><div class="card-titre">${outil.titre}</div><div class="card-desc">${outil.desc}</div>`;
-    card.addEventListener('click', () => { if(outil.action) window[outil.action](); });
+    card.addEventListener('click', () => { if (outil.action) window[outil.action](); });
     outilsGrid.appendChild(card);
   });
+
   document.getElementById('urgencesSection').innerHTML = `<div class="section-title" id="section-urgences">${langData.sections.urgencesMedicales}</div><div class="grid-urgences" id="urgencesGrid"></div>`;
   const urgencesGridEl = document.getElementById('urgencesGrid');
   urgencesGridEl.innerHTML = '';
@@ -406,6 +447,7 @@ function applyAll() {
     card.addEventListener('click', () => openModal(urg.titre, formatContent(urg.contenu)));
     urgencesGridEl.appendChild(card);
   });
+
   document.getElementById('situationsSection').innerHTML = `<div class="section-title" id="section-situations">${langData.sections.situationsCollectives}</div><div class="grid-situations" id="situationsGrid"></div>`;
   const situationsGridEl = document.getElementById('situationsGrid');
   situationsGridEl.innerHTML = '';
@@ -417,6 +459,7 @@ function applyAll() {
     card.addEventListener('click', () => openModal(sit.titre, formatContent(sit.contenu)));
     situationsGridEl.appendChild(card);
   });
+
   document.getElementById('assosSection').innerHTML = `<div class="section-title" id="section-assos">${langData.sections.associations}</div><div class="grid-assos" id="assosGrid"></div>`;
   const assosGridEl = document.getElementById('assosGrid');
   assosGridEl.innerHTML = '';
@@ -428,8 +471,8 @@ function applyAll() {
     card.addEventListener('click', () => openModal(asso.titre, formatContent(asso.contenu)));
     assosGridEl.appendChild(card);
   });
-  
-  // Traductions des modales outils
+
+  // Traductions modales outils
   document.getElementById('metroTitle').innerHTML = langData.tools.metronome.title;
   document.getElementById('metroStartStop').textContent = langData.tools.metronome.start;
   document.getElementById('flashStopBtn').textContent = langData.tools.flash.stop;
@@ -443,15 +486,15 @@ function applyAll() {
 }
 
 function formatContent(content) {
-  if(typeof content === 'string') content = { steps: [content] };
+  if (typeof content === 'string') content = { steps: [content] };
   let html = '';
-  if(content.warning) html += `<p style="background:rgba(239,68,68,.2); padding:.5rem; border-radius:12px;">⚠️ ${content.warning}</p>`;
-  if(content.steps && content.steps.length) {
+  if (content.warning) html += `<p style="background:rgba(239,68,68,.2);padding:.5rem;border-radius:12px">⚠️ ${content.warning}</p>`;
+  if (content.steps && content.steps.length) {
     html += '<ul>';
     content.steps.forEach(step => html += `<li>${step}</li>`);
     html += '</ul>';
   }
-  if(content.extra) html += `<p>${content.extra}</p>`;
+  if (content.extra) html += `<p>${content.extra}</p>`;
   return formatPhoneNumbersToBadges(html);
 }
 
@@ -459,7 +502,8 @@ function formatContent(content) {
 const genericModal = document.getElementById('genericModal');
 const genericModalTitle = document.getElementById('genericModalTitle');
 const genericModalBody = document.getElementById('genericModalBody');
-const closeGenericModal = document.getElementById('closeGenericModal');
+document.getElementById('closeGenericModal').addEventListener('click', closeModal);
+genericModal.addEventListener('click', e => { if (e.target === genericModal) closeModal(); });
 function openModal(title, contentHtml) {
   genericModalTitle.innerHTML = title;
   genericModalBody.innerHTML = contentHtml;
@@ -470,235 +514,98 @@ function closeModal() {
   genericModal.classList.remove('active');
   document.body.style.overflow = '';
 }
-closeGenericModal.addEventListener('click', closeModal);
-genericModal.addEventListener('click', e => { if(e.target === genericModal) closeModal(); });
 
-/// ======================= OUTILS =======================
-let audioCtx = null, metActive = false, timeoutId = null, nextBeepTime = 0;
-function getAudioCtx() { if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); return audioCtx; }
-function playBeep() {
-  const ctx = getAudioCtx(); if(ctx.state === 'suspended') ctx.resume();
-  const osc = ctx.createOscillator(); const gain = ctx.createGain();
-  osc.connect(gain); gain.connect(ctx.destination);
-  osc.frequency.value = 880; gain.gain.value = 0.15;
-  osc.start(); gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.2);
-  osc.stop(ctx.currentTime + 0.2);
-}
-function scheduleBeep() {
-  if(!metActive) return;
-  const ctx = getAudioCtx(); const now = ctx.currentTime;
-  nextBeepTime += 60/110;
-  const delay = Math.max(0, nextBeepTime - now);
-  timeoutId = setTimeout(() => { playBeep(); scheduleBeep(); }, delay * 1000);
-}
-function startMetro() {
-  if(metActive) return;
-  metActive = true; const ctx = getAudioCtx(); ctx.resume();
-  nextBeepTime = ctx.currentTime; scheduleBeep();
-  const btn = document.getElementById('metroStartStop');
-  if(langData) btn.textContent = langData.tools.metronome.stop;
-  btn.classList.add('stop');
-}
-function stopMetro() {
-  metActive = false; if(timeoutId) clearTimeout(timeoutId);
-  const btn = document.getElementById('metroStartStop');
-  if(langData) btn.textContent = langData.tools.metronome.start;
-  btn.classList.remove('stop');
-}
-document.getElementById('metroStartStop').addEventListener('click', () => { metActive ? stopMetro() : startMetro(); });
-document.querySelector('.close-metronome').addEventListener('click', () => { document.getElementById('metronomeModal').classList.remove('active'); document.body.style.overflow = ''; if(metActive) stopMetro(); });
-document.getElementById('metronomeModal').addEventListener('click', e => { if(e.target === document.getElementById('metronomeModal')) { document.getElementById('metronomeModal').classList.remove('active'); document.body.style.overflow = ''; if(metActive) stopMetro(); } });
-// Flash SOS
-let flashActive = false, flashStep = 0;
-function applyFlashColor(isWhite) { document.getElementById('flashFullscreen').style.background = isWhite ? '#fff' : '#000'; }
-function runFlashStep() {
-  if(!flashActive) return;
-  const pattern = ['short','short','short','long','long','long','short','short','short'];
-  if(flashStep >= pattern.length) { setTimeout(() => { if(flashActive) { flashStep = 0; runFlashStep(); } }, 1000); return; }
-  const duration = pattern[flashStep] === 'short' ? 200 : 600;
-  applyFlashColor(true); setTimeout(() => { if(flashActive) applyFlashColor(false); setTimeout(() => { if(flashActive) { flashStep++; runFlashStep(); } }, 50); }, duration);
-}
-function startFlash() { if(flashActive) return; flashActive = true; flashStep = 0; document.getElementById('flashFullscreen').classList.add('active'); document.body.style.overflow = 'hidden'; runFlashStep(); }
-function stopFlash() { flashActive = false; document.getElementById('flashFullscreen').classList.remove('active'); document.body.style.overflow = ''; applyFlashColor(true); }
-document.getElementById('flashStopBtn').addEventListener('click', stopFlash);
-document.getElementById('flashFullscreen').addEventListener('click', e => { if(e.target === document.getElementById('flashFullscreen')) stopFlash(); });
-// Lampe torche
-function openTorche() { document.getElementById('torcheFullscreen').classList.add('active'); document.body.style.overflow = 'hidden'; }
-function closeTorche() { document.getElementById('torcheFullscreen').classList.remove('active'); document.body.style.overflow = ''; }
-document.getElementById('torcheStopBtn').addEventListener('click', closeTorche);
-document.getElementById('torcheFullscreen').addEventListener('click', e => { if(e.target === document.getElementById('torcheFullscreen')) closeTorche(); });
-// Alerte sonore linéaire
-let sirenActive = false, sirenOsc = null, sirenGain = null;
-function startSiren() {
-  const ctx = getAudioCtx(); ctx.resume();
-  if(sirenOsc) { sirenOsc.stop(); sirenOsc.disconnect(); }
-  sirenOsc = ctx.createOscillator(); sirenGain = ctx.createGain();
-  sirenOsc.connect(sirenGain); sirenGain.connect(ctx.destination);
-  sirenOsc.type = 'sine'; sirenOsc.frequency.value = 880;
-  sirenGain.gain.value = 0.25;
-  sirenOsc.start();
-  sirenActive = true;
-  const statusDiv = document.getElementById('sirenStatus');
-  const btn = document.getElementById('sirenStartStop');
-  if(langData) {
-    statusDiv.innerHTML = langData.tools.alarm.active;
-    btn.textContent = langData.tools.alarm.stop;
-  }
-  btn.classList.add('stop');
-}
-function stopSiren() {
-  if(sirenOsc) { sirenOsc.stop(); sirenOsc.disconnect(); sirenOsc = null; }
-  if(sirenGain) { sirenGain.disconnect(); sirenGain = null; }
-  sirenActive = false;
-  const statusDiv = document.getElementById('sirenStatus');
-  const btn = document.getElementById('sirenStartStop');
-  if(langData) {
-    statusDiv.innerHTML = langData.tools.alarm.inactive;
-    btn.textContent = langData.tools.alarm.start;
-  }
-  btn.classList.remove('stop');
-}
-document.getElementById('sirenStartStop').addEventListener('click', () => { sirenActive ? stopSiren() : startSiren(); });
-document.querySelector('.close-alerte').addEventListener('click', () => { document.getElementById('alerteModal').classList.remove('active'); document.body.style.overflow = ''; if(sirenActive) stopSiren(); });
-document.getElementById('alerteModal').addEventListener('click', e => { if(e.target === document.getElementById('alerteModal')) { document.getElementById('alerteModal').classList.remove('active'); document.body.style.overflow = ''; if(sirenActive) stopSiren(); } });
-// Respiration
-let respActive = false, respInterval = null, respPhase = 'inspire', respCount = 4;
-function updateRespirationUI() {
-  const inspireText = langData ? langData.tools.respiration.inhale : 'Inspirez';
-  const expireText = langData ? langData.tools.respiration.exhale : 'Expirez';
-  document.getElementById('respirationGuide').textContent = respPhase === 'inspire' ? `🌬️ ${inspireText}` : `🌬️ ${expireText}`;
-  document.getElementById('respirationTimer').textContent = respCount;
-}
-function respirationCycle() {
-  if(!respActive) return;
-  if(respCount === 1) {
-    respPhase = respPhase === 'inspire' ? 'expire' : 'inspire';
-    respCount = 4;
-    updateRespirationUI();
-  } else {
-    respCount--;
-    updateRespirationUI();
-  }
-}
-function startRespiration() {
-  if(respActive) return;
-  respActive = true; respPhase = 'inspire'; respCount = 4;
-  updateRespirationUI();
-  if(respInterval) clearInterval(respInterval);
-  respInterval = setInterval(respirationCycle, 1000);
-  const btn = document.getElementById('respirationStartStop');
-  if(langData) btn.textContent = langData.tools.respiration.stop;
-}
-function stopRespiration() {
-  respActive = false; if(respInterval) clearInterval(respInterval); respInterval = null;
-  const btn = document.getElementById('respirationStartStop');
-  if(langData) btn.textContent = langData.tools.respiration.start;
-}
-document.getElementById('respirationStartStop').addEventListener('click', () => { respActive ? stopRespiration() : startRespiration(); });
-document.querySelector('.close-respiration').addEventListener('click', () => { document.getElementById('respirationModal').classList.remove('active'); document.body.style.overflow = ''; if(respActive) stopRespiration(); });
-document.getElementById('respirationModal').addEventListener('click', e => { if(e.target === document.getElementById('respirationModal')) { document.getElementById('respirationModal').classList.remove('active'); document.body.style.overflow = ''; if(respActive) stopRespiration(); } });
-// Sifflet
-let whistleActive = false;
-function playWhistle() {
-  const ctx = getAudioCtx(); if(ctx.state === 'suspended') ctx.resume();
-  const osc = ctx.createOscillator(); const gain = ctx.createGain();
-  osc.connect(gain); gain.connect(ctx.destination);
-  osc.type = 'triangle'; osc.frequency.value = 2500; gain.gain.value = 0.2;
-  osc.start(); gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.8);
-  osc.stop(ctx.currentTime + 0.8);
-}
-function startWhistle() {
-  if(whistleActive) return;
-  whistleActive = true;
-  let count = 0;
-  function playSequence() {
-    if(!whistleActive) return;
-    playWhistle();
-    count++;
-    if(count < 3) setTimeout(playSequence, 400);
-    else { 
-      whistleActive = false; 
-      const statusDiv = document.getElementById('whistleStatus');
-      const btn = document.getElementById('whistleStartStop');
-      if(langData) {
-        statusDiv.innerHTML = langData.tools.whistle.inactive;
-        btn.textContent = langData.tools.whistle.start;
-      }
-    }
-  }
-  playSequence();
-  const statusDiv = document.getElementById('whistleStatus');
-  const btn = document.getElementById('whistleStartStop');
-  if(langData) {
-    statusDiv.innerHTML = langData.tools.whistle.active;
-    btn.textContent = langData.tools.whistle.stop;
-  }
-}
-function stopWhistle() { 
-  whistleActive = false; 
-  const statusDiv = document.getElementById('whistleStatus');
-  const btn = document.getElementById('whistleStartStop');
-  if(langData) {
-    statusDiv.innerHTML = langData.tools.whistle.inactive;
-    btn.textContent = langData.tools.whistle.start;
-  }
-}
-document.getElementById('whistleStartStop').addEventListener('click', () => { whistleActive ? stopWhistle() : startWhistle(); });
-document.querySelector('.close-sifflet').addEventListener('click', () => { document.getElementById('siffletModal').classList.remove('active'); document.body.style.overflow = ''; if(whistleActive) stopWhistle(); });
-document.getElementById('siffletModal').addEventListener('click', e => { if(e.target === document.getElementById('siffletModal')) { document.getElementById('siffletModal').classList.remove('active'); document.body.style.overflow = ''; if(whistleActive) stopWhistle(); } });
+// ======================= OUTILS =======================
+let audioCtx=null,metActive=false,timeoutId=null,nextBeepTime=0;
+function getAudioCtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx;}
+function playBeep(){const ctx=getAudioCtx();if(ctx.state==='suspended')ctx.resume();const osc=ctx.createOscillator();const gain=ctx.createGain();osc.connect(gain);gain.connect(ctx.destination);osc.frequency.value=880;gain.gain.value=0.15;osc.start();gain.gain.exponentialRampToValueAtTime(0.00001,ctx.currentTime+0.2);osc.stop(ctx.currentTime+0.2);}
+function scheduleBeep(){if(!metActive)return;const ctx=getAudioCtx();const now=ctx.currentTime;nextBeepTime+=60/110;const delay=Math.max(0,nextBeepTime-now);timeoutId=setTimeout(()=>{playBeep();scheduleBeep();},delay*1000);}
+function startMetro(){if(metActive)return;metActive=true;const ctx=getAudioCtx();ctx.resume();nextBeepTime=ctx.currentTime;scheduleBeep();const btn=document.getElementById('metroStartStop');if(langData)btn.textContent=langData.tools.metronome.stop;btn.classList.add('stop');}
+function stopMetro(){metActive=false;if(timeoutId)clearTimeout(timeoutId);const btn=document.getElementById('metroStartStop');if(langData)btn.textContent=langData.tools.metronome.start;btn.classList.remove('stop');}
+document.getElementById('metroStartStop').addEventListener('click',()=>{metActive?stopMetro():startMetro();});
+document.querySelector('.close-metronome').addEventListener('click',()=>{document.getElementById('metronomeModal').classList.remove('active');document.body.style.overflow='';if(metActive)stopMetro();});
+document.getElementById('metronomeModal').addEventListener('click',e=>{if(e.target===document.getElementById('metronomeModal')){document.getElementById('metronomeModal').classList.remove('active');document.body.style.overflow='';if(metActive)stopMetro();}});
+let flashActive=false,flashStep=0;
+function applyFlashColor(isWhite){document.getElementById('flashFullscreen').style.background=isWhite?'#fff':'#000';}
+function runFlashStep(){if(!flashActive)return;const pattern=['short','short','short','long','long','long','short','short','short'];if(flashStep>=pattern.length){setTimeout(()=>{if(flashActive){flashStep=0;runFlashStep();}},1000);return;}const duration=pattern[flashStep]==='short'?200:600;applyFlashColor(true);setTimeout(()=>{if(flashActive)applyFlashColor(false);setTimeout(()=>{if(flashActive){flashStep++;runFlashStep();}},50);},duration);}
+function startFlash(){if(flashActive)return;flashActive=true;flashStep=0;document.getElementById('flashFullscreen').classList.add('active');document.body.style.overflow='hidden';runFlashStep();}
+function stopFlash(){flashActive=false;document.getElementById('flashFullscreen').classList.remove('active');document.body.style.overflow='';applyFlashColor(true);}
+document.getElementById('flashStopBtn').addEventListener('click',stopFlash);
+document.getElementById('flashFullscreen').addEventListener('click',e=>{if(e.target===document.getElementById('flashFullscreen'))stopFlash();});
+function openTorche(){document.getElementById('torcheFullscreen').classList.add('active');document.body.style.overflow='hidden';}
+function closeTorche(){document.getElementById('torcheFullscreen').classList.remove('active');document.body.style.overflow='';}
+document.getElementById('torcheStopBtn').addEventListener('click',closeTorche);
+document.getElementById('torcheFullscreen').addEventListener('click',e=>{if(e.target===document.getElementById('torcheFullscreen'))closeTorche();});
+let sirenActive=false,sirenOsc=null,sirenGain=null;
+function startSiren(){const ctx=getAudioCtx();ctx.resume();if(sirenOsc){sirenOsc.stop();sirenOsc.disconnect();}sirenOsc=ctx.createOscillator();sirenGain=ctx.createGain();sirenOsc.connect(sirenGain);sirenGain.connect(ctx.destination);sirenOsc.type='sine';sirenOsc.frequency.value=880;sirenGain.gain.value=0.25;sirenOsc.start();sirenActive=true;const s=document.getElementById('sirenStatus');const b=document.getElementById('sirenStartStop');if(langData){s.innerHTML=langData.tools.alarm.active;b.textContent=langData.tools.alarm.stop;}b.classList.add('stop');}
+function stopSiren(){if(sirenOsc){sirenOsc.stop();sirenOsc.disconnect();sirenOsc=null;}if(sirenGain){sirenGain.disconnect();sirenGain=null;}sirenActive=false;const s=document.getElementById('sirenStatus');const b=document.getElementById('sirenStartStop');if(langData){s.innerHTML=langData.tools.alarm.inactive;b.textContent=langData.tools.alarm.start;}b.classList.remove('stop');}
+document.getElementById('sirenStartStop').addEventListener('click',()=>{sirenActive?stopSiren():startSiren();});
+document.querySelector('.close-alerte').addEventListener('click',()=>{document.getElementById('alerteModal').classList.remove('active');document.body.style.overflow='';if(sirenActive)stopSiren();});
+document.getElementById('alerteModal').addEventListener('click',e=>{if(e.target===document.getElementById('alerteModal')){document.getElementById('alerteModal').classList.remove('active');document.body.style.overflow='';if(sirenActive)stopSiren();}});
+let respActive=false,respInterval=null,respPhase='inspire',respCount=4;
+function updateRespirationUI(){const inspireText=langData?langData.tools.respiration.inhale:'Inspirez';const expireText=langData?langData.tools.respiration.exhale:'Expirez';document.getElementById('respirationGuide').textContent=respPhase==='inspire'?`🌬️ ${inspireText}`:`🌬️ ${expireText}`;document.getElementById('respirationTimer').textContent=respCount;}
+function respirationCycle(){if(!respActive)return;if(respCount===1){respPhase=respPhase==='inspire'?'expire':'inspire';respCount=4;updateRespirationUI();}else{respCount--;updateRespirationUI();}}
+function startRespiration(){if(respActive)return;respActive=true;respPhase='inspire';respCount=4;updateRespirationUI();if(respInterval)clearInterval(respInterval);respInterval=setInterval(respirationCycle,1000);const btn=document.getElementById('respirationStartStop');if(langData)btn.textContent=langData.tools.respiration.stop;}
+function stopRespiration(){respActive=false;if(respInterval)clearInterval(respInterval);respInterval=null;const btn=document.getElementById('respirationStartStop');if(langData)btn.textContent=langData.tools.respiration.start;}
+document.getElementById('respirationStartStop').addEventListener('click',()=>{respActive?stopRespiration():startRespiration();});
+document.querySelector('.close-respiration').addEventListener('click',()=>{document.getElementById('respirationModal').classList.remove('active');document.body.style.overflow='';if(respActive)stopRespiration();});
+document.getElementById('respirationModal').addEventListener('click',e=>{if(e.target===document.getElementById('respirationModal')){document.getElementById('respirationModal').classList.remove('active');document.body.style.overflow='';if(respActive)stopRespiration();}});
+let whistleActive=false;
+function playWhistle(){const ctx=getAudioCtx();if(ctx.state==='suspended')ctx.resume();const osc=ctx.createOscillator();const gain=ctx.createGain();osc.connect(gain);gain.connect(ctx.destination);osc.type='triangle';osc.frequency.value=2500;gain.gain.value=0.2;osc.start();gain.gain.exponentialRampToValueAtTime(0.00001,ctx.currentTime+0.8);osc.stop(ctx.currentTime+0.8);}
+function startWhistle(){if(whistleActive)return;whistleActive=true;let count=0;function playSequence(){if(!whistleActive)return;playWhistle();count++;if(count<3)setTimeout(playSequence,400);else{whistleActive=false;const s=document.getElementById('whistleStatus');const b=document.getElementById('whistleStartStop');if(langData){s.innerHTML=langData.tools.whistle.inactive;b.textContent=langData.tools.whistle.start;}}}playSequence();const s=document.getElementById('whistleStatus');const b=document.getElementById('whistleStartStop');if(langData){s.innerHTML=langData.tools.whistle.active;b.textContent=langData.tools.whistle.stop;}}
+function stopWhistle(){whistleActive=false;const s=document.getElementById('whistleStatus');const b=document.getElementById('whistleStartStop');if(langData){s.innerHTML=langData.tools.whistle.inactive;b.textContent=langData.tools.whistle.start;}}
+document.getElementById('whistleStartStop').addEventListener('click',()=>{whistleActive?stopWhistle():startWhistle();});
+document.querySelector('.close-sifflet').addEventListener('click',()=>{document.getElementById('siffletModal').classList.remove('active');document.body.style.overflow='';if(whistleActive)stopWhistle();});
+document.getElementById('siffletModal').addEventListener('click',e=>{if(e.target===document.getElementById('siffletModal')){document.getElementById('siffletModal').classList.remove('active');document.body.style.overflow='';if(whistleActive)stopWhistle();}});
 
-// Exposer les actions globales
-window.openMetronome = () => { document.getElementById('metronomeModal').classList.add('active'); document.body.style.overflow = 'hidden'; if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); };
-window.openFlashSOS = startFlash;
-window.openTorche = openTorche;
-window.openAlerte = () => { document.getElementById('alerteModal').classList.add('active'); document.body.style.overflow = 'hidden'; if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); };
-window.openRespiration = () => { document.getElementById('respirationModal').classList.add('active'); document.body.style.overflow = 'hidden'; };
-window.openSifflet = () => { document.getElementById('siffletModal').classList.add('active'); document.body.style.overflow = 'hidden'; };
+window.openMetronome=()=>{document.getElementById('metronomeModal').classList.add('active');document.body.style.overflow='hidden';if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();};
+window.openFlashSOS=startFlash;
+window.openTorche=openTorche;
+window.openAlerte=()=>{document.getElementById('alerteModal').classList.add('active');document.body.style.overflow='hidden';if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();};
+window.openRespiration=()=>{document.getElementById('respirationModal').classList.add('active');document.body.style.overflow='hidden';};
+window.openSifflet=()=>{document.getElementById('siffletModal').classList.add('active');document.body.style.overflow='hidden';};
 
 // ======================= NAVIGATION, THEME, DRAWER, LANGUE =======================
-const themeToggle = document.getElementById('themeToggle');
-const THEME_KEY = 'sos_guide_theme';
-function setTheme(isLight) { document.body.classList.toggle('light-mode', isLight); themeToggle.textContent = isLight ? '☀️' : '🌙'; localStorage.setItem(THEME_KEY, isLight ? 'light' : 'dark'); }
-let sv = 'dark'; try { sv = localStorage.getItem(THEME_KEY) || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); } catch(e) {}
-setTheme(sv === 'light');
-themeToggle.addEventListener('click', () => setTheme(!document.body.classList.contains('light-mode')));
+const themeToggle=document.getElementById('themeToggle');
+const THEME_KEY='sos_guide_theme';
+function setTheme(isLight){document.body.classList.toggle('light-mode',isLight);themeToggle.textContent=isLight?'☀️':'🌙';localStorage.setItem(THEME_KEY,isLight?'light':'dark');}
+let sv='dark';try{sv=localStorage.getItem(THEME_KEY)||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');}catch(e){}
+setTheme(sv==='light');
+themeToggle.addEventListener('click',()=>setTheme(!document.body.classList.contains('light-mode')));
 
-const splashScreen = document.getElementById('splashScreen'), mainContent = document.getElementById('mainContent');
-function goToSplash() { splashScreen.classList.remove('hide'); mainContent.style.display = 'none'; window.scrollTo(0,0); }
-function goToMain() { splashScreen.classList.add('hide'); mainContent.style.display = 'block'; }
-document.getElementById('enterBtn').addEventListener('click', goToMain);
-document.getElementById('navLogo').addEventListener('click', goToSplash);
+const splashScreen=document.getElementById('splashScreen'),mainContent=document.getElementById('mainContent');
+function goToSplash(){splashScreen.classList.remove('hide');mainContent.style.display='none';window.scrollTo(0,0);}
+function goToMain(){splashScreen.classList.add('hide');mainContent.style.display='block';}
+document.getElementById('enterBtn').addEventListener('click',goToMain);
+document.getElementById('navLogo').addEventListener('click',goToSplash);
 
-const hamburgerBtn = document.getElementById('hamburgerBtn'), drawerOverlay = document.getElementById('drawerOverlay'), drawerCloseBtn = document.getElementById('drawerCloseBtn');
-function openDrawer() { drawerOverlay.classList.add('active'); document.body.style.overflow = 'hidden'; }
-function closeDrawer() { drawerOverlay.classList.remove('active'); document.body.style.overflow = ''; }
-hamburgerBtn.addEventListener('click', openDrawer); drawerCloseBtn.addEventListener('click', closeDrawer);
-drawerOverlay.addEventListener('click', e => { if(e.target === drawerOverlay) closeDrawer(); });
+const hamburgerBtn=document.getElementById('hamburgerBtn'),drawerOverlay=document.getElementById('drawerOverlay'),drawerCloseBtn=document.getElementById('drawerCloseBtn');
+function openDrawer(){drawerOverlay.classList.add('active');document.body.style.overflow='hidden';}
+function closeDrawer(){drawerOverlay.classList.remove('active');document.body.style.overflow='';}
+hamburgerBtn.addEventListener('click',openDrawer);drawerCloseBtn.addEventListener('click',closeDrawer);
+drawerOverlay.addEventListener('click',e=>{if(e.target===drawerOverlay)closeDrawer();});
 
-const langBtn = document.getElementById('langBtn'), modalLang = document.getElementById('languageModal'), closeModalBtn = document.getElementById('closeModalBtn');
-function openModalLang() { modalLang.classList.add('active'); document.body.style.overflow = 'hidden'; buildFlagGrid(); }
-function closeModalLang() { modalLang.classList.remove('active'); document.body.style.overflow = ''; }
-langBtn.addEventListener('click', openModalLang); closeModalBtn.addEventListener('click', closeModalLang);
-modalLang.addEventListener('click', e => { if(e.target === modalLang) closeModalLang(); });
+const langBtn=document.getElementById('langBtn'),modalLang=document.getElementById('languageModal'),closeModalBtn=document.getElementById('closeModalBtn');
+function openModalLang(){modalLang.classList.add('active');document.body.style.overflow='hidden';buildFlagGrid();}
+function closeModalLang(){modalLang.classList.remove('active');document.body.style.overflow='';}
+langBtn.addEventListener('click',openModalLang);closeModalBtn.addEventListener('click',closeModalLang);
+modalLang.addEventListener('click',e=>{if(e.target===modalLang)closeModalLang();});
 
-function buildFlagGrid() {
-  const flagGrid = document.getElementById('flagGrid');
-  flagGrid.innerHTML = '';
-  languages.forEach(lang => {
-    const card = document.createElement('div');
-    card.className = 'lang-card';
-    card.innerHTML = `<div class="lang-flag">${lang.flag}</div><div class="lang-name">${lang.label}</div>`;
-    card.addEventListener('click', () => {
-      loadLanguage(lang.code);
-      closeModalLang();
-    });
+function buildFlagGrid(){
+  const flagGrid=document.getElementById('flagGrid');
+  flagGrid.innerHTML='';
+  languages.forEach(lang=>{
+    const card=document.createElement('div');
+    card.className='lang-card';
+    card.innerHTML=`<div class="lang-flag">${lang.flag}</div><div class="lang-name">${lang.label}</div>`;
+    card.addEventListener('click',()=>{loadLanguage(lang.code);closeModalLang();});
     flagGrid.appendChild(card);
   });
 }
 
 // Chargement initial
-const savedLang = localStorage.getItem('sos_lang') || 'fr';
-loadConfig().then(() => loadLanguage(savedLang));
+const savedLang=localStorage.getItem('sos_lang')||'fr';
+loadConfig().then(()=>loadLanguage(savedLang));
 </script>
 </body>
 </html>
