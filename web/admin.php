@@ -1,17 +1,16 @@
 <?php
 /**
- * SOS-GUIDE Admin Panel v2.3
- *   ✅ Bouton reload réseau à chaud (sans reboot)
- *   ✅ Indicateurs statut temps réel (hostapd, dnsmasq, nginx, LoRa)
- *   ✅ Modification canal WiFi
- *   ✅ Journal d'audit visible
- *   ✅ Gestion LoRa (activer/désactiver)
- *   ✅ Mention nLPD
+ * SOS-GUIDE Admin Panel v2.4
  *
- * CORRECTIONS v2.3 :
- *   ✅ eth0 hardcodé supprimé → détection dynamique de l'interface Ethernet
- *      (eth0 n'existe pas toujours — ex : enp3s0, end0, eth1…)
- *   ✅ Token CSRF envoyé dans le fetch() JavaScript (manquait — proxy le rejetait)
+ * CORRECTIONS v2.4 :
+ *   ✅ Erreur gracieuse si config.json invalide/absent (+ chargement backup .bak)
+ *   ✅ Champ localPoliceNumber ajouté dans les contacts
+ *   ✅ Détection dynamique interface ETH (suppression eth0 hardcodé)
+ *   ✅ IP whitelist étendue : ETH privé si enableEthernet=true
+ *   ✅ Indicateurs statut temps réel conservés
+ *   ✅ Reload à chaud sans reboot
+ *   ✅ Journal d'audit visible
+ *   ✅ Mention nLPD
  */
 
 session_start();
@@ -24,11 +23,36 @@ if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
-// ── Chargement config ─────────────────────────────────────────────────────────
-$config = [];
+// ── v2.4 : Chargement config avec gestion d'erreur gracieuse ─────────────────
+$config      = [];
+$configError = null;
+
 if (file_exists(CONFIG_FILE)) {
-    $config = json_decode(file_get_contents(CONFIG_FILE), true) ?? [];
+    $raw     = (string) file_get_contents(CONFIG_FILE);
+    $decoded = json_decode($raw, true);
+
+    if ($decoded === null) {
+        // JSON malformé : tenter le backup
+        $configError = 'config.json invalide : ' . json_last_error_msg();
+        $backupFile  = CONFIG_FILE . '.bak';
+        if (file_exists($backupFile)) {
+            $decoded = json_decode((string) file_get_contents($backupFile), true);
+            if (is_array($decoded)) {
+                $config      = $decoded;
+                $configError .= ' — Backup chargé automatiquement. Corrigez le fichier principal via SSH.';
+            } else {
+                $configError .= ' — Backup aussi invalide. Vérifiez ' . CONFIG_FILE . ' via SSH.';
+            }
+        } else {
+            $configError .= ' — Aucun backup disponible. Vérifiez ' . CONFIG_FILE . ' via SSH.';
+        }
+    } else {
+        $config = $decoded;
+    }
+} else {
+    $configError = 'config.json introuvable (' . CONFIG_FILE . '). Le système n\'est peut-être pas encore configuré.';
 }
+
 $establishment  = $config['establishment'] ?? [];
 $reassurance    = $config['reassurance']   ?? ['message' => ''];
 $wifiChannel    = intval($config['wifiChannel'] ?? 11);
@@ -37,7 +61,7 @@ $enableEthernet = $config['enableEthernet'] ?? false;
 
 // ── Statut des services ───────────────────────────────────────────────────────
 function svc_active(string $name): bool {
-    exec('systemctl is-active --quiet ' . escapeshellarg($name), $o, $r);
+    exec('systemctl is-active --quiet ' . escapeshellarg($name) . ' 2>/dev/null', $o, $r);
     return $r === 0;
 }
 
@@ -53,6 +77,9 @@ $hashAge = file_exists(HASH_FILE)
     ? round((time() - filemtime(HASH_FILE)) / 60) . ' min'
     : 'absent';
 
+// ── Mode dégradé actif ? ──────────────────────────────────────────────────────
+$degradedMode = file_exists('/var/www/sos-guide/INTEGRITY_ALERT.flag');
+
 // ── Dernières entrées d'audit ─────────────────────────────────────────────────
 $auditLines = [];
 if (file_exists(AUDIT_LOG)) {
@@ -60,13 +87,8 @@ if (file_exists(AUDIT_LOG)) {
     $auditLines = array_slice(array_reverse($lines), 0, 5);
 }
 
-// ── FIX v2.3 : Détection dynamique de l'interface Ethernet ───────────────────
-// Ancien code (BUGUÉ) :
-//   $ethIp = shell_exec("ip -4 addr show eth0 2>/dev/null | ...") ?? '';
-//   → eth0 n'existe pas toujours (ex: enp3s0, end0, eth1, usb0…)
-//   → retourne toujours une chaîne vide sur RPi5 (interface = end0)
-//
-// Nouveau code : détection de la première interface en/eth disponible
+// ── v2.4 : Détection dynamique de l'interface Ethernet ───────────────────────
+// Remplace le eth0 hardcodé de la v2.3
 $ethIface = trim((string)(shell_exec(
     "ip -o link show 2>/dev/null | awk -F': ' '/^[0-9]+: (en|eth)/{gsub(/@.*/, \"\", \$2); print \$2; exit}'"
 ) ?? ''));
@@ -94,16 +116,17 @@ if (isset($_GET['updated'])) {
 }
 
 $mapExists = file_exists('/var/www/sos-guide/img/map_location.png');
+
 $types = [
-    'erp'          => 'ERP (Public)',
-    'ecole'        => 'École',
-    'mairie'       => 'Mairie',
-    'ehpad'        => 'EHPAD',
-    'entreprise'   => 'Entreprise',
-    'bar'          => 'Bar/Restaurant',
-    'boitedenuit'  => 'Discothèque',
-    'hopital'      => 'Hôpital/Clinique',
-    'gymnase'      => 'Gymnase/PA',
+    'erp'         => 'ERP (Public)',
+    'ecole'       => 'École',
+    'mairie'      => 'Mairie',
+    'ehpad'       => 'EHPAD',
+    'entreprise'  => 'Entreprise',
+    'bar'         => 'Bar/Restaurant',
+    'boitedenuit' => 'Discothèque',
+    'hopital'     => 'Hôpital/Clinique',
+    'gymnase'     => 'Gymnase/PA',
 ];
 ?>
 <!DOCTYPE html>
@@ -111,7 +134,7 @@ $types = [
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>⛑️ SOS-GUIDE — Administration v2.3</title>
+<title>⛑️ SOS-GUIDE — Administration v2.4</title>
 <style>
 :root{
   --bg:#0f172a;--card:#1e293b;--border:#334155;
@@ -121,7 +144,7 @@ $types = [
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;
-     line-height:1.5;min-height:100vh;padding:0}
+     line-height:1.5;min-height:100vh}
 .top-bar{background:#0c1524;border-bottom:1px solid var(--border);
          padding:.75rem 1.5rem;display:flex;align-items:center;
          justify-content:space-between;position:sticky;top:0;z-index:100}
@@ -140,20 +163,23 @@ body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,
 .sidebar .section-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;
                          color:var(--muted);margin:.75rem 0 .25rem .75rem}
 .main{padding:1.5rem}
+/* Flash messages */
 .flash{padding:.8rem 1.2rem;border-radius:var(--r);margin-bottom:1.5rem;font-size:.9rem;font-weight:500}
 .flash.success{background:rgba(34,197,94,.15);border:1px solid var(--green);color:var(--green)}
 .flash.warning{background:rgba(234,179,8,.15);border:1px solid var(--yellow);color:var(--yellow)}
-.flash.error{background:rgba(239,68,68,.15);border:1px solid var(--red);color:var(--red)}
-.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-bottom:1.5rem}
+.flash.error  {background:rgba(239,68,68,.15); border:1px solid var(--red);   color:var(--red)}
+.flash.info   {background:rgba(59,130,246,.15);border:1px solid var(--accent);color:var(--accent)}
+/* Grids */
 .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:1.5rem}
-.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);
-           padding:.9rem 1rem}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:.9rem 1rem}
 .stat-card .val{font-size:1.5rem;font-weight:600;margin:.2rem 0}
 .stat-card .lbl{font-size:.78rem;color:var(--sub)}
+/* Cards */
 .card{background:var(--card);border:1px solid var(--border);
       border-radius:var(--r);padding:1.25rem 1.5rem;margin-bottom:1.25rem}
 .card h2{font-size:1rem;font-weight:600;margin-bottom:1rem;padding-bottom:.75rem;
          border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.5rem}
+/* Form */
 .form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem 1.5rem}
 .fg-full{grid-column:span 2}
 .form-group{display:flex;flex-direction:column;gap:.35rem}
@@ -163,6 +189,7 @@ input,textarea,select{background:var(--bg);border:1.5px solid var(--border);
   width:100%;transition:border .2s}
 input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent)}
 textarea{min-height:70px;resize:vertical}
+/* Toggles */
 .toggle-row{display:flex;align-items:center;justify-content:space-between;
             padding:.6rem 0;border-bottom:1px solid var(--border);font-size:.9rem}
 .toggle-row:last-child{border:none}
@@ -174,6 +201,7 @@ textarea{min-height:70px;resize:vertical}
   background:white;border-radius:50%;left:3px;top:3px;transition:.2s}
 .toggle input:checked + .toggle-slider{background:var(--accent)}
 .toggle input:checked + .toggle-slider:before{transform:translateX(20px)}
+/* Buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;
      padding:.65rem 1.4rem;border-radius:40px;font-weight:600;font-size:.88rem;
      border:none;cursor:pointer;transition:all .15s}
@@ -185,36 +213,47 @@ textarea{min-height:70px;resize:vertical}
 .btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
 .btn-sm{padding:.4rem 1rem;font-size:.8rem}
 .btn-group{display:flex;gap:.75rem;margin-top:1.25rem;flex-wrap:wrap}
+/* Services */
 .svc-row{display:flex;align-items:center;gap:.75rem;padding:.5rem 0;
          border-bottom:1px solid var(--border);font-size:.88rem}
 .svc-row:last-child{border:none}
 .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
-.dot.ok{background:var(--green);box-shadow:0 0 8px var(--green)}
-.dot.err{background:var(--red);box-shadow:0 0 8px var(--red)}
+.dot.ok {background:var(--green);box-shadow:0 0 8px var(--green)}
+.dot.err{background:var(--red);  box-shadow:0 0 8px var(--red)}
 .dot.off{background:var(--muted)}
+.dot.warn{background:var(--yellow);box-shadow:0 0 8px var(--yellow)}
 .svc-name{flex:1;font-weight:500}
 .svc-action{font-size:.75rem;color:var(--sub)}
+/* Audit */
 .audit-row{font-size:.75rem;padding:.4rem 0;border-bottom:1px solid var(--border);
-           color:var(--sub);font-family:monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+           color:var(--sub);font-family:monospace;white-space:nowrap;
+           overflow:hidden;text-overflow:ellipsis}
 .audit-row:last-child{border:none}
-.badge{display:inline-block;font-size:.72rem;padding:.15rem .5rem;border-radius:4px;
-       font-weight:500;margin-left:.4rem}
-.badge-ok{background:rgba(34,197,94,.15);color:var(--green)}
-.badge-warn{background:rgba(234,179,8,.15);color:var(--yellow)}
-.badge-err{background:rgba(239,68,68,.15);color:var(--red)}
+/* Badges */
+.badge{display:inline-block;font-size:.72rem;padding:.15rem .5rem;border-radius:4px;font-weight:500;margin-left:.4rem}
+.badge-ok  {background:rgba(34,197,94,.15); color:var(--green)}
+.badge-warn{background:rgba(234,179,8,.15); color:var(--yellow)}
+.badge-err {background:rgba(239,68,68,.15); color:var(--red)}
+/* Reload banner */
 .reload-banner{background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.3);
                border-radius:var(--r);padding:1rem 1.25rem;margin-bottom:1.25rem;
-               display:flex;align-items:center;gap:1rem}
+               display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
 .reload-banner .icon{font-size:1.8rem;flex-shrink:0}
 .reload-banner p{font-size:.85rem;color:var(--sub);margin:.2rem 0 0}
 .reload-banner strong{color:var(--text)}
-#reloadResult{margin-top:.75rem;font-size:.82rem;display:none}
+#reloadResult{margin-top:.75rem;font-size:.82rem;display:none;width:100%}
+/* Mode dégradé banner */
+.degraded-banner{background:rgba(239,68,68,.12);border:1px solid var(--red);
+                 border-radius:var(--r);padding:1rem 1.25rem;margin-bottom:1.25rem;
+                 font-size:.88rem;color:var(--red)}
+.degraded-banner strong{display:block;margin-bottom:.3rem}
+/* Privacy */
 .privacy-note{font-size:.72rem;color:var(--muted);margin-top:1rem;padding:.5rem;
               border:1px solid var(--border);border-radius:8px;line-height:1.6}
 @media(max-width:768px){
   .layout{grid-template-columns:1fr}
   .sidebar{display:none}
-  .form-grid,.grid2,.grid4{grid-template-columns:1fr}
+  .form-grid,.grid4{grid-template-columns:1fr}
   .fg-full{grid-column:span 1}
 }
 </style>
@@ -223,7 +262,10 @@ textarea{min-height:70px;resize:vertical}
 
 <div class="top-bar">
   <h1>⛑️ SOS-GUIDE Administration
-    <span class="badge badge-ok">v2.3</span>
+    <span class="badge badge-ok">v2.4</span>
+    <?php if ($degradedMode): ?>
+      <span class="badge badge-err">MODE DÉGRADÉ</span>
+    <?php endif; ?>
   </h1>
   <nav>
     <a href="/">← Portail</a>
@@ -238,12 +280,11 @@ textarea{min-height:70px;resize:vertical}
 <div class="layout">
   <nav class="sidebar">
     <span class="section-label">Configuration</span>
-    <a href="#lieu" class="active">🏢 Lieu</a>
+    <a href="#lieu"     class="active">🏢 Lieu</a>
     <a href="#contacts">📞 Contacts</a>
     <a href="#reseau">📡 Réseau WiFi</a>
     <a href="#lora">📻 LoRa mesh</a>
     <a href="#carte">🗺️ Carte</a>
-
     <span class="section-label">Système</span>
     <a href="#services">⚡ Services</a>
     <a href="#securite">🔒 Sécurité</a>
@@ -251,6 +292,24 @@ textarea{min-height:70px;resize:vertical}
   </nav>
 
   <main class="main">
+
+    <?php if ($degradedMode): ?>
+    <div class="degraded-banner">
+      <strong>⚠️ Système en mode dégradé</strong>
+      Le contrôle d'intégrité SHA256 a détecté une anomalie.
+      PHP-FPM peut être arrêté — le portail HTML statique reste accessible.
+      <br>Vérifiez via SSH : <code>sudo bash /usr/local/bin/sos-guide-boot-check.sh</code>
+      puis <code>sudo bash /usr/local/bin/sos-guide-regen-hash.sh</code>
+    </div>
+    <?php endif; ?>
+
+    <?php if ($configError): ?>
+    <div class="flash error">
+      ⚠️ <?= htmlspecialchars($configError) ?>
+      <br><small>Fichier : <?= CONFIG_FILE ?> — Corriger manuellement via SSH puis recharger cette page.</small>
+    </div>
+    <?php endif; ?>
+
     <?php if ($flash): ?>
     <div class="flash <?= $flashType ?>"><?= htmlspecialchars($flash) ?></div>
     <?php endif; ?>
@@ -269,7 +328,7 @@ textarea{min-height:70px;resize:vertical}
         <div class="val" style="font-size:1rem;color:var(--<?= file_exists(HASH_FILE) ? 'green' : 'red' ?>)">
           <?= file_exists(HASH_FILE) ? '✓' : '✗' ?>
         </div>
-        <div class="lbl">Mis à jour il y a <?= $hashAge ?></div>
+        <div class="lbl">Màj il y a <?= $hashAge ?></div>
       </div>
       <div class="stat-card">
         <div class="lbl">Canal WiFi</div>
@@ -288,19 +347,15 @@ textarea{min-height:70px;resize:vertical}
     <!-- Reload à chaud -->
     <div class="reload-banner" id="reloadBanner">
       <span class="icon">🔄</span>
-      <div>
+      <div style="flex:1">
         <strong>Appliquer les changements réseau sans redémarrage</strong>
-        <p>nginx (zero-downtime) · dnsmasq (baux conservés) · hostapd (3s si SSID/WPA changé)</p>
+        <p>nginx (zero-downtime) · dnsmasq (baux conservés) · hostapd (~3s si SSID/WPA/canal changé)</p>
         <div id="reloadResult"></div>
       </div>
-      <div style="margin-left:auto;display:flex;gap:.5rem;flex-wrap:wrap">
-        <button class="btn btn-ghost btn-sm" onclick="reloadNetwork(false)">
-          🔄 Reload services
-        </button>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <button class="btn btn-ghost btn-sm" onclick="reloadNetwork(false)">🔄 Reload services</button>
         <button class="btn btn-danger btn-sm" onclick="reloadNetwork(true)"
-                title="Redémarre hostapd — les clients doivent se reconnecter (~3s)">
-          📡 Reload WiFi
-        </button>
+                title="Redémarre hostapd — clients WiFi reconnectés (~3s)">📡 Reload WiFi</button>
       </div>
     </div>
 
@@ -339,8 +394,7 @@ textarea{min-height:70px;resize:vertical}
             <label>Type d'établissement</label>
             <select name="type">
               <?php foreach ($types as $v => $l): ?>
-              <option value="<?= $v ?>"
-                <?= (($establishment['type'] ?? 'erp') === $v) ? 'selected' : '' ?>>
+              <option value="<?= $v ?>" <?= (($establishment['type'] ?? 'erp') === $v) ? 'selected' : '' ?>>
                 <?= htmlspecialchars($l) ?>
               </option>
               <?php endforeach; ?>
@@ -350,7 +404,7 @@ textarea{min-height:70px;resize:vertical}
             <label>Risque local spécifique</label>
             <input type="text" name="localRisk" maxlength="256"
                    value="<?= htmlspecialchars($establishment['localRisk'] ?? '') ?>"
-                   placeholder="Ex: Zone SEVESO, site nucléaire, inondable">
+                   placeholder="Ex: Zone SEVESO, inondable">
           </div>
           <div class="form-group fg-full">
             <label>Message de réassurance</label>
@@ -364,11 +418,16 @@ textarea{min-height:70px;resize:vertical}
       <!-- CONTACTS -->
       <div class="card" id="contacts">
         <h2>📞 Contacts d'urgence locaux</h2>
+        <p style="font-size:.8rem;color:var(--sub);margin-bottom:1rem">
+          Ces numéros s'affichent sur le portail et <strong>remplacent</strong> les numéros par défaut de la langue sélectionnée.
+        </p>
         <div class="form-grid">
           <?php
+          // v2.4 : localPoliceNumber ajouté
           $contactFields = [
             ['localCrisisNumber',   '📞 Cellule de crise locale'],
-            ['localSamuNumber',     '🚑 SAMU / ambulance local'],
+            ['localSamuNumber',     '🚑 SAMU / Ambulance locale'],
+            ['localPoliceNumber',   '🚔 Police / Gendarmerie locale'],
             ['localPompiersNumber', '🚒 Pompiers locaux'],
             ['localMairieNumber',   '🏛️ Mairie / Municipalité'],
             ['localPrefecture',     '🏛️ Préfecture / Canton'],
@@ -411,21 +470,19 @@ textarea{min-height:70px;resize:vertical}
             <select name="wifiChannel">
               <?php for ($c = 1; $c <= 13; $c++): ?>
               <option value="<?= $c ?>" <?= $wifiChannel === $c ? 'selected' : '' ?>>
-                Canal <?= $c ?>
-                <?php if (in_array($c, [1,6,11])): ?> ★<?php endif; ?>
+                Canal <?= $c ?><?php if (in_array($c, [1,6,11])): ?> ★<?php endif; ?>
               </option>
               <?php endfor; ?>
             </select>
           </div>
           <div class="form-group">
-            <label>Nouveau mot de passe WiFi (laisser vide = inchangé)</label>
+            <label>Nouveau mot de passe WiFi <small style="text-transform:none;font-weight:400">(vide = inchangé)</small></label>
             <input type="password" name="wifiPassword" minlength="8" maxlength="63"
-                   placeholder="8 caractères minimum — vide = réseau ouvert">
+                   placeholder="8 caractères min — vide = réseau ouvert">
           </div>
         </div>
         <p style="font-size:.8rem;color:var(--sub);margin-top:.75rem">
-          ⚠️ Un changement de canal ou de mot de passe WiFi nécessite un reload WiFi (~3s d'interruption).<br>
-          Cliquez sur <strong>"Reload WiFi"</strong> après la sauvegarde.
+          ⚠️ Un changement de canal ou de mot de passe nécessite un <strong>Reload WiFi</strong> (~3s d'interruption).
         </p>
       </div>
 
@@ -435,13 +492,10 @@ textarea{min-height:70px;resize:vertical}
         <div class="toggle-row">
           <div>
             <strong>Activer le module LoRa (SX1276 / RFM95W)</strong>
-            <div style="font-size:.8rem;color:var(--sub)">
-              Fréquence 868.1 MHz · AES-256-GCM · Portée 2–10 km · API :8765
-            </div>
+            <div style="font-size:.8rem;color:var(--sub)">868.1 MHz · AES-256-GCM · Portée 2–10 km · API :8765</div>
           </div>
           <label class="toggle">
-            <input type="checkbox" name="enableLoRa" value="true"
-                   <?= $enableLoRa ? 'checked' : '' ?>>
+            <input type="checkbox" name="enableLoRa" value="true" <?= $enableLoRa ? 'checked' : '' ?>>
             <span class="toggle-slider"></span>
           </label>
         </div>
@@ -451,18 +505,18 @@ textarea{min-height:70px;resize:vertical}
             <div style="font-size:.8rem;color:var(--sub)">Accès Internet pour télécharger les contenus multilingues</div>
           </div>
           <label class="toggle">
-            <input type="checkbox" name="enableEthernet" value="true"
-                   <?= $enableEthernet ? 'checked' : '' ?>>
+            <input type="checkbox" name="enableEthernet" value="true" <?= $enableEthernet ? 'checked' : '' ?>>
             <span class="toggle-slider"></span>
           </label>
         </div>
         <?php if ($enableLoRa && $services['lora']): ?>
         <div style="margin-top:1rem;padding:.6rem;background:rgba(34,197,94,.1);border-radius:8px;font-size:.82rem">
-          ✅ lora-service actif · API : <a href="http://127.0.0.1:8765/stats" style="color:var(--accent)">http://127.0.0.1:8765/stats</a>
+          ✅ lora-service actif ·
+          <a href="http://127.0.0.1:8765/stats" style="color:var(--accent)">http://127.0.0.1:8765/stats</a>
         </div>
         <?php elseif ($enableLoRa): ?>
         <div style="margin-top:1rem;padding:.6rem;background:rgba(239,68,68,.1);border-radius:8px;font-size:.82rem;color:var(--red)">
-          ✗ lora-service inactif — vérifier : journalctl -u lora-service -f
+          ✗ lora-service inactif — vérifier : <code>journalctl -u lora-service -f</code>
         </div>
         <?php endif; ?>
       </div>
@@ -475,7 +529,8 @@ textarea{min-height:70px;resize:vertical}
           <?= $mapExists ? '✅ Carte PNG présente (map_location.png)' : '⚠️ Aucune carte PNG' ?>
         </div>
         <p style="font-size:.82rem;color:var(--sub);margin-top:.75rem">
-          Pour ajouter une carte : <code>sudo bash /usr/local/bin/sos-guide-copy-image.sh /chemin/vers/carte.png</code>
+          Pour ajouter une carte :<br>
+          <code>sudo bash /usr/local/bin/sos-guide-copy-image.sh /chemin/vers/carte.png</code>
         </p>
       </div>
 
@@ -493,26 +548,29 @@ textarea{min-height:70px;resize:vertical}
         <span class="dot <?= $active ? 'ok' : 'err' ?>"></span>
         <span class="svc-name"><?= htmlspecialchars($name) ?></span>
         <span class="svc-action">
-          <?= $active ? '<span style="color:var(--green)">actif</span>' : '<span style="color:var(--red)">arrêté</span>' ?>
+          <?= $active
+            ? '<span style="color:var(--green)">actif</span>'
+            : '<span style="color:var(--red)">arrêté</span>' ?>
         </span>
       </div>
       <?php endforeach; ?>
       <div class="svc-row">
-        <span class="dot <?= file_exists(HASH_FILE) ? 'ok' : 'err' ?>"></span>
+        <span class="dot <?= file_exists(HASH_FILE) ? ($degradedMode ? 'warn' : 'ok') : 'err' ?>"></span>
         <span class="svc-name">hash SHA256 intégrité</span>
-        <span class="svc-action" style="color:var(--sub)">màj il y a <?= $hashAge ?></span>
+        <span class="svc-action" style="color:var(--sub)">
+          <?= $degradedMode ? '⚠️ Alerte active' : 'màj il y a ' . $hashAge ?>
+        </span>
       </div>
       <?php if (!empty($ethIp)): ?>
       <div class="svc-row" id="ssh">
         <span class="dot ok"></span>
-        <span class="svc-name">Ethernet
-          <span style="font-size:.75rem;color:var(--muted);font-weight:400">
-            (<?= htmlspecialchars($ethIface) ?>)
-          </span>
+        <span class="svc-name">
+          Ethernet
+          <span style="font-size:.75rem;color:var(--muted);font-weight:400">(<?= htmlspecialchars($ethIface) ?>)</span>
         </span>
         <span class="svc-action" style="color:var(--sub)">
-          <?= htmlspecialchars($ethIp) ?> — SSH :
-          <code>ssh pi@<?= htmlspecialchars($ethIp) ?></code>
+          <?= htmlspecialchars($ethIp) ?> —
+          SSH : <code>ssh pi@<?= htmlspecialchars($ethIp) ?></code>
         </span>
       </div>
       <?php endif; ?>
@@ -530,7 +588,7 @@ textarea{min-height:70px;resize:vertical}
           if (!$entry) continue;
           $action = $entry['action'] ?? '?';
           $cls = str_contains($action, 'FAIL') || str_contains($action, 'REJECT')
-               ? 'badge-err' : (str_contains($action, 'warn') ? 'badge-warn' : 'badge-ok');
+               ? 'badge-err' : (str_contains($action, 'WARN') ? 'badge-warn' : 'badge-ok');
           ?>
           <div class="audit-row">
             <span style="color:var(--muted)"><?= htmlspecialchars(substr($entry['ts'] ?? '', 0, 19)) ?></span>
@@ -551,6 +609,7 @@ textarea{min-height:70px;resize:vertical}
       et effacés au redémarrage. Les messages LoRa sont chiffrés AES-256-GCM.
       <a href="PRIVACY.md" target="_blank" style="color:var(--accent)">Politique complète →</a>
     </div>
+
   </main>
 </div>
 
@@ -567,12 +626,9 @@ async function reloadNetwork(reloadWifi) {
 
     try {
         const body = new FormData();
-        body.append('reload_wifi', reloadWifi ? 'true' : 'false');
-
-        // FIX v2.3 : token CSRF ajouté — le proxy le vérifie côté serveur
-        // Sans ce token, api_reload_network_proxy.php retourne 403 (CSRF rejeté)
-        const csrfToken = document.getElementById('csrf_token').value;
-        body.append('csrf_token', csrfToken);
+        body.append('reload_wifi',  reloadWifi ? 'true' : 'false');
+        // v2.4 : CSRF token inclus (obligatoire — fix sécurité)
+        body.append('csrf_token', document.getElementById('csrf_token').value);
 
         const resp = await fetch('/api/reload-network-proxy', {
             method: 'POST',
@@ -587,7 +643,7 @@ async function reloadNetwork(reloadWifi) {
             result.style.color = 'var(--yellow)';
             result.textContent = '⚠️ Partiel — ' + (data.errors || []).join(', ');
         }
-    } catch (e) {
+    } catch(e) {
         result.style.color = 'var(--red)';
         result.textContent = '❌ Erreur réseau : ' + e.message;
     } finally {
