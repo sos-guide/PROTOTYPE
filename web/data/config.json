@@ -8,6 +8,7 @@
     "localCrisisNumber": "",
     "localRisk": "",
     "localSamuNumber": "",
+    "localPoliceNumber": "",
     "localPompiersNumber": "",
     "localMairieNumber": "",
     "localPrefecture": "",
@@ -20,5 +21,10 @@
   },
   "reassurance": {
     "message": "Restez calme, les secours sont informés et arrivent."
-  }
+  },
+  "wifiChannel": 11,
+  "wifiPassword": "",
+  "enableLoRa": false,
+  "enableEthernet": false,
+  "installed": false
 }
