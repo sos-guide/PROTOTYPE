@@ -1,4 +1,4 @@
-# Politique de confidentialité — SOS-GUIDE v2.2
+# Politique de confidentialité — SOS-GUIDE v2.4
 
 **Conformité :** Loi fédérale suisse sur la protection des données (nLPD, RS 235.1)  
 **Conformité :** Règlement général sur la protection des données (RGPD, UE 2016/679)  
