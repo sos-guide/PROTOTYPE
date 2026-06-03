@@ -145,7 +145,7 @@ un délai de 30 jours.
 Cette politique peut être mise à jour lors des nouvelles versions du logiciel.
 La version applicable est celle incluse dans l'image `.img` installée.
 
-Version du document : **2.2 — Avril 2026**  
+Version du document : **2.4 — Avril 2026**  
 Hash SHA256 : à calculer lors du build de l'image
 
 ---
