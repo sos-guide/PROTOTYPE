@@ -1,6 +1,6 @@
 #!/bin/bash
 # ╔══════════════════════════════════════════════════════════════════════════════╗
-# ║  SOS-GUIDE — sos-guide-test.sh v2.3                                         ║
+# ║  SOS-GUIDE — sos-guide-test.sh v2.4                                         ║
 # ║  Suite de tests d'intégration automatisés                                   ║
 # ║  Validation Croix-Rouge Suisse · PCi-CH · nLPD                              ║
 # ║                                                                              ║
