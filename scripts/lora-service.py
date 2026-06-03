@@ -15,7 +15,7 @@
 ║    - Fréquence    : 868.1 MHz (EU868, conforme ETSI EN 300 220)             ║
 ║    - Puissance    : 14 dBm max (légal EU sans licence)                      ║
 ║                                                                              ║
-║  Version : 2.2 — Avril 2026                                                 ║
+║  Version : 2.4 — Avril 2026                                                 ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
 
 Dépendances système :
