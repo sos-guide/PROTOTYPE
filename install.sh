@@ -1,9 +1,9 @@
 #!/bin/bash
 # ╔══════════════════════════════════════════════════════════════════════════════╗
 # ║  SOS-GUIDE – Finalisation installation (mode STARTER → PRODUCTION)         ║
-# ║  Version : 2.3 — Mai 2026                                                  ║
+# ║  Version : 2.4 — Mai 2026                                                  ║
 # ║                                                                             ║
-# ║  CORRECTIONS v2.3 :                                                        ║
+# ║  CORRECTIONS v2.4 :                                                        ║
 # ║  ✅ Idempotence : chattr -i sur les fichiers avant ré-écriture              ║
 # ║     (re-exécution du script ne bloque plus sur les fichiers verrouillés)   ║
 # ║  ✅ Génération automatique de /etc/nginx/.htpasswd avec mdp aléatoire      ║
