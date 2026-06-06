@@ -5,7 +5,7 @@
 # ║                                                                              ║
 # ║  Prérequis : Docker · git · gpg · sha256sum                                 ║
 # ║  Usage     : bash build-image.sh [--sign] [--rpi5] [--ch]                  ║
-# ║  Sortie    : releases/sos-guide-v2.4-ch.img.gz + .sha256 + .asc            ║
+# ║  Sortie    : releases/sos-guide-v2.5-ch.img.gz + .sha256 + .asc            ║
 # ║                                                                              ║
 # ║  Conforme : Croix-Rouge Suisse · PCi-CH · nLPD RS 235.1                    ║
 # ║                                                                              ║
@@ -23,7 +23,7 @@
 set -euo pipefail
 
 # ── Configuration ──────────────────────────────────────────────────────────────
-VERSION="2.4"
+VERSION="2.5"
 VARIANT="ch"
 SIGN_GPG=false
 TARGET_RPI="rpi4"
@@ -135,11 +135,10 @@ on_chroot apt-get install -y --no-install-recommends \
     apache2-utils \
     2>/dev/null
 
-# v2.4 : pyLoRa + flask requis pour lora-service.py
+# v2.5 : dépendances Python pour lora-service.py + sos_keypair_gen.py
 on_chroot pip3 install --break-system-packages \
-    cryptography RPi.GPIO spidev pyserial flask pyLoRa 2>/dev/null || \
-on_chroot pip3 install --break-system-packages \
-    cryptography RPi.GPIO spidev pyserial flask 2>/dev/null || true
+    cryptography meshtastic pyLoRa RPi.GPIO spidev pyserial flask pubsub 2>/dev/null || \
+on_chroot pip3 install --break-system-packages cryptography pyserial flask 2>/dev/null || true
 
 # Désactiver les services configurés par firstboot
 on_chroot systemctl disable hostapd dnsmasq nginx 2>/dev/null || true
@@ -169,6 +168,10 @@ interval = 5
 WDEOF
 on_chroot systemctl enable watchdog 2>/dev/null || true
 
+# Fichier VERSION dans l'image
+echo "2.5" > "${SOS_STAGE}/00-sos-guide/rootfs/etc/sos-guide-version"
+chmod 444 "${SOS_STAGE}/00-sos-guide/rootfs/etc/sos-guide-version"
+
 RUNEOF
 chmod +x "${SOS_STAGE}/00-sos-guide/00-run.sh"
 
@@ -197,7 +200,7 @@ for f in firstboot.sh finalize_install.sh starter.html api_install.php; do
 done
 
 # Scripts système
-for f in sos-guide-boot-check.sh sos-guide-regen-hash.sh lora-service.py sos-guide-update.sh; do
+for f in sos-guide-boot-check.sh sos-guide-regen-hash.sh lora-service.py sos-guide-update.sh sos_keypair_gen.py; do
     src="${SRC_ROOT}/scripts/${f}"
     [ -f "$src" ] || src="${SRC_ROOT}/${f}"
     if [ -f "$src" ]; then
@@ -398,3 +401,4 @@ rm -rf "$PIGEN_DIR"
 ok "Répertoire temporaire nettoyé"
 
 exit 0
+
