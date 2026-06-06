@@ -1,6 +1,6 @@
 #!/bin/bash
 # ╔══════════════════════════════════════════════════════════════════════════════╗
-# ║  SOS-GUIDE — finalize_install.sh v2.3                                       ║
+# ║  SOS-GUIDE — finalize_install.sh v2.5                                       ║
 # ║  Finalisation de l'installation (mode STARTER → PRODUCTION)                 ║
 # ║                                                                              ║
 # ║  ✅ SANS reboot système — reload à chaud uniquement                          ║
@@ -15,7 +15,7 @@ exec >> /var/log/sos-guide-install.log 2>&1
 
 echo ""
 echo "════════════════════════════════════════════════════"
-echo "  SOS-GUIDE finalize — $(date '+%Y-%m-%d %H:%M:%S')"
+echo "  SOS-GUIDE finalize v2.5 — $(date '+%Y-%m-%d %H:%M:%S')"
 echo "════════════════════════════════════════════════════"
 
 CONFIG_FILE="/var/www/sos-guide/data/config.json"
@@ -333,3 +333,4 @@ echo "════════════════════════�
 
 logger "SOS-GUIDE: Installation finalisée — sans reboot — ${NODE_NAME} — canal ${WIFI_CHANNEL}"
 exit 0
+
