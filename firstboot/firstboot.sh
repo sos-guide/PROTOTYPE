@@ -261,6 +261,30 @@ systemctl start dnsmasq
 sleep 1
 systemctl start nginx
 
+
+# ── Génération de l'identité cryptographique LoRa (Ed25519) ──────────────────
+# Idempotent : ne régénère pas si les clés existent déjà
+KEYPAIR_SCRIPT="/usr/local/bin/sos_keypair_gen.py"
+if [ -f "$KEYPAIR_SCRIPT" ]; then
+    if python3 "$KEYPAIR_SCRIPT" 2>/dev/null; then
+        FINGERPRINT=$(cat /etc/sos-guide/node_fingerprint.txt 2>/dev/null || echo "?")
+        ok "Identité LoRa Ed25519 : $FINGERPRINT"
+    else
+        warn "Génération clés LoRa échouée — LoRa fonctionnera sans signature"
+    fi
+else
+    warn "sos_keypair_gen.py absent — clés LoRa non générées"
+fi
+
+# ── Génération du secret API LoRa ─────────────────────────────────────────────
+API_SECRET_FILE="/etc/sos-guide/api_secret"
+if [ ! -f "$API_SECRET_FILE" ]; then
+    mkdir -p /etc/sos-guide
+    openssl rand -hex 32 > "$API_SECRET_FILE"
+    chmod 400 "$API_SECRET_FILE"
+    ok "Secret API LoRa généré"
+fi
+
 # ── Marquage firstboot ────────────────────────────────────────────────────────
 mkdir -p /var/lib/sos-guide
 touch /var/lib/sos-guide/firstboot-done
@@ -281,3 +305,4 @@ logger "SOS-GUIDE: firstboot v2.4 démarré — SSID=SOS-GUIDE-STARTER WPA2=$STA
 systemctl disable sos-guide-firstboot.service 2>/dev/null || true
 
 exit 0
+
