@@ -35,7 +35,7 @@ Nice=10
 # Sécurité systemd
 NoNewPrivileges=yes
 ProtectSystem=strict
-ReadWritePaths=/var/log /etc/sos-guide /var/lib/sos-guide
+ReadWritePaths=/var/log /etc/sos-guide /var/lib/sos-guide /var/www/sos-guide/data
 PrivateTmp=yes
 
 # Accès SPI requis pour SX1276
@@ -49,3 +49,4 @@ SyslogIdentifier=lora-service
 
 [Install]
 WantedBy=multi-user.target
+
