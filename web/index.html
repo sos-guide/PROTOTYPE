@@ -2,610 +2,1371 @@
 <html lang="fr" dir="ltr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#060a12">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0c0c12">
+<meta name="description" content="Guide de survie d'urgence — fonctionne sans Internet">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self';script-src 'self' 'unsafe-inline';style-src 'self' 'unsafe-inline';img-src 'self' data:;connect-src 'self'">
 <title>SOS-GUIDE</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='80'%3E⛑️%3C/text%3E%3C/svg%3E">
 <style>
-/* ─── TOKENS ──────────────────────────────────────────────────────── */
-:root{
-  --bg:#060a12;--bg1:#0c1120;--bg2:#111928;--card:#0f1826;--card-h:#162035;
-  --border:rgba(255,255,255,.07);--border-h:rgba(255,255,255,.16);
-  --text:#e8eef8;--sub:#6b7fa3;--muted:#2a3a54;
-  --nav-h:58px;--r:14px;--r-lg:18px;
-  --accent:#3b82f6;--green:#22c55e;--red:#ef4444;
-}
-body.light-mode{
-  --bg:#f0f4fb;--bg1:#e8eef8;--bg2:#dde4f0;--card:#ffffff;--card-h:#eff6ff;
-  --border:rgba(0,0,0,.07);--border-h:rgba(0,0,0,.16);
-  --text:#0f172a;--sub:#475569;--muted:#94a3b8;
-}
-/* ─── RESET ───────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   VARIABLES & RESET
+═══════════════════════════════════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;min-height:100dvh;transition:background .3s,color .3s}
-button{font-family:inherit;cursor:pointer;border:none;background:none}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:#0c0c12;color:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;font-size:16px;line-height:1.5;min-height:100vh;overflow-x:hidden}
+:root{
+  --bg:#0c0c12;--s1:#161621;--s2:#1e1e2d;--s3:#262639;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.14);
+  --text:#f1f5f9;--text2:#94a3b8;--text3:#64748b;
+  --red:#e53e3e;--red-d:rgba(229,62,62,.15);
+  --orange:#e07b0a;--orange-d:rgba(224,123,10,.14);
+  --blue:#3b82f6;--blue-d:rgba(59,130,246,.14);
+  --teal:#0e9e82;--teal-d:rgba(14,158,130,.14);
+  --violet:#7c3aed;--violet-d:rgba(124,58,237,.14);
+  --cyan:#0891b2;--cyan-d:rgba(8,145,178,.14);
+  --slate:#475569;--slate-d:rgba(71,85,105,.14);
+  --rose:#db2777;--rose-d:rgba(219,39,119,.14);
+  --r:12px;--rs:8px;--t:180ms ease
+}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* ═══════════════════════════════════════════════════════════════
+   LAYOUT HELPERS
+═══════════════════════════════════════════════════════════════ */
+.hidden{display:none!important}
 a{color:inherit;text-decoration:none}
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-thumb{background:var(--bg2);border-radius:4px}
-/* ─── BANNIÈRE MODE DÉGRADÉ (v2.4) ───────────────────────────────── */
-#integrity-banner{display:none;position:fixed;top:0;left:0;right:0;z-index:9999;
-  background:#7f1d1d;color:#fff;padding:.55rem 1rem;font-size:.78rem;
-  text-align:center;line-height:1.5}
-#integrity-banner.show{display:block}
-/* ─── NAV ─────────────────────────────────────────────────────────── */
-#nav{position:fixed;top:0;left:0;right:0;z-index:800;height:var(--nav-h);display:flex;align-items:center;background:rgba(6,10,18,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 1.25rem;gap:.75rem;transition:background .3s,border-color .3s}
-body.light-mode #nav{background:rgba(240,244,251,.95)}
-.nav-logo{flex:1;display:flex;align-items:center;gap:.6rem;font-weight:700;font-size:.95rem;letter-spacing:.02em;cursor:pointer;user-select:none}
-.nav-logo-badge{width:28px;height:28px;background:var(--card);border-radius:8px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0}
-.nav-right{display:flex;align-items:center;gap:.4rem}
-.nav-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:var(--card);color:var(--sub);display:flex;align-items:center;justify-content:center;font-size:1rem;transition:all .15s}
-.nav-btn:hover{background:var(--card-h);color:var(--text);border-color:var(--border-h)}
-.nav-btn:active{transform:scale(.92)}
-.hamburger{width:36px;height:36px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;border-radius:9px;background:transparent;transition:background .15s}
-.hamburger:hover{background:rgba(255,255,255,.07)}
-body.light-mode .hamburger:hover{background:rgba(0,0,0,.06)}
-.hamburger span{display:block;width:20px;height:1.5px;background:var(--text);border-radius:2px}
-/* ─── DRAWER ──────────────────────────────────────────────────────── */
-.drawer-overlay{position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);visibility:hidden;opacity:0;transition:visibility .2s,opacity .2s}
-.drawer-overlay.active{visibility:visible;opacity:1}
-.drawer{position:fixed;top:0;left:0;width:280px;height:100%;background:var(--bg1);border-right:1px solid var(--border);transform:translateX(-100%);z-index:1000;display:flex;flex-direction:column;padding:1.25rem 1rem;transition:background .3s,border-color .3s,transform .25s cubic-bezier(.4,0,.2,1)}
-.drawer-overlay.active .drawer{transform:translateX(0)}
-.drawer-header{display:flex;justify-content:space-between;align-items:center;padding-bottom:1rem;margin-bottom:1rem;border-bottom:1px solid var(--border)}
-.drawer-title{font-weight:700;font-size:.95rem}
-.drawer-close{width:30px;height:30px;border-radius:8px;background:var(--bg2);color:var(--sub);font-size:1rem;display:flex;align-items:center;justify-content:center;cursor:pointer}
-.drawer-close:hover{background:rgba(239,68,68,.15);color:var(--red)}
-.drawer-nav{display:flex;flex-direction:column;gap:.5rem}
-.drawer-nav a{display:block;padding:.7rem 1rem;border-radius:var(--r);background:var(--card);border:1px solid var(--border);font-weight:500;font-size:.9rem;color:var(--text);transition:all .15s}
-.drawer-nav a:hover{background:var(--card-h);border-color:var(--border-h);color:var(--accent)}
-.drawer-footer{margin-top:auto;padding-top:1.5rem;text-align:center;font-size:.7rem;color:var(--sub);border-top:1px solid var(--border)}
-/* ─── LANG MODAL ──────────────────────────────────────────────────── */
-.lang-modal-overlay{position:fixed;inset:0;z-index:10001;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;visibility:hidden;opacity:0;transition:visibility .2s,opacity .2s;padding:1rem}
-.lang-modal-overlay.active{visibility:visible;opacity:1}
-.lang-modal-container{background:var(--bg1);border-radius:20px;width:100%;max-width:720px;max-height:82vh;overflow-y:auto;border:1px solid var(--border);box-shadow:0 32px 64px rgba(0,0,0,.6);animation:popIn .18s ease both}
-.lang-modal-header{display:flex;justify-content:flex-end;align-items:center;padding:1.1rem 1.5rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg1)}
-.lang-modal-close{width:30px;height:30px;border-radius:8px;background:var(--bg2);color:var(--sub);font-size:1rem;display:flex;align-items:center;justify-content:center;cursor:pointer}
-.lang-modal-close:hover{background:rgba(239,68,68,.15);color:var(--red);transform:rotate(90deg)}
-.lang-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:.6rem;padding:1.25rem}
-.lang-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:.65rem 1rem;display:flex;align-items:center;gap:.65rem;cursor:pointer;transition:all .15s}
-.lang-card:hover{background:var(--card-h);border-color:var(--accent)}
-.lang-card:active{transform:scale(.96)}
-.lang-flag{font-size:1.5rem}
-.lang-name{font-size:.9rem;font-weight:500;color:var(--text)}
-/* ─── SPLASH ──────────────────────────────────────────────────────── */
-#splashScreen{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(var(--nav-h) + 2rem) 1.25rem 2.5rem}
-#splashScreen.hide{display:none}
-.splash-header{text-align:center;margin-bottom:2rem;width:100%;max-width:460px}
-.splash-emoji{font-size:clamp(3rem,10vw,4.5rem);margin-bottom:1rem;display:block;filter:drop-shadow(0 4px 20px rgba(0,0,0,.35));animation:floatIn .5s cubic-bezier(.34,1.56,.64,1) both}
-.splash-title{font-size:clamp(1.6rem,5vw,2.2rem);font-weight:800;letter-spacing:-.03em;line-height:1.15;color:var(--text);margin-bottom:.6rem;animation:slideUp .45s .1s ease both}
-.splash-sub{font-size:.88rem;color:var(--sub);max-width:380px;margin:0 auto;line-height:1.6;animation:slideUp .45s .2s ease both}
-.splash-sub strong{color:var(--text)}
-.urgence-grid{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;width:100%;max-width:500px;margin:0 auto 1rem;animation:slideUp .45s .3s ease both}
-.urgence-card{position:relative;overflow:hidden;display:flex;flex-direction:row;align-items:center;gap:0.85rem;padding:1rem 1rem;border-radius:18px;min-height:95px;color:#fff;border:1px solid transparent;transition:transform .15s,box-shadow .15s;cursor:pointer}
-.urgence-card::after{content:attr(data-num);position:absolute;right:-.05em;top:-.1em;font-size:4.8rem;font-weight:900;letter-spacing:-.04em;line-height:1;opacity:.13;pointer-events:none;color:#fff}
-.urgence-card:active{transform:scale(.96)}
-.urgence-phone-icon{flex-shrink:0;width:38px;height:38px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center}
-.urgence-phone-icon svg{width:19px;height:19px;stroke:#fff;fill:none;stroke-width:2}
-.urgence-info{display:flex;flex-direction:column;gap:0.1rem}
-.urgence-number{font-size:1.8rem;font-weight:900;letter-spacing:-.02em;line-height:1;color:#fff}
-.urgence-name{font-size:.7rem;font-weight:700;color:rgba(255,255,255,.8);letter-spacing:.07em;text-transform:uppercase}
-.uc-samu    {background:linear-gradient(135deg,#7f1d1d 0%,#991b1b 100%)}
-.uc-police  {background:linear-gradient(135deg,#1e3a8a 0%,#1d4ed8 100%)}
-.uc-pompiers{background:linear-gradient(135deg,#7c2d12 0%,#c2410c 100%)}
-.uc-europe  {background:linear-gradient(135deg,#3730a3 0%,#5b21b6 100%)}
-.uc-ssourd  {background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%); grid-column: 1 / -1; max-width: none; width: 100%; margin: 0;}
-.uc-local   {background:linear-gradient(135deg,#065f46 0%,#047857 100%); grid-column: span 2; max-width:300px; margin:0 auto; width:100%}
-@media(min-width:500px){
-  .uc-local { grid-column: span 2; justify-self: center; width: auto; min-width: 240px; }
+button{cursor:pointer;border:none;background:none;font:inherit;color:inherit}
+img{max-width:100%;display:block}
+
+/* ═══════════════════════════════════════════════════════════════
+   BANNIÈRES SYSTÈME (mode dégradé + alerte LoRa)
+═══════════════════════════════════════════════════════════════ */
+#degradedBanner{
+  display:none;background:var(--orange-d);border-bottom:1px solid var(--orange);
+  padding:.6rem 1rem;text-align:center;font-size:.85rem;color:var(--orange)
 }
-@media(hover:hover){
-  .urgence-card:hover{transform:translateY(-3px)}
-  .uc-samu:hover{box-shadow:0 12px 36px rgba(239,68,68,.35)}
-  .uc-police:hover{box-shadow:0 12px 36px rgba(59,130,246,.35)}
-  .uc-pompiers:hover{box-shadow:0 12px 36px rgba(234,88,12,.35)}
-  .uc-europe:hover{box-shadow:0 12px 36px rgba(124,58,237,.35)}
-  .uc-ssourd:hover{box-shadow:0 12px 36px rgba(148,163,184,.35)}
-  .uc-local:hover{box-shadow:0 12px 36px rgba(16,185,129,.35)}
+#loraBanner{
+  display:none;position:sticky;top:0;z-index:100;
+  background:var(--red-d);border-bottom:2px solid var(--red);
+  padding:.75rem 1rem;
 }
-.btn-enter{display:flex;align-items:center;justify-content:center;gap:.6rem;width:100%;max-width:460px;padding:.95rem 1.5rem;background:var(--card);border:1px solid var(--border-h);border-radius:var(--r-lg);font-weight:600;font-size:.92rem;color:var(--sub);cursor:pointer;transition:all .15s;animation:slideUp .45s .4s ease both}
-.btn-enter svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.75}
-.btn-enter:hover{background:var(--card-h);border-color:var(--accent);color:var(--accent)}
-.btn-enter:hover svg{transform:translateX(3px)}
-.btn-enter:active{transform:scale(.97)}
-/* ─── MAIN ────────────────────────────────────────────────────────── */
-#mainContent{display:none}
-.main{padding-top:calc(var(--nav-h) + 2rem);padding-bottom:4rem;max-width:780px;margin:0 auto;padding-left:1.25rem;padding-right:1.25rem}
-.main-welcome{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:2rem 1.5rem;text-align:center;margin-bottom:2rem}
-.main-welcome h1{font-size:clamp(1.4rem,4vw,1.8rem);font-weight:800;margin-bottom:.6rem}
-.main-welcome p{font-size:.9rem;color:var(--sub);line-height:1.7;max-width:500px;margin:0 auto}
-.local-info{display:flex;flex-direction:column;gap:1rem;margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)}
-.local-map-img{width:100%;max-width:100%;border-radius:12px;margin-top:.5rem;border:1px solid var(--border)}
-.local-contacts{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-top:.5rem}
-.section-title{margin:1rem 0 1rem 0;font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--sub);border-left:3px solid var(--accent);padding-left:.8rem}
-.grid-3,.grid-2,.grid-urgences,.grid-situations,.grid-assos{display:grid;gap:.9rem;margin-bottom:2rem}
-.grid-3{grid-template-columns:repeat(3,1fr)}
-.grid-2{grid-template-columns:repeat(2,1fr)}
-.grid-urgences{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
-.grid-situations{grid-template-columns:repeat(2,1fr)}
-.grid-assos{grid-template-columns:repeat(2,1fr)}
-.card{position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:1.2rem 1rem 1rem;border-radius:18px;min-height:115px;background:var(--card);border:1px solid var(--border);transition:transform .15s,background .2s,border-color .2s;cursor:pointer}
-.card::after{content:attr(data-icon);position:absolute;right:.2rem;top:.05rem;font-size:4rem;font-weight:400;opacity:.12;pointer-events:none;line-height:1}
-.card:hover{background:var(--card-h);border-color:var(--border-h);transform:translateY(-2px)}
-.card:active{transform:scale(.96)}
-.card-icon{font-size:1.8rem;margin-bottom:.4rem;position:relative;z-index:1}
-.card-titre{font-weight:700;font-size:.95rem;margin-bottom:.15rem;position:relative;z-index:1;color:var(--text)}
-.card-desc{font-size:.7rem;color:var(--sub);position:relative;z-index:1;line-height:1.3}
-.card-emergency{color:#fff;border-color:transparent}
-.card-emergency .card-titre,.card-emergency .card-desc{color:#fff}
-.card-emergency::after{filter:brightness(0) invert(1)}
-.card-bleu{background:linear-gradient(135deg,#0a2b5e,#1e3a8a)}
-.card-rouge{background:linear-gradient(135deg,#7f1d1d,#b91c1c)}
-.card-orange{background:linear-gradient(135deg,#7c2d12,#c2410c)}
-.card-violet{background:linear-gradient(135deg,#3730a3,#5b21b6)}
-.card-vert{background:linear-gradient(135deg,#065f46,#047857)}
-.card-rose{background:linear-gradient(135deg,#881337,#e11d48)}
-.card-cyan{background:linear-gradient(135deg,#0e7490,#06b6d4)}
-.card-slate{background:linear-gradient(135deg,#1e293b,#334155)}
-.card-blanc{background:linear-gradient(135deg,#f8fafc,#e2e8f0);color:#0f172a}
-.card-blanc .card-titre,.card-blanc .card-desc{color:#0f172a;transition:color .15s}
-.card-blanc:hover .card-titre,.card-blanc:hover .card-desc{color:#ffffff}
-@media(max-width:600px){
-  .grid-3,.grid-2,.grid-situations,.grid-assos{grid-template-columns:1fr}
-  .grid-urgences{grid-template-columns:1fr}
+#loraBannerInner{max-width:640px;margin:0 auto;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+#loraBannerIcon{font-size:1.4rem;flex-shrink:0}
+#loraBannerText{flex:1;font-size:.9rem;font-weight:600;color:var(--text)}
+#loraBannerTime{font-size:.75rem;color:var(--text2)}
+.lora-pulse{animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ═══════════════════════════════════════════════════════════════
+   SPLASH SCREEN — écran d'accueil urgence
+═══════════════════════════════════════════════════════════════ */
+#splashScreen{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:1.5rem;
+  background:var(--bg);
 }
-/* ─── MODALS ──────────────────────────────────────────────────────── */
-.modal-overlay,.tool-modal-overlay{position:fixed;inset:0;z-index:11000;background:rgba(0,0,0,.92);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;visibility:hidden;opacity:0;transition:visibility .2s,opacity .2s}
-.modal-overlay.active,.tool-modal-overlay.active{visibility:visible;opacity:1}
-.modal-container,.tool-modal-container{background:var(--bg1);border-radius:28px;width:90%;max-width:500px;border:1px solid var(--border);box-shadow:0 32px 64px rgba(0,0,0,.5);overflow:hidden;animation:popIn .2s ease}
-.modal-header,.tool-modal-header{display:flex;justify-content:space-between;align-items:center;padding:1rem 1.5rem;border-bottom:1px solid var(--border);background:var(--bg1)}
-.modal-header h3,.tool-modal-header h3{font-size:1.1rem;font-weight:700}
-.modal-close,.tool-modal-close{width:32px;height:32px;border-radius:40px;background:var(--bg2);color:var(--sub);font-size:1.2rem;display:flex;align-items:center;justify-content:center;cursor:pointer}
-.modal-close:hover,.tool-modal-close:hover{background:rgba(239,68,68,.2);color:var(--red);transform:rotate(90deg)}
-.modal-body{padding:1.8rem 1.5rem;font-size:.95rem;line-height:1.6;color:var(--text)}
-.modal-body ul{margin-left:1.5rem;margin-top:.5rem}
-.modal-body li{margin:.5rem 0}
-.modal-body strong{color:var(--accent)}
-.phone-badge{display:inline-block;background:var(--accent);color:white;padding:.2rem .6rem;border-radius:40px;font-weight:600;font-size:.85rem;margin:0 .1rem;text-decoration:none;transition:background .15s}
-.phone-badge:hover{background:var(--green);color:white}
-.modal-body a:not(.phone-badge){color:var(--accent);text-decoration:underline}
-.tool-modal-body{padding:2rem 1.5rem 1.8rem;display:flex;flex-direction:column;align-items:center;gap:1.5rem}
-.tool-status{font-size:1.8rem;font-weight:800;color:var(--accent)}
-.tool-button{background:var(--accent);color:white;border:none;padding:.8rem 2rem;border-radius:40px;font-weight:600;font-size:1rem;width:100%;max-width:220px;transition:transform .1s,background .2s}
-.tool-button:active{transform:scale(.96)}
-.tool-button.stop{background:var(--red)}
-.fullscreen-tool{position:fixed;inset:0;z-index:11000;background:white;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:2rem;visibility:hidden;opacity:0;transition:visibility .1s,opacity .1s}
-.fullscreen-tool.active{visibility:visible;opacity:1}
-.fullscreen-btn{background:rgba(0,0,0,.7);backdrop-filter:blur(12px);color:white;border:none;padding:.8rem 2rem;border-radius:60px;font-weight:600;font-size:1rem;margin-bottom:3rem;cursor:pointer}
-.fullscreen-btn:active{transform:scale(.96)}
-.flash-white{background:#fff}
-.flash-black{background:#000}
-@keyframes popIn{from{transform:scale(.95);opacity:0}to{transform:scale(1);opacity:1}}
-@keyframes floatIn{0%{opacity:0;transform:translateY(20px) scale(0.9)}100%{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes slideUp{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}
+.splash-badge{
+  display:inline-flex;align-items:center;gap:.4rem;
+  background:var(--teal-d);border:1px solid var(--teal);
+  color:var(--teal);font-size:.75rem;font-weight:600;
+  padding:.3rem .8rem;border-radius:20px;margin-bottom:1.5rem;letter-spacing:.5px
+}
+.splash-logo{font-size:1.1rem;font-weight:700;letter-spacing:2px;color:var(--text2);margin-bottom:.25rem}
+.splash-title{font-size:2rem;font-weight:800;letter-spacing:-.5px;text-align:center;margin-bottom:.5rem;line-height:1.1}
+.splash-sub{font-size:.9rem;color:var(--text2);text-align:center;max-width:360px;margin-bottom:2rem;line-height:1.6}
+.splash-sub strong{color:var(--text);font-weight:600}
+
+/* Numéros d'urgence splash — PRIORITÉ ABSOLUE */
+.splash-numbers{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;
+  width:100%;max-width:420px;margin-bottom:.6rem
+}
+.splash-numbers-wide{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:.6rem;
+  width:100%;max-width:420px;margin-bottom:1.5rem
+}
+.num-btn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:.8rem .4rem;border-radius:var(--r);border:1px solid var(--border2);
+  background:var(--s2);text-decoration:none;
+  transition:transform var(--t),background var(--t);
+  -webkit-tap-highlight-color:transparent;min-height:72px
+}
+.num-btn:active,.num-btn:focus{transform:scale(.97);outline:2px solid var(--blue);outline-offset:2px}
+.num-btn.samu,.num-btn.pompiers{background:var(--red-d);border-color:var(--red)}
+.num-btn.police{background:var(--blue-d);border-color:var(--blue)}
+.num-btn.europe{background:var(--blue-d);border-color:var(--blue)}
+.num-btn.ssourd{background:var(--teal-d);border-color:var(--teal)}
+.num-digit{font-size:1.9rem;font-weight:900;line-height:1;letter-spacing:-1px}
+.num-label{font-size:.62rem;font-weight:700;letter-spacing:.8px;color:var(--text2);margin-top:.15rem;text-align:center}
+.num-btn.samu .num-digit,.num-btn.pompiers .num-digit{color:var(--red)}
+.num-btn.police .num-digit,.num-btn.europe .num-digit{color:var(--blue)}
+.num-btn.ssourd .num-digit{color:var(--teal)}
+
+.splash-enter{
+  display:flex;align-items:center;justify-content:center;gap:.5rem;
+  background:var(--blue);color:#fff;font-size:1rem;font-weight:700;
+  padding:1rem 2.5rem;border-radius:var(--r);width:100%;max-width:420px;
+  transition:background var(--t);letter-spacing:.3px;
+}
+.splash-enter:hover,.splash-enter:focus{background:#2563eb;outline:none}
+.splash-enter:active{transform:scale(.98)}
+
+/* ═══════════════════════════════════════════════════════════════
+   TOPBAR — barre supérieure en mode guide
+═══════════════════════════════════════════════════════════════ */
+#topBar{
+  position:sticky;top:0;z-index:50;
+  background:rgba(12,12,18,.95);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:.6rem 1rem;gap:.75rem
+}
+#topBarLoc{flex:1;font-size:.85rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#topBarLoc span{font-size:.75rem;color:var(--text2);display:block;font-weight:400}
+#drawerBtn{padding:.4rem;border-radius:var(--rs);border:1px solid var(--border2);background:var(--s2);font-size:1.2rem;flex-shrink:0}
+select#langSelect{
+  background:var(--s2);color:var(--text);border:1px solid var(--border2);
+  border-radius:var(--rs);padding:.35rem .5rem;font-size:.8rem;
+  cursor:pointer;max-width:80px
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   STRIP URGENCES — toujours visible sous la topbar
+═══════════════════════════════════════════════════════════════ */
+#urgenceStrip{
+  background:var(--s1);border-bottom:1px solid var(--border);
+  padding:.5rem 1rem;overflow-x:auto;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none
+}
+#urgenceStrip::-webkit-scrollbar{display:none}
+.ustrip-inner{display:flex;gap:.5rem;width:max-content}
+.ustrip-btn{
+  display:flex;align-items:center;gap:.4rem;
+  padding:.45rem .9rem;border-radius:20px;border:1px solid var(--border2);
+  background:var(--s2);white-space:nowrap;font-size:.85rem;font-weight:700;
+  text-decoration:none;transition:background var(--t)
+}
+.ustrip-btn.samu,.ustrip-btn.pompiers{color:var(--red);border-color:var(--red);background:var(--red-d)}
+.ustrip-btn.police{color:var(--blue);border-color:var(--blue);background:var(--blue-d)}
+.ustrip-btn.europe{color:var(--blue);border-color:var(--blue);background:var(--blue-d)}
+.ustrip-btn.ssourd{color:var(--teal);border-color:var(--teal);background:var(--teal-d)}
+.ustrip-btn.samu .ustrip-num,.ustrip-btn.pompiers .ustrip-num{color:var(--red)}
+.ustrip-btn.police .ustrip-num,.ustrip-btn.europe .ustrip-num{color:var(--blue)}
+.ustrip-num{font-size:1.1rem;font-weight:900}
+
+/* ═══════════════════════════════════════════════════════════════
+   MAIN CONTENT — sections
+═══════════════════════════════════════════════════════════════ */
+#mainContent{max-width:640px;margin:0 auto;padding:1rem}
+.section-label{
+  font-size:.7rem;font-weight:700;letter-spacing:1.5px;color:var(--text3);
+  text-transform:uppercase;padding:.25rem 0;margin-bottom:.6rem;
+  border-bottom:1px solid var(--border)
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SECTION LOCAL — lieu et message de réassurance
+═══════════════════════════════════════════════════════════════ */
+#localSection{
+  background:var(--s1);border:1px solid var(--border2);border-radius:var(--r);
+  padding:1rem;margin-bottom:1rem
+}
+#localName{font-size:1rem;font-weight:700;margin-bottom:.25rem}
+#localAddress{font-size:.8rem;color:var(--text2);margin-bottom:.75rem}
+.local-contacts{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin-bottom:.75rem}
+.local-contact-btn{
+  display:flex;align-items:center;gap:.4rem;
+  background:var(--s2);border:1px solid var(--border);border-radius:var(--rs);
+  padding:.5rem .75rem;font-size:.8rem;font-weight:600;text-decoration:none;
+  transition:background var(--t)
+}
+.local-contact-btn:active{background:var(--s3)}
+#reassuranceMsg{
+  background:var(--blue-d);border:1px solid var(--blue);border-radius:var(--rs);
+  padding:.6rem .8rem;font-size:.85rem;line-height:1.5;color:var(--text)
+}
+#meetingPoint{font-size:.8rem;color:var(--text2);margin-top:.5rem;padding-top:.5rem;border-top:1px solid var(--border)}
+
+/* ═══════════════════════════════════════════════════════════════
+   CARTES (système commun)
+═══════════════════════════════════════════════════════════════ */
+.card{
+  background:var(--s1);border:1px solid var(--border);border-radius:var(--r);
+  padding:.85rem 1rem;cursor:pointer;transition:background var(--t),transform var(--t);
+  -webkit-tap-highlight-color:transparent;position:relative;overflow:hidden
+}
+.card:active{background:var(--s2);transform:scale(.99)}
+.card:focus{outline:2px solid var(--blue);outline-offset:2px}
+.card-icon{font-size:1.6rem;margin-bottom:.35rem;line-height:1}
+.card-titre{font-size:.9rem;font-weight:700;margin-bottom:.2rem;line-height:1.3}
+.card-desc{font-size:.75rem;color:var(--text2);line-height:1.4}
+
+/* Accent coloré selon urgence */
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px}
+.card-rouge::before{background:var(--red)}
+.card-orange::before{background:var(--orange)}
+.card-bleu::before{background:var(--blue)}
+.card-teal::before{background:var(--teal)}
+.card-violet::before{background:var(--violet)}
+.card-cyan::before{background:var(--cyan)}
+.card-slate::before{background:var(--slate)}
+.card-rose::before{background:var(--rose)}
+.card-blanc::before{background:var(--text2)}
+
+.card-rouge{background:var(--red-d);border-color:rgba(229,62,62,.25)}
+.card-orange{background:var(--orange-d);border-color:rgba(224,123,10,.25)}
+.card-bleu{background:var(--blue-d);border-color:rgba(59,130,246,.25)}
+.card-violet{background:var(--violet-d);border-color:rgba(124,58,237,.25)}
+.card-cyan{background:var(--cyan-d);border-color:rgba(8,145,178,.25)}
+.card-rose{background:var(--rose-d);border-color:rgba(219,39,119,.25)}
+
+/* ═══════════════════════════════════════════════════════════════
+   GRILLES DE CARTES
+═══════════════════════════════════════════════════════════════ */
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-bottom:1.25rem}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:1.25rem}
+.grid-1{display:grid;grid-template-columns:1fr;gap:.6rem;margin-bottom:1.25rem}
+@media(max-width:360px){.grid-3{grid-template-columns:1fr 1fr}}
+
+/* ═══════════════════════════════════════════════════════════════
+   SECTION OUTILS — bandeau horizontal scrollable
+═══════════════════════════════════════════════════════════════ */
+#outilsScroll{
+  overflow-x:auto;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;margin:0 -1rem;padding:0 1rem;margin-bottom:1.25rem
+}
+#outilsScroll::-webkit-scrollbar{display:none}
+.outils-row{display:flex;gap:.6rem;width:max-content}
+.outil-btn{
+  display:flex;flex-direction:column;align-items:center;gap:.3rem;
+  background:var(--s1);border:1px solid var(--border2);border-radius:var(--r);
+  padding:.75rem .8rem;cursor:pointer;min-width:80px;max-width:90px;
+  transition:background var(--t);-webkit-tap-highlight-color:transparent
+}
+.outil-btn:active{background:var(--s3)}
+.outil-btn.active{background:var(--blue-d);border-color:var(--blue)}
+.outil-icon{font-size:1.5rem;line-height:1}
+.outil-label{font-size:.65rem;font-weight:600;text-align:center;line-height:1.2;color:var(--text2)}
+
+/* ═══════════════════════════════════════════════════════════════
+   MODALES
+═══════════════════════════════════════════════════════════════ */
+.modal-overlay{
+  position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.7);
+  display:flex;align-items:flex-end;justify-content:center;
+  padding:.75rem;opacity:0;pointer-events:none;transition:opacity var(--t)
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-sheet{
+  background:var(--s2);border:1px solid var(--border2);border-radius:var(--r) var(--r) var(--rs) var(--rs);
+  width:100%;max-width:520px;max-height:88vh;overflow-y:auto;
+  transform:translateY(24px);transition:transform var(--t);
+}
+.modal-overlay.open .modal-sheet{transform:translateY(0)}
+.modal-header{
+  display:flex;align-items:center;gap:.75rem;padding:1rem 1rem .75rem;
+  border-bottom:1px solid var(--border);position:sticky;top:0;
+  background:var(--s2);z-index:1
+}
+.modal-title{font-size:1.05rem;font-weight:700;flex:1;line-height:1.3}
+.modal-close{
+  background:var(--s3);border:1px solid var(--border2);border-radius:var(--rs);
+  padding:.4rem .6rem;font-size:1rem;flex-shrink:0
+}
+.modal-body{padding:1rem}
+.modal-body ul{list-style:none;display:flex;flex-direction:column;gap:.65rem}
+.modal-body ul li{
+  background:var(--s3);border-radius:var(--rs);padding:.75rem 1rem;
+  font-size:.9rem;line-height:1.65;border-left:3px solid var(--border2);
+  counter-increment:step
+}
+.modal-body ul li::before{
+  content:counter(step);display:inline-flex;align-items:center;justify-content:center;
+  width:1.3rem;height:1.3rem;background:var(--blue);color:#fff;
+  border-radius:50%;font-size:.7rem;font-weight:800;margin-right:.6rem;
+  flex-shrink:0;vertical-align:middle
+}
+.modal-body ul{counter-reset:step}
+
+/* ═══════════════════════════════════════════════════════════════
+   OUTIL — MÉTRONOME
+═══════════════════════════════════════════════════════════════ */
+.metro-display{
+  text-align:center;padding:1.5rem 1rem;background:var(--s1);
+  border-radius:var(--r);margin-bottom:1rem
+}
+.metro-bpm-label{font-size:.7rem;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:.25rem}
+.metro-bpm{font-size:3.5rem;font-weight:900;color:var(--red);line-height:1}
+.metro-unit{font-size:.9rem;color:var(--text2);margin-bottom:.5rem}
+.metro-depth{font-size:.8rem;color:var(--text2)}
+.metro-heart{
+  font-size:2.5rem;display:block;transition:transform .1s;margin:1rem auto .5rem;
+}
+.metro-heart.beat{transform:scale(1.3)}
+.metro-controls{display:flex;gap:.6rem}
+.metro-controls button,.tool-btn-main{
+  flex:1;padding:.85rem;border-radius:var(--r);font-size:.95rem;font-weight:700;
+  border:1px solid var(--border2);background:var(--s3);transition:background var(--t)
+}
+.metro-controls button.active,.tool-btn-main.active{background:var(--red);color:#fff;border-color:var(--red)}
+.bpm-slider{width:100%;margin:.75rem 0;accent-color:var(--red)}
+
+/* ═══════════════════════════════════════════════════════════════
+   OUTIL — MINUTERIE
+═══════════════════════════════════════════════════════════════ */
+.timer-display{
+  text-align:center;font-size:3.5rem;font-weight:900;
+  padding:1.5rem 1rem;background:var(--s1);border-radius:var(--r);margin-bottom:1rem;
+  font-variant-numeric:tabular-nums;letter-spacing:2px
+}
+.timer-display.done{color:var(--red)}
+.timer-presets{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.75rem}
+.timer-preset{
+  background:var(--s2);border:1px solid var(--border2);border-radius:var(--rs);
+  padding:.6rem .5rem;font-size:.8rem;font-weight:600;text-align:center;line-height:1.3
+}
+.timer-preset:active{background:var(--s3)}
+
+/* ═══════════════════════════════════════════════════════════════
+   OUTIL — FLASH SOS / TORCHE
+═══════════════════════════════════════════════════════════════ */
+#flashOverlay,#torchOverlay{
+  position:fixed;inset:0;z-index:500;display:none;
+  flex-direction:column;align-items:center;justify-content:center;gap:2rem;
+  background:#000
+}
+#flashOverlay.active,#torchOverlay.active{display:flex}
+#torchOverlay{background:#fff}
+#torchOverlay button{background:#000;color:#fff}
+.flash-stop-btn,.torch-stop-btn{
+  background:rgba(0,0,0,.7);color:#fff;border:2px solid #fff;border-radius:var(--r);
+  padding:1rem 2.5rem;font-size:1.1rem;font-weight:700
+}
+#torchOverlay .torch-stop-btn{background:rgba(255,255,255,.7);color:#000;border-color:#000}
+
+/* ═══════════════════════════════════════════════════════════════
+   OUTIL — RESPIRATION GUIDÉE
+═══════════════════════════════════════════════════════════════ */
+.resp-circle-container{display:flex;justify-content:center;padding:1.5rem 0}
+.resp-circle{
+  width:120px;height:120px;border-radius:50%;
+  background:var(--blue-d);border:2px solid var(--blue);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.95rem;font-weight:700;color:var(--blue);
+  transition:transform 4s ease-in-out
+}
+.resp-circle.inhale{transform:scale(1.6)}
+.resp-circle.exhale{transform:scale(1)}
+
+/* ═══════════════════════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════════════════════ */
+footer{
+  text-align:center;padding:2rem 1rem;color:var(--text3);font-size:.75rem;
+  border-top:1px solid var(--border);margin-top:1rem
+}
+footer a{color:var(--text3);text-decoration:underline}
+
+/* ═══════════════════════════════════════════════════════════════
+   DRAWER NAVIGATION
+═══════════════════════════════════════════════════════════════ */
+#drawerOverlay{
+  position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.6);
+  opacity:0;pointer-events:none;transition:opacity var(--t)
+}
+#drawerOverlay.open{opacity:1;pointer-events:all}
+#drawer{
+  position:fixed;top:0;right:0;bottom:0;z-index:301;
+  background:var(--s2);border-left:1px solid var(--border2);
+  width:min(280px,85vw);transform:translateX(100%);
+  transition:transform var(--t);overflow-y:auto;padding:1.5rem 1rem
+}
+#drawer.open{transform:translateX(0)}
+.drawer-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+.drawer-title{font-size:.85rem;font-weight:700;letter-spacing:1px;color:var(--text2);text-transform:uppercase}
+#drawerClose{background:var(--s3);border:1px solid var(--border);border-radius:var(--rs);padding:.4rem .6rem;font-size:.9rem}
+.drawer-links{display:flex;flex-direction:column;gap:.4rem}
+.drawer-link{
+  display:flex;align-items:center;gap:.75rem;padding:.7rem .9rem;
+  border-radius:var(--rs);font-size:.9rem;font-weight:500;
+  transition:background var(--t)
+}
+.drawer-link:hover,.drawer-link:active{background:var(--s3)}
+.drawer-footer{margin-top:2rem;font-size:.75rem;color:var(--text3);text-align:center}
+
+/* ═══════════════════════════════════════════════════════════════
+   SECTION LORA ALERTES (portail)
+═══════════════════════════════════════════════════════════════ */
+#loraSection{display:none;margin-bottom:1.25rem}
+.lora-alert-card{
+  background:var(--red-d);border:1px solid rgba(229,62,62,.3);border-radius:var(--r);
+  padding:.85rem 1rem;margin-bottom:.5rem;
+  border-left:3px solid var(--red)
+}
+.lora-alert-type{font-size:.9rem;font-weight:700;margin-bottom:.2rem}
+.lora-alert-meta{font-size:.75rem;color:var(--text2)}
+.lora-alert-msg{font-size:.85rem;margin-top:.35rem;line-height:1.5}
+
+/* ═══════════════════════════════════════════════════════════════
+   ACCESSIBILITÉ
+═══════════════════════════════════════════════════════════════ */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 </style>
 </head>
 <body>
 
-<!-- ─── BANNIÈRE MODE DÉGRADÉ v2.4 ──────────────────────────────────────── -->
-<div id="integrity-banner">
-  ⚠️ Système en mode dégradé — Contenu en lecture seule — Contactez l'administrateur
+<!-- ── Mode dégradé ──────────────────────────────────────── -->
+<div id="degradedBanner" role="alert" aria-live="polite">
+  ⚠️ Système en mode dégradé — contenu HTML disponible, fonctions PHP limitées.
 </div>
 
-<nav id="nav"><button class="hamburger" id="hamburgerBtn"><span></span><span></span><span></span></button><div class="nav-logo" id="navLogo"><div class="nav-logo-badge">⛑️</div><strong id="appTitle">SOS-GUIDE</strong></div><div class="nav-right"><button class="nav-btn" id="langBtn">🌐</button><button class="nav-btn" id="themeToggle">🌙</button></div></nav>
-<div id="drawerOverlay" class="drawer-overlay"><div class="drawer"><div class="drawer-header"><span class="drawer-title" id="drawerTitle">Navigation</span><button class="drawer-close" id="drawerCloseBtn">✕</button></div><nav class="drawer-nav" id="drawerNav"></nav><div class="drawer-footer" id="drawerFooter">SOS-GUIDE · version 1.0</div></div></div>
-<div id="languageModal" class="lang-modal-overlay"><div class="lang-modal-container"><div class="lang-modal-header"><button class="lang-modal-close" id="closeModalBtn">✕</button></div><div class="lang-grid" id="flagGrid"></div></div></div>
-<div id="splashScreen"><div class="splash-header"><span class="splash-emoji">⛑️</span><h1 class="splash-title"></h1><p class="splash-sub"></p></div><div class="urgence-grid" id="urgenceGrid"></div><button class="btn-enter" id="enterBtn"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><span id="enterBtnText"></span></button></div>
-<div id="mainContent"><div class="main"><div class="main-welcome"><h1 id="welcomeTitle"></h1><p id="welcomeText"></p><div id="localInfoContainer" class="local-info"></div></div><div id="principesSection"></div><div id="outilsSection"></div><div id="urgencesSection"></div><div id="situationsSection"></div><div id="assosSection"></div></div></div>
-<!-- modales génériques -->
-<div id="genericModal" class="modal-overlay"><div class="modal-container"><div class="modal-header"><h3 id="genericModalTitle"></h3><button class="modal-close" id="closeGenericModal">✕</button></div><div class="modal-body" id="genericModalBody"></div></div></div>
-<!-- modales outils -->
-<div id="metronomeModal" class="tool-modal-overlay"><div class="tool-modal-container"><div class="tool-modal-header"><h3 id="metroTitle">❤️ Métronome 110 BPM</h3><button class="tool-modal-close close-metronome">✕</button></div><div class="tool-modal-body"><div class="tool-status" id="metroBpmDisplay">110 BPM</div><button id="metroStartStop" class="tool-button"></button></div></div></div>
-<div id="flashFullscreen" class="fullscreen-tool flash-white"><button id="flashStopBtn" class="fullscreen-btn"></button></div>
-<div id="torcheFullscreen" class="fullscreen-tool"><button id="torcheStopBtn" class="fullscreen-btn"></button></div>
-<div id="alerteModal" class="tool-modal-overlay"><div class="tool-modal-container"><div class="tool-modal-header"><h3 id="alerteTitle">🚨 Alerte sonore</h3><button class="tool-modal-close close-alerte">✕</button></div><div class="tool-modal-body"><div class="tool-status" id="sirenStatus"></div><button id="sirenStartStop" class="tool-button"></button></div></div></div>
-<div id="respirationModal" class="tool-modal-overlay"><div class="tool-modal-container"><div class="tool-modal-header"><h3 id="respTitle">🌬️ Respiration guidée</h3><button class="tool-modal-close close-respiration">✕</button></div><div class="tool-modal-body" style="text-align:center"><div id="respirationGuide" style="font-size:1.4rem;margin-bottom:1rem"></div><div id="respirationTimer" style="font-size:2rem;font-weight:800">4</div><button id="respirationStartStop" class="tool-button"></button></div></div></div>
-<div id="siffletModal" class="tool-modal-overlay"><div class="tool-modal-container"><div class="tool-modal-header"><h3 id="whistleTitle">🔊 Sifflet d'urgence</h3><button class="tool-modal-close close-sifflet">✕</button></div><div class="tool-modal-body"><div class="tool-status" id="whistleStatus"></div><button id="whistleStartStop" class="tool-button"></button></div></div></div>
+<!-- ── Alerte LoRa entrante ──────────────────────────────── -->
+<div id="loraBanner" role="alert" aria-live="assertive" aria-atomic="true">
+  <div id="loraBannerInner">
+    <span id="loraBannerIcon" class="lora-pulse" aria-hidden="true">🚨</span>
+    <span id="loraBannerText">Alerte reçue</span>
+    <span id="loraBannerTime"></span>
+  </div>
+</div>
 
+<!-- ════════════════════════════════════════════════════════
+     ÉCRAN D'ACCUEIL — numéros d'urgence en premier
+════════════════════════════════════════════════════════════ -->
+<main id="splashScreen" role="main">
+  <a href="#mainContent" class="sr-only">Passer à l'accueil</a>
+
+  <span class="splash-badge" role="status">
+    <svg width="8" height="8" viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
+    Fonctionne sans Internet
+  </span>
+
+  <p class="splash-logo">⛑ SOS-GUIDE</p>
+  <h1 class="splash-title" id="splashTitle">Guide de survie</h1>
+  <p class="splash-sub" id="splashSub">Ce guide fonctionne <strong>sans connexion Internet</strong>. Il fournit les informations essentielles pour faire face à une situation d'urgence.</p>
+
+  <!-- Numéros vitaux — les plus importants d'abord -->
+  <p class="sr-only">Numéros d'urgence à appeler immédiatement</p>
+  <div class="splash-numbers" id="splashNumbers" role="list" aria-label="Numéros d'urgence"></div>
+  <div class="splash-numbers-wide" id="splashNumbersWide" role="list"></div>
+
+  <button class="splash-enter" id="splashEnterBtn" aria-label="Accéder au guide complet de premiers secours">
+    Accéder au guide complet →
+  </button>
+</main>
+
+<!-- ════════════════════════════════════════════════════════
+     CONTENU PRINCIPAL
+════════════════════════════════════════════════════════════ -->
+<div id="mainContent" class="hidden" role="main">
+
+  <!-- Topbar -->
+  <header id="topBar" role="banner">
+    <div id="topBarLoc" aria-label="Localisation du guide">
+      <span id="topBarName">SOS-GUIDE</span>
+      <span id="topBarAddr"></span>
+    </div>
+    <label for="langSelect" class="sr-only">Choisir la langue</label>
+    <select id="langSelect" aria-label="Langue"></select>
+    <button id="drawerBtn" aria-label="Ouvrir le menu de navigation" aria-expanded="false" aria-controls="drawer">☰</button>
+  </header>
+
+  <!-- Strip numéros — toujours accessible -->
+  <nav id="urgenceStrip" aria-label="Numéros d'urgence rapides">
+    <div class="ustrip-inner" id="urgenceStripInner" role="list"></div>
+  </nav>
+
+  <div id="mainInner">
+
+    <!-- Alertes LoRa reçues -->
+    <section id="loraSection" aria-label="Alertes reçues par réseau mesh" aria-live="polite">
+      <h2 class="section-label">📡 Alertes LoRa reçues</h2>
+      <div id="loraAlertsList"></div>
+    </section>
+
+    <!-- Infos locales -->
+    <section id="localSection" aria-label="Informations du site">
+      <div id="localName"></div>
+      <div id="localAddress"></div>
+      <div class="local-contacts" id="localContacts"></div>
+      <div id="reassuranceMsg" class="hidden"></div>
+      <div id="meetingPoint" class="hidden"></div>
+    </section>
+
+    <!-- ──── PAS : PROTÉGER → ALERTER → SECOURIR ──── -->
+    <section aria-labelledby="principesHeading">
+      <h2 id="principesHeading" class="section-label" id="section-principes"></h2>
+      <div class="grid-3" id="principesGrid" role="list"></div>
+    </section>
+
+    <!-- ──── OUTILS PRATIQUES ──── -->
+    <section aria-labelledby="outilsHeading">
+      <h2 id="outilsHeading" class="section-label" id="section-outils"></h2>
+      <div id="outilsScroll" role="toolbar" aria-label="Outils d'urgence">
+        <div class="outils-row" id="outilsRow"></div>
+      </div>
+    </section>
+
+    <!-- ──── URGENCES MÉDICALES ──── -->
+    <section aria-labelledby="urgencesHeading">
+      <h2 id="urgencesHeading" class="section-label" id="section-urgences"></h2>
+      <div class="grid-2" id="urgencesGrid" role="list"></div>
+    </section>
+
+    <!-- ──── SITUATIONS COLLECTIVES ──── -->
+    <section aria-labelledby="situationsHeading">
+      <h2 id="situationsHeading" class="section-label" id="section-situations"></h2>
+      <div class="grid-2" id="situationsGrid" role="list"></div>
+    </section>
+
+    <!-- ──── ASSOCIATIONS ──── -->
+    <section aria-labelledby="assosHeading">
+      <h2 id="assosHeading" class="section-label" id="section-assos"></h2>
+      <div class="grid-1" id="assosGrid" role="list"></div>
+    </section>
+
+    <footer>
+      <p id="footerText">SOS-GUIDE · v2.5 · Aucune donnée personnelle collectée</p>
+      <p style="margin-top:.5rem"><a href="PRIVACY.md" id="privacyLink">Politique de confidentialité</a></p>
+    </footer>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     DRAWER NAVIGATION
+════════════════════════════════════════════════════════════ -->
+<div id="drawerOverlay" aria-hidden="true"></div>
+<nav id="drawer" aria-label="Navigation principale" aria-hidden="true" role="navigation">
+  <div class="drawer-header">
+    <span class="drawer-title" id="drawerTitle">Navigation</span>
+    <button id="drawerClose" aria-label="Fermer le menu">✕</button>
+  </div>
+  <div class="drawer-links" id="drawerLinks" role="list"></div>
+  <div class="drawer-footer" id="drawerFooter">SOS-GUIDE · v2.5</div>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════
+     MODALE GÉNÉRIQUE (cartes PAS, urgences, situations)
+════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="genericModal" role="dialog" aria-modal="true" aria-labelledby="genericModalTitle">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <h2 class="modal-title" id="genericModalTitle"></h2>
+      <button class="modal-close" id="closeGenericModal" aria-label="Fermer">✕</button>
+    </div>
+    <div class="modal-body" id="genericModalBody"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     MODALE MÉTRONOME RCP
+════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="metroModal" role="dialog" aria-modal="true" aria-label="Métronome RCP">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <h2 class="modal-title" id="metroTitle">❤️ Métronome RCP 100-120 BPM</h2>
+      <button class="modal-close" id="closeMetroModal" aria-label="Fermer">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="metro-display">
+        <div class="metro-bpm-label">FRÉQUENCE</div>
+        <div class="metro-bpm" id="metroBpmDisplay">110</div>
+        <div class="metro-unit">compressions / minute</div>
+        <span class="metro-heart" id="metroHeart" aria-hidden="true">❤️</span>
+        <div class="metro-depth">Profondeur : 5 à 6 cm · Bras tendus</div>
+      </div>
+      <input type="range" class="bpm-slider" id="bpmSlider" min="100" max="120" value="110" step="5" aria-label="Réglage BPM">
+      <div class="metro-controls">
+        <button id="metroStartStop" aria-pressed="false">Démarrer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     MODALE MINUTERIE
+════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="timerModal" role="dialog" aria-modal="true" aria-label="Minuterie d'urgence">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <h2 class="modal-title">⏱️ Minuterie d'urgence</h2>
+      <button class="modal-close" id="closeTimerModal" aria-label="Fermer">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="timer-display" id="timerDisplay" role="timer" aria-live="off">20:00</div>
+      <div class="timer-presets">
+        <button class="timer-preset" data-seconds="1200" aria-label="20 minutes pour refroidissement brûlure">🔥 20 min<br><small>Brûlure — eau froide</small></button>
+        <button class="timer-preset" data-seconds="120" aria-label="2 minutes relève RCP">❤️ 2 min<br><small>Relève RCP</small></button>
+        <button class="timer-preset" data-seconds="0" aria-label="Chronomètre pour noter heure garrot">⏱️ Chrono<br><small>Garrot — noter heure</small></button>
+        <button class="timer-preset" data-seconds="900" aria-label="15 minutes compression hémorragie">🩸 15 min<br><small>Compression hémorragie</small></button>
+      </div>
+      <div class="metro-controls">
+        <button id="timerStartStop">Démarrer</button>
+        <button id="timerReset" style="flex:0 0 auto;padding:.85rem 1.2rem">↺</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     MODALE RESPIRATION GUIDÉE
+════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="respModal" role="dialog" aria-modal="true" aria-label="Respiration guidée">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <h2 class="modal-title" id="respTitle">🌬️ Respiration guidée</h2>
+      <button class="modal-close" id="closeRespModal" aria-label="Fermer">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:.85rem;color:var(--text2);margin-bottom:.75rem;text-align:center">Cohérence cardiaque 4 sec — réduit le stress en situation de crise</p>
+      <div class="resp-circle-container">
+        <div class="resp-circle" id="respCircle" aria-live="polite">Inspirez</div>
+      </div>
+      <div class="metro-controls">
+        <button id="respirationStartStop">Commencer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     MODALE ALARME SONORE
+════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="alerteModal" role="dialog" aria-modal="true" aria-label="Alerte sonore">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <h2 class="modal-title" id="alerteTitle">🚨 Alerte sonore 880 Hz</h2>
+      <button class="modal-close" id="closeAlerteModal" aria-label="Fermer">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:.85rem;color:var(--text2);text-align:center;margin-bottom:1rem">Signal de détresse continu — augmenter le volume au maximum</p>
+      <button id="sirenStartStop" class="tool-btn-main">Déclencher l'alarme</button>
+      <p style="font-size:.75rem;color:var(--text3);text-align:center;margin-top:.75rem" id="alerteStatus">⏹️ Arrêtée</p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     MODALE SIFFLET
+════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="whistleModal" role="dialog" aria-modal="true" aria-label="Sifflet d'urgence">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <h2 class="modal-title" id="whistleTitle">🔊 Sifflet d'urgence</h2>
+      <button class="modal-close" id="closeWhistleModal" aria-label="Fermer">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:.85rem;color:var(--text2);text-align:center;margin-bottom:1rem">3 coups = code universel de détresse (SOS)</p>
+      <button id="whistleStartStop" class="tool-btn-main">Siffler (3 coups)</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     OVERLAY FLASH SOS (plein écran)
+════════════════════════════════════════════════════════════ -->
+<div id="flashOverlay" role="alert" aria-label="Flash SOS actif">
+  <p style="color:#fff;font-size:1rem;font-weight:700;letter-spacing:2px">FLASH SOS · · · — — — · · ·</p>
+  <button class="flash-stop-btn" id="flashStopBtn" aria-label="Arrêter le flash SOS">⏹️ Arrêter</button>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     OVERLAY TORCHE (plein écran blanc)
+════════════════════════════════════════════════════════════ -->
+<div id="torchOverlay" role="alert" aria-label="Lampe torche active">
+  <button class="torch-stop-btn" id="torcheStopBtn" style="background:rgba(0,0,0,.15);border:2px solid #000;color:#000;border-radius:12px;padding:1rem 2.5rem;font-size:1.1rem;font-weight:700" aria-label="Éteindre la lampe torche">🔦 Éteindre</button>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     SCRIPTS
+════════════════════════════════════════════════════════════ -->
 <script>
-// ======================= GESTION DES DONNÉES =======================
+'use strict';
+
+/* ── État global ─────────────────────────────────────────── */
 let langData = null;
 let configData = null;
 let currentLang = 'fr';
-const languages = [
-  {code:'fr',flag:'🇫🇷',label:'Français'},{code:'en',flag:'🇬🇧',label:'English'},
-  {code:'es',flag:'🇪🇸',label:'Español'},{code:'de',flag:'🇩🇪',label:'Deutsch'},
-  {code:'it',flag:'🇮🇹',label:'Italiano'},{code:'pt',flag:'🇵🇹',label:'Português'},
-  {code:'nl',flag:'🇳🇱',label:'Nederlands'},{code:'pl',flag:'🇵🇱',label:'Polski'},
-  {code:'ru',flag:'🇷🇺',label:'Русский'},{code:'ar',flag:'🇸🇦',label:'العربية'},
-  {code:'zh',flag:'🇨🇳',label:'中文'},{code:'ja',flag:'🇯🇵',label:'日本語'},
-  {code:'tr',flag:'🇹🇷',label:'Türkçe'},{code:'el',flag:'🇬🇷',label:'Ελληνικά'},
-  {code:'sv',flag:'🇸🇪',label:'Svenska'},{code:'da',flag:'🇩🇰',label:'Dansk'},
-  {code:'no',flag:'🇳🇴',label:'Norsk'},{code:'fi',flag:'🇫🇮',label:'Suomi'},
-  {code:'cs',flag:'🇨🇿',label:'Čeština'},{code:'hu',flag:'🇭🇺',label:'Magyar'},
-  {code:'ro',flag:'🇷🇴',label:'Română'},{code:'uk',flag:'🇺🇦',label:'Українська'},
-  {code:'he',flag:'🇮🇱',label:'עברית'},{code:'th',flag:'🇹🇭',label:'ไทย'},
-  {code:'vi',flag:'🇻🇳',label:'Tiếng Việt'},{code:'ko',flag:'🇰🇷',label:'한국어'},
-  {code:'hi',flag:'🇮🇳',label:'हिन्दी'},{code:'rm',flag:'🇨🇭',label:'Rumantsch'}
-];
+let audioCtx = null;
 
-// ── v2.4 : Chargement config + détection mode dégradé ─────────────────────────
+/* ── Langues disponibles ─────────────────────────────────── */
+const LANGS = [
+  ['fr','Français'],['de','Deutsch'],['it','Italiano'],['rm','Rumantsch'],
+  ['en','English'],['es','Español'],['pt','Português'],['ar','العربية'],
+  ['zh','中文'],['ja','日本語'],['ko','한국어'],['ru','Русский'],
+  ['uk','Українська'],['pl','Polski'],['nl','Nederlands'],['sv','Svenska'],
+  ['no','Norsk'],['da','Dansk'],['fi','Suomi'],['hu','Magyar'],
+  ['ro','Română'],['cs','Čeština'],['el','Ελληνικά'],['tr','Türkçe'],
+  ['fa','فارسی'],['hi','हिन्दी'],['th','ไทย'],['vi','Tiếng Việt'],['he','עברית']
+];
+const RTL_LANGS = new Set(['ar','he','fa']);
+
+/* ── Initialisation ──────────────────────────────────────── */
+(async function init() {
+  buildLangSelect();
+  const saved = localStorage.getItem('sos_lang') || 'fr';
+  await loadConfig();
+  await loadLanguage(saved);
+  pollLora();
+})();
+
+/* ── Sélecteur de langue ─────────────────────────────────── */
+function buildLangSelect() {
+  const sel = document.getElementById('langSelect');
+  LANGS.forEach(([code, label]) => {
+    const opt = document.createElement('option');
+    opt.value = code;
+    opt.textContent = label;
+    sel.appendChild(opt);
+  });
+  sel.addEventListener('change', e => loadLanguage(e.target.value));
+}
+
+/* ── Chargement config.json ──────────────────────────────── */
 async function loadConfig() {
   try {
-    const res = await fetch('data/config.json');
-    if (res.ok) configData = await res.json();
-    else configData = { establishment: {} };
-  } catch(e) {
-    configData = { establishment: {} };
-  }
-
-  // v2.4 : vérifier si une alerte d'intégrité est active
-  try {
-    const alertRes = await fetch('INTEGRITY_ALERT.flag', { cache: 'no-store' });
-    if (alertRes.ok) showIntegrityWarning();
-  } catch(e) { /* pas d'alerte — normal */ }
+    const r = await fetch('data/config.json');
+    if (r.ok) configData = await r.json();
+  } catch(e) { console.warn('config.json introuvable'); }
 }
 
-// v2.4 : bannière mode dégradé
-function showIntegrityWarning() {
-  const banner = document.getElementById('integrity-banner');
-  if (banner) banner.classList.add('show');
-  // Décaler la nav pour laisser de la place à la bannière
-  const bannerH = banner ? banner.offsetHeight : 32;
-  const nav = document.getElementById('nav');
-  if (nav) nav.style.top = bannerH + 'px';
-}
-
+/* ── Chargement d'une langue ─────────────────────────────── */
 async function loadLanguage(lang) {
   try {
-    const res = await fetch(`data/${lang}.json`);
-    if (!res.ok) throw new Error();
-    langData = await res.json();
+    const r = await fetch(`data/${lang}.json`);
+    if (!r.ok) throw new Error();
+    langData = await r.json();
     currentLang = lang;
     localStorage.setItem('sos_lang', lang);
-    if (configData) applyAll();
-    else {
-      await loadConfig();
-      applyAll();
-    }
+    document.documentElement.lang = lang;
+    document.documentElement.dir = RTL_LANGS.has(lang) ? 'rtl' : 'ltr';
+    document.getElementById('langSelect').value = lang;
+    renderPage();
   } catch(e) {
-    if (lang !== 'fr') loadLanguage('fr');
-    else console.error('Impossible de charger fr.json');
+    if (lang !== 'fr') { loadLanguage('fr'); }
+    else { console.error('Impossible de charger fr.json'); }
   }
 }
 
-function formatPhoneNumbersToBadges(html) {
-  const div = document.createElement('div');
-  div.innerHTML = html;
-  const links = div.querySelectorAll('a[href^="tel:"]');
-  links.forEach(link => {
-    const badge = document.createElement('a');
-    badge.href = link.href;
-    badge.className = 'phone-badge';
-    badge.textContent = link.textContent;
-    link.parentNode.replaceChild(badge, link);
-  });
-  return div.innerHTML;
-}
-
-// ── v2.4 : buildUrgenceGrid — merge langue + override config.json ─────────────
-function buildUrgenceGrid() {
-  const grid = document.getElementById('urgenceGrid');
-  grid.innerHTML = '';
-
-  // Base depuis la langue chargée
-  let urgences = [...(langData.urgences || [])];
-
-  // Override depuis config.json si des numéros locaux sont définis
-  const est = (configData && configData.establishment) || {};
-
-  if (est.localSamuNumber && est.localSamuNumber.trim()) {
-    const idx = urgences.findIndex(u => u.class === 'samu');
-    if (idx >= 0) urgences[idx] = { ...urgences[idx], number: est.localSamuNumber.trim() };
-  }
-  if (est.localPompiersNumber && est.localPompiersNumber.trim()) {
-    const idx = urgences.findIndex(u => u.class === 'pompiers');
-    if (idx >= 0) urgences[idx] = { ...urgences[idx], number: est.localPompiersNumber.trim() };
-  }
-  if (est.localPoliceNumber && est.localPoliceNumber.trim()) {
-    const idx = urgences.findIndex(u => u.class === 'police');
-    if (idx >= 0) urgences[idx] = { ...urgences[idx], number: est.localPoliceNumber.trim() };
-  }
-
-  const phoneIcon = `<div class="urgence-phone-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.45A2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72c.128.96.347 1.902.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.4a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.353 1.85.572 2.81.7A2 2 0 0 1 22 16z"/></svg></div>`;
-
-  urgences.slice(0, 4).forEach(urg => {
-    const a = document.createElement('a');
-    a.href = `tel:${urg.number}`;
-    a.className = `urgence-card uc-${urg.class}`;
-    a.setAttribute('data-num', urg.number);
-    a.innerHTML = `${phoneIcon}<div class="urgence-info"><div class="urgence-number">${urg.number}</div><div class="urgence-name">${urg.name}</div></div>`;
-    grid.appendChild(a);
-  });
-
-  const fifth = urgences[4];
-  if (fifth) {
-    const a = document.createElement('a');
-    a.href = `tel:${fifth.number}`;
-    a.className = `urgence-card uc-${fifth.class}`;
-    a.setAttribute('data-num', fifth.number);
-    a.innerHTML = `${phoneIcon}<div class="urgence-info"><div class="urgence-number">${fifth.number}</div><div class="urgence-name">${fifth.name}</div></div>`;
-    grid.appendChild(a);
-  }
-}
-
-function applyAll() {
+/* ── Rendu complet ───────────────────────────────────────── */
+function renderPage() {
   if (!langData) return;
+  renderSplash();
+  renderTopBar();
+  renderUrgenceStrip();
+  renderLocal();
+  renderPrincipes();
+  renderOutils();
+  renderUrgencesMedicales();
+  renderSituations();
+  renderAssos();
+  renderDrawer();
+}
 
-  if (langData.app?.title) document.getElementById('appTitle').textContent = langData.app.title;
-  if (langData.drawer?.title) document.getElementById('drawerTitle').textContent = langData.drawer.title;
-  if (langData.drawer?.footer) document.getElementById('drawerFooter').textContent = langData.drawer.footer;
+/* ── SPLASH ──────────────────────────────────────────────── */
+function renderSplash() {
+  const d = langData;
+  document.getElementById('splashTitle').textContent = d.splash?.title || 'Guide de survie';
+  document.getElementById('splashSub').innerHTML = d.splash?.subtitle || '';
+  document.getElementById('splashEnterBtn').textContent = (d.splash?.enterButton || 'Accéder au guide') + ' →';
 
-  // Drawer
-  const drawerNav = document.getElementById('drawerNav');
-  drawerNav.innerHTML = '';
-  langData.drawer.links.forEach(link => {
-    const a = document.createElement('a');
-    a.href = link.href;
-    a.innerHTML = link.icon + ' ' + link.label;
-    if (link.href.startsWith('#')) {
-      a.addEventListener('click', (e) => {
-        e.preventDefault(); closeDrawer();
-        const target = document.querySelector(link.href);
-        if (target) target.scrollIntoView({ behavior: 'smooth' });
-      });
-    } else {
-      a.addEventListener('click', () => closeDrawer());
-    }
-    drawerNav.appendChild(a);
-  });
+  // Numéros (3 premiers = grosse grille, reste = 2 colonnes)
+  const nums = buildUrgences();
+  const grid1 = document.getElementById('splashNumbers');
+  const grid2 = document.getElementById('splashNumbersWide');
+  grid1.innerHTML = ''; grid2.innerHTML = '';
 
-  // Splash
-  document.querySelector('.splash-title').textContent = langData.splash.title;
-  document.querySelector('.splash-sub').innerHTML = langData.splash.subtitle;
-  document.getElementById('enterBtnText').textContent = langData.splash.enterButton;
+  nums.slice(0, 3).forEach(u => grid1.appendChild(makeSplashNum(u)));
+  nums.slice(3).forEach(u => grid2.appendChild(makeSplashNum(u)));
+}
 
-  // Welcome
-  document.getElementById('welcomeTitle').textContent = langData.main.welcome.title;
-  document.getElementById('welcomeText').textContent = langData.main.welcome.text;
+function makeSplashNum(u) {
+  const a = document.createElement('a');
+  a.href = `tel:${u.number}`;
+  a.className = `num-btn ${u.class}`;
+  a.setAttribute('role','listitem');
+  a.setAttribute('aria-label', `Appeler ${u.name} : ${u.number}`);
+  a.innerHTML = `<span class="num-digit">${u.number}</span><span class="num-label">${u.name}</span>`;
+  return a;
+}
 
-  // Section locale
-  const localContainer = document.getElementById('localInfoContainer');
+/* ── TOPBAR ──────────────────────────────────────────────── */
+function renderTopBar() {
   const est = configData?.establishment || {};
-  const locStrings = langData.local || {};
-  let localHtml = '';
-  if (est.name && est.address) {
-    localHtml += `<div style="text-align:left;margin-bottom:0.5rem"><strong>📍 ${est.name}</strong><br><span style="font-size:0.9rem;color:var(--sub)">${est.address}</span></div>`;
-  } else if (est.name) {
-    localHtml += `<div><strong>📍 ${est.name}</strong></div>`;
-  }
-  const contacts = [];
-  if (est.localCrisisNumber)   contacts.push({ label: locStrings.crisis   || '📞 Crise',       number: est.localCrisisNumber });
-  if (est.localSamuNumber)     contacts.push({ label: locStrings.samu     || '🚑 Ambulance',    number: est.localSamuNumber });
-  if (est.localPompiersNumber) contacts.push({ label: locStrings.fire     || '🚒 Pompiers',     number: est.localPompiersNumber });
-  if (est.localPoliceNumber)   contacts.push({ label: locStrings.police   || '🚔 Police',       number: est.localPoliceNumber });
-  if (est.localMairieNumber)   contacts.push({ label: locStrings.townhall || '🏛️ Mairie',       number: est.localMairieNumber });
-  if (est.localPrefecture)     contacts.push({ label: locStrings.prefecture|| '🏛️ Préfecture',  number: est.localPrefecture });
-  if (est.localCroixRouge)     contacts.push({ label: locStrings.redcross || '🔴 Croix-Rouge',  number: est.localCroixRouge });
-  if (est.localRadioFreq)      contacts.push({ label: locStrings.radio    || '📻 Radio',        number: est.localRadioFreq, isFreq: true });
-  if (contacts.length > 0) {
-    localHtml += `<div class="local-contacts">`;
-    contacts.forEach(c => {
-      if (c.isFreq) {
-        localHtml += `<span class="phone-badge" style="background:var(--bg2);color:var(--text);pointer-events:none">${c.label}: ${c.number}</span>`;
-      } else {
-        localHtml += `<a href="tel:${c.number}" class="phone-badge">${c.label}: ${c.number}</a>`;
-      }
-    });
-    localHtml += `</div>`;
-  }
-  if (configData?.reassurance?.message) {
-    localHtml += `<div style="margin-top:0.75rem;padding:0.5rem;background:rgba(59,130,246,0.1);border-radius:12px;font-size:0.9rem;color:var(--accent)">🕊️ ${configData.reassurance.message}</div>`;
-  }
-  localHtml += `<img src="img/map_location.png" alt="Carte du lieu" class="local-map-img" loading="lazy" onerror="this.style.display='none'">`;
-  if (est.localMeetingPoint)   localHtml += `<div style="margin-top:0.5rem;font-size:0.85rem"><span style="opacity:0.7">🚶 Point de rassemblement :</span> ${est.localMeetingPoint}</div>`;
-  if (est.localEvacuationPlan) localHtml += `<div style="margin-top:0.25rem;font-size:0.85rem"><span style="opacity:0.7">🗺️ Plan d'évacuation :</span> ${est.localEvacuationPlan}</div>`;
-  localContainer.innerHTML = localHtml;
-
-  // v2.4 : urgence grid via buildUrgenceGrid (override depuis config.json)
-  buildUrgenceGrid();
-
-  // Sections principales
-  document.getElementById('principesSection').innerHTML = `<div class="section-title" id="section-principes">${langData.sections.principes}</div><div class="grid-3" id="principesGrid"></div>`;
-  const principesGrid = document.getElementById('principesGrid');
-  principesGrid.innerHTML = '';
-  langData.principes.forEach(p => {
-    const card = document.createElement('div');
-    card.className = `card ${p.colorClass}`;
-    card.setAttribute('data-icon', p.icon);
-    card.innerHTML = `<div class="card-icon">${p.icon}</div><div class="card-titre">${p.titre}</div><div class="card-desc">${p.desc}</div>`;
-    card.addEventListener('click', () => openModal(p.titre, formatContent(p.contenu)));
-    principesGrid.appendChild(card);
-  });
-
-  document.getElementById('outilsSection').innerHTML = `<div class="section-title" id="section-outils">${langData.sections.outils}</div><div class="grid-2" id="outilsGrid"></div>`;
-  const outilsGrid = document.getElementById('outilsGrid');
-  outilsGrid.innerHTML = '';
-  langData.outils.forEach(outil => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.setAttribute('data-icon', outil.icon);
-    card.innerHTML = `<div class="card-icon">${outil.icon}</div><div class="card-titre">${outil.titre}</div><div class="card-desc">${outil.desc}</div>`;
-    card.addEventListener('click', () => { if (outil.action) window[outil.action](); });
-    outilsGrid.appendChild(card);
-  });
-
-  document.getElementById('urgencesSection').innerHTML = `<div class="section-title" id="section-urgences">${langData.sections.urgencesMedicales}</div><div class="grid-urgences" id="urgencesGrid"></div>`;
-  const urgencesGridEl = document.getElementById('urgencesGrid');
-  urgencesGridEl.innerHTML = '';
-  langData.urgences_medicales.forEach(urg => {
-    const card = document.createElement('div');
-    card.className = `card card-emergency ${urg.colorClass}`;
-    card.setAttribute('data-icon', urg.icon);
-    card.innerHTML = `<div class="card-icon">${urg.icon}</div><div class="card-titre">${urg.titre}</div><div class="card-desc">${urg.desc}</div>`;
-    card.addEventListener('click', () => openModal(urg.titre, formatContent(urg.contenu)));
-    urgencesGridEl.appendChild(card);
-  });
-
-  document.getElementById('situationsSection').innerHTML = `<div class="section-title" id="section-situations">${langData.sections.situationsCollectives}</div><div class="grid-situations" id="situationsGrid"></div>`;
-  const situationsGridEl = document.getElementById('situationsGrid');
-  situationsGridEl.innerHTML = '';
-  langData.situations_collectives.forEach(sit => {
-    const card = document.createElement('div');
-    card.className = `card card-emergency ${sit.colorClass}`;
-    card.setAttribute('data-icon', sit.icon);
-    card.innerHTML = `<div class="card-icon">${sit.icon}</div><div class="card-titre">${sit.titre}</div><div class="card-desc">${sit.desc}</div>`;
-    card.addEventListener('click', () => openModal(sit.titre, formatContent(sit.contenu)));
-    situationsGridEl.appendChild(card);
-  });
-
-  document.getElementById('assosSection').innerHTML = `<div class="section-title" id="section-assos">${langData.sections.associations}</div><div class="grid-assos" id="assosGrid"></div>`;
-  const assosGridEl = document.getElementById('assosGrid');
-  assosGridEl.innerHTML = '';
-  langData.associations.forEach(asso => {
-    const card = document.createElement('div');
-    card.className = `card card-emergency ${asso.colorClass}`;
-    card.setAttribute('data-icon', asso.icon);
-    card.innerHTML = `<div class="card-icon">${asso.icon}</div><div class="card-titre">${asso.titre}</div><div class="card-desc">${asso.numero}</div>`;
-    card.addEventListener('click', () => openModal(asso.titre, formatContent(asso.contenu)));
-    assosGridEl.appendChild(card);
-  });
-
-  // Traductions modales outils
-  document.getElementById('metroTitle').innerHTML = langData.tools.metronome.title;
-  document.getElementById('metroStartStop').textContent = langData.tools.metronome.start;
-  document.getElementById('flashStopBtn').textContent = langData.tools.flash.stop;
-  document.getElementById('torcheStopBtn').textContent = langData.tools.torch.stop;
-  document.getElementById('alerteTitle').innerHTML = langData.tools.alarm.title;
-  document.getElementById('sirenStartStop').textContent = langData.tools.alarm.start;
-  document.getElementById('respTitle').innerHTML = langData.tools.respiration.title;
-  document.getElementById('respirationStartStop').textContent = langData.tools.respiration.start;
-  document.getElementById('whistleTitle').innerHTML = langData.tools.whistle.title;
-  document.getElementById('whistleStartStop').textContent = langData.tools.whistle.start;
+  document.getElementById('topBarName').textContent = est.name || 'SOS-GUIDE';
+  const addr = est.address || '';
+  const addrEl = document.getElementById('topBarAddr');
+  addrEl.textContent = addr;
+  addrEl.style.display = addr ? 'block' : 'none';
 }
 
-function formatContent(content) {
-  if (typeof content === 'string') content = { steps: [content] };
-  let html = '';
-  if (content.warning) html += `<p style="background:rgba(239,68,68,.2);padding:.5rem;border-radius:12px">⚠️ ${content.warning}</p>`;
-  if (content.steps && content.steps.length) {
-    html += '<ul>';
-    content.steps.forEach(step => html += `<li>${step}</li>`);
-    html += '</ul>';
-  }
-  if (content.extra) html += `<p>${content.extra}</p>`;
-  return formatPhoneNumbersToBadges(html);
+/* ── STRIP URGENCES ──────────────────────────────────────── */
+function renderUrgenceStrip() {
+  const container = document.getElementById('urgenceStripInner');
+  container.innerHTML = '';
+  buildUrgences().forEach(u => {
+    const a = document.createElement('a');
+    a.href = `tel:${u.number}`;
+    a.className = `ustrip-btn ${u.class}`;
+    a.setAttribute('role','listitem');
+    a.setAttribute('aria-label', `${u.name} : ${u.number}`);
+    a.innerHTML = `<span class="ustrip-num">${u.number}</span><span>${u.name}</span>`;
+    container.appendChild(a);
+  });
 }
 
-// Modal générique
-const genericModal = document.getElementById('genericModal');
-const genericModalTitle = document.getElementById('genericModalTitle');
-const genericModalBody = document.getElementById('genericModalBody');
-document.getElementById('closeGenericModal').addEventListener('click', closeModal);
-genericModal.addEventListener('click', e => { if (e.target === genericModal) closeModal(); });
-function openModal(title, contentHtml) {
-  genericModalTitle.innerHTML = title;
-  genericModalBody.innerHTML = contentHtml;
-  genericModal.classList.add('active');
+/* ── Numéros d'urgence (langue + override config) ────────── */
+function buildUrgences() {
+  const base = [...(langData?.urgences || [])];
+  const est = configData?.establishment || {};
+  const overrides = { samu: est.localSamuNumber, police: est.localPoliceNumber, pompiers: est.localPompiersNumber };
+  return base.map(u => {
+    const ov = overrides[u.class];
+    return ov && ov.trim() ? {...u, number: ov.trim()} : u;
+  });
+}
+
+/* ── SECTION LOCALE ──────────────────────────────────────── */
+function renderLocal() {
+  const est = configData?.establishment || {};
+  const loc = langData?.local || {};
+  document.getElementById('localName').textContent = est.name || '';
+  document.getElementById('localAddress').textContent = est.address || '';
+
+  const contacts = document.getElementById('localContacts');
+  contacts.innerHTML = '';
+  const localLinks = [
+    [loc.samu,    est.localSamuNumber,       '🚑'],
+    [loc.fire,    est.localPompiersNumber,   '🚒'],
+    [loc.crisis,  est.localCrisisNumber,      '📞'],
+    [loc.townhall,est.localMairieNumber,      '🏛️'],
+  ];
+  localLinks.forEach(([label, num, icon]) => {
+    if (!num || !num.trim()) return;
+    const a = document.createElement('a');
+    a.href = `tel:${num.trim()}`;
+    a.className = 'local-contact-btn';
+    a.setAttribute('aria-label', `${label} : ${num}`);
+    a.innerHTML = `<span aria-hidden="true">${icon}</span><span><strong>${num}</strong><br><small>${label}</small></span>`;
+    contacts.appendChild(a);
+  });
+
+  const msg = configData?.reassurance?.message;
+  const msgEl = document.getElementById('reassuranceMsg');
+  if (msg && msg.trim()) { msgEl.textContent = msg; msgEl.classList.remove('hidden'); }
+  else { msgEl.classList.add('hidden'); }
+
+  const mp = est.localMeetingPoint;
+  const mpEl = document.getElementById('meetingPoint');
+  if (mp && mp.trim()) { mpEl.innerHTML = `🚶 Point de rassemblement : <strong>${mp}</strong>`; mpEl.classList.remove('hidden'); }
+  else { mpEl.classList.add('hidden'); }
+
+  // Masquer la section locale si rien de configuré
+  const localSection = document.getElementById('localSection');
+  const hasContent = est.name || contacts.children.length || msg || mp;
+  localSection.style.display = hasContent ? 'block' : 'none';
+}
+
+/* ── PRINCIPES PAS ───────────────────────────────────────── */
+function renderPrincipes() {
+  const heading = document.getElementById('principesHeading');
+  heading.textContent = langData.sections?.principes || 'Les 3 gestes qui sauvent';
+  const grid = document.getElementById('principesGrid');
+  grid.innerHTML = '';
+  (langData.principes || []).forEach(p => {
+    const card = makeCard(p);
+    card.setAttribute('role','listitem');
+    grid.appendChild(card);
+  });
+}
+
+/* ── OUTILS ──────────────────────────────────────────────── */
+const OUTIL_ACTIONS = {
+  openMetronome: () => openModal('metroModal'),
+  openTimer:     () => openModal('timerModal'),
+  openFlashSOS:  startFlash,
+  openTorche:    startTorch,
+  openAlerte:    () => openModal('alerteModal'),
+  openRespiration:() => openModal('respModal'),
+  openSifflet:   () => openModal('whistleModal'),
+};
+function renderOutils() {
+  const heading = document.getElementById('outilsHeading');
+  heading.textContent = langData.sections?.outils || 'Outils pratiques';
+  const row = document.getElementById('outilsRow');
+  row.innerHTML = '';
+  (langData.outils || []).forEach(o => {
+    const btn = document.createElement('button');
+    btn.className = 'outil-btn';
+    btn.setAttribute('aria-label', o.titre);
+    btn.innerHTML = `<span class="outil-icon" aria-hidden="true">${o.icon}</span><span class="outil-label">${o.titre}</span>`;
+    btn.addEventListener('click', () => { const fn = OUTIL_ACTIONS[o.action]; if (fn) fn(); });
+    row.appendChild(btn);
+  });
+}
+
+/* ── URGENCES MÉDICALES ──────────────────────────────────── */
+function renderUrgencesMedicales() {
+  const heading = document.getElementById('urgencesHeading');
+  heading.textContent = langData.sections?.urgencesMedicales || 'Urgences médicales';
+  const grid = document.getElementById('urgencesGrid');
+  grid.innerHTML = '';
+  (langData.urgences_medicales || []).forEach(u => {
+    const card = makeCard(u);
+    card.setAttribute('role','listitem');
+    grid.appendChild(card);
+  });
+}
+
+/* ── SITUATIONS COLLECTIVES ──────────────────────────────── */
+function renderSituations() {
+  const heading = document.getElementById('situationsHeading');
+  heading.textContent = langData.sections?.situationsCollectives || 'Situations collectives';
+  const grid = document.getElementById('situationsGrid');
+  grid.innerHTML = '';
+  (langData.situations_collectives || []).forEach(s => {
+    const card = makeCard(s);
+    card.setAttribute('role','listitem');
+    grid.appendChild(card);
+  });
+}
+
+/* ── ASSOCIATIONS ────────────────────────────────────────── */
+function renderAssos() {
+  const heading = document.getElementById('assosHeading');
+  heading.textContent = langData.sections?.associations || 'Associations';
+  const grid = document.getElementById('assosGrid');
+  grid.innerHTML = '';
+  (langData.associations || []).forEach(a => {
+    const card = document.createElement('div');
+    card.className = `card ${a.colorClass || ''}`;
+    card.setAttribute('role','listitem');
+    card.setAttribute('tabindex','0');
+    card.setAttribute('aria-label', `${a.titre} — ${a.numero}`);
+    card.innerHTML = `
+      <div style="display:flex;align-items:center;gap:.75rem">
+        <span class="card-icon" aria-hidden="true" style="margin:0">${a.icon}</span>
+        <div style="flex:1">
+          <div class="card-titre">${a.titre}</div>
+          <a href="tel:${a.numero}" class="card-desc" style="font-size:.9rem;font-weight:700;color:var(--blue)" aria-label="Appeler ${a.titre} : ${a.numero}">${a.numero}</a>
+        </div>
+      </div>`;
+    card.addEventListener('click', () => showGenericModal(a.titre, a.contenu));
+    card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showGenericModal(a.titre, a.contenu); } });
+    grid.appendChild(card);
+  });
+}
+
+/* ── DRAWER ──────────────────────────────────────────────── */
+function renderDrawer() {
+  const d = langData?.drawer || {};
+  document.getElementById('drawerTitle').textContent = d.title || 'Navigation';
+  document.getElementById('drawerFooter').textContent = d.footer || 'SOS-GUIDE · v2.5';
+  const links = document.getElementById('drawerLinks');
+  links.innerHTML = '';
+  (d.links || []).forEach(l => {
+    const a = document.createElement('a');
+    a.href = l.href;
+    a.className = 'drawer-link';
+    a.setAttribute('role','listitem');
+    a.innerHTML = `<span aria-hidden="true">${l.icon}</span><span>${l.label}</span>`;
+    a.addEventListener('click', closeDrawer);
+    links.appendChild(a);
+  });
+}
+
+/* ── Fabrique une carte cliquable ────────────────────────── */
+function makeCard(item) {
+  const card = document.createElement('div');
+  card.className = `card ${item.colorClass || ''}`;
+  card.setAttribute('tabindex','0');
+  card.setAttribute('aria-label', `${item.titre} — ${item.desc}`);
+  card.innerHTML = `
+    <div class="card-icon" aria-hidden="true">${item.icon}</div>
+    <div class="card-titre">${item.titre}</div>
+    <div class="card-desc">${item.desc}</div>`;
+  const action = () => showGenericModal(item.titre, item.contenu);
+  card.addEventListener('click', action);
+  card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); action(); } });
+  return card;
+}
+
+/* ── Modale générique ────────────────────────────────────── */
+function showGenericModal(title, contenu) {
+  document.getElementById('genericModalTitle').textContent = title;
+  const body = document.getElementById('genericModalBody');
+  if (!contenu) { body.innerHTML = ''; openModal('genericModal'); return; }
+  const steps = contenu.steps || [];
+  let html = '<ul>';
+  steps.forEach(s => { html += `<li>${s}</li>`; });
+  html += '</ul>';
+  if (contenu.extra) html += `<p style="margin-top:.75rem;font-size:.85rem;color:var(--text2)">${contenu.extra}</p>`;
+  body.innerHTML = html;
+  openModal('genericModal');
+}
+
+/* ── Gestion des modales ─────────────────────────────────── */
+const MODALS = ['genericModal','metroModal','timerModal','respModal','alerteModal','whistleModal'];
+
+function openModal(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.add('open');
+  el.removeAttribute('aria-hidden');
+  // Focus trap
+  const focusable = el.querySelectorAll('button,a,input,select,[tabindex]');
+  if (focusable.length) focusable[0].focus();
   document.body.style.overflow = 'hidden';
 }
-function closeModal() {
-  genericModal.classList.remove('active');
+
+function closeModal(id) {
+  if (id) {
+    const el = document.getElementById(id);
+    if (el) { el.classList.remove('open'); el.setAttribute('aria-hidden','true'); }
+  } else {
+    MODALS.forEach(m => { const el = document.getElementById(m); if (el) { el.classList.remove('open'); el.setAttribute('aria-hidden','true'); } });
+  }
   document.body.style.overflow = '';
 }
 
-// ======================= OUTILS =======================
-let audioCtx=null,metActive=false,timeoutId=null,nextBeepTime=0;
-function getAudioCtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx;}
-function playBeep(){const ctx=getAudioCtx();if(ctx.state==='suspended')ctx.resume();const osc=ctx.createOscillator();const gain=ctx.createGain();osc.connect(gain);gain.connect(ctx.destination);osc.frequency.value=880;gain.gain.value=0.15;osc.start();gain.gain.exponentialRampToValueAtTime(0.00001,ctx.currentTime+0.2);osc.stop(ctx.currentTime+0.2);}
-function scheduleBeep(){if(!metActive)return;const ctx=getAudioCtx();const now=ctx.currentTime;nextBeepTime+=60/110;const delay=Math.max(0,nextBeepTime-now);timeoutId=setTimeout(()=>{playBeep();scheduleBeep();},delay*1000);}
-function startMetro(){if(metActive)return;metActive=true;const ctx=getAudioCtx();ctx.resume();nextBeepTime=ctx.currentTime;scheduleBeep();const btn=document.getElementById('metroStartStop');if(langData)btn.textContent=langData.tools.metronome.stop;btn.classList.add('stop');}
-function stopMetro(){metActive=false;if(timeoutId)clearTimeout(timeoutId);const btn=document.getElementById('metroStartStop');if(langData)btn.textContent=langData.tools.metronome.start;btn.classList.remove('stop');}
-document.getElementById('metroStartStop').addEventListener('click',()=>{metActive?stopMetro():startMetro();});
-document.querySelector('.close-metronome').addEventListener('click',()=>{document.getElementById('metronomeModal').classList.remove('active');document.body.style.overflow='';if(metActive)stopMetro();});
-document.getElementById('metronomeModal').addEventListener('click',e=>{if(e.target===document.getElementById('metronomeModal')){document.getElementById('metronomeModal').classList.remove('active');document.body.style.overflow='';if(metActive)stopMetro();}});
-let flashActive=false,flashStep=0;
-function applyFlashColor(isWhite){document.getElementById('flashFullscreen').style.background=isWhite?'#fff':'#000';}
-function runFlashStep(){if(!flashActive)return;const pattern=['short','short','short','long','long','long','short','short','short'];if(flashStep>=pattern.length){setTimeout(()=>{if(flashActive){flashStep=0;runFlashStep();}},1000);return;}const duration=pattern[flashStep]==='short'?200:600;applyFlashColor(true);setTimeout(()=>{if(flashActive)applyFlashColor(false);setTimeout(()=>{if(flashActive){flashStep++;runFlashStep();}},50);},duration);}
-function startFlash(){if(flashActive)return;flashActive=true;flashStep=0;document.getElementById('flashFullscreen').classList.add('active');document.body.style.overflow='hidden';runFlashStep();}
-function stopFlash(){flashActive=false;document.getElementById('flashFullscreen').classList.remove('active');document.body.style.overflow='';applyFlashColor(true);}
-document.getElementById('flashStopBtn').addEventListener('click',stopFlash);
-document.getElementById('flashFullscreen').addEventListener('click',e=>{if(e.target===document.getElementById('flashFullscreen'))stopFlash();});
-function openTorche(){document.getElementById('torcheFullscreen').classList.add('active');document.body.style.overflow='hidden';}
-function closeTorche(){document.getElementById('torcheFullscreen').classList.remove('active');document.body.style.overflow='';}
-document.getElementById('torcheStopBtn').addEventListener('click',closeTorche);
-document.getElementById('torcheFullscreen').addEventListener('click',e=>{if(e.target===document.getElementById('torcheFullscreen'))closeTorche();});
-let sirenActive=false,sirenOsc=null,sirenGain=null;
-function startSiren(){const ctx=getAudioCtx();ctx.resume();if(sirenOsc){sirenOsc.stop();sirenOsc.disconnect();}sirenOsc=ctx.createOscillator();sirenGain=ctx.createGain();sirenOsc.connect(sirenGain);sirenGain.connect(ctx.destination);sirenOsc.type='sine';sirenOsc.frequency.value=880;sirenGain.gain.value=0.25;sirenOsc.start();sirenActive=true;const s=document.getElementById('sirenStatus');const b=document.getElementById('sirenStartStop');if(langData){s.innerHTML=langData.tools.alarm.active;b.textContent=langData.tools.alarm.stop;}b.classList.add('stop');}
-function stopSiren(){if(sirenOsc){sirenOsc.stop();sirenOsc.disconnect();sirenOsc=null;}if(sirenGain){sirenGain.disconnect();sirenGain=null;}sirenActive=false;const s=document.getElementById('sirenStatus');const b=document.getElementById('sirenStartStop');if(langData){s.innerHTML=langData.tools.alarm.inactive;b.textContent=langData.tools.alarm.start;}b.classList.remove('stop');}
-document.getElementById('sirenStartStop').addEventListener('click',()=>{sirenActive?stopSiren():startSiren();});
-document.querySelector('.close-alerte').addEventListener('click',()=>{document.getElementById('alerteModal').classList.remove('active');document.body.style.overflow='';if(sirenActive)stopSiren();});
-document.getElementById('alerteModal').addEventListener('click',e=>{if(e.target===document.getElementById('alerteModal')){document.getElementById('alerteModal').classList.remove('active');document.body.style.overflow='';if(sirenActive)stopSiren();}});
-let respActive=false,respInterval=null,respPhase='inspire',respCount=4;
-function updateRespirationUI(){const inspireText=langData?langData.tools.respiration.inhale:'Inspirez';const expireText=langData?langData.tools.respiration.exhale:'Expirez';document.getElementById('respirationGuide').textContent=respPhase==='inspire'?`🌬️ ${inspireText}`:`🌬️ ${expireText}`;document.getElementById('respirationTimer').textContent=respCount;}
-function respirationCycle(){if(!respActive)return;if(respCount===1){respPhase=respPhase==='inspire'?'expire':'inspire';respCount=4;updateRespirationUI();}else{respCount--;updateRespirationUI();}}
-function startRespiration(){if(respActive)return;respActive=true;respPhase='inspire';respCount=4;updateRespirationUI();if(respInterval)clearInterval(respInterval);respInterval=setInterval(respirationCycle,1000);const btn=document.getElementById('respirationStartStop');if(langData)btn.textContent=langData.tools.respiration.stop;}
-function stopRespiration(){respActive=false;if(respInterval)clearInterval(respInterval);respInterval=null;const btn=document.getElementById('respirationStartStop');if(langData)btn.textContent=langData.tools.respiration.start;}
-document.getElementById('respirationStartStop').addEventListener('click',()=>{respActive?stopRespiration():startRespiration();});
-document.querySelector('.close-respiration').addEventListener('click',()=>{document.getElementById('respirationModal').classList.remove('active');document.body.style.overflow='';if(respActive)stopRespiration();});
-document.getElementById('respirationModal').addEventListener('click',e=>{if(e.target===document.getElementById('respirationModal')){document.getElementById('respirationModal').classList.remove('active');document.body.style.overflow='';if(respActive)stopRespiration();}});
-let whistleActive=false;
-function playWhistle(){const ctx=getAudioCtx();if(ctx.state==='suspended')ctx.resume();const osc=ctx.createOscillator();const gain=ctx.createGain();osc.connect(gain);gain.connect(ctx.destination);osc.type='triangle';osc.frequency.value=2500;gain.gain.value=0.2;osc.start();gain.gain.exponentialRampToValueAtTime(0.00001,ctx.currentTime+0.8);osc.stop(ctx.currentTime+0.8);}
-function startWhistle(){if(whistleActive)return;whistleActive=true;let count=0;function playSequence(){if(!whistleActive)return;playWhistle();count++;if(count<3)setTimeout(playSequence,400);else{whistleActive=false;const s=document.getElementById('whistleStatus');const b=document.getElementById('whistleStartStop');if(langData){s.innerHTML=langData.tools.whistle.inactive;b.textContent=langData.tools.whistle.start;}}}playSequence();const s=document.getElementById('whistleStatus');const b=document.getElementById('whistleStartStop');if(langData){s.innerHTML=langData.tools.whistle.active;b.textContent=langData.tools.whistle.stop;}}
-function stopWhistle(){whistleActive=false;const s=document.getElementById('whistleStatus');const b=document.getElementById('whistleStartStop');if(langData){s.innerHTML=langData.tools.whistle.inactive;b.textContent=langData.tools.whistle.start;}}
-document.getElementById('whistleStartStop').addEventListener('click',()=>{whistleActive?stopWhistle():startWhistle();});
-document.querySelector('.close-sifflet').addEventListener('click',()=>{document.getElementById('siffletModal').classList.remove('active');document.body.style.overflow='';if(whistleActive)stopWhistle();});
-document.getElementById('siffletModal').addEventListener('click',e=>{if(e.target===document.getElementById('siffletModal')){document.getElementById('siffletModal').classList.remove('active');document.body.style.overflow='';if(whistleActive)stopWhistle();}});
+// Fermeture au clic sur l'overlay
+MODALS.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('click', e => { if (e.target === el) closeModal(id); });
+});
 
-window.openMetronome=()=>{document.getElementById('metronomeModal').classList.add('active');document.body.style.overflow='hidden';if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();};
-window.openFlashSOS=startFlash;
-window.openTorche=openTorche;
-window.openAlerte=()=>{document.getElementById('alerteModal').classList.add('active');document.body.style.overflow='hidden';if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();};
-window.openRespiration=()=>{document.getElementById('respirationModal').classList.add('active');document.body.style.overflow='hidden';};
-window.openSifflet=()=>{document.getElementById('siffletModal').classList.add('active');document.body.style.overflow='hidden';};
+// Fermeture des boutons
+document.getElementById('closeGenericModal').addEventListener('click', () => closeModal('genericModal'));
+document.getElementById('closeMetroModal').addEventListener('click', () => { stopMetronome(); closeModal('metroModal'); });
+document.getElementById('closeTimerModal').addEventListener('click', () => { stopTimer(); closeModal('timerModal'); });
+document.getElementById('closeRespModal').addEventListener('click', () => { stopRespiration(); closeModal('respModal'); });
+document.getElementById('closeAlerteModal').addEventListener('click', () => { stopAlarm(); closeModal('alerteModal'); });
+document.getElementById('closeWhistleModal').addEventListener('click', () => closeModal('whistleModal'));
 
-// ======================= NAVIGATION, THEME, DRAWER, LANGUE =======================
-const themeToggle=document.getElementById('themeToggle');
-const THEME_KEY='sos_guide_theme';
-function setTheme(isLight){document.body.classList.toggle('light-mode',isLight);themeToggle.textContent=isLight?'☀️':'🌙';localStorage.setItem(THEME_KEY,isLight?'light':'dark');}
-let sv='dark';try{sv=localStorage.getItem(THEME_KEY)||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');}catch(e){}
-setTheme(sv==='light');
-themeToggle.addEventListener('click',()=>setTheme(!document.body.classList.contains('light-mode')));
+// Fermeture touche Échap
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); stopAllTools(); } });
 
-const splashScreen=document.getElementById('splashScreen'),mainContent=document.getElementById('mainContent');
-function goToSplash(){splashScreen.classList.remove('hide');mainContent.style.display='none';window.scrollTo(0,0);}
-function goToMain(){splashScreen.classList.add('hide');mainContent.style.display='block';}
-document.getElementById('enterBtn').addEventListener('click',goToMain);
-document.getElementById('navLogo').addEventListener('click',goToSplash);
+/* ── DRAWER ──────────────────────────────────────────────── */
+function openDrawer() {
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawerOverlay').classList.add('open');
+  document.getElementById('drawer').removeAttribute('aria-hidden');
+  document.getElementById('drawerBtn').setAttribute('aria-expanded','true');
+  document.body.style.overflow = 'hidden';
+}
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawerOverlay').classList.remove('open');
+  document.getElementById('drawer').setAttribute('aria-hidden','true');
+  document.getElementById('drawerBtn').setAttribute('aria-expanded','false');
+  document.body.style.overflow = '';
+}
+document.getElementById('drawerBtn').addEventListener('click', openDrawer);
+document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+document.getElementById('drawerOverlay').addEventListener('click', closeDrawer);
 
-const hamburgerBtn=document.getElementById('hamburgerBtn'),drawerOverlay=document.getElementById('drawerOverlay'),drawerCloseBtn=document.getElementById('drawerCloseBtn');
-function openDrawer(){drawerOverlay.classList.add('active');document.body.style.overflow='hidden';}
-function closeDrawer(){drawerOverlay.classList.remove('active');document.body.style.overflow='';}
-hamburgerBtn.addEventListener('click',openDrawer);drawerCloseBtn.addEventListener('click',closeDrawer);
-drawerOverlay.addEventListener('click',e=>{if(e.target===drawerOverlay)closeDrawer();});
+/* ── Navigation splash → guide ───────────────────────────── */
+document.getElementById('splashEnterBtn').addEventListener('click', () => {
+  document.getElementById('splashScreen').classList.add('hidden');
+  document.getElementById('mainContent').classList.remove('hidden');
+  document.getElementById('mainContent').scrollIntoView({ behavior: 'smooth' });
+  renderPage();
+});
 
-const langBtn=document.getElementById('langBtn'),modalLang=document.getElementById('languageModal'),closeModalBtn=document.getElementById('closeModalBtn');
-function openModalLang(){modalLang.classList.add('active');document.body.style.overflow='hidden';buildFlagGrid();}
-function closeModalLang(){modalLang.classList.remove('active');document.body.style.overflow='';}
-langBtn.addEventListener('click',openModalLang);closeModalBtn.addEventListener('click',closeModalLang);
-modalLang.addEventListener('click',e=>{if(e.target===modalLang)closeModalLang();});
+/* ════════════════════════════════════════════════════════════
+   OUTILS — IMPLÉMENTATIONS AUDIO & VISUELS
+════════════════════════════════════════════════════════════ */
 
-function buildFlagGrid(){
-  const flagGrid=document.getElementById('flagGrid');
-  flagGrid.innerHTML='';
-  languages.forEach(lang=>{
-    const card=document.createElement('div');
-    card.className='lang-card';
-    card.innerHTML=`<div class="lang-flag">${lang.flag}</div><div class="lang-name">${lang.label}</div>`;
-    card.addEventListener('click',()=>{loadLanguage(lang.code);closeModalLang();});
-    flagGrid.appendChild(card);
+function getAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+function beep(freq, duration, time, gainVal) {
+  const ctx = getAudio();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.frequency.value = freq;
+  osc.type = 'sine';
+  const t = time || ctx.currentTime;
+  gain.gain.setValueAtTime(gainVal || 0.3, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + (duration || 0.1));
+  osc.start(t); osc.stop(t + (duration || 0.1));
+}
+
+/* ── MÉTRONOME ───────────────────────────────────────────── */
+let metroRunning = false;
+let metroTimer = null;
+let bpm = 110;
+
+document.getElementById('bpmSlider').addEventListener('input', function() {
+  bpm = parseInt(this.value);
+  document.getElementById('metroBpmDisplay').textContent = bpm;
+  if (metroRunning) { stopMetronome(); startMetronome(); }
+});
+
+document.getElementById('metroStartStop').addEventListener('click', function() {
+  if (metroRunning) { stopMetronome(); this.textContent = langData?.tools?.metronome?.start || 'Démarrer'; this.classList.remove('active'); this.setAttribute('aria-pressed','false'); }
+  else { startMetronome(); this.textContent = langData?.tools?.metronome?.stop || 'Arrêter'; this.classList.add('active'); this.setAttribute('aria-pressed','true'); }
+});
+
+function startMetronome() {
+  metroRunning = true;
+  const ctx = getAudio();
+  const interval = 60 / bpm * 1000;
+  let nextBeat = ctx.currentTime + 0.05;
+  const ahead = 0.15;
+  function schedule() {
+    while (nextBeat < ctx.currentTime + ahead) {
+      beep(880, 0.06, nextBeat, 0.4);
+      // Animer le cœur
+      const delay = (nextBeat - ctx.currentTime) * 1000;
+      setTimeout(() => {
+        const h = document.getElementById('metroHeart');
+        if (h) { h.classList.add('beat'); setTimeout(() => h.classList.remove('beat'), 80); }
+      }, Math.max(0, delay));
+      nextBeat += interval / 1000;
+    }
+    metroTimer = setTimeout(schedule, 30);
+  }
+  schedule();
+}
+function stopMetronome() {
+  metroRunning = false;
+  clearTimeout(metroTimer);
+}
+
+/* ── MINUTERIE ───────────────────────────────────────────── */
+let timerInterval = null;
+let timerRunning = false;
+let timerSeconds = 1200;
+let timerCountdown = false; // false = chrono up, true = countdown
+
+document.querySelectorAll('.timer-preset').forEach(btn => {
+  btn.addEventListener('click', function() {
+    stopTimer();
+    const s = parseInt(this.dataset.seconds);
+    timerCountdown = s > 0;
+    timerSeconds = s;
+    document.getElementById('timerDisplay').classList.remove('done');
+    updateTimerDisplay(s);
+  });
+});
+
+document.getElementById('timerStartStop').addEventListener('click', function() {
+  if (timerRunning) { stopTimer(); this.textContent = 'Démarrer'; }
+  else { startTimer(); this.textContent = 'Arrêter'; }
+});
+document.getElementById('timerReset').addEventListener('click', () => { stopTimer(); document.getElementById('timerDisplay').textContent = '00:00'; document.getElementById('timerDisplay').classList.remove('done'); });
+
+function startTimer() {
+  timerRunning = true;
+  const start = Date.now();
+  const startVal = timerSeconds;
+  timerInterval = setInterval(() => {
+    const elapsed = Math.floor((Date.now() - start) / 1000);
+    if (timerCountdown) {
+      const remaining = startVal - elapsed;
+      if (remaining <= 0) {
+        updateTimerDisplay(0);
+        document.getElementById('timerDisplay').classList.add('done');
+        beep(1200, 0.3, 0, 0.5);
+        setTimeout(() => beep(1200, 0.3, 0, 0.5), 400);
+        setTimeout(() => beep(1200, 0.3, 0, 0.5), 800);
+        stopTimer();
+        document.getElementById('timerStartStop').textContent = 'Démarrer';
+        return;
+      }
+      updateTimerDisplay(remaining);
+    } else {
+      updateTimerDisplay(elapsed);
+    }
+  }, 500);
+}
+function stopTimer() {
+  timerRunning = false;
+  clearInterval(timerInterval);
+}
+function updateTimerDisplay(s) {
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  document.getElementById('timerDisplay').textContent = `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+}
+
+/* ── FLASH SOS ───────────────────────────────────────────── */
+let flashTimer = null;
+const SOS_PATTERN = [1,1,1,3,3,3,1,1,1]; // durées relatives (1=court, 3=long)
+const FLASH_UNIT = 200; // ms
+
+function startFlash() {
+  const overlay = document.getElementById('flashOverlay');
+  overlay.classList.add('active');
+  let i = 0;
+  function nextStep() {
+    const on = document.createElement; // just checking sequence
+    overlay.style.background = i % 2 === 0 ? '#fff' : '#000';
+    const duration = (i < SOS_PATTERN.length ? SOS_PATTERN[Math.floor(i/2)] : 1) * FLASH_UNIT;
+    flashTimer = setTimeout(nextStep, duration);
+    i = (i + 1) % (SOS_PATTERN.length * 2 + 4);
+  }
+  // Simple alternating flash for simplicity
+  let on = false;
+  function flashTick() {
+    on = !on;
+    overlay.style.background = on ? '#fff' : '#000';
+    flashTimer = setTimeout(flashTick, on ? 300 : 200);
+  }
+  flashTick();
+}
+document.getElementById('flashStopBtn').addEventListener('click', () => {
+  clearTimeout(flashTimer);
+  document.getElementById('flashOverlay').classList.remove('active');
+  document.getElementById('flashOverlay').style.background = '#000';
+});
+
+/* ── TORCHE ──────────────────────────────────────────────── */
+function startTorch() {
+  document.getElementById('torchOverlay').classList.add('active');
+}
+document.getElementById('torcheStopBtn').addEventListener('click', () => {
+  document.getElementById('torchOverlay').classList.remove('active');
+});
+
+/* ── ALARME SONORE ───────────────────────────────────────── */
+let alarmNode = null;
+let alarmGain = null;
+let alarmOn = false;
+
+document.getElementById('sirenStartStop').addEventListener('click', function() {
+  if (alarmOn) { stopAlarm(); this.textContent = langData?.tools?.alarm?.start || 'Déclencher'; this.classList.remove('active'); document.getElementById('alerteStatus').textContent = '⏹️ Arrêtée'; }
+  else { startAlarm(); this.textContent = langData?.tools?.alarm?.stop || 'Arrêter'; this.classList.add('active'); document.getElementById('alerteStatus').textContent = '🚨 ALARME ACTIVE'; }
+});
+function startAlarm() {
+  const ctx = getAudio();
+  alarmGain = ctx.createGain();
+  alarmGain.gain.value = 0.6;
+  alarmGain.connect(ctx.destination);
+  alarmNode = ctx.createOscillator();
+  alarmNode.type = 'square';
+  alarmNode.frequency.value = 880;
+  alarmNode.connect(alarmGain);
+  alarmNode.start();
+  alarmOn = true;
+}
+function stopAlarm() {
+  if (alarmNode) { try { alarmNode.stop(); } catch(e){} alarmNode = null; }
+  alarmOn = false;
+}
+
+/* ── SIFFLET ─────────────────────────────────────────────── */
+document.getElementById('whistleStartStop').addEventListener('click', () => {
+  beep(1200, 0.25, 0, 0.5);
+  beep(1200, 0.25, audioCtx ? audioCtx.currentTime + 0.4 : 0.4, 0.5);
+  beep(1200, 0.25, audioCtx ? audioCtx.currentTime + 0.8 : 0.8, 0.5);
+});
+
+/* ── RESPIRATION GUIDÉE ──────────────────────────────────── */
+let respRunning = false;
+let respInterval = null;
+
+document.getElementById('respirationStartStop').addEventListener('click', function() {
+  if (respRunning) { stopRespiration(); this.textContent = langData?.tools?.respiration?.start || 'Commencer'; }
+  else { startRespiration(); this.textContent = langData?.tools?.respiration?.stop || 'Arrêter'; }
+});
+
+function startRespiration() {
+  respRunning = true;
+  const circle = document.getElementById('respCircle');
+  let phase = 0;
+  const phases = [
+    { text: langData?.tools?.respiration?.inhale || 'Inspirez', class: 'inhale', dur: 4000 },
+    { text: langData?.tools?.respiration?.exhale || 'Expirez',  class: 'exhale', dur: 4000 },
+  ];
+  function nextPhase() {
+    if (!respRunning) return;
+    const p = phases[phase % phases.length];
+    circle.textContent = p.text;
+    circle.className = 'resp-circle ' + p.class;
+    phase++;
+    respInterval = setTimeout(nextPhase, p.dur);
+  }
+  nextPhase();
+}
+function stopRespiration() {
+  respRunning = false;
+  clearTimeout(respInterval);
+  const c = document.getElementById('respCircle');
+  c.className = 'resp-circle';
+  c.textContent = langData?.tools?.respiration?.inhale || 'Inspirez';
+}
+
+/* ── Stop tout ───────────────────────────────────────────── */
+function stopAllTools() {
+  stopMetronome();
+  stopTimer();
+  stopAlarm();
+  stopRespiration();
+  clearTimeout(flashTimer);
+  document.getElementById('flashOverlay').classList.remove('active');
+  document.getElementById('torchOverlay').classList.remove('active');
+}
+
+/* ════════════════════════════════════════════════════════════
+   ALERTES LORA — polling toutes les 10 secondes
+════════════════════════════════════════════════════════════ */
+let lastLoraAlertId = null;
+
+async function pollLora() {
+  try {
+    const r = await fetch(`data/lora_inbox.json?t=${Date.now()}`);
+    if (!r.ok) { setTimeout(pollLora, 15000); return; }
+    const data = await r.json();
+    const alerts = data.alerts || [];
+    if (alerts.length > 0) {
+      const latest = alerts[0];
+      if (latest.id !== lastLoraAlertId) {
+        lastLoraAlertId = latest.id;
+        showLoraAlert(latest);
+      }
+      // Section liste des alertes
+      renderLoraAlerts(alerts.slice(0, 5));
+    }
+  } catch(e) {}
+  setTimeout(pollLora, 10000);
+}
+
+function showLoraAlert(alert) {
+  const banner = document.getElementById('loraBanner');
+  document.getElementById('loraBannerText').textContent = `${alert.type_label || alert.type} — ${alert.node_id || 'nœud inconnu'} ${alert.message ? '· ' + alert.message : ''}`;
+  document.getElementById('loraBannerTime').textContent = alert.datetime || '';
+  banner.style.display = 'block';
+}
+
+function renderLoraAlerts(alerts) {
+  const section = document.getElementById('loraSection');
+  const list = document.getElementById('loraAlertsList');
+  section.style.display = 'block';
+  list.innerHTML = '';
+  alerts.forEach(a => {
+    const card = document.createElement('div');
+    card.className = `lora-alert-card ${a.verified ? '' : 'unverified'}`;
+    card.innerHTML = `
+      <div class="lora-alert-type">${a.type_label || a.type}</div>
+      <div class="lora-alert-meta">${a.datetime || ''} · ${a.node_id || ''} · ${a.hop} saut(s) · ${a.verified ? '✔ Vérifié' : '⚠ Non vérifié'}</div>
+      ${a.message ? `<div class="lora-alert-msg">${a.message}</div>` : ''}`;
+    list.appendChild(card);
   });
 }
 
-// Chargement initial
-const savedLang=localStorage.getItem('sos_lang')||'fr';
-loadConfig().then(()=>loadLanguage(savedLang));
+/* ════════════════════════════════════════════════════════════
+   MODE DÉGRADÉ — détecté si PHP indisponible
+════════════════════════════════════════════════════════════ */
+if (document.cookie.includes('sos_degraded=1') || window.location.search.includes('degraded=1')) {
+  document.getElementById('degradedBanner').style.display = 'block';
+}
 </script>
 </body>
 </html>
