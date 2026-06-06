@@ -1,0 +1,39 @@
+# Build
+releases/
+/tmp/
+*.img
+*.img.gz
+*.img.xz
+pi-gen-*/
+
+# Credentials (JAMAIS dans le repo)
+*-credentials.txt
+*.pem
+*_key*
+api_secret
+
+# Logs
+*.log
+*.log.*
+
+# Runtime
+*.tmp
+*.bak
+*.pid
+/run/
+
+# OS
+.DS_Store
+Thumbs.db
+*~
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+venv/
+
+# IDE
+.vscode/
+.idea/
