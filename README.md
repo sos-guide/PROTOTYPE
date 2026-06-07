@@ -40,7 +40,7 @@ attentats, incidents en milieu isolé, bunkers de protection civile.
 ## 🗂️ Structure du dépôt
 
 ```
-PROTOTYPE/
+SOS-GUIDE/
 ├── install.sh                  ← Déploiement + finalisation (STARTER → PRODUCTION)
 ├── LICENSE
 ├── VERSION
@@ -144,8 +144,8 @@ sudo usermod -aG docker $USER   # puis se reconnecter
 ### Génération
 
 ```bash
-git clone https://github.com/sos-guide/PROTOTYPE.git
-cd PROTOTYPE
+git clone https://github.com/sos-guide/SOS-GUIDE.git
+cd SOS-GUIDE
 
 # RPi 4 — variante Suisse (défaut)
 bash src/scripts/build-image.sh
@@ -216,7 +216,7 @@ Sur un Raspberry Pi OS Bookworm Lite existant :
 
 ```bash
 # Copier le dépôt sur le Pi
-scp -r PROTOTYPE/ pi@<IP-PI>:/tmp/sos/
+scp -r SOS-GUIDE/ pi@<IP-PI>:/tmp/sos/
 
 # Sur le Pi
 ssh pi@<IP-PI>
@@ -387,8 +387,8 @@ PL · NL · SV · NO · DA · FI · HU · RO · CS · EL · TR · FA · HI · TH
 ## 🤝 Contribuer
 
 ```bash
-git clone https://github.com/sos-guide/PROTOTYPE.git
-cd PROTOTYPE
+git clone https://github.com/sos-guide/SOS-GUIDE.git
+cd SOS-GUIDE
 git checkout -b feature/ma-contribution
 # ... modifications ...
 git commit -m "feat: description claire"
