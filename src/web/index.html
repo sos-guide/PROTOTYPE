@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
 <meta name="color-scheme" content="dark">
-<meta name="theme-color" content="#0c0c12">
+<meta name="theme-color" content="#0a0e1a">
 <meta name="description" content="Guide de survie d'urgence — fonctionne sans Internet">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self';script-src 'self' 'unsafe-inline';style-src 'self' 'unsafe-inline';img-src 'self' data:;connect-src 'self'">
 <title>SOS-GUIDE</title>
@@ -14,19 +14,21 @@
 ═══════════════════════════════════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{background:#0c0c12;color:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;font-size:16px;line-height:1.5;min-height:100vh;overflow-x:hidden}
+body{background:#0a0e1a;color:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;font-size:16px;line-height:1.5;min-height:100vh;overflow-x:hidden}
+/* ── Design system unifié SOS-GUIDE : navy #0a0e1a + rouge #e94560 + vert #10b981 ──
+   Accents sémantiques collapsés vers la marque (rouge = urgence/accent, vert = sûr). */
 :root{
-  --bg:#0c0c12;--s1:#161621;--s2:#1e1e2d;--s3:#262639;
-  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.14);
-  --text:#f1f5f9;--text2:#94a3b8;--text3:#64748b;
-  --red:#e53e3e;--red-d:rgba(229,62,62,.15);
-  --orange:#e07b0a;--orange-d:rgba(224,123,10,.14);
-  --blue:#3b82f6;--blue-d:rgba(59,130,246,.14);
-  --teal:#0e9e82;--teal-d:rgba(14,158,130,.14);
-  --violet:#7c3aed;--violet-d:rgba(124,58,237,.14);
-  --cyan:#0891b2;--cyan-d:rgba(8,145,178,.14);
+  --bg:#0a0e1a;--s1:#111827;--s2:#1a2436;--s3:#222e44;
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.16);
+  --text:#f8fafc;--text2:#94a3b8;--text3:#64748b;
+  --red:#e94560;--red-d:rgba(233,69,96,.15);
+  --orange:#e94560;--orange-d:rgba(233,69,96,.14);
+  --blue:#e94560;--blue-d:rgba(233,69,96,.14);
+  --teal:#10b981;--teal-d:rgba(16,185,129,.14);
+  --violet:#e94560;--violet-d:rgba(233,69,96,.14);
+  --cyan:#10b981;--cyan-d:rgba(16,185,129,.14);
   --slate:#475569;--slate-d:rgba(71,85,105,.14);
-  --rose:#db2777;--rose-d:rgba(219,39,119,.14);
+  --rose:#e94560;--rose-d:rgba(233,69,96,.14);
   --r:12px;--rs:8px;--t:180ms ease
 }
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
@@ -110,7 +112,7 @@ img{max-width:100%;display:block}
   padding:1rem 2.5rem;border-radius:var(--r);width:100%;max-width:420px;
   transition:background var(--t);letter-spacing:.3px;
 }
-.splash-enter:hover,.splash-enter:focus{background:#2563eb;outline:none}
+.splash-enter:hover,.splash-enter:focus{background:#e94560;outline:none}
 .splash-enter:active{transform:scale(.98)}
 
 /* ═══════════════════════════════════════════════════════════════
@@ -118,7 +120,7 @@ img{max-width:100%;display:block}
 ═══════════════════════════════════════════════════════════════ */
 #topBar{
   position:sticky;top:0;z-index:50;
-  background:rgba(12,12,18,.95);backdrop-filter:blur(10px);
+  background:rgba(10,14,26,.95);backdrop-filter:blur(10px);
   border-bottom:1px solid var(--border);
   display:flex;align-items:center;padding:.6rem 1rem;gap:.75rem
 }
@@ -214,12 +216,12 @@ select#langSelect{
 .card-rose::before{background:var(--rose)}
 .card-blanc::before{background:var(--text2)}
 
-.card-rouge{background:var(--red-d);border-color:rgba(229,62,62,.25)}
-.card-orange{background:var(--orange-d);border-color:rgba(224,123,10,.25)}
-.card-bleu{background:var(--blue-d);border-color:rgba(59,130,246,.25)}
-.card-violet{background:var(--violet-d);border-color:rgba(124,58,237,.25)}
-.card-cyan{background:var(--cyan-d);border-color:rgba(8,145,178,.25)}
-.card-rose{background:var(--rose-d);border-color:rgba(219,39,119,.25)}
+.card-rouge{background:var(--red-d);border-color:rgba(233,69,96,.25)}
+.card-orange{background:var(--orange-d);border-color:rgba(233,69,96,.25)}
+.card-bleu{background:var(--blue-d);border-color:rgba(233,69,96,.25)}
+.card-violet{background:var(--violet-d);border-color:rgba(233,69,96,.25)}
+.card-cyan{background:var(--cyan-d);border-color:rgba(16,185,129,.25)}
+.card-rose{background:var(--rose-d);border-color:rgba(233,69,96,.25)}
 
 /* ═══════════════════════════════════════════════════════════════
    GRILLES DE CARTES
@@ -400,7 +402,7 @@ footer a{color:var(--text3);text-decoration:underline}
 ═══════════════════════════════════════════════════════════════ */
 #loraSection{display:none;margin-bottom:1.25rem}
 .lora-alert-card{
-  background:var(--red-d);border:1px solid rgba(229,62,62,.3);border-radius:var(--r);
+  background:var(--red-d);border:1px solid rgba(233,69,96,.3);border-radius:var(--r);
   padding:.85rem 1rem;margin-bottom:.5rem;
   border-left:3px solid var(--red)
 }
