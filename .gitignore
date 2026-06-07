@@ -37,3 +37,7 @@ venv/
 # IDE
 .vscode/
 .idea/
+
+# Claude Code — instructions internes, JAMAIS dans le repo public
+CLAUDE.md
+.claude/
