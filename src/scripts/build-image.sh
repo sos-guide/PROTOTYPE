@@ -11,7 +11,7 @@
 # ║                                                                              ║
 # ║  CORRECTIONS v2.4 :                                                          ║
 # ║  ✅ Suppression toute référence au PIN HDMI dans credentials.txt             ║
-# ║  ✅ Note STARTER WiFi : mot de passe généré au 1er boot, lisible journalctl  ║
+# ║  ✅ Note STARTER WiFi : réseau OUVERT au 1er boot (sans mot de passe)        ║
 # ║  ✅ FIRST_USER_PASSWORD généré aléatoirement (build pi-gen)                  ║
 # ║  ✅ sos-guide-health.time copié en .timer dans /etc/systemd/system/          ║
 # ║  ✅ pyLoRa et flask ajoutés à pip (requis pour lora-service.py)              ║
@@ -263,9 +263,9 @@ ENABLE_SSH=1
 STAGE_LIST="stage0 stage1 stage2 ${SOS_STAGE}"
 PICONF
 
-# ── v2.4 : credentials.txt — sans PIN, avec note STARTER WiFi ─────────────────
-# Le PIN HDMI est supprimé. Le mot de passe WPA2 STARTER est généré
-# dynamiquement au 1er démarrage par firstboot.sh.
+# ── v2.5 : credentials.txt — sans PIN, réseau STARTER ouvert ─────────────────
+# Le PIN HDMI est supprimé. Le réseau WiFi STARTER est OUVERT (sans mot de passe)
+# au 1er démarrage ; toute la configuration se fait sur http://10.0.0.1/.
 {
     echo "# SOS-GUIDE v${VERSION} — Credentials"
     echo "# ⚠️  CONFIDENTIEL — Ne pas partager"
@@ -279,18 +279,13 @@ PICONF
     echo "SSH_NOTE=Changer ce mot de passe immédiatement après la première connexion"
     echo ""
     echo "# ── Accès WiFi STARTER (premier démarrage) ─────────────────────────"
-    echo "# v2.4 : Le mot de passe WPA2 STARTER est généré ALÉATOIREMENT"
-    echo "# au premier démarrage du Pi par firstboot.sh."
-    echo "# Il est différent à chaque démarrage STARTER."
+    echo "# Le réseau WiFi STARTER est OUVERT — aucun mot de passe requis."
+    echo "# Connectez-vous au SSID ci-dessous puis ouvrez http://10.0.0.1/"
+    echo "# pour lancer l'assistant de configuration (sans PIN, sans écran)."
     echo "#"
-    echo "# Pour le lire APRÈS le premier boot :"
-    echo "#   Via SSH ETH : journalctl -u sos-guide-firstboot | grep WPA2"
-    echo "#   Via fichier  : sudo cat /run/sos-guide/starter_wifi_password"
-    echo "#"
-    echo "# Le QR code de connexion WiFi est affiché sur http://10.0.0.1/"
-    echo "# dès que vous êtes connecté au réseau STARTER."
+    echo "# Un QR code de connexion WiFi est aussi affiché sur la page d'accueil."
     echo "STARTER_SSID=⛑️ SOS-GUIDE - STARTER"
-    echo "STARTER_WIFI_NOTE=Mot de passe généré au boot — voir journalctl ou QR code"
+    echo "STARTER_WIFI_NOTE=Réseau ouvert — aucun mot de passe — config sur http://10.0.0.1/"
     echo ""
     echo "# ── Accès administration (après configuration) ──────────────────────"
     echo "ADMIN_URL=http://10.0.0.1/admin"
@@ -384,8 +379,8 @@ echo -e "  CLI : rpi-imager --cli ${IMAGE_NAME}.img.gz /dev/sdX"
 echo ""
 echo -e "  ${YELLOW}Premier démarrage — 100%% WiFi, sans écran HDMI :${NC}"
 echo -e "  1. Connectez-vous au WiFi : ${BOLD}⛑️ SOS-GUIDE - STARTER${NC}"
-echo -e "     Mot de passe : lisible via QR code sur http://10.0.0.1/"
-echo -e "     ou : journalctl -u sos-guide-firstboot | grep WPA2"
+echo -e "     ${BOLD}Réseau ouvert — aucun mot de passe requis${NC}"
+echo -e "     Un QR code de connexion est aussi affiché sur http://10.0.0.1/"
 echo -e "  2. Ouvrez : ${BOLD}http://10.0.0.1/${NC}"
 echo -e "  3. Suivez l'assistant de configuration (nom du lieu, contacts, LoRa)"
 echo -e "  4. Validez → bascule en PRODUCTION sans reboot (~30s)"
