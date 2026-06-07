@@ -164,7 +164,7 @@ chmod 640 "$WEB_DIR/api_install.php"
 ok "Fichiers firstboot copiés depuis $FOUND_BOOT"
 
 # ── Injection des variables dans starter.html ─────────────────────────────────
-# v2.4 : injecter CSRF + canal + SSID + mot de passe WPA2 (plus de PIN)
+# v2.5 : injecter CSRF + canal + SSID (réseau STARTER ouvert, plus de PIN)
 STARTER_SSID="⛑️ SOS-GUIDE - STARTER"
 sed -i "s|%%CSRF_TOKEN%%|$TOKEN|g"     "$WEB_DIR/starter.html"
 sed -i "s|%%WIFI_CHANNEL%%|$CHANNEL|g" "$WEB_DIR/starter.html"
