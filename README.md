@@ -25,7 +25,7 @@ attentats, incidents en milieu isolé, bunkers de protection civile.
 | Correction | Impact |
 |-----------|--------|
 | **Suppression du PIN HDMI** | Configuration 100% via WiFi sans écran physique |
-| **WPA2 temporaire STARTER** | Réseau protégé dès le 1er boot (plus de réseau ouvert) |
+| **Réseau STARTER ouvert** | Accès au 1er boot sans mot de passe — configuration 100% WiFi (sans PIN HDMI) |
 | **QR code WiFi** | Connexion au réseau STARTER en un scan |
 | **Numéros urgence depuis config.json** | Les numéros locaux remplacent les numéros par défaut de la langue |
 | **`localPoliceNumber`** | Nouveau champ pour la police/gendarmerie locale |
@@ -49,7 +49,7 @@ SOS-GUIDE/
 │
 └── src/
     ├── firstboot/              ← Exécutés au 1er démarrage (mode STARTER)
-    │   ├── firstboot.sh        ← Génère WPA2 STARTER + QR code (sans PIN HDMI)
+    │   ├── firstboot.sh        ← Génère réseau STARTER ouvert + QR code (sans PIN HDMI)
     │   ├── finalize_install.sh ← Transition STARTER → PRODUCTION sans reboot
     │   ├── api_install.php     ← API REST firstboot (CSRF + rate-limit)
     │   ├── starter.html        ← Page config firstboot avec QR code WiFi
@@ -95,17 +95,17 @@ SOS-GUIDE/
 │  [Image .img flashée sur carte SD]                                      │
 │         │                                                               │
 │         ▼                                                               │
-│  ┌─────────────┐   WiFi WPA2 STARTER        ┌─────────────────────┐   │
+│  ┌─────────────┐   WiFi STARTER (ouvert)    ┌─────────────────────┐   │
 │  │   STARTER   │ ── "⛑️ SOS-GUIDE - STARTER" ─▶ http://10.0.0.1/  │   │
-│  │  firstboot  │   Mot de passe : QR code    │  Assistant config   │   │
-│  │  (1er boot) │   ou journalctl             │  Nom · Contacts     │   │
+│  │  firstboot  │   Réseau ouvert, sans mdp   │  Assistant config   │   │
+│  │  (1er boot) │   Connexion via QR code     │  Nom · Contacts     │   │
 │  └─────────────┘                             │  WiFi · LoRa        │   │
 │         │                                    └─────────────────────┘   │
 │         │  POST /api/install (CSRF — sans PIN)                         │
 │         ▼                                                               │
 │  ┌─────────────┐                             ┌─────────────────────┐   │
 │  │ PRODUCTION  │ ── "⛑️ SOS-GUIDE - Mairie" ──▶ Portail captif     │   │
-│  │  en ligne   │   WPA2 configuré            │  29 langues · offline│  │
+│  │  en ligne   │   WiFi configuré            │  29 langues · offline│  │
 │  └─────────────┘                             └─────────────────────┘   │
 │         │                                                               │
 │         │  http://10.0.0.1/admin  (htpasswd)                          │
@@ -327,7 +327,7 @@ sudo bash src/scripts/sos-guide-test.sh --report
 ```
 
 Les tests vérifient : services actifs · isolation réseau · hash SHA256 ·
-portail captif · sécurité admin · 29 fichiers de langue · LoRa · WPA2 STARTER.
+portail captif · sécurité admin · 29 fichiers de langue · LoRa · réseau STARTER ouvert.
 
 ---
 
