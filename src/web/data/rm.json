@@ -1,0 +1,208 @@
+{
+  "app": { "title": "SOS-GUID" },
+  "drawer": {
+    "title": "Navigaziun",
+    "footer": "SOS-GUID · versiun 1.0",
+    "links": [
+      { "icon": "⛑️", "label": "Chasa — Urgenzas", "href": "#splashScreen" },
+      { "icon": "📖", "label": "Guid da surviver", "href": "#mainContent" },
+      { "icon": "🇨🇭", "label": "Principis", "href": "#section-principes" },
+      { "icon": "⚙️", "label": "Meds practics", "href": "#section-outils" },
+      { "icon": "🚑", "label": "Urgenzas medicalas", "href": "#section-urgences" },
+      { "icon": "⚠️", "label": "Situaziuns colectivas", "href": "#section-situations" },
+      { "icon": "📞", "label": "Organisaziuns", "href": "#section-assos" }
+    ]
+  },
+  "local": {
+    "info": { "title": "" },
+    "crisis": "📞 Crisa",
+    "samu": "🚑 Ambulanza locala",
+    "fire": "🚒 Cumbutiders",
+    "townhall": "🏛️ Vischnanca",
+    "prefecture": "🏛️ Prefectura",
+    "redcross": "🔴 Crusch cotschna",
+    "radio": "📻 Radio locala"
+  },
+  "splash": {
+    "title": "GUID DA SURVIVER",
+    "subtitle": "Quest website funcziunescha <strong>senza connexiun ad internet</strong>. El furnescha infurmaziuns essenzialas per tadlar ina situaziun d'urgenza.",
+    "enterButton": "Acceder al guid complet"
+  },
+  "main": {
+    "welcome": {
+      "title": "Bainvegni",
+      "text": "Voss guid d'urgenza funcziunescha offline. Chatta qua meds d'urgenza, emprima agid e reflexas da surviver."
+    }
+  },
+  "sections": {
+    "principes": "🇨🇭 ils 3 principis dal servetsch da salvament",
+    "outils": "⚙️ Meds practics",
+    "urgencesMedicales": "🚑 Urgenzas medicalas",
+    "situationsCollectives": "⚠️ Situaziuns colectivas",
+    "associations": "📞 Organisaziuns & numers d'agid"
+  },
+  "tools": {
+    "metronome": { "title": "❤️ Metronom RCP 110 BPM", "start": "Entschaiver", "stop": "Fermar" },
+    "flash": { "stop": "⏹️ Fermar il flash SOS" },
+    "torch": { "stop": "🔦 Spendschar la lampada" },
+    "alarm": { "title": "🚨 Alarm sonor", "start": "Declanschar l'alarm", "stop": "Fermar l'alarm", "active": "🚨 ALARM ACTIV", "inactive": "⏹️ Fermà" },
+    "respiration": { "title": "🌬️ Respirar guidà", "start": "Entschaiver", "stop": "Fermar", "inhale": "Inspiraziun", "exhale": "Expiraziun" },
+    "whistle": { "title": "🔊 Sifflet d'urgenza", "start": "Sifflar (3 stochs)", "stop": "Fermar", "active": "🔊 Sifflet activ", "inactive": "⏹️ Fermà" }
+  },
+  "urgences": [
+    { "number": "144", "name": "AMBULANZA",   "class": "samu"     },
+    { "number": "117", "name": "POLIZIA",      "class": "police"   },
+    { "number": "118", "name": "CUMBUTIDERS",  "class": "pompiers" },
+    { "number": "112", "name": "URGENZA EU",   "class": "europe"   },
+    { "number": "143", "name": "TEL 143",      "class": "ssourd"   }
+  ],
+  "principes": [
+    {
+      "icon": "📢", "titre": "ALARMAR", "desc": "Dar l'alarm als servetschs da salvament", "colorClass": "card-bleu",
+      "contenu": {
+        "steps": [
+          "Numers d'urgenza en Svizra: 144 (ambulanza), 117 (polizia), 118 (cumbutiders), 112 (Europa), 143 (Tschentren d'agid).",
+          "Endischar: Nua? (lieu precis), Tge? (natira da l'accident), Tgi? (dumber da victimas, stadi).",
+          "Betg calar avant — laschar l'operatur serrar la clomada.",
+          "Duvrar ina app da localisaziun sch'i è pussaivel.",
+          "Sche ti es sullet e na pos betg discurrer, cloma 112 e lascha la lingia averta."
+        ]
+      }
+    },
+    {
+      "icon": "🩺", "titre": "AGIR", "desc": "Dar il emprim agid", "colorClass": "card-blanc",
+      "contenu": {
+        "steps": [
+          "Valutar la conscienza (discurrer, tucher), verichar la respiratiun.",
+          "Sche la persuna na respira betg: entschaiver immediatamain il massagi cardiac (100-120/min).",
+          "Posiziun laterala da segirezza sche la persuna è senza conscienza ma respira.",
+          "Hemorragia: spremi la plaga. Garrot mo sche la compressiun na bastga betg.",
+          "Nunca dar da baiver ad ina persuna senza conscienza.",
+          "Calmeschar la victima e tguvrar ella per evitar l'hipotermi."
+        ]
+      }
+    },
+    {
+      "icon": "🛡️", "titre": "PROTEGER", "desc": "Metter en segirezza", "colorClass": "card-rouge",
+      "contenu": {
+        "steps": [
+          "Remotar la victima d'ina privel immediata (fieu, traffic, crulla).",
+          "Balisar il lieu (triangel d'avis, litgs d'alarm).",
+          "Proteger tai sez: mufflas, masca sche disponibla.",
+          "Tunar las funtaunas da privel (gas, electricitad).",
+          "Betg spustar in blessà sch'igl è ina speranza d'in trauma a la colonna vertebrala."
+        ]
+      }
+    }
+  ],
+  "outils": [
+    { "icon": "❤️", "titre": "Metronom RCP 110 BPM", "desc": "Ritmus per massagi cardiac.", "action": "openMetronome" },
+    { "icon": "⚡", "titre": "Flash SOS", "desc": "Signal luminà da tschoc.", "action": "openFlashSOS" },
+    { "icon": "🔦", "titre": "Lampada da man", "desc": "Visur alv cler.", "action": "openTorche" },
+    { "icon": "🚨", "titre": "Alarm sonor", "desc": "Alarm continu (880 Hz).", "action": "openAlerte" },
+    { "icon": "🌬️", "titre": "Respirar guidà", "desc": "Coherenza cardiaca (4-4).", "action": "openRespiration" },
+    { "icon": "🔊", "titre": "Sifflet d'urgenza", "desc": "Signal da 3 stochs.", "action": "openSifflet" }
+  ],
+  "urgences_medicales": [
+    {
+      "icon": "🫀", "titre": "Malatia cardiaca", "desc": "Repaus, clamar 144, massagi sch'i è necessari.", "colorClass": "card-rouge",
+      "contenu": { "steps": ["Clamar immediatamain 144 u 112.", "Installar la persuna en relasch, posiziun semi-sedida sche conscient.", "Senza conscienza e respira: posiziun laterala da segirezza.", "Stop cardiac: massagi cardiac (100-120/min) + defibrillatur sche disponibel." ] }
+    },
+    {
+      "icon": "🩸", "titre": "Hemorragia", "desc": "Compressiun directa, garrot, clamar agid.", "colorClass": "card-rouge",
+      "contenu": { "steps": ["Premtar la plaga cun in tschoc nezzivà.", "Alevar il membrel blessà sche pussaivel.", "Sche il saungen na ferma betg: garrot (lung, stretg, notar l'ura).", "Nunca tirar ora in object plantà en la plaga.", "Dreger la victima, tguvrar, clamar 144." ] }
+    },
+    {
+      "icon": "🧠", "titre": "Apoplexia (FAST)", "desc": "Fatscha, bratsch, linguatg, temp — clamar 144.", "colorClass": "card-violet",
+      "contenu": { "steps": ["F: Fatscha asimmetrica?", "B: Bratsch flaivel?", "L: Linguatg perturbà?", "T: Temp — clamar immediatamain 144!", "Notar l'ura dals emprims symptoms." ] }
+    },
+    {
+      "icon": "🫁", "titre": "Sufugaziun", "desc": "Maniera da Heimlich.", "colorClass": "card-cyan",
+      "contenu": { "steps": ["Dumandar «Es ti en tren da suffugar?»", "Sche la persuna na po betg discurrer u tunscher: 5 stochs sin la dies.", "Sche betg efficaz: maniera da Heimlich.", "Persa da conscienza: massagi cardiac e clamar 144." ] }
+    },
+    {
+      "icon": "🔥", "titre": "Brisadiras", "desc": "Refridar cun aua tiepida 15 min, betg perforar las clocias.", "colorClass": "card-orange",
+      "contenu": { "steps": ["Refridar immediatamain cun aua tiepida (15-25°C) per 15 minutas.", "Spustar ils vests betg adherents e giuiels.", "Tguvrar cun film da plastica u bandascha sterila.", "Betg perforar las clocias, betg applicher cremas.", "Clamar 144 per brisadiras extesas, la fatscha u las vias respiratorias." ] }
+    },
+    {
+      "icon": "💧", "titre": "Negaziun", "desc": "Sortir da l'aua, reanimaziun, clamar 144.", "colorClass": "card-cyan",
+      "contenu": { "steps": ["Sortir la victima da l'aua senza periclitar tai sez.", "Verichar conscienza e respiratiun.", "Sche betg respira: 2 inspiraziuns + 30 pressiuns (30:2).", "Clamar 144 u 112.", "Tguvrar per evitar l'hipotermi." ] }
+    },
+    {
+      "icon": "💊", "titre": "Dosa memia gronda (GHB/MDMA)", "desc": "PLR, clamar 144, betg laschar durmir.", "colorClass": "card-violet",
+      "contenu": { "steps": ["Senza conscienza ma respira: posiziun laterala da segirezza.", "Stop respiratori: massagi cardiac + respiratiun artificialis.", "Clamar immediatamain 144.", "Betg laschar la persuna 'durmir' — surveglianza continua.", "Cuntgener ils products eventualamain consumads per ils servetschs da salvament." ] }
+    },
+    {
+      "icon": "🌡️", "titre": "Colp da chalur", "desc": "Refrigeraziun immediata, clamar 144.", "colorClass": "card-orange",
+      "contenu": { "steps": ["Metter la persuna en umbriva / freid.", "Desvestir, spritzar aua fraid, ventilar.", "Glatsch sin las schurlas, il culiez, las vieslas.", "Clamar 144 — urgenza vitala.", "Betg dar medicaments antipiреtics." ] }
+    },
+    {
+      "icon": "🍺", "titre": "Intoxicaziun d'alcohol", "desc": "PLR, surveglianza, clamar 144 sche coma.", "colorClass": "card-rouge",
+      "contenu": { "steps": ["Senza conscienza: posiziun laterala, surveglianza da la respiratiun.", "Betg laschar sulet, betg far vomitar.", "Coma u respiratiun irregulara: 144.", "Dar da baiver sche conscient e capabel dad inghittar." ] }
+    },
+    {
+      "icon": "🦐", "titre": "Tschoc anafilactic", "desc": "Allergia greiva, injectar adrenalina, clamar 144.", "colorClass": "card-rose",
+      "contenu": { "steps": ["Reconuscher: urtikaria, glinflà, pitgna da respirar, svegniment.", "Injectar l'adrenalina (sche prescritta) en la coscha.", "Dreger la persuna, elevar las chommas.", "Clamar immediatamain 144." ] }
+    },
+    {
+      "icon": "🚗", "titre": "Accident da via", "desc": "Segirezza, balisaziun, clamar agid.", "colorClass": "card-slate",
+      "contenu": { "steps": ["Metter il triangel d'avis, vestir la giubba refletanta.", "Betg spustar ils blessads senza privel immediat.", "Clamar 144, 118 u 112.", "Spendschar il contact, tirar il frain a maun.", "Betg dar da baiver a victimas senza conscienza." ] }
+    }
+  ],
+  "situations_collectives": [
+    {
+      "icon": "🔥", "titre": "Fieu", "desc": "Evacuar, alarmar, rastgar sut il fum.", "colorClass": "card-orange",
+      "contenu": { "steps": ["Alarmar ils cumbutiders (118 u 112).", "Bandunar il lieu en posiziun bassa (rastgar sut il fum).", "Betg duvrar l'ascensur.", "Serrar las portas davos tei.", "Sche ils vests brisnan: betg currer, rular sin terra." ] }
+    },
+    {
+      "icon": "💨", "titre": "Avertura da gas", "desc": "Betg far schintas, avrir fanestras, clamar 118.", "colorClass": "card-cyan",
+      "contenu": { "steps": ["Betg activar interrupturs electrics, betg duvrar il telefun sin lieu.", "Avrir portas e fanestras.", "Serrar il gas sche pussaivel.", "Evacuar ils lieus.", "Clamar ils cumbutiders (118 u 112) da for." ] }
+    },
+    {
+      "icon": "⚠️", "titre": "Attentat / Fusilaziun", "desc": "Fugir, zuppar, alarmar (112).", "colorClass": "card-rouge",
+      "contenu": { "steps": ["Fugir cun currer, midar direcziun.", "Sche fugir è impussaivel: zuppar en ina chombra serrada, spendschar la glisch, star lunsch da las fanestras.", "Spendschar il son dal telefun, betg clamar per betg trer a tei attenziun.", "Avrir mo a forzas d'urden identificadas." ] }
+    },
+    {
+      "icon": "🌊", "titre": "Inundaziun", "desc": "Ir en autezza, spendschar l'electricitad, tadlar ils comands.", "colorClass": "card-cyan",
+      "contenu": { "steps": ["Ir als pisos superiurs, betg en la cantina.", "Spendschar il gas e l'electricitad.", "Betg duvrar l'ascensur.", "Preparar l'evacuaziun sche cumandada.", "Clamar ils servetschs d'urgenza (118, 112) sche periclità immediatamain." ] }
+    },
+    {
+      "icon": "🌍", "titre": "Terratrembel", "desc": "Zuppettar, tguvrar, tegnair, star lunsch da las fanestras.", "colorClass": "card-violet",
+      "contenu": { "steps": ["Zuppettar sut ina maisa ferma, tguvrar il tgau, tegnair.", "Star lunsch da las fanestras ed objects suspendids.", "Suenter la pitschna: evacuar cun las scalas.", "Betg duvrar l'ascensur.", "Star attent a las pitschnas da successiun." ] }
+    },
+    {
+      "icon": "☣️", "titre": "NRBC (nuclear/radioactiv/biologic/chimic)", "desc": "Confinar, sbarrar ventilaziun, tadlar la radio.", "colorClass": "card-slate",
+      "contenu": { "steps": ["Ir en ina chombra senza fanestras.", "Serrar portas, fanestras, fermar la ventilaziun.", "Serrar ils vualts, colar las fissuras cun tschinta.", "Tadlar ils cumands officials (radio locala).", "Betg sortir avant la permissiun." ] }
+    }
+  ],
+  "associations": [
+    {
+      "icon": "💬", "titre": "Die Dargebotene Hand / Main tendue", "numero": "143", "colorClass": "card-slate",
+      "contenu": { "steps": ["Numer: 143 (libra da taxas)", "Sustegn psicologic 24h/24, anonimin e gratuit.", "Per ristretgnas emotionalas, sulitudin, pensaments da suicidi." ] }
+    },
+    {
+      "icon": "📞", "titre": "144 — Ambulanza", "numero": "144", "colorClass": "card-violet",
+      "contenu": { "steps": ["Numer: 144", "Servetsch naziunal, 24h/24." ] }
+    },
+    {
+      "icon": "👶", "titre": "147 — Pro Juventute", "numero": "147", "colorClass": "card-rouge",
+      "contenu": { "steps": ["Numer: 147 (libra da taxas)", "Agid per giuvenils e giuvnas en situaziuns difficultusas.", "Anonimin e confidenzial, 24h/24." ] }
+    },
+    {
+      "icon": "🚺", "titre": "0800 040 040 — Violenza sin dunnas", "numero": "0800 040 040", "colorClass": "card-rose",
+      "contenu": { "steps": ["Numer: 0800 040 040 (libra da taxas)", "Agid per dunnas vittimas da violenza.", "24h/24." ] }
+    },
+    {
+      "icon": "🔍", "titre": "116 000 — Uffants svanids", "numero": "116 000", "colorClass": "card-orange",
+      "contenu": { "steps": ["Numer: 116 000 (libra da taxas)", "Annunziar la sparida d'in uffant, agid per las famiglias." ] }
+    },
+    {
+      "icon": "🍷", "titre": "0800 040 080 — Addicziuns", "numero": "0800 040 080", "colorClass": "card-vert",
+      "contenu": { "steps": ["Numer: 0800 040 080", "Infurmaziuns e guidaziun sur addicziuns (alcohol, drogas, tschuc)." ] }
+    },
+    {
+      "icon": "❤️", "titre": "Crusch Cotschna Svizra", "numero": "058 400 41 11", "colorClass": "card-rouge",
+      "contenu": { "steps": ["Numer: 058 400 41 11", "Sustegn psicosocial." ] }
+    }
+  ]
+}

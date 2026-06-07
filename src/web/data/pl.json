@@ -1,0 +1,208 @@
+{
+  "app": { "title": "SOS-PRZEWODNIK" },
+  "drawer": {
+    "title": "Nawigacja",
+    "footer": "SOS-PRZEWODNIK · wersja 1.0",
+    "links": [
+      { "icon": "⛑️", "label": "Strona główna — Alarmy", "href": "#splashScreen" },
+      { "icon": "📖", "label": "Poradnik przetrwania", "href": "#mainContent" },
+      { "icon": "🇫🇷", "label": "Zasady", "href": "#section-principes" },
+      { "icon": "⚙️", "label": "Praktyczne narzędzia", "href": "#section-outils" },
+      { "icon": "🚑", "label": "Nagłe przypadki medyczne", "href": "#section-urgences" },
+      { "icon": "⚠️", "label": "Sytuacje zbiorowe", "href": "#section-situations" },
+      { "icon": "📞", "label": "Organizacje pomocowe", "href": "#section-assos" }
+    ]
+  },
+  "local": {
+    "info": { "title": "" },
+    "crisis": "📞 Kryzys",
+    "samu": "🚑 Lokalne pogotowie",
+    "fire": "🚒 Straż pożarna",
+    "townhall": "🏛️ Urząd miasta",
+    "prefecture": "🏛️ Prefektura",
+    "redcross": "🔴 Czerwony Krzyż",
+    "radio": "📻 Lokalne radio"
+  },
+  "splash": {
+    "title": "PORADNIK PRZETRWANIA",
+    "subtitle": "Ta strona działa <strong>bez połączenia z Internetem</strong>. Zawiera niezbędne informacje na wypadek sytuacji awaryjnej.",
+    "enterButton": "Przejdź do pełnego poradnika"
+  },
+  "main": {
+    "welcome": {
+      "title": "Witamy",
+      "text": "Twój przewodnik awaryjny działa offline. Znajdziesz tu narzędzia ratunkowe, pierwszą pomoc i odruchy przetrwania."
+    }
+  },
+  "sections": {
+    "principes": "🇫🇷 3 zasady pierwszej pomocy",
+    "outils": "⚙️ Praktyczne narzędzia",
+    "urgencesMedicales": "🚑 Nagłe przypadki medyczne",
+    "situationsCollectives": "⚠️ Sytuacje zbiorowe",
+    "associations": "📞 Organizacje i numery pomocowe"
+  },
+  "tools": {
+    "metronome": { "title": "❤️ Metronom RKO 110 BPM", "start": "Uruchom", "stop": "Zatrzymaj" },
+    "flash": { "stop": "⏹️ Zatrzymaj błysk SOS" },
+    "torch": { "stop": "🔦 Wyłącz latarkę" },
+    "alarm": { "title": "🚨 Alarm dźwiękowy", "start": "Włącz alarm", "stop": "Wyłącz alarm", "active": "🚨 ALARM AKTYWNY", "inactive": "⏹️ Zatrzymany" },
+    "respiration": { "title": "🌬️ Prowadzone oddychanie", "start": "Rozpocznij", "stop": "Zatrzymaj", "inhale": "Wdech", "exhale": "Wydech" },
+    "whistle": { "title": "🔊 Gwizdek alarmowy", "start": "Gwizdnij (3 razy)", "stop": "Zatrzymaj", "active": "🔊 Gwizdek aktywny", "inactive": "⏹️ Zatrzymany" }
+  },
+  "urgences": [
+	{ "number": "15", "name": "SAMU", "class": "samu" },
+	{ "number": "17", "name": "POLICJA", "class": "police" },
+	{ "number": "18", "name": "STRAŻ POŻARNA", "class": "pompiers" },
+	{ "number": "112", "name": "NUMER ALARMOWY UE", "class": "europe" },
+	{ "number": "114", "name": "OSOBY GŁUCHE", "class": "ssourd" }
+  ],
+  "principes": [
+    {
+      "icon": "📢", "titre": "ALARMOWAĆ", "desc": "Powiadom służby ratunkowe", "colorClass": "card-bleu",
+      "contenu": {
+        "steps": [
+          "Numery alarmowe: 112 (ogólny), 997, 998, 999.",
+          "Podaj: Gdzie? (dokładne miejsce), Co? (rodzaj wypadku), Kto? (liczba poszkodowanych, stan).",
+          "Nie rozłączaj się pierwszy – niech operator zakończy rozmowę.",
+          "Użyj aplikacji lokalizacyjnej, jeśli to możliwe.",
+          "Jeśli jesteś sam i nie możesz mówić, wybierz 112 i pozostaw otwartą linię."
+        ]
+      }
+    },
+    {
+      "icon": "🩺", "titre": "RATOWAĆ", "desc": "Wykonaj pierwsze czynności", "colorClass": "card-blanc",
+      "contenu": {
+        "steps": [
+          "Oceń przytomność (mów, dotknij), sprawdź oddech.",
+          "Brak oddechu: natychmiast rozpocznij masaż serca (100-120 uciśnięć/min).",
+          "Pozycja boczna bezpieczna, jeśli nieprzytomny oddycha.",
+          "Krwotok: uciskaj ranę. Opaska uciskowa tylko gdy ucisk nieskuteczny.",
+          "Nigdy nie podawaj nic do picia osobie nieprzytomnej.",
+          "Uspokój poszkodowanego i przykryj, aby zapobiec wychłodzeniu."
+        ]
+      }
+    },
+    {
+      "icon": "🛡️", "titre": "CHRONIĆ", "desc": "Zapewnij bezpieczeństwo", "colorClass": "card-rouge",
+      "contenu": {
+        "steps": [
+          "Usuń poszkodowanego z bezpośredniego zagrożenia (ogień, ruch uliczny, zawalenie).",
+          "Zabezpiecz miejsce zdarzenia (trójkąt, światła awaryjne).",
+          "Chroń siebie: rękawiczki, maseczka jeśli dostępna.",
+          "Odłącz źródła zagrożenia (gaz, prąd).",
+          "Nie przemieszczaj rannego z podejrzeniem urazu kręgosłupa."
+        ]
+      }
+    }
+  ],
+  "outils": [
+    { "icon": "❤️", "titre": "Metronom RKO 110 BPM", "desc": "Rytm do masażu serca.", "action": "openMetronome" },
+    { "icon": "⚡", "titre": "Błysk SOS", "desc": "Sygnał świetlny wzywania pomocy.", "action": "openFlashSOS" },
+    { "icon": "🔦", "titre": "Latarka", "desc": "Jasny biały ekran.", "action": "openTorche" },
+    { "icon": "🚨", "titre": "Alarm dźwiękowy", "desc": "Ciągły dźwięk (880 Hz).", "action": "openAlerte" },
+    { "icon": "🌬️", "titre": "Prowadzone oddychanie", "desc": "Koherencja serca (4-4).", "action": "openRespiration" },
+    { "icon": "🔊", "titre": "Gwizdek alarmowy", "desc": "Sygnał 3-krotny.", "action": "openSifflet" }
+  ],
+  "urgences_medicales": [
+    {
+      "icon": "🫀", "titre": "Zawał serca", "desc": "Spoczynek, wezwij pogotowie, RKO jeśli konieczne.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Natychmiast zadzwoń na 112/999.", "Ułóż w pozycji półsiedzącej, jeśli przytomny.", "Nieprzytomny z oddechem: pozycja boczna.", "Zatrzymanie krążenia: masaż serca (100-120/min) + AED jeśli dostępny." ] }
+    },
+    {
+      "icon": "🩸", "titre": "Krwotok", "desc": "Bezpośredni ucisk, opaska uciskowa, wezwij pomoc.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Uciśnij ranę czystą szmatką.", "Unieś kończynę jeśli to możliwe.", "Jeśli krwawienie nie ustaje: opaska uciskowa (szeroka, mocno, zanotuj czas).", "Nie usuwaj przedmiotów tkwiących w ranie.", "Połóż poszkodowanego, przykryj, zadzwoń na 112." ] }
+    },
+    {
+      "icon": "🧠", "titre": "Udar (FAST)", "desc": "Twarz, Ręka, Mowa, Czas – dzwoń 112.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "T: Twarz asymetryczna?", "R: Ręka opada?", "M: Mowa niewyraźna?", "C: Czas – natychmiast dzwoń 112!", "Zanotuj czas wystąpienia objawów." ] }
+    },
+    {
+      "icon": "🫁", "titre": "Zadławienie", "desc": "Manewr Heimlicha.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Zapytaj 'Czy się dławisz?'", "Jeśli nie może mówić/kaszleć: 5 uderzeń w plecy.", "Jeśli nieskuteczne: manewr Heimlicha.", "Utrata przytomności: RKO i dzwoń 112." ] }
+    },
+    {
+      "icon": "🔥", "titre": "Oparzenia", "desc": "Chłodzić letnią wodą 15 min, nie przebijać pęcherzy.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Natychmiast chłodzić letnią wodą (15-25°C) przez 15 min.", "Usuń nieprzywierającą odzież i biżuterię.", "Przykryj folią spożywczą lub jałowym opatrunkiem.", "Nie przebijaj pęcherzy, nie stosuj kremów.", "Zadzwoń 112 przy rozległych oparzeniach, twarzy lub dróg oddechowych." ] }
+    },
+    {
+      "icon": "💧", "titre": "Utonięcie", "desc": "Wyciągnij z wody, RKO, wezwij pogotowie.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Wyciągnij poszkodowanego z wody bez narażania siebie.", "Sprawdź przytomność i oddech.", "Brak oddechu: 2 wdechy + 30 uciśnięć (30:2).", "Zadzwoń 112.", "Przykryj, aby zapobiec wychłodzeniu." ] }
+    },
+    {
+      "icon": "💊", "titre": "Przedawkowanie (GHB/MDMA)", "desc": "Pozycja boczna, dzwoń 112, nie pozwól zasnąć.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Nieprzytomny z oddechem: pozycja boczna.", "Zatrzymanie oddechu: RKO + oddechy ratownicze.", "Natychmiast zadzwoń 112.", "Nie pozwól 'spać' – stale monitoruj.", "Zachowaj spożyte substancje dla służb." ] }
+    },
+    {
+      "icon": "🌡️", "titre": "Udar cieplny", "desc": "Natychmiast schłodzić, dzwoń 112.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Przenieś w cień/chłodne miejsce.", "Rozbierz, spryskaj chłodną wodą, wachluj.", "Okłady z lodu na pachy, szyję, pachwiny.", "Zadzwoń 112 – stan zagrożenia życia.", "Nie podawaj leków przeciwgorączkowych." ] }
+    },
+    {
+      "icon": "🍺", "titre": "Zatrucie alkoholowe", "desc": "Pozycja boczna, obserwacja, 112 przy śpiączce.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Nieprzytomny: pozycja boczna, kontroluj oddech.", "Nie zostawiaj samego, nie wywołuj wymiotów.", "Śpiączka lub nieregularny oddech: 112.", "Nawadniaj jeśli przytomny i może przełykać." ] }
+    },
+    {
+      "icon": "🦐", "titre": "Wstrząs anafilaktyczny", "desc": "Ciężka alergia, wstrzyknij adrenalinę, dzwoń 112.", "colorClass": "card-rose",
+      "contenu": { "steps": [ "Rozpoznaj: pokrzywka, obrzęk, duszność, omdlenie.", "Wstrzyknij adrenalinę (jeśli przepisana) w udo.", "Połóż na plecach, unieś nogi.", "Natychmiast dzwoń 112." ] }
+    },
+    {
+      "icon": "🚗", "titre": "Wypadek drogowy", "desc": "Bezpieczeństwo, oznakowanie, wezwij pomoc.", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Ustaw trójkąt ostrzegawczy, załóż kamizelkę.", "Nie ruszaj rannych, chyba że bezpośrednie zagrożenie.", "Zadzwoń 112.", "Wyłącz silniki, zaciągnij hamulec ręczny.", "Nie podawaj nic do picia nieprzytomnym." ] }
+    }
+  ],
+  "situations_collectives": [
+    {
+      "icon": "🔥", "titre": "Pożar", "desc": "Ewakuuj się, alarmuj, czołgaj się pod dymem.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Wezwij straż pożarną (998/112).", "Wychodź pochylony (czołgaj się pod dymem).", "Nie korzystaj z windy.", "Zamykaj drzwi za sobą.", "Jeśli ubranie płonie: zatrzymaj się, rzuć na ziemię, turlaj." ] }
+    },
+    {
+      "icon": "💨", "titre": "Wyciek gazu", "desc": "Nie twórz iskier, otwórz okna, dzwoń 998.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Nie używaj przełączników elektrycznych, nie dzwoń na miejscu.", "Otwórz drzwi i okna.", "Zakręć gaz, jeśli to możliwe.", "Ewakuuj budynek.", "Wezwij straż pożarną (998/112) z zewnątrz." ] }
+    },
+    {
+      "icon": "⚠️", "titre": "Zamach / Strzelanina", "desc": "Uciekaj, ukryj się, alarmuj (112).", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Uciekaj, zmieniaj kierunek.", "Jeśli ucieczka niemożliwa: ukryj się w zamkniętym pomieszczeniu, zgaś światło, trzymaj się z dala od okien.", "Wycisz telefon, nie dzwoń, by nie zdradzić pozycji.", "Otwieraj tylko zidentyfikowanym służbom." ] }
+    },
+    {
+      "icon": "🌊", "titre": "Powódź", "desc": "Idź na wyższe piętra, odłącz prąd, słuchaj poleceń.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Idź na wyższe kondygnacje, nie do piwnicy.", "Odłącz gaz i prąd.", "Nie używaj windy.", "Przygotuj się do ewakuacji, jeśli zalecono.", "Wezwij pomoc (112) w razie bezpośredniego zagrożenia." ] }
+    },
+    {
+      "icon": "🌍", "titre": "Trzęsienie ziemi", "desc": "Padnij, schowaj się, trzymaj, z dala od okien.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Padnij, schowaj się pod stabilnym stołem, trzymaj.", "Trzymaj się z dala od okien i wiszących przedmiotów.", "Po wstrząsie: ewakuuj się schodami.", "Nie używaj windy.", "Bądź czujny na wstrząsy wtórne." ] }
+    },
+    {
+      "icon": "☣️", "titre": "CBRN (Chemiczny/Biologiczny/Radiacyjny/Jądrowy)", "desc": "Zostań w pomieszczeniu, uszczelnij, słuchaj radia.", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Schroń się w pokoju bez okien.", "Zamknij drzwi, okna, wyłącz wentylację.", "Zamknij rolety, uszczelnij szczeliny taśmą.", "Słuchaj oficjalnych komunikatów (lokalne radio).", "Nie wychodź, dopóki nie będzie zezwolenia." ] }
+    }
+  ],
+  "associations": [
+    {
+      "icon": "💬", "titre": "Telefon Zaufania", "numero": "116 123", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Numer: 116 123 (bezpłatny)", "Całodobowe wsparcie psychologiczne, anonimowe i bezpłatne.", "Dla osób w kryzysie emocjonalnym, samotnych, z myślami samobójczymi." ] }
+    },
+    {
+      "icon": "📞", "titre": "800 70 2222 – Centrum Wsparcia", "numero": "800 70 2222", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Numer: 800 70 2222", "Ogólnopolski, całodobowy. Profesjonaliści." ] }
+    },
+    {
+      "icon": "👶", "titre": "116 111 – Telefon Zaufania dla Dzieci", "numero": "116 111", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Numer: 116 111 (bezpłatny)", "Zgłaszanie krzywdzenia dzieci (przemoc, zaniedbanie).", "Anonimowo i poufnie." ] }
+    },
+    {
+      "icon": "🚺", "titre": "800 120 002 – Niebieska Linia", "numero": "800 120 002", "colorClass": "card-rose",
+      "contenu": { "steps": [ "Numer: 800 120 002 (bezpłatny)", "Pomoc dla kobiet doświadczających przemocy.", "Całodobowo." ] }
+    },
+    {
+      "icon": "🔍", "titre": "116 000 – Zaginione dzieci", "numero": "116 000", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Numer: 116 000 (bezpłatny)", "Zgłaszanie zaginięcia dziecka." ] }
+    },
+    {
+      "icon": "🍷", "titre": "801 199 990 – Ogólnopolski Telefon Zaufania Narkotyki", "numero": "801 199 990", "colorClass": "card-vert",
+      "contenu": { "steps": [ "Numer: 801 199 990", "Informacje i pomoc w uzależnieniach (alkohol, narkotyki, hazard)." ] }
+    },
+    {
+      "icon": "❤️", "titre": "PCK – Wsparcie", "numero": "22 326 12 00", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Numer: 22 326 12 00", "Pomoc psychospołeczna Polskiego Czerwonego Krzyża." ] }
+    }
+  ]
+}

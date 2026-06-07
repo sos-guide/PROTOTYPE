@@ -33,6 +33,9 @@ INSTALL_MARKER="/var/lib/sos-guide/installed"
 AUDIT_LOG="/var/log/sos-guide-install.log"
 HTPASSWD_FILE="/etc/nginx/.htpasswd"
 
+REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SRC_DIR="${REPO_DIR}/src"
+
 # ── Journalisation ────────────────────────────────────────────────────────────
 mkdir -p /var/lib/sos-guide /var/log
 exec > >(tee -a "$AUDIT_LOG") 2>&1
@@ -58,6 +61,44 @@ if ! command -v jq &>/dev/null; then
     apt-get update -qq && apt-get install -y -qq jq
 fi
 
+# ══════════════════════════════════════════════════════════════════════════════
+# ÉTAPE 0 — DÉPLOIEMENT DES SOURCES
+# ══════════════════════════════════════════════════════════════════════════════
+step "Déploiement des sources"
+sep
+
+if [ -d "$SRC_DIR" ]; then
+    # Fichiers web
+    if [ -d "${SRC_DIR}/web" ]; then
+        mkdir -p "$WEB_DIR"
+        cp -r "${SRC_DIR}/web/." "$WEB_DIR/"
+        ok "src/web/ → ${WEB_DIR}"
+    else
+        warn "src/web/ absent"
+    fi
+
+    # Scripts vers /usr/local/bin
+    for script in lora-service.py sos-guide-boot-check.sh sos-guide-regen-hash.sh \
+                  sos-guide-fetch-tiles.sh sos-guide-update.sh sos-guide-tls-setup.sh; do
+        src="${SRC_DIR}/scripts/${script}"
+        if [ -f "$src" ]; then
+            cp "$src" "/usr/local/bin/${script}"
+            chmod 755 "/usr/local/bin/${script}"
+            ok "src/scripts/${script} → /usr/local/bin/"
+        fi
+    done
+
+    # Unités systemd
+    for unit in "${SRC_DIR}/systemd/"*; do
+        [ -f "$unit" ] || continue
+        cp "$unit" "/etc/systemd/system/$(basename "$unit")"
+        ok "src/systemd/$(basename "$unit") → /etc/systemd/system/"
+    done
+    systemctl daemon-reload
+else
+    info "src/ absent — mode image (fichiers déjà déployés)"
+fi
+
 # ── FIX v2.3 : Déverrouillage préalable pour idempotence ─────────────────────
 # Si le script est re-exécuté (changement de config), les fichiers marqués
 # chattr +i bloqueraient toute réécriture. On les déverrouille en amont.
@@ -78,7 +119,6 @@ step "Lecture de la configuration"
 sep
 
 NODE_NAME=$(jq -r '.establishment.name // "SOS-GUIDE"'     "$CONFIG_FILE")
-WIFI_PASSWORD=$(jq -r '.wifiPassword // ""'                 "$CONFIG_FILE")
 ENABLE_LORA=$(jq -r '.enableLoRa // false'                  "$CONFIG_FILE")
 ENABLE_ETHERNET=$(jq -r '.enableEthernet // false'          "$CONFIG_FILE")
 WIFI_CHANNEL=$(jq -r '.wifiChannel // "11"'                 "$CONFIG_FILE")
@@ -149,18 +189,8 @@ ignore_broadcast_ssid=0
 auth_algs=1
 EOF
 
-if [ -n "$WIFI_PASSWORD" ] && [ ${#WIFI_PASSWORD} -ge 8 ]; then
-    cat >> "$HOSTAPD_CONF" <<EOF
-wpa=2
-wpa_passphrase=${WIFI_PASSWORD}
-wpa_key_mgmt=WPA-PSK
-rsn_pairwise=CCMP
-EOF
-    ok "WPA2 activé (mot de passe configuré)"
-else
-    echo "wpa=0" >> "$HOSTAPD_CONF"
-    warn "Réseau WiFi ouvert (pas de mot de passe)"
-fi
+echo "wpa=0" >> "$HOSTAPD_CONF"
+ok "Réseau WiFi ouvert (sans mot de passe)"
 
 cat > /etc/default/hostapd <<EOF
 DAEMON_CONF="${HOSTAPD_CONF}"
@@ -454,22 +484,11 @@ chown www-data:www-data "$API_RELOAD"
 chmod 640 "$API_RELOAD"
 ok "api_reload_network.php créé"
 
-# ── Script de régénération du hash ────────────────────────────────────────────
-cat > /usr/local/bin/sos-guide-regen-hash.sh <<'HASHEOF'
-#!/bin/bash
-WEB_DIR="/var/www/sos-guide"
-HASH_FILE="/root/integrity.hash"
-TEMP_HASH="${HASH_FILE}.tmp"
-find "$WEB_DIR" -type f ! -path "$WEB_DIR/data/config.json" \
-    -exec sha256sum {} \; > "$TEMP_HASH"
-sha256sum "$WEB_DIR/data/config.json" >> "$TEMP_HASH" 2>/dev/null || true
-sha256sum /etc/nginx/sites-available/sos-guide >> "$TEMP_HASH" 2>/dev/null || true
-mv "$TEMP_HASH" "$HASH_FILE"
-chmod 400 "$HASH_FILE"
-logger "SOS-GUIDE: hash SHA256 régénéré ($(wc -l < "$HASH_FILE") fichiers)"
-HASHEOF
-chmod 755 /usr/local/bin/sos-guide-regen-hash.sh
-ok "sos-guide-regen-hash.sh installé"
+if [ ! -f /usr/local/bin/sos-guide-regen-hash.sh ]; then
+    err "sos-guide-regen-hash.sh manquant — vérifier src/scripts/"
+    exit 1
+fi
+ok "sos-guide-regen-hash.sh présent"
 
 # ── Sudoers ───────────────────────────────────────────────────────────────────
 SUDOERS_FILE="/etc/sudoers.d/sos-guide-reload"

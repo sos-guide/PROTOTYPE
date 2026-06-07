@@ -1,0 +1,208 @@
+{
+  "app": { "title": "SOS-OPAS" },
+  "drawer": {
+    "title": "Navigointi",
+    "footer": "SOS-OPAS · versio 1.0",
+    "links": [
+      { "icon": "⛑️", "label": "Etusivu — Hätätilanteet", "href": "#splashScreen" },
+      { "icon": "📖", "label": "Selviytymisopas", "href": "#mainContent" },
+      { "icon": "🇫🇷", "label": "Periaatteet", "href": "#section-principes" },
+      { "icon": "⚙️", "label": "Käytännön työkalut", "href": "#section-outils" },
+      { "icon": "🚑", "label": "Lääketieteelliset hätätilanteet", "href": "#section-urgences" },
+      { "icon": "⚠️", "label": "Yhteisölliset tilanteet", "href": "#section-situations" },
+      { "icon": "📞", "label": "Avustusjärjestöt", "href": "#section-assos" }
+    ]
+  },
+  "local": {
+    "info": { "title": "" },
+    "crisis": "📞 Kriisi",
+    "samu": "🚑 Paikallinen ambulanssi",
+    "fire": "🚒 Palokunta",
+    "townhall": "🏛️ Kaupungintalo",
+    "prefecture": "🏛️ Lääninhallitus",
+    "redcross": "🔴 Punainen Risti",
+    "radio": "📻 Paikallisradio"
+  },
+  "splash": {
+    "title": "SELVIYTYMISOPAS",
+    "subtitle": "Tämä sivusto toimii <strong>ilman internet-yhteyttä</strong>. Se tarjoaa tärkeät tiedot hätätilanteen kohtaamiseen.",
+    "enterButton": "Siirry täyteen oppaaseen"
+  },
+  "main": {
+    "welcome": {
+      "title": "Tervetuloa",
+      "text": "Hätäoppaasi toimii offline-tilassa. Löydä täältä hätätyökalut, ensiapuohjeet ja selviytymisrefleksit."
+    }
+  },
+  "sections": {
+    "principes": "🇫🇷 Ensiavun 3 periaatetta",
+    "outils": "⚙️ Käytännön työkalut",
+    "urgencesMedicales": "🚑 Lääketieteelliset hätätilanteet",
+    "situationsCollectives": "⚠️ Yhteisölliset tilanteet",
+    "associations": "📞 Avustusjärjestöt ja apunumerot"
+  },
+  "tools": {
+    "metronome": { "title": "❤️ Elvytysmetronomi 110 BPM", "start": "Käynnistä", "stop": "Pysäytä" },
+    "flash": { "stop": "⏹️ Pysäytä SOS-välähdys" },
+    "torch": { "stop": "🔦 Sammuta taskulamppu" },
+    "alarm": { "title": "🚨 Äänihälytys", "start": "Laukaise hälytys", "stop": "Pysäytä hälytys", "active": "🚨 HÄLYTYS AKTIIVINEN", "inactive": "⏹️ Pysäytetty" },
+    "respiration": { "title": "🌬️ Ohjattu hengitys", "start": "Aloita", "stop": "Pysäytä", "inhale": "Sisäänhengitys", "exhale": "Uloshengitys" },
+    "whistle": { "title": "🔊 Hätäpilli", "start": "Vihellä (3 kertaa)", "stop": "Pysäytä", "active": "🔊 Pilli aktiivinen", "inactive": "⏹️ Pysäytetty" }
+  },
+  "urgences": [
+	{ "number": "15", "name": "SAMU", "class": "samu" },
+	{ "number": "17", "name": "POLIISI", "class": "police" },
+	{ "number": "18", "name": "PALOKUNTA", "class": "pompiers" },
+	{ "number": "112", "name": "EUROOPPALAINEN HÄTÄNUMERO", "class": "europe" },
+	{ "number": "114", "name": "KUULOVAMMAISET", "class": "ssourd" }
+  ],
+  "principes": [
+    {
+      "icon": "📢", "titre": "HÄLYTÄ", "desc": "Hälytä apua", "colorClass": "card-bleu",
+      "contenu": {
+        "steps": [
+          "Hätänumero: 112.",
+          "Kerro: Missä? (tarkka paikka), Mitä? (onnettomuustyyppi), Kuka? (uhrien määrä, tila).",
+          "Älä sulje puhelinta ensin – anna päivystäjän lopettaa puhelu.",
+          "Käytä paikannussovellusta, jos mahdollista.",
+          "Jos olet yksin etkä voi puhua, soita 112 ja jätä linja auki."
+        ]
+      }
+    },
+    {
+      "icon": "🩺", "titre": "PELASTA", "desc": "Anna ensiapua", "colorClass": "card-blanc",
+      "contenu": {
+        "steps": [
+          "Arvioi tajunnantaso (puhu, kosketa), tarkista hengitys.",
+          "Ei hengitystä: aloita heti paineluelvytys (100-120 painallusta/min).",
+          "Kylkiasento, jos tajuton mutta hengittää.",
+          "Verenvuoto: paina haavaa. Käytä painesidettä vain, jos painaminen ei riitä.",
+          "Älä koskaan anna tajuttomalle juotavaa.",
+          "Rauhoita uhria ja peittele estääksesi hypotermia."
+        ]
+      }
+    },
+    {
+      "icon": "🛡️", "titre": "SUOJAA", "desc": "Varmista turvallisuus", "colorClass": "card-rouge",
+      "contenu": {
+        "steps": [
+          "Siirrä uhri pois välittömästä vaarasta (tuli, liikenne, sortuma).",
+          "Merkitse alue (varoituskolmio, hätävilkut).",
+          "Suojaa itsesi: käsineet, maski jos saatavilla.",
+          "Katkaise vaaranlähteet (kaasu, sähkö).",
+          "Älä liikuta loukkaantunutta, jos epäillään selkärankavammaa."
+        ]
+      }
+    }
+  ],
+  "outils": [
+    { "icon": "❤️", "titre": "Elvytysmetronomi 110 BPM", "desc": "Rytmi paineluelvytykseen.", "action": "openMetronome" },
+    { "icon": "⚡", "titre": "SOS-välähdys", "desc": "Valomerkki hätätilanteeseen.", "action": "openFlashSOS" },
+    { "icon": "🔦", "titre": "Taskulamppu", "desc": "Kirkas valkoinen näyttö.", "action": "openTorche" },
+    { "icon": "🚨", "titre": "Äänihälytys", "desc": "Jatkuva hälytys (880 Hz).", "action": "openAlerte" },
+    { "icon": "🌬️", "titre": "Ohjattu hengitys", "desc": "Sydämen koherenssi (4-4).", "action": "openRespiration" },
+    { "icon": "🔊", "titre": "Hätäpilli", "desc": "3 vihellyksen signaali.", "action": "openSifflet" }
+  ],
+  "urgences_medicales": [
+    {
+      "icon": "🫀", "titre": "Sydänkohtaus", "desc": "Lepo, soita 112, elvytä tarvittaessa.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Soita heti 112.", "Aseta henkilö puoli-istuvaan asentoon, jos tajuissaan.", "Tajuton mutta hengittää: kylkiasento.", "Sydänpysähdys: paineluelvytys (100-120/min) + defibrillaattori jos saatavilla." ] }
+    },
+    {
+      "icon": "🩸", "titre": "Verenvuoto", "desc": "Suora paine, paineside, soita apua.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Paina haavaa puhtaalla liinalla.", "Nosta vahingoittunutta raajaa, jos mahdollista.", "Jos vuoto ei tyrehdy: paineside (leveä, tiukka, merkitse aika).", "Älä koskaan poista haavaan juuttuneita esineitä.", "Aseta uhri makuulle, peittele, soita 112." ] }
+    },
+    {
+      "icon": "🧠", "titre": "Aivohalvaus (FAST)", "desc": "Kasvot, Käsi, Puhe, Aika – soita 112.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "K: Kasvot epäsymmetriset?", "K: Käden heikkous?", "P: Puheen sammallus?", "A: Aika – soita heti 112!", "Merkitse oireiden alkamisaika." ] }
+    },
+    {
+      "icon": "🫁", "titre": "Tukehtuminen", "desc": "Heimlichin ote.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Kysy 'Tukehdutko?'", "Jos ei pysty puhumaan tai yskimään: 5 iskua lapaluiden väliin.", "Jos ei auta: Heimlichin ote.", "Tajunnan menetys: aloita elvytys ja soita 112." ] }
+    },
+    {
+      "icon": "🔥", "titre": "Palovammat", "desc": "Jäähdytä haalealla vedellä 15 min, älä puhkaise rakkuloita.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Jäähdytä heti haalealla vedellä (15-25°C) 15 minuutin ajan.", "Poista vaatteet, jotka eivät ole tarttuneet, ja korut.", "Peitä kelmulla tai steriilillä sidoksella.", "Älä puhkaise rakkuloita, älä levitä voiteita.", "Soita 112 laajoissa palovammoissa, kasvojen tai hengitysteiden palovammoissa." ] }
+    },
+    {
+      "icon": "💧", "titre": "Hukkuminen", "desc": "Nosta vedestä, elvytä, soita 112.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Nosta uhri vedestä vaarantamatta itseäsi.", "Tarkista tajunta ja hengitys.", "Ei hengitystä: 2 puhallusta + 30 painallusta (30:2).", "Soita 112.", "Peittele hypotermian estämiseksi." ] }
+    },
+    {
+      "icon": "💊", "titre": "Yliannostus (GHB/MDMA)", "desc": "Kylkiasento, soita 112, älä anna nukkua.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Tajuton mutta hengittää: kylkiasento.", "Hengityspysähdys: elvytys + puhallukset.", "Soita heti 112.", "Älä anna henkilön 'nukkua' – tarkkaile jatkuvasti.", "Säilytä mahdolliset aineet ensihoitajia varten." ] }
+    },
+    {
+      "icon": "🌡️", "titre": "Lämpöhalvaus", "desc": "Jäähdytä heti, soita 112.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Siirrä varjoon/viileään paikkaan.", "Riisu vaatteet, suihkuta viileää vettä, tuuleta.", "Jäätä kainaloihin, niskaan, nivusiin.", "Soita 112 – hengenvaarallinen tila.", "Älä anna kuumelääkkeitä." ] }
+    },
+    {
+      "icon": "🍺", "titre": "Alkoholimyrkytys", "desc": "Kylkiasento, tarkkaile, soita 112 jos kooma.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Tajuton: kylkiasento, tarkkaile hengitystä.", "Älä jätä yksin, älä oksennuta.", "Kooma tai epäsäännöllinen hengitys: 112.", "Nesteytä, jos tajuissaan ja pystyy nielemään." ] }
+    },
+    {
+      "icon": "🦐", "titre": "Anafylaktinen sokki", "desc": "Vaikea allergia, pistä adrenaliinia, soita 112.", "colorClass": "card-rose",
+      "contenu": { "steps": [ "Tunnista: nokkosihottuma, turvotus, hengitysvaikeus, pyörtyminen.", "Pistä adrenaliinia (jos määrätty) reiteen.", "Aseta makuulle, nosta jalat.", "Soita heti 112." ] }
+    },
+    {
+      "icon": "🚗", "titre": "Liikenneonnettomuus", "desc": "Turvallisuus, varoitusmerkit, soita apua.", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Aseta varoituskolmio, käytä heijastinliiviä.", "Älä siirrä loukkaantuneita, ellei välitöntä vaaraa.", "Soita 112.", "Sammuta moottorit, vedä käsijarru.", "Älä anna juotavaa tajuttomille." ] }
+    }
+  ],
+  "situations_collectives": [
+    {
+      "icon": "🔥", "titre": "Tulipalo", "desc": "Evakuoi, hälytä, ryömi savun alla.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Hälytä palokunta (112).", "Poistu kumarassa (ryömi savun alla).", "Älä käytä hissiä.", "Sulje ovet perässäsi.", "Jos vaatteet syttyvät: pysähdy, heittäydy maahan, pyöri." ] }
+    },
+    {
+      "icon": "💨", "titre": "Kaasuvuoto", "desc": "Älä aiheuta kipinöitä, avaa ikkunat, soita 112.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Älä käytä sähkökytkimiä, älä käytä puhelinta paikan päällä.", "Avaa ovet ja ikkunat.", "Sulje kaasu, jos mahdollista.", "Evakuoi tila.", "Hälytä palokunta (112) ulkopuolelta." ] }
+    },
+    {
+      "icon": "⚠️", "titre": "Terrori-isku / Ammuskelu", "desc": "Pakene, piiloudu, hälytä (112).", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Juokse pakoon, vaihda suuntaa.", "Jos pako mahdotonta: piiloudu lukittuun huoneeseen, sammuta valot, pysy poissa ikkunoista.", "Laita puhelin äänettömälle, älä soita paljastumisen välttämiseksi.", "Avaa ovi vain tunnistetuille viranomaisille." ] }
+    },
+    {
+      "icon": "🌊", "titre": "Tulva", "desc": "Mene korkeammalle, katkaise sähköt, noudata ohjeita.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Mene ylempiin kerroksiin, älä kellariin.", "Sulje kaasu ja sähkö.", "Älä käytä hissiä.", "Valmistaudu evakuointiin, jos käsketään.", "Soita hätänumeroon (112) välittömässä vaarassa." ] }
+    },
+    {
+      "icon": "🌍", "titre": "Maanjäristys", "desc": "Kyyristy, suojaa, pidä kiinni, pysy poissa ikkunoista.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Mene tukevan pöydän alle, suojaa pää, pidä kiinni.", "Pysy poissa ikkunoista ja riippuvista esineistä.", "Järistyksen jälkeen: evakuoi portaita pitkin.", "Älä käytä hissiä.", "Varo jälkijäristyksiä." ] }
+    },
+    {
+      "icon": "☣️", "titre": "CBRN (Kemiallinen/Biologinen/Säteily/Ydin)", "desc": "Suojaudu sisälle, tiivistä huone, kuuntele radiota.", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Hakeudu huoneeseen, jossa ei ole ikkunoita.", "Sulje ovet, ikkunat, pysäytä ilmanvaihto.", "Sulje ikkunaluukut, tiivistä raot teipillä.", "Kuuntele viranomaistiedotteita (paikallisradio).", "Älä poistu ennen lupaa." ] }
+    }
+  ],
+  "associations": [
+    {
+      "icon": "💬", "titre": "MIELI Kriisipuhelin", "numero": "09 2525 0111", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Numero: 09 2525 0111", "Psykologista tukea 24/7, anonyymisti ja maksutta.", "Ahdistukseen, yksinäisyyteen, itsemurha-ajatuksiin." ] }
+    },
+    {
+      "icon": "📞", "titre": "112 – Hätänumero", "numero": "112", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Numero: 112 (maksuton)", "Valtakunnallinen, 24/7." ] }
+    },
+    {
+      "icon": "👶", "titre": "Lasten ja nuorten puhelin", "numero": "116 111", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Numero: 116 111", "Apua lapsille ja nuorille vaikeissa tilanteissa." ] }
+    },
+    {
+      "icon": "🚺", "titre": "Nollalinja", "numero": "080 005 005", "colorClass": "card-rose",
+      "contenu": { "steps": [ "Numero: 080 005 005", "Tukea väkivaltaa kokeneille naisille." ] }
+    },
+    {
+      "icon": "🔍", "titre": "116 000 – Kadonneet lapset", "numero": "116 000", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Numero: 116 000", "Ilmoitus kadonneista lapsista, apua perheille." ] }
+    },
+    {
+      "icon": "🍷", "titre": "Päihdeneuvonta", "numero": "0800 900 45", "colorClass": "card-vert",
+      "contenu": { "steps": [ "Numero: 0800 900 45", "Tietoa ja neuvontaa päihderiippuvuuksista." ] }
+    },
+    {
+      "icon": "❤️", "titre": "Punaisen Ristin tuki", "numero": "0800 100 200", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Numero: 0800 100 200", "Psykososiaalista tukea." ] }
+    }
+  ]
+}

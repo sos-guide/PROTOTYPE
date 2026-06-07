@@ -1,0 +1,208 @@
+{
+  "app": { "title": "ACİL REHBER" },
+  "drawer": {
+    "title": "Navigasyon",
+    "footer": "ACİL REHBER · sürüm 1.0",
+    "links": [
+      { "icon": "⛑️", "label": "Ana Sayfa — Acil Durumlar", "href": "#splashScreen" },
+      { "icon": "📖", "label": "Hayatta Kalma Rehberi", "href": "#mainContent" },
+      { "icon": "🇫🇷", "label": "İlkeler", "href": "#section-principes" },
+      { "icon": "⚙️", "label": "Pratik Araçlar", "href": "#section-outils" },
+      { "icon": "🚑", "label": "Tıbbi Aciller", "href": "#section-urgences" },
+      { "icon": "⚠️", "label": "Toplu Durumlar", "href": "#section-situations" },
+      { "icon": "📞", "label": "Yardım Kuruluşları", "href": "#section-assos" }
+    ]
+  },
+  "local": {
+    "info": { "title": "" },
+    "crisis": "📞 Kriz",
+    "samu": "🚑 Yerel Ambulans",
+    "fire": "🚒 İtfaiye",
+    "townhall": "🏛️ Belediye",
+    "prefecture": "🏛️ Valilik",
+    "redcross": "🔴 Kızılay",
+    "radio": "📻 Yerel Radyo"
+  },
+  "splash": {
+    "title": "HAYATTA KALMA REHBERİ",
+    "subtitle": "Bu site <strong>internet bağlantısı olmadan</strong> çalışır. Acil bir durumla başa çıkmak için gerekli bilgileri sağlar.",
+    "enterButton": "Tam rehbere erişin"
+  },
+  "main": {
+    "welcome": {
+      "title": "Hoş Geldiniz",
+      "text": "Acil durum rehberiniz çevrimdışı çalışır. Acil durum araçları, ilk yardım ve hayatta kalma reflekslerini burada bulabilirsiniz."
+    }
+  },
+  "sections": {
+    "principes": "🇫🇷 İlk yardımın 3 ilkesi",
+    "outils": "⚙️ Pratik Araçlar",
+    "urgencesMedicales": "🚑 Tıbbi Aciller",
+    "situationsCollectives": "⚠️ Toplu Durumlar",
+    "associations": "📞 Yardım Kuruluşları ve Numaraları"
+  },
+  "tools": {
+    "metronome": { "title": "❤️ KPR Metronomu 110 BPM", "start": "Başlat", "stop": "Durdur" },
+    "flash": { "stop": "⏹️ SOS flaşını durdur" },
+    "torch": { "stop": "🔦 Feneri kapat" },
+    "alarm": { "title": "🚨 Sesli Alarm", "start": "Alarmı çal", "stop": "Alarmı durdur", "active": "🚨 ALARM AKTİF", "inactive": "⏹️ Durduruldu" },
+    "respiration": { "title": "🌬️ Rehberli Solunum", "start": "Başlat", "stop": "Durdur", "inhale": "Nefes Al", "exhale": "Nefes Ver" },
+    "whistle": { "title": "🔊 Acil Durum Düdüğü", "start": "Düdük Çal (3 kez)", "stop": "Durdur", "active": "🔊 Düdük Aktif", "inactive": "⏹️ Durduruldu" }
+  },
+  "urgences": [
+        { "number": "15", "name": "SAMU", "class": "samu" },
+	{ "number": "17", "name": "POLİS", "class": "police" },
+	{ "number": "18", "name": "İTFAİYE", "class": "pompiers" },
+	{ "number": "112", "name": "AVRUPA ACİL", "class": "europe" },
+	{ "number": "114", "name": "İŞİTME ENG.", "class": "ssourd" }
+  ],
+  "principes": [
+    {
+      "icon": "📢", "titre": "HABER VER", "desc": "Acil servislere haber ver", "colorClass": "card-bleu",
+      "contenu": {
+        "steps": [
+          "Acil numaralar: 112 (Genel), 155 (Polis), 110 (İtfaiye).",
+          "Belirtin: Nerede? (kesin yer), Ne? (kaza türü), Kim? (yaralı sayısı, durumu).",
+          "İlk siz kapatmayın: operatörün çağrıyı sonlandırmasına izin verin.",
+          "Mümkünse konum uygulaması kullanın.",
+          "Yalnızsanız ve konuşamıyorsanız, 112'yi arayın ve hattı açık bırakın."
+        ]
+      }
+    },
+    {
+      "icon": "🩺", "titre": "KURTAR", "desc": "İlk müdahaleyi yap", "colorClass": "card-blanc",
+      "contenu": {
+        "steps": [
+          "Bilinci değerlendirin (konuşun, dokunun), solunumu kontrol edin.",
+          "Solunum yoksa: hemen kalp masajına başlayın (100-120 bası/dk).",
+          "Bilinçsiz fakat solunuyorsa: kurtarma pozisyonu.",
+          "Kanama: yaraya baskı uygulayın. Baskı yetersizse turnike.",
+          "Bilinci kapalı kişiye asla içecek vermeyin.",
+          "Yaralıyı sakinleştirin ve hipotermiyi önlemek için örtün."
+        ]
+      }
+    },
+    {
+      "icon": "🛡️", "titre": "KORU", "desc": "Güvenliği sağla", "colorClass": "card-rouge",
+      "contenu": {
+        "steps": [
+          "Yaralıyı ani tehlikeden uzaklaştırın (yangın, trafik, çökme).",
+          "Bölgeyi işaretleyin (uyarı üçgeni, dörtlü flaşör).",
+          "Kendinizi koruyun: eldiven, varsa maske.",
+          "Tehlike kaynaklarını kesin (gaz, elektrik).",
+          "Omurga yaralanması şüphesi varsa yaralıyı hareket ettirmeyin."
+        ]
+      }
+    }
+  ],
+  "outils": [
+    { "icon": "❤️", "titre": "KPR Metronomu 110 BPM", "desc": "Kalp masajı ritmi.", "action": "openMetronome" },
+    { "icon": "⚡", "titre": "SOS Flaş", "desc": "Acil ışık sinyali.", "action": "openFlashSOS" },
+    { "icon": "🔦", "titre": "Fener", "desc": "Parlak beyaz ekran.", "action": "openTorche" },
+    { "icon": "🚨", "titre": "Sesli Alarm", "desc": "Sürekli alarm (880 Hz).", "action": "openAlerte" },
+    { "icon": "🌬️", "titre": "Rehberli Solunum", "desc": "Kalp koheransı (4-4).", "action": "openRespiration" },
+    { "icon": "🔊", "titre": "Acil Durum Düdüğü", "desc": "3 kez sinyal.", "action": "openSifflet" }
+  ],
+  "urgences_medicales": [
+    {
+      "icon": "🫀", "titre": "Kalp Krizi", "desc": "Dinlenme, ambulans çağır, gerekirse KPR.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Hemen 112'yi arayın.", "Bilinci açıksa yarı oturur pozisyonda dinlendirin.", "Bilinçsiz ve solunuyorsa: kurtarma pozisyonu.", "Kalp durması: kalp masajı (100-120/dk) + varsa OED." ] }
+    },
+    {
+      "icon": "🩸", "titre": "Kanama", "desc": "Doğrudan baskı, turnike, yardım çağır.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Temiz bir bezle yaraya baskı uygulayın.", "Mümkünse yaralı uzvu yükseltin.", "Kanama durmazsa: turnike (geniş, sıkı, zamanı not edin).", "Saplanmış cisimleri çıkarmayın.", "Yaralıyı yatırın, örtün, 112'yi arayın." ] }
+    },
+    {
+      "icon": "🧠", "titre": "İnme (FAST)", "desc": "Yüz, Kol, Konuşma, Zaman – 112'yi ara.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Y: Yüzde asimetri?", "K: Kolda güçsüzlük?", "K: Konuşmada bozukluk?", "Z: Zaman – hemen 112'yi ara!", "İlk belirtilerin zamanını not edin." ] }
+    },
+    {
+      "icon": "🫁", "titre": "Boğulma", "desc": "Heimlich manevrası.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "'Boğuluyor musunuz?' diye sorun.", "Konuşamıyor veya öksüremiyorsa: sırtına 5 kez vurun.", "Etkisizse: Heimlich manevrası.", "Bilinç kaybı: KPR ve 112'yi arayın." ] }
+    },
+    {
+      "icon": "🔥", "titre": "Yanıklar", "desc": "Ilık suyla 15 dk soğutun, kabarcıkları patlatmayın.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Hemen ılık suyla (15-25°C) 15 dakika soğutun.", "Yapışmayan giysi ve takıları çıkarın.", "Streç film veya steril sargı ile örtün.", "Kabarcıkları patlatmayın, krem sürmeyin.", "Geniş yanık, yüz veya solunum yolu yanıklarında 112'yi arayın." ] }
+    },
+    {
+      "icon": "💧", "titre": "Boğulma (Suda)", "desc": "Sudan çıkar, KPR, ambulans çağır.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Kendinizi tehlikeye atmadan yaralıyı sudan çıkarın.", "Bilinç ve solunumu kontrol edin.", "Solunum yoksa: 2 suni solunum + 30 bası (30:2).", "112'yi arayın.", "Hipotermiyi önlemek için örtün." ] }
+    },
+    {
+      "icon": "💊", "titre": "Aşırı Doz (GHB/MDMA)", "desc": "Kurtarma pozisyonu, 112'yi ara, uyumasına izin verme.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Bilinçsiz fakat solunuyorsa: kurtarma pozisyonu.", "Solunum durması: KPR + suni solunum.", "Hemen 112'yi arayın.", "Kişinin 'uyumasına' izin vermeyin – sürekli izleyin.", "Tüketilen maddeleri sağlık ekipleri için saklayın." ] }
+    },
+    {
+      "icon": "🌡️", "titre": "Sıcak Çarpması", "desc": "Hemen soğut, 112'yi ara.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Gölge/serin bir yere alın.", "Giysileri çıkarın, soğuk su püskürtün, yelpazeleyin.", "Koltuk altı, boyun, kasıklara buz koyun.", "112'yi arayın – hayati tehlike.", "Ateş düşürücü vermeyin." ] }
+    },
+    {
+      "icon": "🍺", "titre": "Alkol Zehirlenmesi", "desc": "Kurtarma pozisyonu, izle, koma varsa 112.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Bilinçsiz: kurtarma pozisyonu, solunumu izleyin.", "Yalnız bırakmayın, kusturmayın.", "Koma veya düzensiz solunum: 112.", "Bilinci açık ve yutabiliyorsa sıvı verin." ] }
+    },
+    {
+      "icon": "🦐", "titre": "Anafilaktik Şok", "desc": "Şiddetli alerji, adrenalin enjekte et, 112.", "colorClass": "card-rose",
+      "contenu": { "steps": [ "Tanıyın: kurdeşen, şişme, solunum güçlüğü, bayılma.", "Adrenalin oto-enjektörünü (reçeteli ise) uyluğa enjekte edin.", "Sırt üstü yatırın, bacakları yükseltin.", "Hemen 112'yi arayın." ] }
+    },
+    {
+      "icon": "🚗", "titre": "Trafik Kazası", "desc": "Güvenlik, işaretleme, yardım çağır.", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Uyarı üçgeni koyun, reflektörlü yelek giyin.", "Ani tehlike yoksa yaralıları hareket ettirmeyin.", "112'yi arayın.", "Motorları durdurun, el frenini çekin.", "Bilinci kapalı yaralılara içecek vermeyin." ] }
+    }
+  ],
+  "situations_collectives": [
+    {
+      "icon": "🔥", "titre": "Yangın", "desc": "Tahliye et, haber ver, duman altından sürün.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "İtfaiyeyi ara (110/112).", "Eğilerek çıkın (dumanın altından sürünün).", "Asansör kullanmayın.", "Arkanızdan kapıları kapatın.", "Giysiler alev alırsa: dur, yere yat, yuvarlan." ] }
+    },
+    {
+      "icon": "💨", "titre": "Gaz Kaçağı", "desc": "Kıvılcım çıkarma, camları aç, 110'u ara.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Elektrik düğmelerine dokunmayın, yerinde telefon kullanmayın.", "Kapı ve pencereleri açın.", "Mümkünse gazı kesin.", "Mekanı tahliye edin.", "Dışarıdan itfaiyeyi (110/112) arayın." ] }
+    },
+    {
+      "icon": "⚠️", "titre": "Saldırı / Silahlı Çatışma", "desc": "Kaç, saklan, haber ver (112).", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Koşarak kaçın, yön değiştirin.", "Kaçamıyorsanız: kilitli bir odaya saklanın, ışıkları söndürün, pencerelerden uzak durun.", "Telefonu sessize alın, yerinizi belli etmemek için aramayın.", "Sadece kimliği belli güvenlik güçlerine kapıyı açın." ] }
+    },
+    {
+      "icon": "🌊", "titre": "Sel", "desc": "Yüksek yerlere çık, elektriği kes, talimatları dinle.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Üst katlara çıkın, bodruma inmeyin.", "Gaz ve elektriği kesin.", "Asansör kullanmayın.", "Tahliye için hazır olun.", "Ani tehlike varsa acil yardım (110/112) çağırın." ] }
+    },
+    {
+      "icon": "🌍", "titre": "Deprem", "desc": "Çök, kapan, tutun, pencerelerden uzak dur.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Sağlam bir masanın altına çökün, başınızı koruyun, tutunun.", "Pencere ve asılı cisimlerden uzak durun.", "Sarsıntı geçince merdivenleri kullanarak tahliye olun.", "Asansör kullanmayın.", "Artçı şoklara karşı dikkatli olun." ] }
+    },
+    {
+      "icon": "☣️", "titre": "KBRN (Kimyasal/Biyolojik/Radyolojik/Nükleer)", "desc": "Sığın, odayı yalıt, radyo dinle.", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Penceresiz bir odaya sığının.", "Kapı ve pencereleri kapatın, havalandırmayı durdurun.", "Panjurları kapatın, çatlakları bantla kapatın.", "Resmi talimatları (yerel radyo) dinleyin.", "İzin verilmeden dışarı çıkmayın." ] }
+    }
+  ],
+  "associations": [
+    {
+      "icon": "💬", "titre": "Sosyal Destek Hattı", "numero": "183", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Numara: 183", "7/24 psikolojik destek, anonim ve ücretsiz.", "Ruhsal sıkıntı, yalnızlık, intihar düşünceleri için." ] }
+    },
+    {
+      "icon": "📞", "titre": "112 – Acil Çağrı", "numero": "112", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Numara: 112 (ücretsiz)", "Ulusal, 7/24. Eğitimli sağlık profesyonelleri." ] }
+    },
+    {
+      "icon": "👶", "titre": "ALO 183 – Çocuk Koruma", "numero": "183", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Numara: 183 (ücretsiz)", "Risk altındaki çocukları ihbar (istismar, ihmal, şiddet).", "Anonim ve gizli, 24 saat." ] }
+    },
+    {
+      "icon": "🚺", "titre": "ALO 183 – Kadın Destek", "numero": "183", "colorClass": "card-rose",
+      "contenu": { "steps": [ "Numara: 183 (ücretsiz)", "Şiddet mağduru kadınlara dinleme, bilgi, yönlendirme.", "24/7." ] }
+    },
+    {
+      "icon": "🔍", "titre": "116 000 – Kayıp Çocuklar", "numero": "116 000", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Numara: 116 000 (ücretsiz)", "Kayıp çocuk ihbarı, ailelere yardım." ] }
+    },
+    {
+      "icon": "🍷", "titre": "ALO 191 – Uyuşturucu ile Mücadele", "numero": "191", "colorClass": "card-vert",
+      "contenu": { "steps": [ "Numara: 191 (ücretsiz)", "Bağımlılık konusunda bilgi ve yönlendirme (alkol, uyuşturucu, kumar)." ] }
+    },
+    {
+      "icon": "❤️", "titre": "Türk Kızılay", "numero": "168", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Numara: 168", "Psikososyal destek ve sosyal yardım." ] }
+    }
+  ]
+}

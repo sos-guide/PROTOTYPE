@@ -1,0 +1,31 @@
+[Unit]
+Description=SOS-GUIDE — Mise à jour du contenu multilingue JSON
+Documentation=https://sos-guide.fr
+After=network-online.target
+Wants=network-online.target
+# Ne s'exécute que si l'installation est finalisée
+ConditionPathExists=/var/lib/sos-guide/installed
+# Et si Ethernet est activé dans la config
+ConditionPathExists=/var/www/sos-guide/data/config.json
+
+[Service]
+Type=oneshot
+# Mode automatique : silencieux, pas de confirmation
+ExecStart=/usr/local/bin/sos-guide-update.sh auto
+# Timeout généreux (téléchargement sur lien lent)
+TimeoutStartSec=300
+# Ne pas bloquer le démarrage si le script échoue
+RemainAfterExit=no
+# Exécuter en tant que root (nécessaire pour chattr et sha256)
+User=root
+Group=root
+# Sécurité : pas d'accès réseau WiFi (mise à jour via ETH uniquement)
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=sos-guide-update
+# Priorité basse pour ne pas impacter le portail captif
+Nice=15
+IOSchedulingClass=idle
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,208 @@
+{
+  "app": { "title": "SOS-GIDS" },
+  "drawer": {
+    "title": "Navigatie",
+    "footer": "SOS-GIDS · versie 1.0",
+    "links": [
+      { "icon": "⛑️", "label": "Start — Noodgevallen", "href": "#splashScreen" },
+      { "icon": "📖", "label": "Overlevingsgids", "href": "#mainContent" },
+      { "icon": "🇫🇷", "label": "Principes", "href": "#section-principes" },
+      { "icon": "⚙️", "label": "Praktische tools", "href": "#section-outils" },
+      { "icon": "🚑", "label": "Medische noodgevallen", "href": "#section-urgences" },
+      { "icon": "⚠️", "label": "Collectieve situaties", "href": "#section-situations" },
+      { "icon": "📞", "label": "Hulporganisaties", "href": "#section-assos" }
+    ]
+  },
+  "local": {
+    "info": { "title": "" },
+    "crisis": "📞 Crisis",
+    "samu": "🚑 SAMU lokaal",
+    "fire": "🚒 Brandweer",
+    "townhall": "🏛️ Gemeentehuis",
+    "prefecture": "🏛️ Prefectuur",
+    "redcross": "🔴 Rode Kruis",
+    "radio": "📻 Lokale radio"
+  },
+  "splash": {
+    "title": "OVERLEVINGSGIDS",
+    "subtitle": "Deze site werkt <strong>zonder internetverbinding</strong>. Het biedt essentiële informatie voor noodsituaties.",
+    "enterButton": "Toegang tot de volledige gids"
+  },
+  "main": {
+    "welcome": {
+      "title": "Welkom",
+      "text": "Uw noodgids werkt offline. Vind hier noodhulpmiddelen, eerste hulp en overlevingsreflexen."
+    }
+  },
+  "sections": {
+    "principes": "🇫🇷 De 3 principes van eerste hulp",
+    "outils": "⚙️ Praktische tools",
+    "urgencesMedicales": "🚑 Medische noodgevallen",
+    "situationsCollectives": "⚠️ Collectieve situaties",
+    "associations": "📞 Hulporganisaties & hulplijnen"
+  },
+  "tools": {
+    "metronome": { "title": "❤️ CPR-metronoom 110 BPM", "start": "Starten", "stop": "Stoppen" },
+    "flash": { "stop": "⏹️ Stop SOS-flits" },
+    "torch": { "stop": "🔦 Zaklamp uitschakelen" },
+    "alarm": { "title": "🚨 Geluidsalarm", "start": "Activeer alarm", "stop": "Stop alarm", "active": "🚨 ALARM ACTIEF", "inactive": "⏹️ Gestopt" },
+    "respiration": { "title": "🌬️ Geleide ademhaling", "start": "Beginnen", "stop": "Stoppen", "inhale": "Inademen", "exhale": "Uitademen" },
+    "whistle": { "title": "🔊 Noodfluitje", "start": "Fluiten (3 stoten)", "stop": "Stoppen", "active": "🔊 Fluitje actief", "inactive": "⏹️ Gestopt" }
+  },
+  "urgences": [
+	{ "number": "15", "name": "SAMU", "class": "samu" },
+	{ "number": "17", "name": "POLITIE", "class": "police" },
+	{ "number": "18", "name": "BRANDWEER", "class": "pompiers" },
+	{ "number": "112", "name": "EUROPEES NOODNUMMER", "class": "europe" },
+	{ "number": "114", "name": "Slechthorenden", "class": "ssourd" }
+  ],
+  "principes": [
+    {
+      "icon": "📢", "titre": "ALARMEREN", "desc": "Alarmeer de hulpdiensten", "colorClass": "card-bleu",
+      "contenu": {
+        "steps": [
+          "Noodnummers: 112 (algemeen).",
+          "Geef aan: Waar? (precieze locatie), Wat? (aard ongeval), Wie? (aantal slachtoffers, toestand).",
+          "Niet als eerste ophangen: laat de centralist het gesprek beëindigen.",
+          "Gebruik indien mogelijk een locatie-app.",
+          "Als u alleen bent en niet kunt praten, bel 112 en laat de lijn open."
+        ]
+      }
+    },
+    {
+      "icon": "🩺", "titre": "HELPEN", "desc": "Verleen eerste hulp", "colorClass": "card-blanc",
+      "contenu": {
+        "steps": [
+          "Beoordeel bewustzijn (aanspreken, aanraken), controleer ademhaling.",
+          "Geen ademhaling: start onmiddellijk borstcompressies (100-120/min).",
+          "Stabiele zijligging bij bewusteloosheid met ademhaling.",
+          "Bloeding: wond afdrukken. Tourniquet alleen als druk niet helpt.",
+          "Geef een bewusteloze nooit te drinken.",
+          "Stel het slachtoffer gerust en bedek tegen onderkoeling."
+        ]
+      }
+    },
+    {
+      "icon": "🛡️", "titre": "BESCHERMEN", "desc": "Zorg voor veiligheid", "colorClass": "card-rouge",
+      "contenu": {
+        "steps": [
+          "Verwijder slachtoffer uit direct gevaar (brand, verkeer, instorting).",
+          "Zet de omgeving af (gevarendriehoek, alarmlichten).",
+          "Bescherm uzelf: handschoenen, mondmasker indien beschikbaar.",
+          "Schakel gevaarbronnen uit (gas, elektriciteit).",
+          "Verplaats een gewonde met verdenking op wervelletsel niet."
+        ]
+      }
+    }
+  ],
+  "outils": [
+    { "icon": "❤️", "titre": "CPR-metronoom 110 BPM", "desc": "Ritme voor borstcompressies.", "action": "openMetronome" },
+    { "icon": "⚡", "titre": "SOS-flits", "desc": "Lichtsignaal voor nood.", "action": "openFlashSOS" },
+    { "icon": "🔦", "titre": "Zaklamp", "desc": "Helder wit scherm.", "action": "openTorche" },
+    { "icon": "🚨", "titre": "Geluidsalarm", "desc": "Continue toon (880 Hz).", "action": "openAlerte" },
+    { "icon": "🌬️", "titre": "Geleide ademhaling", "desc": "Hartcoherentie (4-4).", "action": "openRespiration" },
+    { "icon": "🔊", "titre": "Noodfluitje", "desc": "3-stoten signaal.", "action": "openSifflet" }
+  ],
+  "urgences_medicales": [
+    {
+      "icon": "🫀", "titre": "Hartaanval", "desc": "Rust, bel 112, reanimeer indien nodig.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Bel onmiddellijk 112.", "Laat het slachtoffer rusten, halfzittend indien bij bewustzijn.", "Indien bewusteloos met ademhaling: stabiele zijligging.", "Bij hartstilstand: borstcompressies (100-120/min) + AED indien beschikbaar." ] }
+    },
+    {
+      "icon": "🩸", "titre": "Bloeding", "desc": "Directe druk, tourniquet, bel hulp.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Druk de wond dicht met een schone doek.", "Hef het ledemaat omhoog indien mogelijk.", "Als bloeding niet stopt: tourniquet (breed, strak, noteer tijd).", "Verwijder nooit voorwerpen die in de wond steken.", "Leg het slachtoffer neer, bedek, bel 112." ] }
+    },
+    {
+      "icon": "🧠", "titre": "Beroerte (FAST)", "desc": "Face, Arm, Speech, Time – bel 112.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "F: Scheef gezicht?", "A: Verlamming arm?", "S: Spraakstoornis?", "T: Time – bel onmiddellijk 112!", "Noteer tijdstip eerste symptomen." ] }
+    },
+    {
+      "icon": "🫁", "titre": "Verslikking", "desc": "Heimlichmanoeuvre.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Vraag 'Verslikt u zich?'", "Als niet kan spreken/hoesten: 5 slagen op de rug.", "Indien niet effectief: Heimlichmanoeuvre.", "Bij bewusteloosheid: reanimatie en bel 112." ] }
+    },
+    {
+      "icon": "🔥", "titre": "Brandwonden", "desc": "Koelen met lauw water 15 min, blaasjes niet doorprikken.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Koel onmiddellijk met lauw water (15-25°C) gedurende 15 min.", "Verwijder niet-vastzittende kleding en sieraden.", "Bedek met huishoudfolie of steriel kompres.", "Prik blaasjes niet door, geen crèmes.", "Bel 112 bij uitgebreide brandwonden, gezicht of luchtwegen." ] }
+    },
+    {
+      "icon": "💧", "titre": "Verdrinking", "desc": "Uit water halen, reanimeren, 112 bellen.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Haal slachtoffer uit water zonder eigen gevaar.", "Controleer bewustzijn en ademhaling.", "Geen ademhaling: 2 beademingen + 30 compressies (30:2).", "Bel 112.", "Bedek tegen onderkoeling." ] }
+    },
+    {
+      "icon": "💊", "titre": "Overdosis (GHB/MDMA)", "desc": "Stabiele zijligging, 112 bellen, niet laten slapen.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Indien bewusteloos met ademhaling: stabiele zijligging.", "Bij ademstilstand: reanimatie + beademing.", "Bel onmiddellijk 112.", "Laat persoon niet 'slapen' – blijf controleren.", "Bewaar gebruikte middelen voor hulpdiensten." ] }
+    },
+    {
+      "icon": "🌡️", "titre": "Hitteberoerte", "desc": "Onmiddellijk koelen, 112 bellen.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Breng naar schaduw/koele plaats.", "Ontkleed, besproei met koel water, ventileer.", "IJspacks op oksels, nek, liezen.", "Bel 112 – levensbedreigend.", "Geen koortswerende middelen geven." ] }
+    },
+    {
+      "icon": "🍺", "titre": "Alcoholvergiftiging", "desc": "Stabiele zijligging, bewaken, 112 bij coma.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Indien bewusteloos: stabiele zijligging, ademhaling controleren.", "Niet alleen laten, niet laten braken.", "Bij coma of onregelmatige ademhaling: 112.", "Hydrateer indien bij bewustzijn en kan slikken." ] }
+    },
+    {
+      "icon": "🦐", "titre": "Anafylactische shock", "desc": "Ernstige allergie, adrenaline injecteren, 112.", "colorClass": "card-rose",
+      "contenu": { "steps": [ "Herken: galbulten, zwelling, ademnood, flauwvallen.", "Dien adrenaline auto-injector toe (indien voorgeschreven) in dij.", "Plat neerleggen, benen omhoog.", "Bel onmiddellijk 112." ] }
+    },
+    {
+      "icon": "🚗", "titre": "Verkeersongeval", "desc": "Veiligheid, signalering, hulp bellen.", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Plaats gevarendriehoek, draag veiligheidsvest.", "Verplaats gewonden niet tenzij direct gevaar.", "Bel 112.", "Zet motoren af, handrem aantrekken.", "Geef bewustelozen niets te drinken." ] }
+    }
+  ],
+  "situations_collectives": [
+    {
+      "icon": "🔥", "titre": "Brand", "desc": "Evacueren, alarmeren, kruipen onder rook.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Bel brandweer (112).", "Verlaat gebouw gebukt (kruipen onder rook).", "Gebruik geen lift.", "Sluit deuren achter u.", "Als kleding brandt: stoppen, neervallen, rollen." ] }
+    },
+    {
+      "icon": "💨", "titre": "Gaslek", "desc": "Geen vonken, ramen openen, 112 bellen.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Geen elektrische schakelaars gebruiken, geen telefoon ter plaatse.", "Open deuren en ramen.", "Sluit gastoevoer af indien mogelijk.", "Evacueer het pand.", "Bel brandweer (112) van buiten." ] }
+    },
+    {
+      "icon": "⚠️", "titre": "Aanslag / Schietpartij", "desc": "Vluchten, verbergen, alarmeren (112).", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Ren weg, verander van richting.", "Als vluchten onmogelijk: verstop in afgesloten ruimte, licht uit, weg van ramen.", "Zet telefoon op stil, niet bellen om niet op te vallen.", "Open alleen voor geïdentificeerde politie." ] }
+    },
+    {
+      "icon": "🌊", "titre": "Overstroming", "desc": "Naar hoger gelegen delen, elektriciteit uitschakelen.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Ga naar bovenverdieping, niet naar kelder.", "Schakel gas en elektriciteit uit.", "Gebruik geen lift.", "Bereid evacuatie voor indien geïnstrueerd.", "Bel noodnummer (112) bij direct gevaar." ] }
+    },
+    {
+      "icon": "🌍", "titre": "Aardbeving", "desc": "Bukken, bedekken, vasthouden, weg van ramen.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Buk onder stevige tafel, bedek hoofd, houd vast.", "Blijf weg van ramen en hangende voorwerpen.", "Na de schok: evacueren via trap.", "Gebruik geen lift.", "Blijf alert op naschokken." ] }
+    },
+    {
+      "icon": "☣️", "titre": "CBRN (Chemisch/Biologisch/Radiologisch/Nucleair)", "desc": "Binnenblijven, ruimte afdichten, radio luisteren.", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Schuil in raamloze kamer.", "Sluit deuren, ramen, zet ventilatie uit.", "Sluit luiken, dicht kieren af met tape.", "Volg officiële instructies (lokale radio).", "Niet naar buiten tot toestemming." ] }
+    }
+  ],
+  "associations": [
+    {
+      "icon": "💬", "titre": "Luisterlijn", "numero": "088 0767 000", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Nummer: 088 0767 000", "24/7 psychologische ondersteuning, anoniem en gratis.", "Voor emotionele nood, eenzaamheid, zelfmoordgedachten." ] }
+    },
+    {
+      "icon": "📞", "titre": "113 – Zelfmoordpreventie", "numero": "113", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Nummer: 113 (gratis)", "Landelijk, 24/7. Getrainde hulpverleners." ] }
+    },
+    {
+      "icon": "👶", "titre": "Kindertelefoon", "numero": "0800-0432", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Nummer: 0800-0432 (gratis)", "Hulp voor kinderen en jongeren in nood.", "Anoniem en vertrouwelijk." ] }
+    },
+    {
+      "icon": "🚺", "titre": "Veilig Thuis", "numero": "0800-2000", "colorClass": "card-rose",
+      "contenu": { "steps": [ "Nummer: 0800-2000 (gratis)", "Advies en melding bij huiselijk geweld.", "24/7." ] }
+    },
+    {
+      "icon": "🔍", "titre": "116 000 – Vermiste kinderen", "numero": "116 000", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Nummer: 116 000 (gratis)", "Melding vermiste kinderen, hulp aan families." ] }
+    },
+    {
+      "icon": "🍷", "titre": "Alcohol Infolijn", "numero": "0900-1995", "colorClass": "card-vert",
+      "contenu": { "steps": [ "Nummer: 0900-1995 (betaald)", "Informatie en advies over alcohol, drugs, gokken." ] }
+    },
+    {
+      "icon": "❤️", "titre": "Rode Kruis Hulplijn", "numero": "070-4455888", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Nummer: 070-4455888", "Psychosociale ondersteuning." ] }
+    }
+  ]
+}

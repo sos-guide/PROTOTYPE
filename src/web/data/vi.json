@@ -1,0 +1,208 @@
+{
+  "app": { "title": "SỔ TAY SOS" },
+  "drawer": {
+    "title": "Điều hướng",
+    "footer": "SỔ TAY SOS · phiên bản 1.0",
+    "links": [
+      { "icon": "⛑️", "label": "Trang chủ — Khẩn cấp", "href": "#splashScreen" },
+      { "icon": "📖", "label": "Hướng dẫn sinh tồn", "href": "#mainContent" },
+      { "icon": "🇫🇷", "label": "Nguyên tắc", "href": "#section-principes" },
+      { "icon": "⚙️", "label": "Công cụ thực hành", "href": "#section-outils" },
+      { "icon": "🚑", "label": "Cấp cứu y tế", "href": "#section-urgences" },
+      { "icon": "⚠️", "label": "Tình huống tập thể", "href": "#section-situations" },
+      { "icon": "📞", "label": "Tổ chức hỗ trợ", "href": "#section-assos" }
+    ]
+  },
+  "local": {
+    "info": { "title": "" },
+    "crisis": "📞 Khủng hoảng",
+    "samu": "🚑 Cấp cứu địa phương",
+    "fire": "🚒 Cứu hỏa",
+    "townhall": "🏛️ Ủy ban nhân dân",
+    "prefecture": "🏛️ Tỉnh",
+    "redcross": "🔴 Hội Chữ thập đỏ",
+    "radio": "📻 Đài địa phương"
+  },
+  "splash": {
+    "title": "HƯỚNG DẪN SINH TỒN",
+    "subtitle": "Trang web này hoạt động <strong>không cần kết nối Internet</strong>. Cung cấp thông tin cần thiết để đối phó với tình huống khẩn cấp.",
+    "enterButton": "Truy cập hướng dẫn đầy đủ"
+  },
+  "main": {
+    "welcome": {
+      "title": "Chào mừng",
+      "text": "Sổ tay khẩn cấp của bạn hoạt động ngoại tuyến. Tìm tại đây các công cụ khẩn cấp, sơ cứu và phản xạ sinh tồn."
+    }
+  },
+  "sections": {
+    "principes": "🇫🇷 3 nguyên tắc sơ cứu",
+    "outils": "⚙️ Công cụ thực hành",
+    "urgencesMedicales": "🚑 Cấp cứu y tế",
+    "situationsCollectives": "⚠️ Tình huống tập thể",
+    "associations": "📞 Tổ chức hỗ trợ và số điện thoại"
+  },
+  "tools": {
+    "metronome": { "title": "❤️ Máy đếm nhịp CPR 110 BPM", "start": "Bắt đầu", "stop": "Dừng" },
+    "flash": { "stop": "⏹️ Dừng đèn nháy SOS" },
+    "torch": { "stop": "🔦 Tắt đèn pin" },
+    "alarm": { "title": "🚨 Còi báo động", "start": "Kích hoạt còi", "stop": "Dừng còi", "active": "🚨 CÒI ĐANG KÊU", "inactive": "⏹️ Đã dừng" },
+    "respiration": { "title": "🌬️ Hướng dẫn thở", "start": "Bắt đầu", "stop": "Dừng", "inhale": "Hít vào", "exhale": "Thở ra" },
+    "whistle": { "title": "🔊 Còi cấp cứu", "start": "Thổi còi (3 lần)", "stop": "Dừng", "active": "🔊 Còi đang kêu", "inactive": "⏹️ Đã dừng" }
+  },
+  "urgences": [
+	{ "number": "15", "name": "SAMU", "class": "samu" },
+	{ "number": "17", "name": "CÔNG AN", "class": "police" },
+	{ "number": "18", "name": "CỨU HỎA", "class": "pompiers" },
+	{ "number": "112", "name": "SỐ KHẨN CẤP CHÂU ÂU", "class": "europe" },
+	{ "number": "114", "name": "KHIẾM THÍNH", "class": "ssourd" }
+  ],
+  "principes": [
+    {
+      "icon": "📢", "titre": "BÁO ĐỘNG", "desc": "Báo cho dịch vụ cấp cứu", "colorClass": "card-bleu",
+      "contenu": {
+        "steps": [
+          "Số điện thoại khẩn cấp: 115 (cấp cứu), 113 (công an), 114 (cứu hỏa), 112 (Châu Âu).",
+          "Cho biết: Ở đâu? (địa điểm chính xác), Cái gì? (loại tai nạn), Ai? (số nạn nhân, tình trạng).",
+          "Đừng cúp máy trước – để tổng đài viên kết thúc cuộc gọi.",
+          "Sử dụng ứng dụng định vị nếu có thể.",
+          "Nếu bạn ở một mình và không thể nói, hãy bấm 112 và để máy mở."
+        ]
+      }
+    },
+    {
+      "icon": "🩺", "titre": "CỨU HỘ", "desc": "Thực hiện sơ cứu ban đầu", "colorClass": "card-blanc",
+      "contenu": {
+        "steps": [
+          "Đánh giá ý thức (nói, chạm), kiểm tra hô hấp.",
+          "Nếu không thở: bắt đầu ép tim ngay lập tức (100-120 lần/phút).",
+          "Tư thế hồi sức nếu bất tỉnh nhưng vẫn thở.",
+          "Chảy máu: ép trực tiếp lên vết thương. Chỉ dùng garo nếu ép không hiệu quả.",
+          "Không bao giờ cho người bất tỉnh uống nước.",
+          "Trấn an nạn nhân và đắp chăn để tránh hạ thân nhiệt."
+        ]
+      }
+    },
+    {
+      "icon": "🛡️", "titre": "BẢO VỆ", "desc": "Đảm bảo an toàn", "colorClass": "card-rouge",
+      "contenu": {
+        "steps": [
+          "Đưa nạn nhân ra khỏi nguy hiểm trước mắt (lửa, giao thông, sập đổ).",
+          "Đánh dấu khu vực (tam giác cảnh báo, đèn khẩn cấp).",
+          "Tự bảo vệ: găng tay, khẩu trang nếu có.",
+          "Ngắt nguồn nguy hiểm (gas, điện).",
+          "Không di chuyển người bị thương nghi ngờ chấn thương cột sống."
+        ]
+      }
+    }
+  ],
+  "outils": [
+    { "icon": "❤️", "titre": "Máy đếm nhịp CPR 110 BPM", "desc": "Nhịp cho ép tim.", "action": "openMetronome" },
+    { "icon": "⚡", "titre": "Đèn nháy SOS", "desc": "Tín hiệu ánh sáng cấp cứu.", "action": "openFlashSOS" },
+    { "icon": "🔦", "titre": "Đèn pin", "desc": "Màn hình trắng sáng.", "action": "openTorche" },
+    { "icon": "🚨", "titre": "Còi báo động", "desc": "Còi liên tục (880 Hz).", "action": "openAlerte" },
+    { "icon": "🌬️", "titre": "Hướng dẫn thở", "desc": "Đồng bộ nhịp tim (4-4).", "action": "openRespiration" },
+    { "icon": "🔊", "titre": "Còi cấp cứu", "desc": "Tín hiệu 3 tiếng còi.", "action": "openSifflet" }
+  ],
+  "urgences_medicales": [
+    {
+      "icon": "🫀", "titre": "Đau tim", "desc": "Nghỉ ngơi, gọi cấp cứu, CPR nếu cần.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Gọi ngay 115 hoặc 112.", "Đặt người bệnh ở tư thế nửa ngồi nếu tỉnh.", "Bất tỉnh nhưng thở: tư thế hồi sức.", "Ngừng tim: ép tim (100-120/phút) + máy khử rung tim nếu có." ] }
+    },
+    {
+      "icon": "🩸", "titre": "Chảy máu", "desc": "Ép trực tiếp, garo, gọi trợ giúp.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Ép vết thương bằng vải sạch.", "Nâng cao chi bị thương nếu có thể.", "Nếu máu không ngừng chảy: garo (rộng, chặt, ghi lại thời gian).", "Không rút vật thể đâm vào vết thương.", "Đặt nạn nhân nằm, đắp chăn, gọi 115." ] }
+    },
+    {
+      "icon": "🧠", "titre": "Đột quỵ (FAST)", "desc": "Mặt, Tay, Nói, Thời gian – gọi 115.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "M: Mặt méo?", "T: Tay yếu?", "N: Nói ngọng?", "T: Thời gian – gọi ngay 115!", "Ghi lại thời gian bắt đầu triệu chứng." ] }
+    },
+    {
+      "icon": "🫁", "titre": "Nghẹt thở", "desc": "Thủ thuật Heimlich.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Hỏi 'Bạn có bị nghẹn không?'", "Nếu không thể nói hoặc ho: 5 cú đập vào lưng.", "Nếu không hiệu quả: thủ thuật Heimlich.", "Mất ý thức: bắt đầu CPR và gọi 115." ] }
+    },
+    {
+      "icon": "🔥", "titre": "Bỏng", "desc": "Làm mát bằng nước ấm 15 phút, không chọc vỡ bọng nước.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Làm mát ngay bằng nước ấm (15-25°C) trong 15 phút.", "Tháo bỏ quần áo không dính và trang sức.", "Che phủ bằng màng bọc thực phẩm hoặc băng vô trùng.", "Không chọc vỡ bọng nước, không bôi kem.", "Gọi 115 cho bỏng diện rộng, mặt hoặc đường hô hấp." ] }
+    },
+    {
+      "icon": "💧", "titre": "Đuối nước", "desc": "Đưa lên khỏi nước, CPR, gọi cấp cứu.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Đưa nạn nhân lên khỏi nước mà không gây nguy hiểm cho bản thân.", "Kiểm tra ý thức và hô hấp.", "Nếu không thở: 2 lần thổi ngạt + 30 lần ép tim (30:2).", "Gọi 115 hoặc 112.", "Đắp chăn để tránh hạ thân nhiệt." ] }
+    },
+    {
+      "icon": "💊", "titre": "Quá liều (GHB/MDMA)", "desc": "Tư thế hồi sức, gọi 115, đừng để ngủ.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Bất tỉnh nhưng thở: tư thế hồi sức.", "Ngừng thở: CPR + thổi ngạt.", "Gọi ngay 115.", "Đừng để người đó 'ngủ' – theo dõi liên tục.", "Giữ lại các chất đã dùng cho nhân viên y tế." ] }
+    },
+    {
+      "icon": "🌡️", "titre": "Sốc nhiệt", "desc": "Làm mát ngay, gọi 115.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Di chuyển vào bóng râm / nơi mát mẻ.", "Cởi bỏ quần áo, phun nước mát, quạt.", "Chườm đá vào nách, cổ, bẹn.", "Gọi 115 – tình trạng đe dọa tính mạng.", "Không cho uống thuốc hạ sốt." ] }
+    },
+    {
+      "icon": "🍺", "titre": "Ngộ độc rượu", "desc": "Tư thế hồi sức, theo dõi, gọi 115 nếu hôn mê.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Bất tỉnh: tư thế hồi sức, theo dõi hô hấp.", "Không để một mình, không gây nôn.", "Hôn mê hoặc thở không đều: 115.", "Cho uống nước nếu tỉnh và nuốt được." ] }
+    },
+    {
+      "icon": "🦐", "titre": "Sốc phản vệ", "desc": "Dị ứng nặng, tiêm adrenalin, gọi 115.", "colorClass": "card-rose",
+      "contenu": { "steps": [ "Nhận biết: mề đay, sưng, khó thở, ngất.", "Tiêm adrenalin (nếu được kê đơn) vào đùi.", "Nằm ngửa, nâng cao chân.", "Gọi ngay 115." ] }
+    },
+    {
+      "icon": "🚗", "titre": "Tai nạn giao thông", "desc": "An toàn, đánh dấu, gọi trợ giúp.", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Đặt tam giác cảnh báo, mặc áo phản quang.", "Không di chuyển người bị thương trừ khi có nguy hiểm ngay lập tức.", "Gọi 115, 114 hoặc 112.", "Tắt máy xe, kéo phanh tay.", "Không cho uống nước nếu nạn nhân bất tỉnh." ] }
+    }
+  ],
+  "situations_collectives": [
+    {
+      "icon": "🔥", "titre": "Hỏa hoạn", "desc": "Sơ tán, báo động, bò dưới khói.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Gọi cứu hỏa (114 hoặc 112).", "Thoát ra trong tư thế cúi thấp (bò dưới khói).", "Không sử dụng thang máy.", "Đóng cửa phía sau.", "Nếu quần áo bắt lửa: dừng lại, nằm xuống và lăn." ] }
+    },
+    {
+      "icon": "💨", "titre": "Rò rỉ gas", "desc": "Không tạo tia lửa, mở cửa sổ, gọi 114.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Không bật công tắc điện, không dùng điện thoại tại chỗ.", "Mở cửa ra vào và cửa sổ.", "Khóa van gas nếu có thể.", "Sơ tán khỏi khu vực.", "Gọi cứu hỏa (114 hoặc 112) từ bên ngoài." ] }
+    },
+    {
+      "icon": "⚠️", "titre": "Tấn công / Xả súng", "desc": "Chạy trốn, ẩn nấp, báo động (112).", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Chạy đi, thay đổi hướng.", "Nếu không thể chạy: ẩn trong phòng khóa kín, tắt đèn, tránh xa cửa sổ.", "Tắt chuông điện thoại, không gọi để tránh bị lộ.", "Chỉ mở cửa cho lực lượng chức năng đã được nhận dạng." ] }
+    },
+    {
+      "icon": "🌊", "titre": "Lũ lụt", "desc": "Lên nơi cao hơn, ngắt điện, làm theo hướng dẫn.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Lên các tầng cao hơn, không xuống tầng hầm.", "Khóa gas và ngắt điện.", "Không sử dụng thang máy.", "Chuẩn bị sơ tán nếu được yêu cầu.", "Gọi cấp cứu (114, 112) nếu nguy hiểm ngay lập tức." ] }
+    },
+    {
+      "icon": "🌍", "titre": "Động đất", "desc": "Cúi, che, giữ, tránh xa cửa sổ.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Chui xuống gầm bàn vững chắc, che đầu, giữ chặt.", "Tránh xa cửa sổ và đồ vật treo.", "Sau rung chấn: sơ tán bằng cầu thang bộ.", "Không sử dụng thang máy.", "Cảnh giác với dư chấn." ] }
+    },
+    {
+      "icon": "☣️", "titre": "CBRN (Hóa học/Sinh học/Phóng xạ/Hạt nhân)", "desc": "Trú ẩn trong nhà, bịt kín phòng, nghe đài.", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Trú ẩn trong phòng không có cửa sổ.", "Đóng cửa ra vào, cửa sổ, tắt thông gió.", "Đóng cửa chớp, dán băng keo các khe hở.", "Nghe hướng dẫn chính thức (đài địa phương).", "Không ra ngoài cho đến khi được phép." ] }
+    }
+  ],
+  "associations": [
+    {
+      "icon": "💬", "titre": "Đường dây nóng tư vấn tâm lý", "numero": "1900 6233", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Số: 1900 6233", "Hỗ trợ tâm lý 24/7, ẩn danh và miễn phí.", "Dành cho căng thẳng, cô đơn, ý định tự tử." ] }
+    },
+    {
+      "icon": "📞", "titre": "115 – Cấp cứu y tế", "numero": "115", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Số: 115", "Dịch vụ cấp cứu y tế toàn quốc." ] }
+    },
+    {
+      "icon": "👶", "titre": "111 – Tổng đài bảo vệ trẻ em", "numero": "111", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Số: 111", "Báo cáo trẻ em bị xâm hại, bạo lực, bỏ rơi." ] }
+    },
+    {
+      "icon": "🚺", "titre": "1800 1567 – Ngôi nhà bình yên", "numero": "1800 1567", "colorClass": "card-rose",
+      "contenu": { "steps": [ "Số: 1800 1567", "Hỗ trợ phụ nữ bị bạo lực gia đình." ] }
+    },
+    {
+      "icon": "🔍", "titre": "116 000 – Trẻ em mất tích", "numero": "116 000", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Số: 116 000", "Báo cáo trẻ em mất tích, hỗ trợ gia đình." ] }
+    },
+    {
+      "icon": "🍷", "titre": "1800 6606 – Tư vấn cai nghiện", "numero": "1800 6606", "colorClass": "card-vert",
+      "contenu": { "steps": [ "Số: 1800 6606", "Tư vấn về nghiện rượu, ma túy, cờ bạc." ] }
+    },
+    {
+      "icon": "❤️", "titre": "Hội Chữ thập đỏ", "numero": "1900 9696", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Số: 1900 9696", "Hỗ trợ tâm lý xã hội." ] }
+    }
+  ]
+}

@@ -1,0 +1,208 @@
+{
+  "app": { "title": "SOS-GUIDE" },
+  "drawer": {
+    "title": "Navigation",
+    "footer": "SOS-GUIDE · version 1.0",
+    "links": [
+      { "icon": "⛑️", "label": "Home — Emergencies", "href": "#splashScreen" },
+      { "icon": "📖", "label": "Survival Guide", "href": "#mainContent" },
+      { "icon": "🇫🇷", "label": "First Aid Principles", "href": "#section-principes" },
+      { "icon": "⚙️", "label": "Practical Tools", "href": "#section-outils" },
+      { "icon": "🚑", "label": "Medical Emergencies", "href": "#section-urgences" },
+      { "icon": "⚠️", "label": "Collective Situations", "href": "#section-situations" },
+      { "icon": "📞", "label": "Helplines", "href": "#section-assos" }
+    ]
+  },
+  "local": {
+    "info": { "title": "" },
+    "crisis": "📞 Crisis",
+    "samu": "🚑 Local SAMU",
+    "fire": "🚒 Fire brigade",
+    "townhall": "🏛️ Town hall",
+    "prefecture": "🏛️ Prefecture",
+    "redcross": "🔴 Red Cross",
+    "radio": "📻 Local radio"
+  },
+  "splash": {
+    "title": "SURVIVAL GUIDE",
+    "subtitle": "This site works <strong>without an internet connection</strong>. It provides essential information to handle an emergency situation.",
+    "enterButton": "Access the complete guide"
+  },
+  "main": {
+    "welcome": {
+      "title": "Welcome",
+      "text": "Your emergency guide works offline. Find here emergency tools, first aid, and survival reflexes."
+    }
+  },
+  "sections": {
+    "principes": "🇫🇷 The 3 principles of first aid",
+    "outils": "⚙️ Practical tools",
+    "urgencesMedicales": "🚑 Medical emergencies",
+    "situationsCollectives": "⚠️ Collective situations",
+    "associations": "📞 Helplines & support"
+  },
+  "tools": {
+    "metronome": { "title": "❤️ CPR Metronome 110 BPM", "start": "Start", "stop": "Stop" },
+    "flash": { "stop": "⏹️ Stop SOS flash" },
+    "torch": { "stop": "🔦 Turn off flashlight" },
+    "alarm": { "title": "🚨 Sound alert", "start": "Trigger alarm", "stop": "Stop alarm", "active": "🚨 ALARM ACTIVE", "inactive": "⏹️ Stopped" },
+    "respiration": { "title": "🌬️ Guided breathing", "start": "Start", "stop": "Stop", "inhale": "Inhale", "exhale": "Exhale" },
+    "whistle": { "title": "🔊 Emergency whistle", "start": "Whistle (3 blasts)", "stop": "Stop", "active": "🔊 Whistle active", "inactive": "⏹️ Stopped" }
+  },
+  "urgences": [
+    { "number": "15", "name": "SAMU", "class": "samu" },
+    { "number": "17", "name": "POLICE", "class": "police" },
+    { "number": "18", "name": "FIRE BRIGADE", "class": "pompiers" },
+    { "number": "112", "name": "EUROPEAN EMERGENCY", "class": "europe" },
+    { "number": "114", "name": "DEAF / HARD OF HEARING", "class": "ssourd" }
+  ],
+  "principes": [
+    {
+      "icon": "📢", "titre": "ALERT", "desc": "Call emergency services", "colorClass": "card-bleu",
+      "contenu": {
+        "steps": [
+          "Emergency numbers: 15 (SAMU), 17 (Police), 18 (Fire), 112 (Europe), 114 (deaf/hard of hearing).",
+          "Provide: Where? (exact location), What? (type of accident), Who? (number of victims, condition).",
+          "Do not hang up first: let the operator end the call.",
+          "Use a location app if possible.",
+          "If you are alone and cannot speak, dial 112 and leave the line open."
+        ]
+      }
+    },
+    {
+      "icon": "🩺", "titre": "CARE", "desc": "Provide first aid", "colorClass": "card-blanc",
+      "contenu": {
+        "steps": [
+          "Assess consciousness (speak, touch), check breathing.",
+          "If the victim is not breathing: start chest compressions immediately (100-120 compressions/min).",
+          "Recovery position if unconscious but breathing.",
+          "For bleeding: apply direct pressure. Tourniquet only if compression fails.",
+          "Never give anything to drink to an unconscious person.",
+          "Reassure the victim and cover to prevent hypothermia."
+        ]
+      }
+    },
+    {
+      "icon": "🛡️", "titre": "PROTECT", "desc": "Ensure safety", "colorClass": "card-rouge",
+      "contenu": {
+        "steps": [
+          "Move to safety: remove the victim from immediate danger (fire, traffic, landslide).",
+          "Mark the area (warning triangle, hazard lights).",
+          "Protect yourself: gloves, mask if available.",
+          "Cut off sources of danger (gas, electricity).",
+          "Do not move an injured person if spinal injury is suspected."
+        ]
+      }
+    }
+  ],
+  "outils": [
+    { "icon": "❤️", "titre": "CPR Metronome 110 BPM", "desc": "Rhythm for chest compressions.", "action": "openMetronome" },
+    { "icon": "⚡", "titre": "SOS Flash", "desc": "Emergency light signal.", "action": "openFlashSOS" },
+    { "icon": "🔦", "titre": "Flashlight", "desc": "Bright white screen.", "action": "openTorche" },
+    { "icon": "🚨", "titre": "Sound alert", "desc": "Continuous alarm (880 Hz).", "action": "openAlerte" },
+    { "icon": "🌬️", "titre": "Guided breathing", "desc": "Cardiac coherence (4-4).", "action": "openRespiration" },
+    { "icon": "🔊", "titre": "Emergency whistle", "desc": "3-blast signal.", "action": "openSifflet" }
+  ],
+  "urgences_medicales": [
+    {
+      "icon": "🫀", "titre": "Heart attack", "desc": "Rest, call SAMU, CPR if needed.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Call 15 or 112 immediately.", "Rest the person, semi-sitting if conscious.", "If unconscious but breathing: recovery position.", "If cardiac arrest: chest compressions (100-120/min) + AED if available." ] }
+    },
+    {
+      "icon": "🩸", "titre": "Bleeding", "desc": "Direct pressure, tourniquet, call for help.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Apply direct pressure with a clean cloth.", "Elevate the injured limb if possible.", "If bleeding doesn't stop: tourniquet (wide, tight, note the time).", "Never remove an object embedded in the wound.", "Lay the victim down, cover, call 15." ] }
+    },
+    {
+      "icon": "🧠", "titre": "Stroke (FAST)", "desc": "Face, Arm, Speech, Time to call 15.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "F : Face drooping?", "A : Arm weakness?", "S : Speech difficulty (slurred, strange).", "T : Time to call 15 immediately.", "Note the time of first symptoms." ] }
+    },
+    {
+      "icon": "🫁", "titre": "Choking", "desc": "Heimlich maneuver.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Ask 'Are you choking?'", "If the person cannot speak or cough: 5 back blows.", "If ineffective: Heimlich maneuver (fist below sternum, inward/upward thrust).", "If unconscious: start CPR and call 15." ] }
+    },
+    {
+      "icon": "🔥", "titre": "Burns", "desc": "Cool with lukewarm water 15 min, don't pop blisters.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Cool immediately with lukewarm water (15-25°C) for 15 minutes.", "Remove non-adherent clothing and jewelry.", "Cover with plastic wrap or sterile dressing.", "Do not pop blisters or apply creams.", "Call 15 for extensive burns, face, or airways." ] }
+    },
+    {
+      "icon": "💧", "titre": "Drowning", "desc": "Get out of water, CPR, call SAMU.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Remove the victim from water without endangering yourself.", "Check consciousness and breathing.", "If not breathing: rescue breaths + chest compressions (30:2).", "Call 15 or 112.", "Cover to prevent hypothermia." ] }
+    },
+    {
+      "icon": "💊", "titre": "Overdose (GHB/MDMA)", "desc": "Recovery position, call 15, don't let them sleep.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "If unconscious but breathing: recovery position.", "If respiratory arrest: CPR + rescue breaths.", "Call 15 immediately.", "Do not let the person 'sleep' – monitor continuously.", "Collect any consumed substances for responders." ] }
+    },
+    {
+      "icon": "🌡️", "titre": "Heat stroke", "desc": "Cool immediately, call 15.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Move person to shade / cool area.", "Remove clothing, spray with cool water, fan.", "Apply ice packs to armpits / neck / groin.", "Call 15 – life-threatening emergency.", "Do not give antipyretic medication." ] }
+    },
+    {
+      "icon": "🍺", "titre": "Alcohol intoxication", "desc": "Recovery position, monitor, call 15 if coma.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "If unconscious: recovery position, monitor breathing.", "Do not leave alone, do not induce vomiting.", "If coma (no response) or irregular breathing: 15.", "Hydrate if conscious and able to swallow." ] }
+    },
+    {
+      "icon": "🦐", "titre": "Anaphylactic shock", "desc": "Severe allergy, inject adrenaline, call 15.", "colorClass": "card-rose",
+      "contenu": { "steps": [ "Recognize: hives, swelling (face, throat), breathing difficulty, fainting.", "Inject epinephrine auto-injector (if prescribed) into thigh muscle.", "Lay person down, elevate legs.", "Call 15 immediately." ] }
+    },
+    {
+      "icon": "🚗", "titre": "Road accident", "desc": "Safety, warning, call for help.", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Set up warning triangle, wear hi-vis vest.", "Do not move injured unless immediate danger (fire, collapse).", "Call 15, 18 or 112.", "Turn off vehicle engines, apply handbrake.", "Do not give drinks to unconscious victims." ] }
+    }
+  ],
+  "situations_collectives": [
+    {
+      "icon": "🔥", "titre": "Fire", "desc": "Evacuate, alert, crawl under smoke.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Call fire brigade (18 or 112).", "Leave quickly, stay low (crawl under smoke).", "Do not use elevators.", "Close doors behind you.", "If clothes catch fire: stop, drop and roll." ] }
+    },
+    {
+      "icon": "💨", "titre": "Gas leak", "desc": "Do not create sparks, open windows, call 18.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Do not flip electrical switches, do not use phone on site.", "Open doors and windows.", "Shut off gas supply if possible.", "Evacuate the premises.", "Call fire brigade (18 or 112) from outside." ] }
+    },
+    {
+      "icon": "⚠️", "titre": "Attack / Shooting", "desc": "Run, hide, alert (112).", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Run away, change direction.", "If escape impossible: hide in a locked room, turn off lights, stay away from windows.", "Silence your phone (vibrate is dangerous), do not call to avoid detection.", "Only open to identified law enforcement." ] }
+    },
+    {
+      "icon": "🌊", "titre": "Flood", "desc": "Go to higher ground, cut electricity, follow instructions.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Go to upper floors, do not go to basement.", "Turn off gas and electricity.", "Do not use elevator.", "Prepare to evacuate if instructed.", "Call emergency (18, 112) if in immediate danger." ] }
+    },
+    {
+      "icon": "🌍", "titre": "Earthquake", "desc": "Drop, cover, hold on, stay away from windows.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Drop, cover under sturdy table, hold on.", "Stay away from windows and hanging objects.", "After shaking: evacuate using stairs.", "Do not use elevators.", "Stay informed about aftershocks." ] }
+    },
+    {
+      "icon": "☣️", "titre": "CBRN (Chemical/Biological/Radiological/Nuclear)", "desc": "Shelter in place, seal room, listen to radio.", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Take shelter in a windowless room.", "Close doors, windows, shut off ventilation.", "Close shutters, seal cracks with tape.", "Listen to official instructions (local radio).", "Do not go outside until authorized." ] }
+    }
+  ],
+  "associations": [
+    {
+      "icon": "💬", "titre": "SOS Amitié", "numero": "09 72 39 40 50", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Number: 09 72 39 40 50 (non-premium call)", "24/7 psychological support, anonymous and free.", "For emotional distress, loneliness, suicidal thoughts." ] }
+    },
+    {
+      "icon": "📞", "titre": "3114 – Suicide prevention", "numero": "3114", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Number: 3114 (free call)", "National, 24/7. Trained healthcare professionals." ] }
+    },
+    {
+      "icon": "👶", "titre": "119 – Child helpline", "numero": "119", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Number: 119 (free)", "Report children at risk (abuse, neglect, violence).", "Anonymous and confidential, 24/7." ] }
+    },
+    {
+      "icon": "🚺", "titre": "3919 – Women's violence helpline", "numero": "3919", "colorClass": "card-rose",
+      "contenu": { "steps": [ "Number: 3919 (free)", "Listening, information, orientation for women victims of violence.", "24/7." ] }
+    },
+    {
+      "icon": "🔍", "titre": "116 006 – Missing children", "numero": "116 006", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Number: 116 006 (free)", "Report missing children, help for families." ] }
+    },
+    {
+      "icon": "🍷", "titre": "Addictions France", "numero": "0 800 235 236", "colorClass": "card-vert",
+      "contenu": { "steps": [ "Number: 0 800 235 236 (free)", "Listening, information and orientation on addictions (alcohol, drugs, gambling).", "Daily 8am-2am." ] }
+    },
+    {
+      "icon": "❤️", "titre": "Red Cross Listening", "numero": "0 800 858 858", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Number: 0 800 858 858 (free)", "Psychological and social support, 24/7." ] }
+    }
+  ]
+}

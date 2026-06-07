@@ -1,0 +1,208 @@
+{
+  "app": { "title": "SOS-GUIDE" },
+  "drawer": {
+    "title": "Navigasjon",
+    "footer": "SOS-GUIDE · versjon 1.0",
+    "links": [
+      { "icon": "⛑️", "label": "Hjem — Nødsituasjoner", "href": "#splashScreen" },
+      { "icon": "📖", "label": "Overlevelsesguide", "href": "#mainContent" },
+      { "icon": "🇫🇷", "label": "Prinsipper", "href": "#section-principes" },
+      { "icon": "⚙️", "label": "Praktiske verktøy", "href": "#section-outils" },
+      { "icon": "🚑", "label": "Medisinske nødsituasjoner", "href": "#section-urgences" },
+      { "icon": "⚠️", "label": "Kollektive situasjoner", "href": "#section-situations" },
+      { "icon": "📞", "label": "Hjelpeorganisasjoner", "href": "#section-assos" }
+    ]
+  },
+  "local": {
+    "info": { "title": "" },
+    "crisis": "📞 Krise",
+    "samu": "🚑 Lokal ambulanse",
+    "fire": "🚒 Brannvesen",
+    "townhall": "🏛️ Rådhus",
+    "prefecture": "🏛️ Fylkesmann",
+    "redcross": "🔴 Røde Kors",
+    "radio": "📻 Lokalradio"
+  },
+  "splash": {
+    "title": "OVERLEVELSESGUIDE",
+    "subtitle": "Dette nettstedet fungerer <strong>uten internettilkobling</strong>. Det gir viktig informasjon for å håndtere en nødsituasjon.",
+    "enterButton": "Få tilgang til hele guiden"
+  },
+  "main": {
+    "welcome": {
+      "title": "Velkommen",
+      "text": "Nødguiden din fungerer offline. Finn nødverktøy, førstehjelp og overlevelsesreflekser her."
+    }
+  },
+  "sections": {
+    "principes": "🇫🇷 De 3 prinsippene for førstehjelp",
+    "outils": "⚙️ Praktiske verktøy",
+    "urgencesMedicales": "🚑 Medisinske nødsituasjoner",
+    "situationsCollectives": "⚠️ Kollektive situasjoner",
+    "associations": "📞 Hjelpeorganisasjoner og numre"
+  },
+  "tools": {
+    "metronome": { "title": "❤️ HLR-metronom 110 BPM", "start": "Start", "stop": "Stopp" },
+    "flash": { "stop": "⏹️ Stopp SOS-blink" },
+    "torch": { "stop": "🔦 Slå av lommelykt" },
+    "alarm": { "title": "🚨 Lydalarm", "start": "Utløs alarm", "stop": "Stopp alarm", "active": "🚨 ALARM AKTIV", "inactive": "⏹️ Stoppet" },
+    "respiration": { "title": "🌬️ Guidet pust", "start": "Start", "stop": "Stopp", "inhale": "Pust inn", "exhale": "Pust ut" },
+    "whistle": { "title": "🔊 Nødfløyte", "start": "Blås (3 støt)", "stop": "Stopp", "active": "🔊 Fløyte aktiv", "inactive": "⏹️ Stoppet" }
+  },
+  "urgences": [
+	{ "number": "15", "name": "SAMU", "class": "samu" },
+	{ "number": "17", "name": "POLITI", "class": "police" },
+	{ "number": "18", "name": "BRANNVESEN", "class": "pompiers" },
+	{ "number": "112", "name": "EUROPEISK NØDNUMMER", "class": "europe" },
+	{ "number": "114", "name": "HØRSELSHEMMEDE", "class": "ssourd" }
+  ],
+  "principes": [
+    {
+      "icon": "📢", "titre": "VARSLE", "desc": "Varsle nødetatene", "colorClass": "card-bleu",
+      "contenu": {
+        "steps": [
+          "Nødnumre: 113 (ambulanse), 112 (politi), 110 (brann).",
+          "Oppgi: Hvor? (nøyaktig sted), Hva? (type ulykke), Hvem? (antall skadde, tilstand).",
+          "Ikke legg på først – la operatøren avslutte samtalen.",
+          "Bruk en posisjoneringsapp hvis mulig.",
+          "Hvis du er alene og ikke kan snakke, ring 112 og la linjen være åpen."
+        ]
+      }
+    },
+    {
+      "icon": "🩺", "titre": "REDDE", "desc": "Gi førstehjelp", "colorClass": "card-blanc",
+      "contenu": {
+        "steps": [
+          "Vurder bevissthet (snakk, berør), sjekk pust.",
+          "Ingen pust: start umiddelbart hjertekompresjoner (100-120/min).",
+          "Stabilt sideleie hvis bevisstløs men puster.",
+          "Blødning: trykk direkte på såret. Bruk trykkforband kun hvis trykk ikke er nok.",
+          "Gi aldri en bevisstløs person noe å drikke.",
+          "Berolig den skadde og dekk til for å unngå hypotermi."
+        ]
+      }
+    },
+    {
+      "icon": "🛡️", "titre": "BESKYTTE", "desc": "Sørg for sikkerhet", "colorClass": "card-rouge",
+      "contenu": {
+        "steps": [
+          "Fjern den skadde fra umiddelbar fare (brann, trafikk, ras).",
+          "Sikre stedet (varseltrekant, nødblink).",
+          "Beskytt deg selv: hansker, maske hvis tilgjengelig.",
+          "Koble fra farekilder (gass, strøm).",
+          "Flytt ikke en skadd person ved mistanke om ryggmargsskade."
+        ]
+      }
+    }
+  ],
+  "outils": [
+    { "icon": "❤️", "titre": "HLR-metronom 110 BPM", "desc": "Rytme for hjertekompresjoner.", "action": "openMetronome" },
+    { "icon": "⚡", "titre": "SOS-blink", "desc": "Lyssignal for nødsituasjon.", "action": "openFlashSOS" },
+    { "icon": "🔦", "titre": "Lommelykt", "desc": "Lys hvit skjerm.", "action": "openTorche" },
+    { "icon": "🚨", "titre": "Lydalarm", "desc": "Kontinuerlig alarm (880 Hz).", "action": "openAlerte" },
+    { "icon": "🌬️", "titre": "Guidet pust", "desc": "Hjertekoherens (4-4).", "action": "openRespiration" },
+    { "icon": "🔊", "titre": "Nødfløyte", "desc": "3 støt signal.", "action": "openSifflet" }
+  ],
+  "urgences_medicales": [
+    {
+      "icon": "🫀", "titre": "Hjerteinfarkt", "desc": "Hvile, ring 113, HLR om nødvendig.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Ring umiddelbart 113.", "La personen hvile i halvsittende stilling hvis bevisst.", "Bevisstløs men puster: stabilt sideleje.", "Hjertestans: hjertekompresjoner (100-120/min) + hjertestarter hvis tilgjengelig." ] }
+    },
+    {
+      "icon": "🩸", "titre": "Blødning", "desc": "Direkte trykk, trykkforband, tilkall hjelp.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Trykk direkte på såret med en ren klut.", "Hev det skadde lemmet hvis mulig.", "Hvis blødningen ikke stopper: trykkforband (bredt, stramt, noter tid).", "Fjern aldri gjenstander som sitter fast i såret.", "Legg den skadde ned, dekk til, ring 113." ] }
+    },
+    {
+      "icon": "🧠", "titre": "Hjerneslag (FAST)", "desc": "Ansikt, Arm, Språk, Tid – ring 113.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "A: Ansikt asymmetrisk?", "A: Arm svakhet?", "S: Språk utydelig?", "T: Tid – ring umiddelbart 113!", "Noter tidspunkt for første symptomer." ] }
+    },
+    {
+      "icon": "🫁", "titre": "Kvelning", "desc": "Heimlichmanøver.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Spør 'Holder du på å kveles?'", "Hvis personen ikke kan snakke eller hoste: 5 slag mellom skulderbladene.", "Hvis det ikke hjelper: Heimlichmanøver.", "Ved bevisstløshet: start HLR og ring 113." ] }
+    },
+    {
+      "icon": "🔥", "titre": "Brannskader", "desc": "Kjøl med lunkent vann 15 min, ikke punkter blemmer.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Kjøl umiddelbart med lunkent vann (15-25°C) i 15 minutter.", "Fjern klær som ikke sitter fast og smykker.", "Dekk med plastfolie eller steril bandasje.", "Punkter ikke blemmer, påfør ikke kremer.", "Ring 113 ved omfattende brannskader, ansikt eller luftveier." ] }
+    },
+    {
+      "icon": "💧", "titre": "Drukning", "desc": "Ta opp av vannet, HLR, ring 113.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Ta den skadde opp av vannet uten å utsette deg selv for fare.", "Sjekk bevissthet og pust.", "Ingen pust: 2 innblåsninger + 30 kompresjoner (30:2).", "Ring 113.", "Dekk til for å unngå hypotermi." ] }
+    },
+    {
+      "icon": "💊", "titre": "Overdose (GHB/MDMA)", "desc": "Stabilt sideleje, ring 113, la ikke sove.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Bevisstløs men puster: stabilt sideleje.", "Pustestans: HLR + innblåsninger.", "Ring umiddelbart 113.", "La ikke personen 'sove' – overvåk kontinuerlig.", "Ta vare på eventuelle stoffer for helsepersonell." ] }
+    },
+    {
+      "icon": "🌡️", "titre": "Hedeslag", "desc": "Kjøl umiddelbart, ring 113.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Flytt personen til skygge/kjølig sted.", "Ta av klær, spray med kjølig vann, vift.", "Is på armhuler, nakke, lyske.", "Ring 113 – livstruende tilstand.", "Ikke gi febernedsettende." ] }
+    },
+    {
+      "icon": "🍺", "titre": "Alkoholforgiftning", "desc": "Stabilt sideleje, overvåk, ring 113 ved koma.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Bevisstløs: stabilt sideleje, overvåk pust.", "Ikke la personen være alene, ikke fremkall brekninger.", "Koma eller uregelmessig pust: 113.", "Gi væske hvis bevisst og kan svelge." ] }
+    },
+    {
+      "icon": "🦐", "titre": "Anafylaktisk sjokk", "desc": "Alvorlig allergi, injiser adrenalin, ring 113.", "colorClass": "card-rose",
+      "contenu": { "steps": [ "Kjennetegn: elveblest, hevelse, pustevansker, besvimelse.", "Injiser adrenalin (hvis foreskrevet) i låret.", "Legg personen ned, hev bena.", "Ring umiddelbart 113." ] }
+    },
+    {
+      "icon": "🚗", "titre": "Trafikkulykke", "desc": "Sikkerhet, varsling, tilkall hjelp.", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Sett ut varseltrekant, bruk refleksvest.", "Flytt ikke skadde med mindre umiddelbar fare.", "Ring 113, 110 eller 112.", "Slå av motorer, trekk til håndbrekk.", "Gi ikke drikke til bevisstløse." ] }
+    }
+  ],
+  "situations_collectives": [
+    {
+      "icon": "🔥", "titre": "Brann", "desc": "Evakuer, varsle, kravl under røyken.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Varsle brannvesen (110).", "Forlat stedet i nedbøyd stilling (kravl under røyken).", "Ikke bruk heis.", "Lukk dører etter deg.", "Hvis klær brenner: stopp, legg deg ned, rull." ] }
+    },
+    {
+      "icon": "💨", "titre": "Gasslekkasje", "desc": "Ikke lag gnister, åpne vinduer, ring 110.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Ikke bruk elektriske brytere, ikke bruk telefon på stedet.", "Åpne dører og vinduer.", "Steng gassen hvis mulig.", "Evakuer stedet.", "Varsle brannvesen (110) fra utsiden." ] }
+    },
+    {
+      "icon": "⚠️", "titre": "Terrorangrep / Skyting", "desc": "Flykt, skjul, varsle (112).", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Løp vekk, endre retning.", "Hvis flukt umulig: skjul deg i låst rom, slukk lys, hold deg unna vinduer.", "Sett telefonen på lydløs, ikke ring for å unngå å avsløre deg.", "Åpne kun for identifisert politi." ] }
+    },
+    {
+      "icon": "🌊", "titre": "Oversvømmelse", "desc": "Gå til høyere terreng, koble fra strøm, følg anvisninger.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Gå til øvre etasjer, ikke til kjeller.", "Steng gass og strøm.", "Ikke bruk heis.", "Forbered evakuering hvis du får beskjed.", "Ring nødnummer (110/112) ved umiddelbar fare." ] }
+    },
+    {
+      "icon": "🌍", "titre": "Jordskjelv", "desc": "Dekk deg, hold fast, hold deg unna vinduer.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Dekk deg under et solid bord, hold fast.", "Hold deg unna vinduer og hengende gjenstander.", "Etter skjelvet: evakuer via trapper.", "Ikke bruk heis.", "Vær oppmerksom på etterskjelv." ] }
+    },
+    {
+      "icon": "☣️", "titre": "CBRN (Kjemisk/Biologisk/Radiologisk/Nukleær)", "desc": "Søk tilflukt innendørs, forsegl rom, hør på radio.", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Søk tilflukt i rom uten vinduer.", "Lukk dører, vinduer, stopp ventilasjon.", "Lukk skodder, forsegl sprekker med tape.", "Lytt til offisielle instrukser (lokalradio).", "Ikke gå ut før tillatelse er gitt." ] }
+    }
+  ],
+  "associations": [
+    {
+      "icon": "💬", "titre": "Mental Helse Hjelpetelefon", "numero": "116 123", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Nummer: 116 123", "Psykologisk støtte hele døgnet, anonymt og gratis.", "For følelsesmessig nød, ensomhet, selvmordstanker." ] }
+    },
+    {
+      "icon": "📞", "titre": "113 – Akuttmedisinsk", "numero": "113", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Nummer: 113", "Nasjonalt nødnummer for ambulanse." ] }
+    },
+    {
+      "icon": "👶", "titre": "116 111 – Barneombudet", "numero": "116 111", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Nummer: 116 111", "Hjelp til barn og unge i vanskelige situasjoner." ] }
+    },
+    {
+      "icon": "🚺", "titre": "Voldtektshjelpen", "numero": "800 57 000", "colorClass": "card-rose",
+      "contenu": { "steps": [ "Nummer: 800 57 000", "Støtte til voldsutsatte kvinner." ] }
+    },
+    {
+      "icon": "🔍", "titre": "116 000 – Savnede barn", "numero": "116 000", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Nummer: 116 000", "Melding om savnede barn, hjelp til familier." ] }
+    },
+    {
+      "icon": "🍷", "titre": "Rusinfo", "numero": "915 08588", "colorClass": "card-vert",
+      "contenu": { "steps": [ "Nummer: 915 08588", "Informasjon og rådgivning om alkohol, narkotika og spillavhengighet." ] }
+    },
+    {
+      "icon": "❤️", "titre": "Røde Kors' omsorgstelefon", "numero": "815 33 300", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Nummer: 815 33 300", "Psykososial støtte." ] }
+    }
+  ]
+}

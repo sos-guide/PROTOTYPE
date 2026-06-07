@@ -1,0 +1,208 @@
+{
+  "app": { "title": "GHID SOS" },
+  "drawer": {
+    "title": "Navigare",
+    "footer": "GHID SOS · versiunea 1.0",
+    "links": [
+      { "icon": "⛑️", "label": "Acasă — Urgențe", "href": "#splashScreen" },
+      { "icon": "📖", "label": "Ghid de supraviețuire", "href": "#mainContent" },
+      { "icon": "🇫🇷", "label": "Principii", "href": "#section-principes" },
+      { "icon": "⚙️", "label": "Instrumente practice", "href": "#section-outils" },
+      { "icon": "🚑", "label": "Urgențe medicale", "href": "#section-urgences" },
+      { "icon": "⚠️", "label": "Situații colective", "href": "#section-situations" },
+      { "icon": "📞", "label": "Asociații", "href": "#section-assos" }
+    ]
+  },
+  "local": {
+    "info": { "title": "" },
+    "crisis": "📞 Criză",
+    "samu": "🚑 Ambulanța locală",
+    "fire": "🚒 Pompieri",
+    "townhall": "🏛️ Primărie",
+    "prefecture": "🏛️ Prefectură",
+    "redcross": "🔴 Crucea Roșie",
+    "radio": "📻 Radio local"
+  },
+  "splash": {
+    "title": "GHID DE SUPRAVIEȚUIRE",
+    "subtitle": "Acest site funcționează <strong>fără conexiune la internet</strong>. Oferă informații esențiale pentru a face față unei situații de urgență.",
+    "enterButton": "Accesați ghidul complet"
+  },
+  "main": {
+    "welcome": {
+      "title": "Bun venit",
+      "text": "Ghidul dumneavoastră de urgență funcționează offline. Găsiți aici instrumente de urgență, prim ajutor și reflexe de supraviețuire."
+    }
+  },
+  "sections": {
+    "principes": "🇫🇷 Cele 3 principii ale primului ajutor",
+    "outils": "⚙️ Instrumente practice",
+    "urgencesMedicales": "🚑 Urgențe medicale",
+    "situationsCollectives": "⚠️ Situații colective",
+    "associations": "📞 Asociații și numere de ajutor"
+  },
+  "tools": {
+    "metronome": { "title": "❤️ Metronom RCP 110 BPM", "start": "Pornire", "stop": "Oprire" },
+    "flash": { "stop": "⏹️ Oprire flash SOS" },
+    "torch": { "stop": "🔦 Stinge lanterna" },
+    "alarm": { "title": "🚨 Alarmă sonoră", "start": "Activează alarma", "stop": "Oprește alarma", "active": "🚨 ALARMĂ ACTIVĂ", "inactive": "⏹️ Oprită" },
+    "respiration": { "title": "🌬️ Respirație ghidată", "start": "Începe", "stop": "Oprește", "inhale": "Inspiră", "exhale": "Expiră" },
+    "whistle": { "title": "🔊 Fluier de urgență", "start": "Fluieră (3 ori)", "stop": "Oprește", "active": "🔊 Fluier activ", "inactive": "⏹️ Oprit" }
+  },
+  "urgences": [
+	{ "number": "15", "name": "SAMU", "class": "samu" },
+	{ "number": "17", "name": "POLIȚIE", "class": "police" },
+	{ "number": "18", "name": "POMPIERI", "class": "pompiers" },
+	{ "number": "112", "name": "NUMĂR EUROPEAN DE URGENȚĂ", "class": "europe" },
+	{ "number": "114", "name": "PERSOANE CU DEFICIENTE DE AUZ", "class": "ssourd" }
+  ],
+  "principes": [
+    {
+      "icon": "📢", "titre": "ALERTARE", "desc": "Anunțați serviciile de urgență", "colorClass": "card-bleu",
+      "contenu": {
+        "steps": [
+          "Numere de urgență: 112 (număr unic).",
+          "Indicați: Unde? (loc exact), Ce? (tipul accidentului), Cine? (număr victime, stare).",
+          "Nu închideți primul: lăsați operatorul să încheie apelul.",
+          "Folosiți o aplicație de localizare dacă este posibil.",
+          "Dacă sunteți singur și nu puteți vorbi, formați 112 și lăsați linia deschisă."
+        ]
+      }
+    },
+    {
+      "icon": "🩺", "titre": "SALVARE", "desc": "Acordați primul ajutor", "colorClass": "card-blanc",
+      "contenu": {
+        "steps": [
+          "Evaluați starea de conștiență (vorbiți, atingeți), verificați respirația.",
+          "Dacă nu respiră: începeți imediat masajul cardiac (100-120 compresii/min).",
+          "Poziția laterală de siguranță dacă este inconștient dar respiră.",
+          "Hemoragie: comprimați rana. Garou doar dacă compresia este ineficientă.",
+          "Nu dați niciodată de băut unei persoane inconștiente.",
+          "Liniștiți victima și acoperiți-o pentru a evita hipotermia."
+        ]
+      }
+    },
+    {
+      "icon": "🛡️", "titre": "PROTEJARE", "desc": "Asigurați securitatea", "colorClass": "card-rouge",
+      "contenu": {
+        "steps": [
+          "Îndepărtați victima din pericolul imediat (foc, trafic, surpare).",
+          "Semnalizați zona (triunghi reflectorizant, lumini de avarie).",
+          "Protejați-vă: mănuși, mască dacă este disponibilă.",
+          "Întrerupeți sursele de pericol (gaz, electricitate).",
+          "Nu mișcați un rănit cu suspiciune de traumatism vertebral."
+        ]
+      }
+    }
+  ],
+  "outils": [
+    { "icon": "❤️", "titre": "Metronom RCP 110 BPM", "desc": "Ritm pentru masaj cardiac.", "action": "openMetronome" },
+    { "icon": "⚡", "titre": "Flash SOS", "desc": "Semnal luminos de urgență.", "action": "openFlashSOS" },
+    { "icon": "🔦", "titre": "Lanternă", "desc": "Ecran alb strălucitor.", "action": "openTorche" },
+    { "icon": "🚨", "titre": "Alarmă sonoră", "desc": "Alarmă continuă (880 Hz).", "action": "openAlerte" },
+    { "icon": "🌬️", "titre": "Respirație ghidată", "desc": "Coerență cardiacă (4-4).", "action": "openRespiration" },
+    { "icon": "🔊", "titre": "Fluier de urgență", "desc": "Semnal de 3 fluierături.", "action": "openSifflet" }
+  ],
+  "urgences_medicales": [
+    {
+      "icon": "🫀", "titre": "Atac de cord", "desc": "Repaus, sunați la 112, RCP dacă este necesar.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Sunați imediat la 112.", "Așezați persoana în poziție semișezândă dacă este conștientă.", "Inconștient dar respiră: poziția laterală de siguranță.", "Stop cardiac: masaj cardiac (100-120/min) + defibrilator dacă există." ] }
+    },
+    {
+      "icon": "🩸", "titre": "Hemoragie", "desc": "Compresie directă, garou, sunați la 112.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Comprimați rana cu o cârpă curată.", "Ridicați membrul rănit dacă este posibil.", "Dacă sângerarea nu se oprește: garou (larg, strâns, notați ora).", "Nu scoateți obiectele înfipte în rană.", "Culcați victima, acoperiți, sunați la 112." ] }
+    },
+    {
+      "icon": "🧠", "titre": "AVC (FAST)", "desc": "Față, Braț, Vorbire, Timp – sunați la 112.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "F: Față asimetrică?", "B: Braț slăbit?", "V: Vorbire neclară?", "T: Timp – sunați imediat la 112!", "Notați ora debutului simptomelor." ] }
+    },
+    {
+      "icon": "🫁", "titre": "Înec", "desc": "Manevra Heimlich.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Întrebați 'Te îneci?'", "Dacă nu poate vorbi sau tuși: 5 lovituri între omoplați.", "Dacă este ineficient: manevra Heimlich.", "Pierderea cunoștinței: începeți RCP și sunați la 112." ] }
+    },
+    {
+      "icon": "🔥", "titre": "Arsuri", "desc": "Răciți cu apă călduță 15 min, nu spargeți bășicile.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Răciți imediat cu apă călduță (15-25°C) timp de 15 minute.", "Îndepărtați hainele neaderente și bijuteriile.", "Acoperiți cu folie alimentară sau pansament steril.", "Nu spargeți bășicile, nu aplicați creme.", "Sunați la 112 pentru arsuri extinse, faciale sau ale căilor respiratorii." ] }
+    },
+    {
+      "icon": "💧", "titre": "Înec (apă)", "desc": "Scoateți din apă, RCP, sunați la 112.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Scoateți victima din apă fără să vă puneți în pericol.", "Verificați conștiența și respirația.", "Dacă nu respiră: 2 ventilații + 30 compresii (30:2).", "Sunați la 112.", "Acoperiți pentru a evita hipotermia." ] }
+    },
+    {
+      "icon": "💊", "titre": "Supradoză (GHB/MDMA)", "desc": "Poziția laterală de siguranță, sunați la 112, nu lăsați să adoarmă.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Inconștient dar respiră: poziția laterală de siguranță.", "Stop respirator: RCP + ventilații.", "Sunați imediat la 112.", "Nu lăsați persoana să 'doarmă' – monitorizați continuu.", "Păstrați eventualele substanțe consumate pentru echipajele de salvare." ] }
+    },
+    {
+      "icon": "🌡️", "titre": "Insolație", "desc": "Răcire imediată, sunați la 112.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Mutați persoana la umbră / loc răcoros.", "Dezbrăcați, pulverizați cu apă rece, ventilați.", "Gheață la subraț, gât, zona inghinală.", "Sunați la 112 – urgență vitală.", "Nu administrați medicamente antitermice." ] }
+    },
+    {
+      "icon": "🍺", "titre": "Intoxicație alcoolică", "desc": "Poziția laterală de siguranță, monitorizați, sunați la 112 dacă intră în comă.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Inconștient: poziția laterală de siguranță, monitorizați respirația.", "Nu lăsați singur, nu provocați voma.", "Comă sau respirație neregulată: 112.", "Hidratați dacă este conștient și poate înghiți." ] }
+    },
+    {
+      "icon": "🦐", "titre": "Șoc anafilactic", "desc": "Alergie gravă, injectați adrenalină, sunați la 112.", "colorClass": "card-rose",
+      "contenu": { "steps": [ "Recunoașteți: urticarie, edem, dificultăți respiratorii, leșin.", "Injectați adrenalină (dacă este prescrisă) în coapsă.", "Culcați persoana, ridicați picioarele.", "Sunați imediat la 112." ] }
+    },
+    {
+      "icon": "🚗", "titre": "Accident rutier", "desc": "Siguranță, semnalizare, sunați la 112.", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Amplasați triunghiul reflectorizant, purtați vestă.", "Nu mișcați răniții decât dacă există pericol imediat.", "Sunați la 112.", "Opriți motoarele, trageți frâna de mână.", "Nu dați de băut victimelor inconștiente." ] }
+    }
+  ],
+  "situations_collectives": [
+    {
+      "icon": "🔥", "titre": "Incendiu", "desc": "Evacuați, alertați, târâți-vă sub fum.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Sunați la pompieri (112).", "Părăsiți clădirea aplecat (târâți-vă sub fum).", "Nu folosiți liftul.", "Închideți ușile în urma dumneavoastră.", "Dacă hainele iau foc: opriți-vă, culcați-vă și rostogoliți-vă." ] }
+    },
+    {
+      "icon": "💨", "titre": "Scurgere de gaz", "desc": "Nu produceți scântei, deschideți ferestrele, sunați la 112.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Nu acționați întrerupătoare electrice, nu folosiți telefonul la fața locului.", "Deschideți ușile și ferestrele.", "Închideți gazul dacă este posibil.", "Evacuați incinta.", "Sunați la pompieri (112) de afară." ] }
+    },
+    {
+      "icon": "⚠️", "titre": "Atentat / Schimb de focuri", "desc": "Fugiți, ascundeți-vă, alertați (112).", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Fugiți, schimbați direcția.", "Dacă fuga este imposibilă: ascundeți-vă într-o cameră încuiată, stingeți lumina, stați departe de ferestre.", "Puneți telefonul pe silențios, nu sunați pentru a nu vă deconspira.", "Deschideți doar forțelor de ordine identificate." ] }
+    },
+    {
+      "icon": "🌊", "titre": "Inundație", "desc": "Urcați la etaje superioare, opriți curentul electric, urmați instrucțiunile.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Urcați la etajele superioare, nu în subsol.", "Închideți gazul și opriți curentul electric.", "Nu folosiți liftul.", "Pregătiți-vă pentru evacuare dacă vi se solicită.", "Sunați la 112 dacă există pericol imediat." ] }
+    },
+    {
+      "icon": "🌍", "titre": "Cutremur", "desc": "Adăpostiți-vă sub o masă solidă, țineți-vă, stați departe de ferestre.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Adăpostiți-vă sub o masă solidă, protejați-vă capul, țineți-vă.", "Stați departe de ferestre și obiecte suspendate.", "După seism: evacuați pe scări.", "Nu folosiți liftul.", "Fiți atenți la replici." ] }
+    },
+    {
+      "icon": "☣️", "titre": "CBRN (Chimic/Biologic/Radiologic/Nuclear)", "desc": "Adăpostiți-vă în interior, etanșați camera, ascultați radioul.", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Adăpostiți-vă într-o cameră fără ferestre.", "Închideți ușile, ferestrele, opriți ventilația.", "Închideți obloanele, etanșați crăpăturile cu bandă adezivă.", "Ascultați instrucțiunile oficiale (radio local).", "Nu ieșiți până nu se permite." ] }
+    }
+  ],
+  "associations": [
+    {
+      "icon": "💬", "titre": "TelVerde Antisuicid", "numero": "0800 801 200", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Număr: 0800 801 200 (gratuit)", "Suport psihologic 24/7, anonim și gratuit.", "Pentru suferință emoțională, singurătate, gânduri suicidare." ] }
+    },
+    {
+      "icon": "📞", "titre": "112 – Număr Unic de Urgență", "numero": "112", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Număr: 112 (gratuit)", "Național, 24/7." ] }
+    },
+    {
+      "icon": "👶", "titre": "116 111 – Telefonul Copilului", "numero": "116 111", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Număr: 116 111", "Ajutor pentru copii și adolescenți în dificultate." ] }
+    },
+    {
+      "icon": "🚺", "titre": "0800 500 333 – Linia pentru femei", "numero": "0800 500 333", "colorClass": "card-rose",
+      "contenu": { "steps": [ "Număr: 0800 500 333", "Sprijin pentru femeile victime ale violenței domestice." ] }
+    },
+    {
+      "icon": "🔍", "titre": "116 000 – Copii dispăruți", "numero": "116 000", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Număr: 116 000", "Raportarea copiilor dispăruți, ajutor pentru familii." ] }
+    },
+    {
+      "icon": "🍷", "titre": "ALIAT – Linia antidrog", "numero": "0800 870 070", "colorClass": "card-vert",
+      "contenu": { "steps": [ "Număr: 0800 870 070", "Informații și consiliere privind dependențele (alcool, droguri, jocuri de noroc)." ] }
+    },
+    {
+      "icon": "❤️", "titre": "Crucea Roșie Română", "numero": "021 317 60 15", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Număr: 021 317 60 15", "Suport psihosocial." ] }
+    }
+  ]
+}
