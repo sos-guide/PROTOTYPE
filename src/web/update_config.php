@@ -105,6 +105,7 @@ $changed = [];
 // ── Champs establishment ──────────────────────────────────────────────────────
 $estFields = [
     'name'                => ['s_text',  128],
+    'country'             => ['s_text',  64 ],
     'address'             => ['s_text',  256],
     'lat'                 => ['s_gps',   0  ],
     'lon'                 => ['s_gps',   0  ],

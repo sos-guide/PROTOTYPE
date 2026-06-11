@@ -152,8 +152,9 @@ function applyAll() {
   const locStrings = langData.local || {};
   
   let localHtml = '';
-  if (est.name && est.address) {
-    localHtml += `<div style="text-align:left; margin-bottom:0.5rem;"><strong>📍 ${esc(est.name)}</strong><br><span style="font-size:0.9rem; color:var(--sub);">${esc(est.address)}</span></div>`;
+  const estLoc = [est.address, est.country].filter(Boolean).map(esc).join(', ');
+  if (est.name && estLoc) {
+    localHtml += `<div style="text-align:left; margin-bottom:0.5rem;"><strong>📍 ${esc(est.name)}</strong><br><span style="font-size:0.9rem; color:var(--sub);">${estLoc}</span></div>`;
   } else if (est.name) {
     localHtml += `<div><strong>📍 ${esc(est.name)}</strong></div>`;
   }

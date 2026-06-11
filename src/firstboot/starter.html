@@ -12,7 +12,8 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;
-  min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:calc(var(--nav-h) + 1rem) 1rem 1rem}
 .card{background:var(--card);border:1px solid var(--border);border-radius:20px;
   padding:2rem 1.75rem;width:100%;max-width:580px;box-shadow:var(--shadow)}
 
@@ -167,10 +168,68 @@ body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,
 .ssid-badge{display:inline-block;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);
   color:var(--green);padding:.3rem .9rem;border-radius:8px;font-weight:600;
   font-size:.88rem;margin:.75rem 0}
+
+/* Navbar (alignée sur le portail index.html) */
+#nav{position:fixed;top:0;left:0;right:0;z-index:800;height:var(--nav-h);display:flex;
+  align-items:center;background:rgba(6,10,18,.95);backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);
+  padding:0 1.25rem;gap:.75rem}
+body.light-mode #nav{background:rgba(240,244,251,.95)}
+.nav-logo{flex:1;display:flex;align-items:center;gap:.6rem;font-weight:700;font-size:.95rem;
+  letter-spacing:.02em;user-select:none}
+.nav-logo-badge{width:28px;height:28px;background:var(--card);border-radius:8px;
+  border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
+  font-size:1.15rem;flex-shrink:0}
+.nav-right{display:flex;align-items:center;gap:.4rem}
+.nav-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--border);
+  background:var(--card);color:var(--sub);display:flex;align-items:center;justify-content:center;
+  font-size:1rem;cursor:pointer;transition:all .15s}
+.nav-btn:hover{background:var(--card-h);color:var(--text);border-color:var(--border-h)}
+.nav-btn:active{transform:scale(.92)}
+.nav-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* Modale de langue (drapeaux, comme le portail) */
+.lang-modal-overlay{position:fixed;inset:0;z-index:10001;background:rgba(0,0,0,.8);
+  backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;
+  visibility:hidden;opacity:0;transition:visibility .2s , opacity .2s;padding:1rem}
+.lang-modal-overlay.active{visibility:visible;opacity:1}
+.lang-modal-container{background:var(--bg1);border-radius:20px;width:100%;max-width:720px;
+  max-height:82vh;overflow-y:auto;border:1px solid var(--border);
+  box-shadow:0 32px 64px rgba(0,0,0,.6)}
+.lang-modal-header{display:flex;justify-content:space-between;align-items:center;
+  padding:1.1rem 1.5rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg1)}
+.lang-modal-header strong{font-size:.95rem;font-weight:700}
+.lang-modal-close{width:30px;height:30px;border-radius:8px;background:var(--bg2);color:var(--sub);
+  font-size:1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none}
+.lang-modal-close:hover{background:rgba(239,68,68,.15);color:var(--red);transform:rotate(90deg)}
+.lang-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:.6rem;padding:1.25rem}
+.lang-card{background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:.65rem 1rem;display:flex;align-items:center;gap:.65rem;cursor:pointer;transition:all .15s}
+.lang-card:hover{background:var(--card-h);border-color:var(--accent)}
+.lang-card:active{transform:scale(.96)}
+.lang-card.current{border-color:var(--accent);background:var(--card-h)}
+.lang-card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.lang-flag{font-size:1.5rem}
+.lang-name{font-size:.9rem;font-weight:500;color:var(--text)}
 </style>
 </head>
 <body>
-<button id="themeToggle" class="theme-btn" aria-label="Basculer le thème clair/sombre">🌙</button>
+<nav id="nav">
+  <div class="nav-logo"><div class="nav-logo-badge">⛑️</div><strong>SOS-GUIDE</strong></div>
+  <div class="nav-right">
+    <button class="nav-btn" id="langBtn" aria-label="Choisir la langue / Choose language">🌐</button>
+    <button class="nav-btn" id="themeToggle" aria-label="Basculer le thème clair/sombre">🌙</button>
+  </div>
+</nav>
+<div id="languageModal" class="lang-modal-overlay" role="dialog" aria-modal="true" aria-label="Choix de la langue">
+  <div class="lang-modal-container">
+    <div class="lang-modal-header">
+      <strong id="langModalTitle">🌐 Langue / Language</strong>
+      <button class="lang-modal-close" id="closeLangModal" aria-label="Fermer">✕</button>
+    </div>
+    <div class="lang-grid" id="flagGrid"></div>
+  </div>
+</div>
 <div class="card" id="card"></div>
 <script>
 (function(){
@@ -201,7 +260,7 @@ fr:{
     badge:'Conçu pour la protection civile'},
   expired:{title:'Session expirée',text:'Redémarrez le Raspberry Pi pour recommencer.'},
   identity:{name:'Nom du lieu / nœud *',namePh:'Ex : Mairie de Lyon — Salle B, Bunker Berne B1',
-    type:"Type d'établissement",addr:'Adresse',optional:'(optionnel)',
+    type:"Type d'établissement",country:'Pays',countryPh:'Ex : Suisse',addr:'Adresse',optional:'(optionnel)',
     addrPh:'Ex : 1 place de la République, 69001 Lyon'},
   types:{erp:'🏢 ERP — Établissement recevant du public',school:'🏫 École / Université / Crèche',
     hospital:'🏥 Hôpital / Clinique / EHPAD',mairie:'🏛️ Mairie / Préfecture / PCC',
@@ -218,7 +277,7 @@ fr:{
   options:{lora:'📡 Communication LoRa (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Portée 2–10 km',
     eth:'🌐 Connexion Ethernet',ethDesc:'Contenus multilingues + tuiles de carte hors-ligne (requiert accès Internet temporaire)',
     chan:'📶 Canal WiFi',chanHint:'Canaux recommandés EU : 1, 6 ou 11 (marqués ★)'},
-  summary:{node:'Nœud',type:'Type',addr:'Adresse',map:'Carte',chan:'Canal WiFi',lora:'LoRa mesh',
+  summary:{node:'Nœud',type:'Type',country:'Pays',addr:'Adresse',map:'Carte',chan:'Canal WiFi',lora:'LoRa mesh',
     eth:'Ethernet / tuiles',lang:'Langue par défaut',none:'Non configurée',on:'✅ Activé',off:'❌ Désactivé',
     note:'⚡ Installation sans redémarrage (~30 secondes).',modify:'← Modifier',install:'✅ Installer'},
   progress:{title:'Installation en cours',warn:"Ne pas éteindre l'appareil",sending:'Envoi de la configuration…',
@@ -240,7 +299,7 @@ en:{
     badge:'Designed for civil protection'},
   expired:{title:'Session expired',text:'Restart the Raspberry Pi to try again.'},
   identity:{name:'Place / node name *',namePh:'E.g.: Lyon Town Hall — Room B, Bern Bunker B1',
-    type:'Type of facility',addr:'Address',optional:'(optional)',
+    type:'Type of facility',country:'Country',countryPh:'E.g.: Switzerland',addr:'Address',optional:'(optional)',
     addrPh:'E.g.: 1 place de la République, 69001 Lyon'},
   types:{erp:'🏢 Public-access building',school:'🏫 School / University / Nursery',
     hospital:'🏥 Hospital / Clinic / Care home',mairie:'🏛️ Town hall / Prefecture / Command post',
@@ -257,7 +316,7 @@ en:{
   options:{lora:'📡 LoRa communication (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Range 2–10 km',
     eth:'🌐 Ethernet connection',ethDesc:'Multilingual content + offline map tiles (requires temporary Internet access)',
     chan:'📶 WiFi channel',chanHint:'Recommended EU channels: 1, 6 or 11 (marked ★)'},
-  summary:{node:'Node',type:'Type',addr:'Address',map:'Map',chan:'WiFi channel',lora:'LoRa mesh',
+  summary:{node:'Node',type:'Type',country:'Country',addr:'Address',map:'Map',chan:'WiFi channel',lora:'LoRa mesh',
     eth:'Ethernet / tiles',lang:'Default language',none:'Not configured',on:'✅ Enabled',off:'❌ Disabled',
     note:'⚡ Installation without reboot (~30 seconds).',modify:'← Edit',install:'✅ Install'},
   progress:{title:'Installing',warn:'Do not power off the device',sending:'Sending configuration…',
@@ -279,7 +338,7 @@ de:{
     badge:'Für den Zivilschutz entwickelt'},
   expired:{title:'Sitzung abgelaufen',text:'Starten Sie den Raspberry Pi neu, um fortzufahren.'},
   identity:{name:'Name des Ortes / Knotens *',namePh:'z. B.: Rathaus Bern — Saal B, Bunker Bern B1',
-    type:'Art der Einrichtung',addr:'Adresse',optional:'(optional)',
+    type:'Art der Einrichtung',country:'Land',countryPh:'z. B.: Schweiz',addr:'Adresse',optional:'(optional)',
     addrPh:'z. B.: Bundesplatz 1, 3011 Bern'},
   types:{erp:'🏢 Öffentlich zugängliches Gebäude',school:'🏫 Schule / Universität / Kita',
     hospital:'🏥 Spital / Klinik / Pflegeheim',mairie:'🏛️ Rathaus / Präfektur / Führungsstab',
@@ -296,7 +355,7 @@ de:{
   options:{lora:'📡 LoRa-Kommunikation (Mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Reichweite 2–10 km',
     eth:'🌐 Ethernet-Verbindung',ethDesc:'Mehrsprachige Inhalte + Offline-Kartenkacheln (vorübergehender Internetzugang erforderlich)',
     chan:'📶 WLAN-Kanal',chanHint:'Empfohlene EU-Kanäle: 1, 6 oder 11 (mit ★ markiert)'},
-  summary:{node:'Knoten',type:'Typ',addr:'Adresse',map:'Karte',chan:'WLAN-Kanal',lora:'LoRa-Mesh',
+  summary:{node:'Knoten',type:'Typ',country:'Land',addr:'Adresse',map:'Karte',chan:'WLAN-Kanal',lora:'LoRa-Mesh',
     eth:'Ethernet / Kacheln',lang:'Standardsprache',none:'Nicht konfiguriert',on:'✅ Aktiviert',off:'❌ Deaktiviert',
     note:'⚡ Installation ohne Neustart (~30 Sekunden).',modify:'← Ändern',install:'✅ Installieren'},
   progress:{title:'Installation läuft',warn:'Gerät nicht ausschalten',sending:'Konfiguration wird gesendet…',
@@ -318,7 +377,7 @@ rm:{
     badge:'Sviluppà per la protecziun civila'},
   expired:{title:'Sesida scadida',text:'Reaviar il Raspberry Pi per recumenzar.'},
   identity:{name:'Num dal lieu / nod *',namePh:'P.ex.: Chasa communala Cuira — Sala B',
-    type:'Tip da l’instituziun',addr:'Adressa',optional:'(facultativ)',
+    type:'Tip da l’instituziun',country:'Pajais',countryPh:'P.ex.: Svizra',addr:'Adressa',optional:'(facultativ)',
     addrPh:'P.ex.: Plessurquai 1, 7000 Cuira'},
   types:{erp:'🏢 Edifizi avert al public',school:'🏫 Scola / Universitad / Canorta',
     hospital:'🏥 Ospital / Clinica / Chasa da tgira',mairie:'🏛️ Chasa communala / Prefectura',
@@ -335,7 +394,7 @@ rm:{
   options:{lora:'📡 Communicaziun LoRa (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Distanza 2–10 km',
     eth:'🌐 Connexiun Ethernet',ethDesc:'Cuntegns plurilings + plattas da charta offline (dovra access ad internet temporar)',
     chan:'📶 Chanal WiFi',chanHint:'Chanals recumandads UE: 1, 6 u 11 (marcads ★)'},
-  summary:{node:'Nod',type:'Tip',addr:'Adressa',map:'Charta',chan:'Chanal WiFi',lora:'LoRa mesh',
+  summary:{node:'Nod',type:'Tip',country:'Pajais',addr:'Adressa',map:'Charta',chan:'Chanal WiFi',lora:'LoRa mesh',
     eth:'Ethernet / plattas',lang:'Lingua da standard',none:'Betg configurada',on:'✅ Activà',off:'❌ Deactivà',
     note:'⚡ Installaziun senza reaviar (~30 secundas).',modify:'← Modifitgar',install:'✅ Installar'},
   progress:{title:'Installaziun en curs',warn:'Betg stizzar l’apparat',sending:'Trametter la configuraziun…',
@@ -357,7 +416,7 @@ it:{
     badge:'Progettato per la protezione civile'},
   expired:{title:'Sessione scaduta',text:'Riavviare il Raspberry Pi per ricominciare.'},
   identity:{name:'Nome del luogo / nodo *',namePh:'Es.: Municipio di Lugano — Sala B, Bunker Berna B1',
-    type:'Tipo di struttura',addr:'Indirizzo',optional:'(facoltativo)',
+    type:'Tipo di struttura',country:'Paese',countryPh:'Es.: Svizzera',addr:'Indirizzo',optional:'(facoltativo)',
     addrPh:'Es.: Piazza della Riforma 1, 6900 Lugano'},
   types:{erp:'🏢 Edificio aperto al pubblico',school:'🏫 Scuola / Università / Asilo',
     hospital:'🏥 Ospedale / Clinica / Casa di cura',mairie:'🏛️ Municipio / Prefettura / Posto di comando',
@@ -374,7 +433,7 @@ it:{
   options:{lora:'📡 Comunicazione LoRa (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Portata 2–10 km',
     eth:'🌐 Connessione Ethernet',ethDesc:'Contenuti multilingue + tessere mappa offline (richiede accesso Internet temporaneo)',
     chan:'📶 Canale WiFi',chanHint:'Canali consigliati UE: 1, 6 o 11 (contrassegnati ★)'},
-  summary:{node:'Nodo',type:'Tipo',addr:'Indirizzo',map:'Mappa',chan:'Canale WiFi',lora:'LoRa mesh',
+  summary:{node:'Nodo',type:'Tipo',country:'Paese',addr:'Indirizzo',map:'Mappa',chan:'Canale WiFi',lora:'LoRa mesh',
     eth:'Ethernet / tessere',lang:'Lingua predefinita',none:'Non configurata',on:'✅ Attivato',off:'❌ Disattivato',
     note:'⚡ Installazione senza riavvio (~30 secondi).',modify:'← Modifica',install:'✅ Installa'},
   progress:{title:'Installazione in corso',warn:'Non spegnere il dispositivo',sending:'Invio della configurazione…',
@@ -384,6 +443,942 @@ it:{
     portal:'Portale',admin:'Amministrazione',
     compliance:'🇨🇭 Progettato secondo i requisiti PCi-CH · nLPD RS 235.1 · Nessun dato personale raccolto'},
   buttons:{back:'← Indietro',next:'Continua →'}
+},
+es:{
+  steps:['Lugar','Mapa','Opciones','Resumen'],
+  langLabel:'Idioma',
+  welcome:{sub:'Configuración inicial · Punto de acceso de emergencia',
+    connectedSub:'4 pasos para poner en servicio este nodo',
+    ck1:'Identidad del lugar (nombre, tipo, dirección)',ck2:'Mapa local (plano subido o coordenadas GPS)',
+    ck3:'Opciones de red (LoRa mesh, Ethernet, canal WiFi)',ck4:'Resumen e instalación (~30 s)',
+    expire:'La sesión expira en',start:'🚀 Iniciar la configuración',connected:'Conectado ·',
+    badge:'Diseñado para la protección civil'},
+  expired:{title:'Sesión expirada',text:'Reinicie la Raspberry Pi para volver a empezar.'},
+  identity:{name:'Nombre del lugar / nodo *',namePh:'Ej.: Ayuntamiento de Madrid — Sala B',
+    type:'Tipo de establecimiento',country:'País',countryPh:'Ej.: España',addr:'Dirección',optional:'(opcional)',
+    addrPh:'Ej.: Plaza Mayor 1, 28012 Madrid'},
+  types:{erp:'🏢 Edificio de pública concurrencia',school:'🏫 Escuela / Universidad / Guardería',
+    hospital:'🏥 Hospital / Clínica / Residencia',mairie:'🏛️ Ayuntamiento / Prefectura / Puesto de mando',
+    refuge:'⛺ Refugio / Campamento / Albergue de montaña',company:'🏭 Empresa / Sitio industrial / SEVESO',
+    transport:'🚉 Estación / Aeropuerto / Terminal',other:'📍 Otro'},
+  map:{tabImg:'📷 Plano / Foto',tabGps:'🌍 Coordenadas GPS',dzPick:'Arrastra y suelta o haz clic para elegir',
+    dzHint:'PNG · JPG · WEBP · máx. 10 MB',remove:'✕ Quitar la imagen',
+    optionalHint:'Plano de evacuación, foto satélite, mapa dibujado a mano…<br><em>Paso opcional — configurable más tarde en /admin</em>',
+    geo:'📍 Usar mi ubicación actual',geoWait:'⏳ Localizando…',geoFail:'❌ Ubicación no disponible',
+    geoNo:'Geolocalización no disponible en este navegador',lat:'Latitud',lon:'Longitud',
+    zoom:'Nivel de zoom del mapa',zoomHint:'(10 = ciudad · 15 = barrio · 18 = edificio)',
+    gpsOk:'✅ GPS guardado:',tilesHint:'💡 Las teselas sin conexión se descargarán automáticamente mediante <code>sos-guide-fetch-tiles.sh</code> si se activa Ethernet en el paso siguiente.',
+    badFormat:'Formato no admitido (solo PNG, JPG, WEBP)',tooBig:'Archivo demasiado grande (máx. 10 MB)'},
+  options:{lora:'📡 Comunicación LoRa (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Alcance 2–10 km',
+    eth:'🌐 Conexión Ethernet',ethDesc:'Contenidos multilingües + teselas de mapa sin conexión (requiere acceso temporal a Internet)',
+    chan:'📶 Canal WiFi',chanHint:'Canales recomendados UE: 1, 6 u 11 (marcados ★)'},
+  summary:{node:'Nodo',type:'Tipo',country:'País',addr:'Dirección',map:'Mapa',chan:'Canal WiFi',lora:'LoRa mesh',
+    eth:'Ethernet / teselas',lang:'Idioma predeterminado',none:'No configurado',on:'✅ Activado',off:'❌ Desactivado',
+    note:'⚡ Instalación sin reinicio (~30 segundos).',modify:'← Modificar',install:'✅ Instalar'},
+  progress:{title:'Instalación en curso',warn:'No apague el dispositivo',sending:'Enviando la configuración…',
+    p1:'Configuración guardada…',p2:'Copiando el mapa local…',p3:'Aplicando la red WiFi…',
+    p4:'Iniciando los servicios…',p5:'Verificando la integridad…',p6:'¡Listo!'},
+  success:{title:'¡Configuración correcta!',text:'El nodo SOS-GUIDE está operativo.<br>Vuelva a conectarse a la red:',
+    portal:'Portal',admin:'Administración',
+    compliance:'🇨🇭 Diseñado según los requisitos PCi-CH · nLPD RS 235.1 · No se recopilan datos personales'},
+  buttons:{back:'← Atrás',next:'Continuar →'}
+},
+pt:{
+  steps:['Local','Mapa','Opções','Resumo'],
+  langLabel:'Idioma',
+  welcome:{sub:'Configuração inicial · Ponto de acesso de emergência',
+    connectedSub:'4 passos para colocar este nó em serviço',
+    ck1:'Identidade do local (nome, tipo, endereço)',ck2:'Mapa local (planta carregada ou coordenadas GPS)',
+    ck3:'Opções de rede (LoRa mesh, Ethernet, canal WiFi)',ck4:'Resumo e instalação (~30 s)',
+    expire:'A sessão expira em',start:'🚀 Iniciar a configuração',connected:'Ligado ·',
+    badge:'Concebido para a proteção civil'},
+  expired:{title:'Sessão expirada',text:'Reinicie o Raspberry Pi para recomeçar.'},
+  identity:{name:'Nome do local / nó *',namePh:'Ex.: Câmara de Lisboa — Sala B',
+    type:'Tipo de estabelecimento',country:'País',countryPh:'Ex.: Portugal',addr:'Endereço',optional:'(opcional)',
+    addrPh:'Ex.: Praça do Comércio, 1100 Lisboa'},
+  types:{erp:'🏢 Edifício de acesso público',school:'🏫 Escola / Universidade / Creche',
+    hospital:'🏥 Hospital / Clínica / Lar',mairie:'🏛️ Câmara municipal / Prefeitura / Posto de comando',
+    refuge:'⛺ Abrigo / Acampamento / Refúgio de montanha',company:'🏭 Empresa / Local industrial / SEVESO',
+    transport:'🚉 Estação / Aeroporto / Terminal',other:'📍 Outro'},
+  map:{tabImg:'📷 Planta / Foto',tabGps:'🌍 Coordenadas GPS',dzPick:'Arraste e largue ou clique para escolher',
+    dzHint:'PNG · JPG · WEBP · máx. 10 MB',remove:'✕ Remover a imagem',
+    optionalHint:'Plano de evacuação, foto de satélite, mapa desenhado à mão…<br><em>Passo opcional — configurável mais tarde em /admin</em>',
+    geo:'📍 Usar a minha localização atual',geoWait:'⏳ A localizar…',geoFail:'❌ Localização indisponível',
+    geoNo:'Geolocalização indisponível neste navegador',lat:'Latitude',lon:'Longitude',
+    zoom:'Nível de zoom do mapa',zoomHint:'(10 = cidade · 15 = bairro · 18 = edifício)',
+    gpsOk:'✅ GPS guardado:',tilesHint:'💡 Os mosaicos offline serão descarregados automaticamente via <code>sos-guide-fetch-tiles.sh</code> se o Ethernet for ativado no passo seguinte.',
+    badFormat:'Formato não suportado (apenas PNG, JPG, WEBP)',tooBig:'Ficheiro demasiado grande (máx. 10 MB)'},
+  options:{lora:'📡 Comunicação LoRa (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Alcance 2–10 km',
+    eth:'🌐 Ligação Ethernet',ethDesc:'Conteúdos multilingues + mosaicos de mapa offline (requer acesso temporário à Internet)',
+    chan:'📶 Canal WiFi',chanHint:'Canais recomendados UE: 1, 6 ou 11 (marcados ★)'},
+  summary:{node:'Nó',type:'Tipo',country:'País',addr:'Endereço',map:'Mapa',chan:'Canal WiFi',lora:'LoRa mesh',
+    eth:'Ethernet / mosaicos',lang:'Idioma predefinido',none:'Não configurado',on:'✅ Ativado',off:'❌ Desativado',
+    note:'⚡ Instalação sem reinício (~30 segundos).',modify:'← Modificar',install:'✅ Instalar'},
+  progress:{title:'Instalação em curso',warn:'Não desligue o dispositivo',sending:'A enviar a configuração…',
+    p1:'Configuração guardada…',p2:'A copiar o mapa local…',p3:'A aplicar a rede WiFi…',
+    p4:'A iniciar os serviços…',p5:'A verificar a integridade…',p6:'Concluído!'},
+  success:{title:'Configuração concluída!',text:'O nó SOS-GUIDE está operacional.<br>Volte a ligar-se à rede:',
+    portal:'Portal',admin:'Administração',
+    compliance:'🇨🇭 Concebido segundo os requisitos PCi-CH · nLPD RS 235.1 · Não são recolhidos dados pessoais'},
+  buttons:{back:'← Voltar',next:'Continuar →'}
+},
+nl:{
+  steps:['Locatie','Kaart','Opties','Overzicht'],
+  langLabel:'Taal',
+  welcome:{sub:'Eerste configuratie · Nood-toegangspunt',
+    connectedSub:'4 stappen om deze node in gebruik te nemen',
+    ck1:'Identiteit van de locatie (naam, type, adres)',ck2:'Lokale kaart (geüploade plattegrond of GPS-coördinaten)',
+    ck3:'Netwerkopties (LoRa mesh, Ethernet, WiFi-kanaal)',ck4:'Overzicht en installatie (~30 s)',
+    expire:'Sessie verloopt over',start:'🚀 Configuratie starten',connected:'Verbonden ·',
+    badge:'Ontworpen voor civiele bescherming'},
+  expired:{title:'Sessie verlopen',text:'Start de Raspberry Pi opnieuw op om opnieuw te beginnen.'},
+  identity:{name:'Naam van locatie / node *',namePh:'Bijv.: Stadhuis Amsterdam — Zaal B',
+    type:'Type instelling',country:'Land',countryPh:'Bijv.: Nederland',addr:'Adres',optional:'(optioneel)',
+    addrPh:'Bijv.: Dam 1, 1012 Amsterdam'},
+  types:{erp:'🏢 Openbaar toegankelijk gebouw',school:'🏫 School / Universiteit / Kinderdagverblijf',
+    hospital:'🏥 Ziekenhuis / Kliniek / Verzorgingstehuis',mairie:'🏛️ Gemeentehuis / Prefectuur / Commandopost',
+    refuge:'⛺ Schuilplaats / Kamp / Berghut',company:'🏭 Bedrijf / Industrieterrein / SEVESO',
+    transport:'🚉 Station / Luchthaven / Terminal',other:'📍 Anders'},
+  map:{tabImg:'📷 Plattegrond / Foto',tabGps:'🌍 GPS-coördinaten',dzPick:'Sleep en zet neer of klik om te kiezen',
+    dzHint:'PNG · JPG · WEBP · max. 10 MB',remove:'✕ Afbeelding verwijderen',
+    optionalHint:'Evacuatieplan, satellietfoto, met de hand getekende kaart…<br><em>Optionele stap — later in te stellen via /admin</em>',
+    geo:'📍 Mijn huidige locatie gebruiken',geoWait:'⏳ Bezig met lokaliseren…',geoFail:'❌ Locatie niet beschikbaar',
+    geoNo:'Geolocatie niet beschikbaar in deze browser',lat:'Breedtegraad',lon:'Lengtegraad',
+    zoom:'Zoomniveau van de kaart',zoomHint:'(10 = stad · 15 = wijk · 18 = gebouw)',
+    gpsOk:'✅ GPS opgeslagen:',tilesHint:'💡 Offline-tegels worden automatisch gedownload via <code>sos-guide-fetch-tiles.sh</code> als Ethernet in de volgende stap wordt ingeschakeld.',
+    badFormat:'Niet-ondersteund formaat (alleen PNG, JPG, WEBP)',tooBig:'Bestand te groot (max. 10 MB)'},
+  options:{lora:'📡 LoRa-communicatie (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Bereik 2–10 km',
+    eth:'🌐 Ethernet-verbinding',ethDesc:'Meertalige inhoud + offline kaarttegels (vereist tijdelijke internettoegang)',
+    chan:'📶 WiFi-kanaal',chanHint:'Aanbevolen EU-kanalen: 1, 6 of 11 (gemarkeerd met ★)'},
+  summary:{node:'Node',type:'Type',country:'Land',addr:'Adres',map:'Kaart',chan:'WiFi-kanaal',lora:'LoRa mesh',
+    eth:'Ethernet / tegels',lang:'Standaardtaal',none:'Niet geconfigureerd',on:'✅ Ingeschakeld',off:'❌ Uitgeschakeld',
+    note:'⚡ Installatie zonder herstart (~30 seconden).',modify:'← Wijzigen',install:'✅ Installeren'},
+  progress:{title:'Bezig met installeren',warn:'Schakel het apparaat niet uit',sending:'Configuratie wordt verzonden…',
+    p1:'Configuratie opgeslagen…',p2:'Lokale kaart wordt gekopieerd…',p3:'WiFi-netwerk wordt toegepast…',
+    p4:'Services worden gestart…',p5:'Integriteit wordt gecontroleerd…',p6:'Klaar!'},
+  success:{title:'Configuratie geslaagd!',text:'De SOS-GUIDE-node is operationeel.<br>Maak opnieuw verbinding met het netwerk:',
+    portal:'Portaal',admin:'Beheer',
+    compliance:'🇨🇭 Ontworpen volgens de PCi-CH-vereisten · nLPD RS 235.1 · Geen persoonsgegevens verzameld'},
+  buttons:{back:'← Terug',next:'Doorgaan →'}
+},
+pl:{
+  steps:['Miejsce','Mapa','Opcje','Podsumowanie'],
+  langLabel:'Język',
+  welcome:{sub:'Konfiguracja początkowa · Awaryjny punkt dostępu',
+    connectedSub:'4 kroki, aby uruchomić ten węzeł',
+    ck1:'Tożsamość miejsca (nazwa, typ, adres)',ck2:'Mapa lokalna (przesłany plan lub współrzędne GPS)',
+    ck3:'Opcje sieci (LoRa mesh, Ethernet, kanał WiFi)',ck4:'Podsumowanie i instalacja (~30 s)',
+    expire:'Sesja wygasa za',start:'🚀 Rozpocznij konfigurację',connected:'Połączono ·',
+    badge:'Zaprojektowano dla obrony cywilnej'},
+  expired:{title:'Sesja wygasła',text:'Uruchom ponownie Raspberry Pi, aby zacząć od nowa.'},
+  identity:{name:'Nazwa miejsca / węzła *',namePh:'Np.: Ratusz Warszawa — Sala B',
+    type:'Typ obiektu',country:'Kraj',countryPh:'Np.: Polska',addr:'Adres',optional:'(opcjonalne)',
+    addrPh:'Np.: Plac Defilad 1, 00-901 Warszawa'},
+  types:{erp:'🏢 Budynek użyteczności publicznej',school:'🏫 Szkoła / Uniwersytet / Żłobek',
+    hospital:'🏥 Szpital / Klinika / Dom opieki',mairie:'🏛️ Ratusz / Prefektura / Stanowisko dowodzenia',
+    refuge:'⛺ Schronienie / Obóz / Schronisko górskie',company:'🏭 Firma / Zakład przemysłowy / SEVESO',
+    transport:'🚉 Dworzec / Lotnisko / Terminal',other:'📍 Inne'},
+  map:{tabImg:'📷 Plan / Zdjęcie',tabGps:'🌍 Współrzędne GPS',dzPick:'Przeciągnij i upuść lub kliknij, aby wybrać',
+    dzHint:'PNG · JPG · WEBP · maks. 10 MB',remove:'✕ Usuń obraz',
+    optionalHint:'Plan ewakuacji, zdjęcie satelitarne, mapa odręczna…<br><em>Krok opcjonalny — można skonfigurować później przez /admin</em>',
+    geo:'📍 Użyj mojej obecnej lokalizacji',geoWait:'⏳ Lokalizowanie…',geoFail:'❌ Lokalizacja niedostępna',
+    geoNo:'Geolokalizacja niedostępna w tej przeglądarce',lat:'Szerokość geo.',lon:'Długość geo.',
+    zoom:'Poziom powiększenia mapy',zoomHint:'(10 = miasto · 15 = dzielnica · 18 = budynek)',
+    gpsOk:'✅ GPS zapisany:',tilesHint:'💡 Kafelki offline zostaną pobrane automatycznie przez <code>sos-guide-fetch-tiles.sh</code>, jeśli Ethernet zostanie włączony w następnym kroku.',
+    badFormat:'Nieobsługiwany format (tylko PNG, JPG, WEBP)',tooBig:'Plik zbyt duży (maks. 10 MB)'},
+  options:{lora:'📡 Komunikacja LoRa (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Zasięg 2–10 km',
+    eth:'🌐 Połączenie Ethernet',ethDesc:'Treści wielojęzyczne + kafelki map offline (wymaga tymczasowego dostępu do Internetu)',
+    chan:'📶 Kanał WiFi',chanHint:'Zalecane kanały UE: 1, 6 lub 11 (oznaczone ★)'},
+  summary:{node:'Węzeł',type:'Typ',country:'Kraj',addr:'Adres',map:'Mapa',chan:'Kanał WiFi',lora:'LoRa mesh',
+    eth:'Ethernet / kafelki',lang:'Język domyślny',none:'Nie skonfigurowano',on:'✅ Włączone',off:'❌ Wyłączone',
+    note:'⚡ Instalacja bez restartu (~30 sekund).',modify:'← Zmień',install:'✅ Zainstaluj'},
+  progress:{title:'Trwa instalacja',warn:'Nie wyłączaj urządzenia',sending:'Wysyłanie konfiguracji…',
+    p1:'Konfiguracja zapisana…',p2:'Kopiowanie mapy lokalnej…',p3:'Stosowanie sieci WiFi…',
+    p4:'Uruchamianie usług…',p5:'Weryfikacja integralności…',p6:'Gotowe!'},
+  success:{title:'Konfiguracja zakończona!',text:'Węzeł SOS-GUIDE jest gotowy do pracy.<br>Połącz się ponownie z siecią:',
+    portal:'Portal',admin:'Administracja',
+    compliance:'🇨🇭 Zaprojektowano zgodnie z wymaganiami PCi-CH · nLPD RS 235.1 · Nie zbiera się danych osobowych'},
+  buttons:{back:'← Wstecz',next:'Dalej →'}
+},
+ru:{
+  steps:['Место','Карта','Опции','Сводка'],
+  langLabel:'Язык',
+  welcome:{sub:'Первоначальная настройка · Аварийная точка доступа',
+    connectedSub:'4 шага для ввода узла в эксплуатацию',
+    ck1:'Идентификация места (название, тип, адрес)',ck2:'Локальная карта (загруженный план или координаты GPS)',
+    ck3:'Сетевые параметры (LoRa mesh, Ethernet, канал WiFi)',ck4:'Сводка и установка (~30 с)',
+    expire:'Сессия истекает через',start:'🚀 Начать настройку',connected:'Подключено ·',
+    badge:'Создано для гражданской защиты'},
+  expired:{title:'Сессия истекла',text:'Перезагрузите Raspberry Pi, чтобы начать заново.'},
+  identity:{name:'Название места / узла *',namePh:'Напр.: Мэрия — Зал B',
+    type:'Тип учреждения',country:'Страна',countryPh:'Напр.: Швейцария',addr:'Адрес',optional:'(необязательно)',
+    addrPh:'Напр.: ул. Главная 1'},
+  types:{erp:'🏢 Общественное здание',school:'🏫 Школа / Университет / Детский сад',
+    hospital:'🏥 Больница / Клиника / Дом престарелых',mairie:'🏛️ Мэрия / Префектура / Командный пункт',
+    refuge:'⛺ Убежище / Лагерь / Горный приют',company:'🏭 Предприятие / Промышленный объект / SEVESO',
+    transport:'🚉 Вокзал / Аэропорт / Терминал',other:'📍 Другое'},
+  map:{tabImg:'📷 План / Фото',tabGps:'🌍 Координаты GPS',dzPick:'Перетащите или нажмите для выбора',
+    dzHint:'PNG · JPG · WEBP · макс. 10 МБ',remove:'✕ Удалить изображение',
+    optionalHint:'План эвакуации, спутниковый снимок, карта от руки…<br><em>Необязательный шаг — можно настроить позже через /admin</em>',
+    geo:'📍 Использовать моё текущее местоположение',geoWait:'⏳ Определение местоположения…',geoFail:'❌ Местоположение недоступно',
+    geoNo:'Геолокация недоступна в этом браузере',lat:'Широта',lon:'Долгота',
+    zoom:'Уровень масштаба карты',zoomHint:'(10 = город · 15 = район · 18 = здание)',
+    gpsOk:'✅ GPS сохранён:',tilesHint:'💡 Офлайн-тайлы будут загружены автоматически через <code>sos-guide-fetch-tiles.sh</code>, если на следующем шаге включить Ethernet.',
+    badFormat:'Неподдерживаемый формат (только PNG, JPG, WEBP)',tooBig:'Файл слишком большой (макс. 10 МБ)'},
+  options:{lora:'📡 Связь LoRa (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Дальность 2–10 км',
+    eth:'🌐 Подключение Ethernet',ethDesc:'Многоязычный контент + офлайн-тайлы карты (требуется временный доступ в Интернет)',
+    chan:'📶 Канал WiFi',chanHint:'Рекомендуемые каналы ЕС: 1, 6 или 11 (отмечены ★)'},
+  summary:{node:'Узел',type:'Тип',country:'Страна',addr:'Адрес',map:'Карта',chan:'Канал WiFi',lora:'LoRa mesh',
+    eth:'Ethernet / тайлы',lang:'Язык по умолчанию',none:'Не настроено',on:'✅ Включено',off:'❌ Отключено',
+    note:'⚡ Установка без перезагрузки (~30 секунд).',modify:'← Изменить',install:'✅ Установить'},
+  progress:{title:'Идёт установка',warn:'Не выключайте устройство',sending:'Отправка конфигурации…',
+    p1:'Конфигурация сохранена…',p2:'Копирование локальной карты…',p3:'Применение сети WiFi…',
+    p4:'Запуск служб…',p5:'Проверка целостности…',p6:'Готово!'},
+  success:{title:'Настройка завершена!',text:'Узел SOS-GUIDE работает.<br>Подключитесь к сети снова:',
+    portal:'Портал',admin:'Администрирование',
+    compliance:'🇨🇭 Разработано согласно требованиям PCi-CH · nLPD RS 235.1 · Персональные данные не собираются'},
+  buttons:{back:'← Назад',next:'Продолжить →'}
+},
+uk:{
+  steps:['Місце','Карта','Опції','Підсумок'],
+  langLabel:'Мова',
+  welcome:{sub:'Початкове налаштування · Аварійна точка доступу',
+    connectedSub:'4 кроки для введення вузла в експлуатацію',
+    ck1:'Ідентифікація місця (назва, тип, адреса)',ck2:'Локальна карта (завантажений план або координати GPS)',
+    ck3:'Параметри мережі (LoRa mesh, Ethernet, канал WiFi)',ck4:'Підсумок та встановлення (~30 с)',
+    expire:'Сесія завершується через',start:'🚀 Почати налаштування',connected:'Підключено ·',
+    badge:'Створено для цивільного захисту'},
+  expired:{title:'Сесія завершена',text:'Перезавантажте Raspberry Pi, щоб почати знову.'},
+  identity:{name:'Назва місця / вузла *',namePh:'Напр.: Мерія — Зал B',
+    type:'Тип закладу',country:'Країна',countryPh:'Напр.: Україна',addr:'Адреса',optional:'(необовʼязково)',
+    addrPh:'Напр.: вул. Хрещатик 1, Київ'},
+  types:{erp:'🏢 Громадська будівля',school:'🏫 Школа / Університет / Дитсадок',
+    hospital:'🏥 Лікарня / Клініка / Будинок престарілих',mairie:'🏛️ Мерія / Префектура / Командний пункт',
+    refuge:'⛺ Укриття / Табір / Гірський притулок',company:'🏭 Підприємство / Промисловий обʼєкт / SEVESO',
+    transport:'🚉 Вокзал / Аеропорт / Термінал',other:'📍 Інше'},
+  map:{tabImg:'📷 План / Фото',tabGps:'🌍 Координати GPS',dzPick:'Перетягніть або натисніть для вибору',
+    dzHint:'PNG · JPG · WEBP · макс. 10 МБ',remove:'✕ Видалити зображення',
+    optionalHint:'План евакуації, супутниковий знімок, карта від руки…<br><em>Необовʼязковий крок — можна налаштувати пізніше через /admin</em>',
+    geo:'📍 Використати моє поточне місцезнаходження',geoWait:'⏳ Визначення місцезнаходження…',geoFail:'❌ Місцезнаходження недоступне',
+    geoNo:'Геолокація недоступна в цьому браузері',lat:'Широта',lon:'Довгота',
+    zoom:'Рівень масштабу карти',zoomHint:'(10 = місто · 15 = район · 18 = будівля)',
+    gpsOk:'✅ GPS збережено:',tilesHint:'💡 Офлайн-тайли будуть завантажені автоматично через <code>sos-guide-fetch-tiles.sh</code>, якщо на наступному кроці увімкнути Ethernet.',
+    badFormat:'Непідтримуваний формат (лише PNG, JPG, WEBP)',tooBig:'Файл завеликий (макс. 10 МБ)'},
+  options:{lora:'📡 Звʼязок LoRa (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Дальність 2–10 км',
+    eth:'🌐 Підключення Ethernet',ethDesc:'Багатомовний контент + офлайн-тайли карти (потрібен тимчасовий доступ до Інтернету)',
+    chan:'📶 Канал WiFi',chanHint:'Рекомендовані канали ЄС: 1, 6 або 11 (позначені ★)'},
+  summary:{node:'Вузол',type:'Тип',country:'Країна',addr:'Адреса',map:'Карта',chan:'Канал WiFi',lora:'LoRa mesh',
+    eth:'Ethernet / тайли',lang:'Мова за замовчуванням',none:'Не налаштовано',on:'✅ Увімкнено',off:'❌ Вимкнено',
+    note:'⚡ Встановлення без перезавантаження (~30 секунд).',modify:'← Змінити',install:'✅ Встановити'},
+  progress:{title:'Триває встановлення',warn:'Не вимикайте пристрій',sending:'Надсилання конфігурації…',
+    p1:'Конфігурацію збережено…',p2:'Копіювання локальної карти…',p3:'Застосування мережі WiFi…',
+    p4:'Запуск служб…',p5:'Перевірка цілісності…',p6:'Готово!'},
+  success:{title:'Налаштування завершено!',text:'Вузол SOS-GUIDE працює.<br>Підключіться до мережі знову:',
+    portal:'Портал',admin:'Адміністрування',
+    compliance:'🇨🇭 Розроблено згідно з вимогами PCi-CH · nLPD RS 235.1 · Персональні дані не збираються'},
+  buttons:{back:'← Назад',next:'Продовжити →'}
+},
+tr:{
+  steps:['Yer','Harita','Seçenekler','Özet'],
+  langLabel:'Dil',
+  welcome:{sub:'İlk yapılandırma · Acil durum erişim noktası',
+    connectedSub:'Bu düğümü hizmete almak için 4 adım',
+    ck1:'Yer kimliği (ad, tür, adres)',ck2:'Yerel harita (yüklenen plan veya GPS koordinatları)',
+    ck3:'Ağ seçenekleri (LoRa mesh, Ethernet, WiFi kanalı)',ck4:'Özet ve kurulum (~30 sn)',
+    expire:'Oturum şu süre içinde sona erecek',start:'🚀 Yapılandırmayı başlat',connected:'Bağlandı ·',
+    badge:'Sivil savunma için tasarlandı'},
+  expired:{title:'Oturum süresi doldu',text:'Yeniden başlamak için Raspberry Pi’yi yeniden başlatın.'},
+  identity:{name:'Yer / düğüm adı *',namePh:'Örn.: Belediye Binası — B Salonu',
+    type:'Tesis türü',country:'Ülke',countryPh:'Örn.: Türkiye',addr:'Adres',optional:'(isteğe bağlı)',
+    addrPh:'Örn.: Cumhuriyet Cad. 1, İstanbul'},
+  types:{erp:'🏢 Kamuya açık bina',school:'🏫 Okul / Üniversite / Kreş',
+    hospital:'🏥 Hastane / Klinik / Bakımevi',mairie:'🏛️ Belediye / Valilik / Komuta merkezi',
+    refuge:'⛺ Sığınak / Kamp / Dağ barınağı',company:'🏭 Şirket / Sanayi tesisi / SEVESO',
+    transport:'🚉 İstasyon / Havalimanı / Terminal',other:'📍 Diğer'},
+  map:{tabImg:'📷 Plan / Fotoğraf',tabGps:'🌍 GPS koordinatları',dzPick:'Sürükleyip bırakın veya seçmek için tıklayın',
+    dzHint:'PNG · JPG · WEBP · en fazla 10 MB',remove:'✕ Resmi kaldır',
+    optionalHint:'Tahliye planı, uydu fotoğrafı, elle çizilmiş harita…<br><em>İsteğe bağlı adım — daha sonra /admin üzerinden yapılandırılabilir</em>',
+    geo:'📍 Mevcut konumumu kullan',geoWait:'⏳ Konum belirleniyor…',geoFail:'❌ Konum kullanılamıyor',
+    geoNo:'Bu tarayıcıda coğrafi konum kullanılamıyor',lat:'Enlem',lon:'Boylam',
+    zoom:'Harita yakınlaştırma düzeyi',zoomHint:'(10 = şehir · 15 = mahalle · 18 = bina)',
+    gpsOk:'✅ GPS kaydedildi:',tilesHint:'💡 Sonraki adımda Ethernet etkinleştirilirse çevrimdışı döşemeler <code>sos-guide-fetch-tiles.sh</code> aracılığıyla otomatik olarak indirilecektir.',
+    badFormat:'Desteklenmeyen biçim (yalnızca PNG, JPG, WEBP)',tooBig:'Dosya çok büyük (en fazla 10 MB)'},
+  options:{lora:'📡 LoRa iletişimi (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Menzil 2–10 km',
+    eth:'🌐 Ethernet bağlantısı',ethDesc:'Çok dilli içerik + çevrimdışı harita döşemeleri (geçici İnternet erişimi gerekir)',
+    chan:'📶 WiFi kanalı',chanHint:'Önerilen AB kanalları: 1, 6 veya 11 (★ ile işaretli)'},
+  summary:{node:'Düğüm',type:'Tür',country:'Ülke',addr:'Adres',map:'Harita',chan:'WiFi kanalı',lora:'LoRa mesh',
+    eth:'Ethernet / döşemeler',lang:'Varsayılan dil',none:'Yapılandırılmadı',on:'✅ Etkin',off:'❌ Devre dışı',
+    note:'⚡ Yeniden başlatmadan kurulum (~30 saniye).',modify:'← Değiştir',install:'✅ Kur'},
+  progress:{title:'Kurulum sürüyor',warn:'Cihazı kapatmayın',sending:'Yapılandırma gönderiliyor…',
+    p1:'Yapılandırma kaydedildi…',p2:'Yerel harita kopyalanıyor…',p3:'WiFi ağı uygulanıyor…',
+    p4:'Hizmetler başlatılıyor…',p5:'Bütünlük doğrulanıyor…',p6:'Tamamlandı!'},
+  success:{title:'Yapılandırma başarılı!',text:'SOS-GUIDE düğümü çalışıyor.<br>Ağa yeniden bağlanın:',
+    portal:'Portal',admin:'Yönetim',
+    compliance:'🇨🇭 PCi-CH gerekliliklerine göre tasarlandı · nLPD RS 235.1 · Kişisel veri toplanmaz'},
+  buttons:{back:'← Geri',next:'Devam →'}
+},
+el:{
+  steps:['Τοποθεσία','Χάρτης','Επιλογές','Σύνοψη'],
+  langLabel:'Γλώσσα',
+  welcome:{sub:'Αρχική διαμόρφωση · Σημείο πρόσβασης έκτακτης ανάγκης',
+    connectedSub:'4 βήματα για τη θέση σε λειτουργία αυτού του κόμβου',
+    ck1:'Ταυτότητα τοποθεσίας (όνομα, τύπος, διεύθυνση)',ck2:'Τοπικός χάρτης (μεταφορτωμένο σχέδιο ή συντεταγμένες GPS)',
+    ck3:'Επιλογές δικτύου (LoRa mesh, Ethernet, κανάλι WiFi)',ck4:'Σύνοψη και εγκατάσταση (~30 δ)',
+    expire:'Η συνεδρία λήγει σε',start:'🚀 Έναρξη διαμόρφωσης',connected:'Συνδέθηκε ·',
+    badge:'Σχεδιασμένο για την πολιτική προστασία'},
+  expired:{title:'Η συνεδρία έληξε',text:'Επανεκκινήστε το Raspberry Pi για να ξεκινήσετε ξανά.'},
+  identity:{name:'Όνομα τοποθεσίας / κόμβου *',namePh:'Π.χ.: Δημαρχείο — Αίθουσα B',
+    type:'Τύπος εγκατάστασης',country:'Χώρα',countryPh:'Π.χ.: Ελλάδα',addr:'Διεύθυνση',optional:'(προαιρετικό)',
+    addrPh:'Π.χ.: Πλατεία Συντάγματος 1, Αθήνα'},
+  types:{erp:'🏢 Κτίριο κοινόχρηστης πρόσβασης',school:'🏫 Σχολείο / Πανεπιστήμιο / Παιδικός σταθμός',
+    hospital:'🏥 Νοσοκομείο / Κλινική / Γηροκομείο',mairie:'🏛️ Δημαρχείο / Νομαρχία / Κέντρο επιχειρήσεων',
+    refuge:'⛺ Καταφύγιο / Καταυλισμός / Ορεινό καταφύγιο',company:'🏭 Εταιρεία / Βιομηχανική εγκατάσταση / SEVESO',
+    transport:'🚉 Σταθμός / Αεροδρόμιο / Τερματικός σταθμός',other:'📍 Άλλο'},
+  map:{tabImg:'📷 Σχέδιο / Φωτογραφία',tabGps:'🌍 Συντεταγμένες GPS',dzPick:'Σύρετε και αποθέστε ή κάντε κλικ για επιλογή',
+    dzHint:'PNG · JPG · WEBP · μέγ. 10 MB',remove:'✕ Αφαίρεση εικόνας',
+    optionalHint:'Σχέδιο εκκένωσης, δορυφορική φωτογραφία, χάρτης στο χέρι…<br><em>Προαιρετικό βήμα — ρυθμίζεται αργότερα μέσω /admin</em>',
+    geo:'📍 Χρήση της τρέχουσας τοποθεσίας μου',geoWait:'⏳ Εντοπισμός…',geoFail:'❌ Η τοποθεσία δεν είναι διαθέσιμη',
+    geoNo:'Η γεωγραφική τοποθεσία δεν είναι διαθέσιμη σε αυτό το πρόγραμμα περιήγησης',lat:'Γεωγρ. πλάτος',lon:'Γεωγρ. μήκος',
+    zoom:'Επίπεδο ζουμ χάρτη',zoomHint:'(10 = πόλη · 15 = συνοικία · 18 = κτίριο)',
+    gpsOk:'✅ GPS αποθηκεύτηκε:',tilesHint:'💡 Τα πλακίδια εκτός σύνδεσης θα ληφθούν αυτόματα μέσω <code>sos-guide-fetch-tiles.sh</code> εάν ενεργοποιηθεί το Ethernet στο επόμενο βήμα.',
+    badFormat:'Μη υποστηριζόμενη μορφή (μόνο PNG, JPG, WEBP)',tooBig:'Πολύ μεγάλο αρχείο (μέγ. 10 MB)'},
+  options:{lora:'📡 Επικοινωνία LoRa (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Εμβέλεια 2–10 km',
+    eth:'🌐 Σύνδεση Ethernet',ethDesc:'Πολύγλωσσο περιεχόμενο + πλακίδια χάρτη εκτός σύνδεσης (απαιτεί προσωρινή πρόσβαση στο Διαδίκτυο)',
+    chan:'📶 Κανάλι WiFi',chanHint:'Συνιστώμενα κανάλια ΕΕ: 1, 6 ή 11 (σημειωμένα με ★)'},
+  summary:{node:'Κόμβος',type:'Τύπος',country:'Χώρα',addr:'Διεύθυνση',map:'Χάρτης',chan:'Κανάλι WiFi',lora:'LoRa mesh',
+    eth:'Ethernet / πλακίδια',lang:'Προεπιλεγμένη γλώσσα',none:'Δεν διαμορφώθηκε',on:'✅ Ενεργό',off:'❌ Ανενεργό',
+    note:'⚡ Εγκατάσταση χωρίς επανεκκίνηση (~30 δευτερόλεπτα).',modify:'← Τροποποίηση',install:'✅ Εγκατάσταση'},
+  progress:{title:'Εγκατάσταση σε εξέλιξη',warn:'Μην απενεργοποιείτε τη συσκευή',sending:'Αποστολή διαμόρφωσης…',
+    p1:'Η διαμόρφωση αποθηκεύτηκε…',p2:'Αντιγραφή τοπικού χάρτη…',p3:'Εφαρμογή δικτύου WiFi…',
+    p4:'Εκκίνηση υπηρεσιών…',p5:'Έλεγχος ακεραιότητας…',p6:'Ολοκληρώθηκε!'},
+  success:{title:'Επιτυχής διαμόρφωση!',text:'Ο κόμβος SOS-GUIDE είναι σε λειτουργία.<br>Συνδεθείτε ξανά στο δίκτυο:',
+    portal:'Πύλη',admin:'Διαχείριση',
+    compliance:'🇨🇭 Σχεδιασμένο σύμφωνα με τις απαιτήσεις PCi-CH · nLPD RS 235.1 · Δεν συλλέγονται προσωπικά δεδομένα'},
+  buttons:{back:'← Πίσω',next:'Συνέχεια →'}
+},
+sv:{
+  steps:['Plats','Karta','Alternativ','Sammanfattning'],
+  langLabel:'Språk',
+  welcome:{sub:'Första konfigurationen · Nödåtkomstpunkt',
+    connectedSub:'4 steg för att ta denna nod i drift',
+    ck1:'Platsens identitet (namn, typ, adress)',ck2:'Lokal karta (uppladdad plan eller GPS-koordinater)',
+    ck3:'Nätverksalternativ (LoRa mesh, Ethernet, WiFi-kanal)',ck4:'Sammanfattning och installation (~30 s)',
+    expire:'Sessionen upphör om',start:'🚀 Starta konfigurationen',connected:'Ansluten ·',
+    badge:'Utformad för civilförsvaret'},
+  expired:{title:'Sessionen har upphört',text:'Starta om Raspberry Pi för att börja om.'},
+  identity:{name:'Plats-/nodnamn *',namePh:'T.ex.: Stadshuset — Sal B',
+    type:'Typ av anläggning',country:'Land',countryPh:'T.ex.: Schweiz',addr:'Adress',optional:'(valfritt)',
+    addrPh:'T.ex.: Stortorget 1, Stockholm'},
+  types:{erp:'🏢 Allmän byggnad',school:'🏫 Skola / Universitet / Förskola',
+    hospital:'🏥 Sjukhus / Klinik / Vårdhem',mairie:'🏛️ Stadshus / Prefektur / Ledningscentral',
+    refuge:'⛺ Skyddsrum / Läger / Fjällstuga',company:'🏭 Företag / Industrianläggning / SEVESO',
+    transport:'🚉 Station / Flygplats / Terminal',other:'📍 Annat'},
+  map:{tabImg:'📷 Plan / Foto',tabGps:'🌍 GPS-koordinater',dzPick:'Dra och släpp eller klicka för att välja',
+    dzHint:'PNG · JPG · WEBP · max 10 MB',remove:'✕ Ta bort bilden',
+    optionalHint:'Utrymningsplan, satellitfoto, handritad karta…<br><em>Valfritt steg — kan ställas in senare via /admin</em>',
+    geo:'📍 Använd min nuvarande position',geoWait:'⏳ Lokaliserar…',geoFail:'❌ Position ej tillgänglig',
+    geoNo:'Geolokalisering ej tillgänglig i denna webbläsare',lat:'Latitud',lon:'Longitud',
+    zoom:'Kartans zoomnivå',zoomHint:'(10 = stad · 15 = stadsdel · 18 = byggnad)',
+    gpsOk:'✅ GPS sparad:',tilesHint:'💡 Offline-rutor laddas ner automatiskt via <code>sos-guide-fetch-tiles.sh</code> om Ethernet aktiveras i nästa steg.',
+    badFormat:'Format som inte stöds (endast PNG, JPG, WEBP)',tooBig:'Filen är för stor (max 10 MB)'},
+  options:{lora:'📡 LoRa-kommunikation (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Räckvidd 2–10 km',
+    eth:'🌐 Ethernet-anslutning',ethDesc:'Flerspråkigt innehåll + offline-kartrutor (kräver tillfällig internetåtkomst)',
+    chan:'📶 WiFi-kanal',chanHint:'Rekommenderade EU-kanaler: 1, 6 eller 11 (märkta ★)'},
+  summary:{node:'Nod',type:'Typ',country:'Land',addr:'Adress',map:'Karta',chan:'WiFi-kanal',lora:'LoRa mesh',
+    eth:'Ethernet / rutor',lang:'Standardspråk',none:'Ej konfigurerad',on:'✅ Aktiverad',off:'❌ Inaktiverad',
+    note:'⚡ Installation utan omstart (~30 sekunder).',modify:'← Ändra',install:'✅ Installera'},
+  progress:{title:'Installation pågår',warn:'Stäng inte av enheten',sending:'Skickar konfigurationen…',
+    p1:'Konfigurationen sparad…',p2:'Kopierar lokal karta…',p3:'Tillämpar WiFi-nätverk…',
+    p4:'Startar tjänster…',p5:'Verifierar integritet…',p6:'Klart!'},
+  success:{title:'Konfigurationen lyckades!',text:'SOS-GUIDE-noden är i drift.<br>Anslut till nätverket igen:',
+    portal:'Portal',admin:'Administration',
+    compliance:'🇨🇭 Utformad enligt PCi-CH-kraven · nLPD RS 235.1 · Inga personuppgifter samlas in'},
+  buttons:{back:'← Tillbaka',next:'Fortsätt →'}
+},
+da:{
+  steps:['Sted','Kort','Indstillinger','Oversigt'],
+  langLabel:'Sprog',
+  welcome:{sub:'Første konfiguration · Nødadgangspunkt',
+    connectedSub:'4 trin til at sætte denne node i drift',
+    ck1:'Stedets identitet (navn, type, adresse)',ck2:'Lokalt kort (uploadet plan eller GPS-koordinater)',
+    ck3:'Netværksindstillinger (LoRa mesh, Ethernet, WiFi-kanal)',ck4:'Oversigt og installation (~30 s)',
+    expire:'Sessionen udløber om',start:'🚀 Start konfigurationen',connected:'Forbundet ·',
+    badge:'Designet til civilbeskyttelse'},
+  expired:{title:'Sessionen er udløbet',text:'Genstart Raspberry Pi for at begynde forfra.'},
+  identity:{name:'Steds-/nodenavn *',namePh:'F.eks.: Rådhuset — Sal B',
+    type:'Type af facilitet',country:'Land',countryPh:'F.eks.: Schweiz',addr:'Adresse',optional:'(valgfrit)',
+    addrPh:'F.eks.: Rådhuspladsen 1, København'},
+  types:{erp:'🏢 Offentligt tilgængelig bygning',school:'🏫 Skole / Universitet / Vuggestue',
+    hospital:'🏥 Hospital / Klinik / Plejehjem',mairie:'🏛️ Rådhus / Præfektur / Kommandocentral',
+    refuge:'⛺ Ly / Lejr / Bjerghytte',company:'🏭 Virksomhed / Industrianlæg / SEVESO',
+    transport:'🚉 Station / Lufthavn / Terminal',other:'📍 Andet'},
+  map:{tabImg:'📷 Plan / Foto',tabGps:'🌍 GPS-koordinater',dzPick:'Træk og slip eller klik for at vælge',
+    dzHint:'PNG · JPG · WEBP · maks. 10 MB',remove:'✕ Fjern billedet',
+    optionalHint:'Evakueringsplan, satellitfoto, håndtegnet kort…<br><em>Valgfrit trin — kan konfigureres senere via /admin</em>',
+    geo:'📍 Brug min nuværende placering',geoWait:'⏳ Lokaliserer…',geoFail:'❌ Placering ikke tilgængelig',
+    geoNo:'Geolokalisering ikke tilgængelig i denne browser',lat:'Breddegrad',lon:'Længdegrad',
+    zoom:'Kortets zoomniveau',zoomHint:'(10 = by · 15 = kvarter · 18 = bygning)',
+    gpsOk:'✅ GPS gemt:',tilesHint:'💡 Offline-fliser downloades automatisk via <code>sos-guide-fetch-tiles.sh</code>, hvis Ethernet aktiveres i næste trin.',
+    badFormat:'Ikke-understøttet format (kun PNG, JPG, WEBP)',tooBig:'Filen er for stor (maks. 10 MB)'},
+  options:{lora:'📡 LoRa-kommunikation (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Rækkevidde 2–10 km',
+    eth:'🌐 Ethernet-forbindelse',ethDesc:'Flersproget indhold + offline-kortfliser (kræver midlertidig internetadgang)',
+    chan:'📶 WiFi-kanal',chanHint:'Anbefalede EU-kanaler: 1, 6 eller 11 (markeret ★)'},
+  summary:{node:'Node',type:'Type',country:'Land',addr:'Adresse',map:'Kort',chan:'WiFi-kanal',lora:'LoRa mesh',
+    eth:'Ethernet / fliser',lang:'Standardsprog',none:'Ikke konfigureret',on:'✅ Aktiveret',off:'❌ Deaktiveret',
+    note:'⚡ Installation uden genstart (~30 sekunder).',modify:'← Rediger',install:'✅ Installer'},
+  progress:{title:'Installation i gang',warn:'Sluk ikke enheden',sending:'Sender konfigurationen…',
+    p1:'Konfiguration gemt…',p2:'Kopierer lokalt kort…',p3:'Anvender WiFi-netværk…',
+    p4:'Starter tjenester…',p5:'Verificerer integritet…',p6:'Færdig!'},
+  success:{title:'Konfiguration gennemført!',text:'SOS-GUIDE-noden er i drift.<br>Tilslut til netværket igen:',
+    portal:'Portal',admin:'Administration',
+    compliance:'🇨🇭 Designet efter PCi-CH-kravene · nLPD RS 235.1 · Ingen personoplysninger indsamles'},
+  buttons:{back:'← Tilbage',next:'Fortsæt →'}
+},
+no:{
+  steps:['Sted','Kart','Alternativer','Oppsummering'],
+  langLabel:'Språk',
+  welcome:{sub:'Første konfigurasjon · Nødtilgangspunkt',
+    connectedSub:'4 trinn for å sette denne noden i drift',
+    ck1:'Stedets identitet (navn, type, adresse)',ck2:'Lokalt kart (opplastet plan eller GPS-koordinater)',
+    ck3:'Nettverksalternativer (LoRa mesh, Ethernet, WiFi-kanal)',ck4:'Oppsummering og installasjon (~30 s)',
+    expire:'Økten utløper om',start:'🚀 Start konfigurasjonen',connected:'Tilkoblet ·',
+    badge:'Utviklet for sivilforsvaret'},
+  expired:{title:'Økten er utløpt',text:'Start Raspberry Pi på nytt for å begynne igjen.'},
+  identity:{name:'Steds-/nodenavn *',namePh:'F.eks.: Rådhuset — Sal B',
+    type:'Type anlegg',country:'Land',countryPh:'F.eks.: Sveits',addr:'Adresse',optional:'(valgfritt)',
+    addrPh:'F.eks.: Rådhusplassen 1, Oslo'},
+  types:{erp:'🏢 Offentlig tilgjengelig bygning',school:'🏫 Skole / Universitet / Barnehage',
+    hospital:'🏥 Sykehus / Klinikk / Sykehjem',mairie:'🏛️ Rådhus / Prefektur / Kommandosentral',
+    refuge:'⛺ Tilfluktsrom / Leir / Fjellhytte',company:'🏭 Bedrift / Industrianlegg / SEVESO',
+    transport:'🚉 Stasjon / Flyplass / Terminal',other:'📍 Annet'},
+  map:{tabImg:'📷 Plan / Foto',tabGps:'🌍 GPS-koordinater',dzPick:'Dra og slipp eller klikk for å velge',
+    dzHint:'PNG · JPG · WEBP · maks. 10 MB',remove:'✕ Fjern bildet',
+    optionalHint:'Evakueringsplan, satellittfoto, håndtegnet kart…<br><em>Valgfritt trinn — kan konfigureres senere via /admin</em>',
+    geo:'📍 Bruk min nåværende posisjon',geoWait:'⏳ Lokaliserer…',geoFail:'❌ Posisjon ikke tilgjengelig',
+    geoNo:'Geolokalisering ikke tilgjengelig i denne nettleseren',lat:'Breddegrad',lon:'Lengdegrad',
+    zoom:'Kartets zoomnivå',zoomHint:'(10 = by · 15 = bydel · 18 = bygning)',
+    gpsOk:'✅ GPS lagret:',tilesHint:'💡 Frakoblede fliser lastes ned automatisk via <code>sos-guide-fetch-tiles.sh</code> hvis Ethernet aktiveres i neste trinn.',
+    badFormat:'Ikke støttet format (kun PNG, JPG, WEBP)',tooBig:'Filen er for stor (maks. 10 MB)'},
+  options:{lora:'📡 LoRa-kommunikasjon (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Rekkevidde 2–10 km',
+    eth:'🌐 Ethernet-tilkobling',ethDesc:'Flerspråklig innhold + frakoblede kartfliser (krever midlertidig internettilgang)',
+    chan:'📶 WiFi-kanal',chanHint:'Anbefalte EU-kanaler: 1, 6 eller 11 (merket ★)'},
+  summary:{node:'Node',type:'Type',country:'Land',addr:'Adresse',map:'Kart',chan:'WiFi-kanal',lora:'LoRa mesh',
+    eth:'Ethernet / fliser',lang:'Standardspråk',none:'Ikke konfigurert',on:'✅ Aktivert',off:'❌ Deaktivert',
+    note:'⚡ Installasjon uten omstart (~30 sekunder).',modify:'← Endre',install:'✅ Installer'},
+  progress:{title:'Installasjon pågår',warn:'Ikke slå av enheten',sending:'Sender konfigurasjonen…',
+    p1:'Konfigurasjon lagret…',p2:'Kopierer lokalt kart…',p3:'Bruker WiFi-nettverk…',
+    p4:'Starter tjenester…',p5:'Verifiserer integritet…',p6:'Ferdig!'},
+  success:{title:'Konfigurasjon vellykket!',text:'SOS-GUIDE-noden er i drift.<br>Koble til nettverket igjen:',
+    portal:'Portal',admin:'Administrasjon',
+    compliance:'🇨🇭 Utviklet etter PCi-CH-kravene · nLPD RS 235.1 · Ingen personopplysninger samles inn'},
+  buttons:{back:'← Tilbake',next:'Fortsett →'}
+},
+fi:{
+  steps:['Paikka','Kartta','Asetukset','Yhteenveto'],
+  langLabel:'Kieli',
+  welcome:{sub:'Alkumääritys · Hätätilanteen tukiasema',
+    connectedSub:'4 vaihetta tämän solmun käyttöönottoon',
+    ck1:'Paikan tiedot (nimi, tyyppi, osoite)',ck2:'Paikallinen kartta (ladattu pohjapiirros tai GPS-koordinaatit)',
+    ck3:'Verkkoasetukset (LoRa mesh, Ethernet, WiFi-kanava)',ck4:'Yhteenveto ja asennus (~30 s)',
+    expire:'Istunto vanhenee',start:'🚀 Aloita määritys',connected:'Yhdistetty ·',
+    badge:'Suunniteltu väestönsuojeluun'},
+  expired:{title:'Istunto vanhentunut',text:'Käynnistä Raspberry Pi uudelleen aloittaaksesi alusta.'},
+  identity:{name:'Paikan / solmun nimi *',namePh:'Esim.: Kaupungintalo — Sali B',
+    type:'Laitoksen tyyppi',country:'Maa',countryPh:'Esim.: Sveitsi',addr:'Osoite',optional:'(valinnainen)',
+    addrPh:'Esim.: Senaatintori 1, Helsinki'},
+  types:{erp:'🏢 Yleisölle avoin rakennus',school:'🏫 Koulu / Yliopisto / Päiväkoti',
+    hospital:'🏥 Sairaala / Klinikka / Hoitokoti',mairie:'🏛️ Kaupungintalo / Lääninhallitus / Johtokeskus',
+    refuge:'⛺ Suoja / Leiri / Tunturimaja',company:'🏭 Yritys / Teollisuuslaitos / SEVESO',
+    transport:'🚉 Asema / Lentoasema / Terminaali',other:'📍 Muu'},
+  map:{tabImg:'📷 Pohjapiirros / Valokuva',tabGps:'🌍 GPS-koordinaatit',dzPick:'Vedä ja pudota tai valitse napsauttamalla',
+    dzHint:'PNG · JPG · WEBP · enint. 10 Mt',remove:'✕ Poista kuva',
+    optionalHint:'Evakuointisuunnitelma, satelliittikuva, käsin piirretty kartta…<br><em>Valinnainen vaihe — määritettävissä myöhemmin /admin-sivulla</em>',
+    geo:'📍 Käytä nykyistä sijaintiani',geoWait:'⏳ Paikannetaan…',geoFail:'❌ Sijainti ei saatavilla',
+    geoNo:'Paikannus ei ole käytettävissä tässä selaimessa',lat:'Leveysaste',lon:'Pituusaste',
+    zoom:'Kartan zoomaustaso',zoomHint:'(10 = kaupunki · 15 = kaupunginosa · 18 = rakennus)',
+    gpsOk:'✅ GPS tallennettu:',tilesHint:'💡 Offline-ruudut ladataan automaattisesti komennolla <code>sos-guide-fetch-tiles.sh</code>, jos Ethernet otetaan käyttöön seuraavassa vaiheessa.',
+    badFormat:'Ei tuettu muoto (vain PNG, JPG, WEBP)',tooBig:'Tiedosto liian suuri (enint. 10 Mt)'},
+  options:{lora:'📡 LoRa-viestintä (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Kantama 2–10 km',
+    eth:'🌐 Ethernet-yhteys',ethDesc:'Monikielinen sisältö + offline-karttaruudut (vaatii tilapäisen internetyhteyden)',
+    chan:'📶 WiFi-kanava',chanHint:'Suositellut EU-kanavat: 1, 6 tai 11 (merkitty ★)'},
+  summary:{node:'Solmu',type:'Tyyppi',country:'Maa',addr:'Osoite',map:'Kartta',chan:'WiFi-kanava',lora:'LoRa mesh',
+    eth:'Ethernet / ruudut',lang:'Oletuskieli',none:'Ei määritetty',on:'✅ Käytössä',off:'❌ Pois käytöstä',
+    note:'⚡ Asennus ilman uudelleenkäynnistystä (~30 sekuntia).',modify:'← Muokkaa',install:'✅ Asenna'},
+  progress:{title:'Asennus käynnissä',warn:'Älä sammuta laitetta',sending:'Lähetetään määritystä…',
+    p1:'Määritys tallennettu…',p2:'Kopioidaan paikallista karttaa…',p3:'Otetaan WiFi-verkko käyttöön…',
+    p4:'Käynnistetään palveluita…',p5:'Tarkistetaan eheys…',p6:'Valmis!'},
+  success:{title:'Määritys onnistui!',text:'SOS-GUIDE-solmu on toiminnassa.<br>Yhdistä verkkoon uudelleen:',
+    portal:'Portaali',admin:'Hallinta',
+    compliance:'🇨🇭 Suunniteltu PCi-CH-vaatimusten mukaan · nLPD RS 235.1 · Henkilötietoja ei kerätä'},
+  buttons:{back:'← Takaisin',next:'Jatka →'}
+},
+cs:{
+  steps:['Místo','Mapa','Možnosti','Souhrn'],
+  langLabel:'Jazyk',
+  welcome:{sub:'Počáteční konfigurace · Nouzový přístupový bod',
+    connectedSub:'4 kroky k uvedení tohoto uzlu do provozu',
+    ck1:'Identita místa (název, typ, adresa)',ck2:'Místní mapa (nahraný plán nebo GPS souřadnice)',
+    ck3:'Možnosti sítě (LoRa mesh, Ethernet, kanál WiFi)',ck4:'Souhrn a instalace (~30 s)',
+    expire:'Relace vyprší za',start:'🚀 Spustit konfiguraci',connected:'Připojeno ·',
+    badge:'Navrženo pro civilní ochranu'},
+  expired:{title:'Relace vypršela',text:'Restartujte Raspberry Pi a začněte znovu.'},
+  identity:{name:'Název místa / uzlu *',namePh:'Např.: Radnice — Sál B',
+    type:'Typ zařízení',country:'Země',countryPh:'Např.: Švýcarsko',addr:'Adresa',optional:'(volitelné)',
+    addrPh:'Např.: Staroměstské náměstí 1, Praha'},
+  types:{erp:'🏢 Veřejně přístupná budova',school:'🏫 Škola / Univerzita / Jesle',
+    hospital:'🏥 Nemocnice / Klinika / Domov důchodců',mairie:'🏛️ Radnice / Prefektura / Velitelské stanoviště',
+    refuge:'⛺ Úkryt / Tábor / Horská chata',company:'🏭 Firma / Průmyslový areál / SEVESO',
+    transport:'🚉 Nádraží / Letiště / Terminál',other:'📍 Jiné'},
+  map:{tabImg:'📷 Plán / Foto',tabGps:'🌍 GPS souřadnice',dzPick:'Přetáhněte nebo klikněte pro výběr',
+    dzHint:'PNG · JPG · WEBP · max. 10 MB',remove:'✕ Odebrat obrázek',
+    optionalHint:'Evakuační plán, satelitní snímek, ručně kreslená mapa…<br><em>Volitelný krok — lze nastavit později přes /admin</em>',
+    geo:'📍 Použít moji aktuální polohu',geoWait:'⏳ Zjišťování polohy…',geoFail:'❌ Poloha není dostupná',
+    geoNo:'Geolokalizace není v tomto prohlížeči dostupná',lat:'Zeměpisná šířka',lon:'Zeměpisná délka',
+    zoom:'Úroveň přiblížení mapy',zoomHint:'(10 = město · 15 = čtvrť · 18 = budova)',
+    gpsOk:'✅ GPS uloženo:',tilesHint:'💡 Offline dlaždice se stáhnou automaticky pomocí <code>sos-guide-fetch-tiles.sh</code>, pokud bude v dalším kroku povolen Ethernet.',
+    badFormat:'Nepodporovaný formát (pouze PNG, JPG, WEBP)',tooBig:'Soubor je příliš velký (max. 10 MB)'},
+  options:{lora:'📡 Komunikace LoRa (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Dosah 2–10 km',
+    eth:'🌐 Připojení Ethernet',ethDesc:'Vícejazyčný obsah + offline mapové dlaždice (vyžaduje dočasný přístup k internetu)',
+    chan:'📶 Kanál WiFi',chanHint:'Doporučené kanály EU: 1, 6 nebo 11 (označené ★)'},
+  summary:{node:'Uzel',type:'Typ',country:'Země',addr:'Adresa',map:'Mapa',chan:'Kanál WiFi',lora:'LoRa mesh',
+    eth:'Ethernet / dlaždice',lang:'Výchozí jazyk',none:'Nenakonfigurováno',on:'✅ Povoleno',off:'❌ Zakázáno',
+    note:'⚡ Instalace bez restartu (~30 sekund).',modify:'← Upravit',install:'✅ Instalovat'},
+  progress:{title:'Probíhá instalace',warn:'Nevypínejte zařízení',sending:'Odesílání konfigurace…',
+    p1:'Konfigurace uložena…',p2:'Kopírování místní mapy…',p3:'Aplikování sítě WiFi…',
+    p4:'Spouštění služeb…',p5:'Ověřování integrity…',p6:'Hotovo!'},
+  success:{title:'Konfigurace úspěšná!',text:'Uzel SOS-GUIDE je v provozu.<br>Znovu se připojte k síti:',
+    portal:'Portál',admin:'Správa',
+    compliance:'🇨🇭 Navrženo podle požadavků PCi-CH · nLPD RS 235.1 · Nejsou shromažďovány žádné osobní údaje'},
+  buttons:{back:'← Zpět',next:'Pokračovat →'}
+},
+hu:{
+  steps:['Hely','Térkép','Beállítások','Összegzés'],
+  langLabel:'Nyelv',
+  welcome:{sub:'Kezdeti konfiguráció · Vészhelyzeti hozzáférési pont',
+    connectedSub:'4 lépés a csomópont üzembe helyezéséhez',
+    ck1:'A hely azonosítója (név, típus, cím)',ck2:'Helyi térkép (feltöltött alaprajz vagy GPS-koordináták)',
+    ck3:'Hálózati beállítások (LoRa mesh, Ethernet, WiFi-csatorna)',ck4:'Összegzés és telepítés (~30 mp)',
+    expire:'A munkamenet lejár',start:'🚀 Konfiguráció indítása',connected:'Csatlakozva ·',
+    badge:'A polgári védelem számára tervezve'},
+  expired:{title:'A munkamenet lejárt',text:'Indítsa újra a Raspberry Pi-t a kezdéshez.'},
+  identity:{name:'Hely / csomópont neve *',namePh:'Pl.: Városháza — B terem',
+    type:'Létesítmény típusa',country:'Ország',countryPh:'Pl.: Svájc',addr:'Cím',optional:'(opcionális)',
+    addrPh:'Pl.: Kossuth tér 1, Budapest'},
+  types:{erp:'🏢 Nyilvános épület',school:'🏫 Iskola / Egyetem / Bölcsőde',
+    hospital:'🏥 Kórház / Klinika / Idősotthon',mairie:'🏛️ Városháza / Prefektúra / Parancsnoki központ',
+    refuge:'⛺ Menedék / Tábor / Hegyi menedékház',company:'🏭 Vállalat / Ipari telephely / SEVESO',
+    transport:'🚉 Állomás / Repülőtér / Terminál',other:'📍 Egyéb'},
+  map:{tabImg:'📷 Alaprajz / Fotó',tabGps:'🌍 GPS-koordináták',dzPick:'Húzza ide, vagy kattintson a választáshoz',
+    dzHint:'PNG · JPG · WEBP · max. 10 MB',remove:'✕ Kép eltávolítása',
+    optionalHint:'Evakuálási terv, műholdfotó, kézzel rajzolt térkép…<br><em>Opcionális lépés — később is beállítható az /admin felületen</em>',
+    geo:'📍 Jelenlegi helyzetem használata',geoWait:'⏳ Helymeghatározás…',geoFail:'❌ A helyzet nem érhető el',
+    geoNo:'A helymeghatározás nem érhető el ebben a böngészőben',lat:'Szélesség',lon:'Hosszúság',
+    zoom:'Térkép nagyítási szintje',zoomHint:'(10 = város · 15 = kerület · 18 = épület)',
+    gpsOk:'✅ GPS mentve:',tilesHint:'💡 Az offline csempék automatikusan letöltődnek a <code>sos-guide-fetch-tiles.sh</code> segítségével, ha a következő lépésben engedélyezi az Ethernetet.',
+    badFormat:'Nem támogatott formátum (csak PNG, JPG, WEBP)',tooBig:'A fájl túl nagy (max. 10 MB)'},
+  options:{lora:'📡 LoRa kommunikáció (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Hatótáv 2–10 km',
+    eth:'🌐 Ethernet-kapcsolat',ethDesc:'Többnyelvű tartalom + offline térképcsempék (ideiglenes internet-hozzáférést igényel)',
+    chan:'📶 WiFi-csatorna',chanHint:'Ajánlott EU-csatornák: 1, 6 vagy 11 (★-gal jelölve)'},
+  summary:{node:'Csomópont',type:'Típus',country:'Ország',addr:'Cím',map:'Térkép',chan:'WiFi-csatorna',lora:'LoRa mesh',
+    eth:'Ethernet / csempék',lang:'Alapértelmezett nyelv',none:'Nincs konfigurálva',on:'✅ Engedélyezve',off:'❌ Letiltva',
+    note:'⚡ Telepítés újraindítás nélkül (~30 másodperc).',modify:'← Módosítás',install:'✅ Telepítés'},
+  progress:{title:'Telepítés folyamatban',warn:'Ne kapcsolja ki a készüléket',sending:'Konfiguráció küldése…',
+    p1:'Konfiguráció mentve…',p2:'Helyi térkép másolása…',p3:'WiFi-hálózat alkalmazása…',
+    p4:'Szolgáltatások indítása…',p5:'Integritás ellenőrzése…',p6:'Kész!'},
+  success:{title:'Sikeres konfiguráció!',text:'A SOS-GUIDE csomópont működik.<br>Csatlakozzon újra a hálózathoz:',
+    portal:'Portál',admin:'Adminisztráció',
+    compliance:'🇨🇭 A PCi-CH követelményei szerint tervezve · nLPD RS 235.1 · Nem gyűjtünk személyes adatokat'},
+  buttons:{back:'← Vissza',next:'Folytatás →'}
+},
+ro:{
+  steps:['Loc','Hartă','Opțiuni','Rezumat'],
+  langLabel:'Limbă',
+  welcome:{sub:'Configurare inițială · Punct de acces de urgență',
+    connectedSub:'4 pași pentru a pune în funcțiune acest nod',
+    ck1:'Identitatea locului (nume, tip, adresă)',ck2:'Hartă locală (plan încărcat sau coordonate GPS)',
+    ck3:'Opțiuni de rețea (LoRa mesh, Ethernet, canal WiFi)',ck4:'Rezumat și instalare (~30 s)',
+    expire:'Sesiunea expiră în',start:'🚀 Începe configurarea',connected:'Conectat ·',
+    badge:'Conceput pentru protecția civilă'},
+  expired:{title:'Sesiune expirată',text:'Reporniți Raspberry Pi pentru a reîncepe.'},
+  identity:{name:'Nume loc / nod *',namePh:'Ex.: Primăria — Sala B',
+    type:'Tip de unitate',country:'Țară',countryPh:'Ex.: Elveția',addr:'Adresă',optional:'(opțional)',
+    addrPh:'Ex.: Piața Victoriei 1, București'},
+  types:{erp:'🏢 Clădire cu acces public',school:'🏫 Școală / Universitate / Creșă',
+    hospital:'🏥 Spital / Clinică / Cămin de bătrâni',mairie:'🏛️ Primărie / Prefectură / Punct de comandă',
+    refuge:'⛺ Adăpost / Tabără / Refugiu montan',company:'🏭 Companie / Sit industrial / SEVESO',
+    transport:'🚉 Gară / Aeroport / Terminal',other:'📍 Altul'},
+  map:{tabImg:'📷 Plan / Foto',tabGps:'🌍 Coordonate GPS',dzPick:'Trageți și plasați sau faceți clic pentru a alege',
+    dzHint:'PNG · JPG · WEBP · max. 10 MB',remove:'✕ Eliminați imaginea',
+    optionalHint:'Plan de evacuare, fotografie din satelit, hartă desenată de mână…<br><em>Pas opțional — poate fi configurat mai târziu prin /admin</em>',
+    geo:'📍 Folosește locația mea actuală',geoWait:'⏳ Se localizează…',geoFail:'❌ Locație indisponibilă',
+    geoNo:'Geolocalizare indisponibilă în acest browser',lat:'Latitudine',lon:'Longitudine',
+    zoom:'Nivel de zoom al hărții',zoomHint:'(10 = oraș · 15 = cartier · 18 = clădire)',
+    gpsOk:'✅ GPS salvat:',tilesHint:'💡 Plăcile offline vor fi descărcate automat prin <code>sos-guide-fetch-tiles.sh</code> dacă Ethernet este activat la pasul următor.',
+    badFormat:'Format neacceptat (doar PNG, JPG, WEBP)',tooBig:'Fișier prea mare (max. 10 MB)'},
+  options:{lora:'📡 Comunicație LoRa (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Rază 2–10 km',
+    eth:'🌐 Conexiune Ethernet',ethDesc:'Conținut multilingv + plăci de hartă offline (necesită acces temporar la internet)',
+    chan:'📶 Canal WiFi',chanHint:'Canale recomandate UE: 1, 6 sau 11 (marcate cu ★)'},
+  summary:{node:'Nod',type:'Tip',country:'Țară',addr:'Adresă',map:'Hartă',chan:'Canal WiFi',lora:'LoRa mesh',
+    eth:'Ethernet / plăci',lang:'Limbă implicită',none:'Neconfigurat',on:'✅ Activat',off:'❌ Dezactivat',
+    note:'⚡ Instalare fără repornire (~30 de secunde).',modify:'← Modifică',install:'✅ Instalează'},
+  progress:{title:'Instalare în curs',warn:'Nu opriți dispozitivul',sending:'Se trimite configurația…',
+    p1:'Configurație salvată…',p2:'Se copiază harta locală…',p3:'Se aplică rețeaua WiFi…',
+    p4:'Se pornesc serviciile…',p5:'Se verifică integritatea…',p6:'Gata!'},
+  success:{title:'Configurare reușită!',text:'Nodul SOS-GUIDE este operațional.<br>Reconectați-vă la rețea:',
+    portal:'Portal',admin:'Administrare',
+    compliance:'🇨🇭 Conceput conform cerințelor PCi-CH · nLPD RS 235.1 · Nu se colectează date personale'},
+  buttons:{back:'← Înapoi',next:'Continuă →'}
+},
+ar:{
+  steps:['المكان','الخريطة','الخيارات','الملخص'],
+  langLabel:'اللغة',
+  welcome:{sub:'الإعداد الأولي · نقطة وصول للطوارئ',
+    connectedSub:'4 خطوات لتشغيل هذه العقدة',
+    ck1:'هوية المكان (الاسم، النوع، العنوان)',ck2:'خريطة محلية (مخطط مرفوع أو إحداثيات GPS)',
+    ck3:'خيارات الشبكة (LoRa mesh، إيثرنت، قناة WiFi)',ck4:'الملخص والتثبيت (~30 ث)',
+    expire:'تنتهي الجلسة خلال',start:'🚀 بدء الإعداد',connected:'متصل ·',
+    badge:'مصمم للحماية المدنية'},
+  expired:{title:'انتهت الجلسة',text:'أعد تشغيل Raspberry Pi للبدء من جديد.'},
+  identity:{name:'اسم المكان / العقدة *',namePh:'مثال: دار البلدية — القاعة B',
+    type:'نوع المنشأة',country:'البلد',countryPh:'مثال: سويسرا',addr:'العنوان',optional:'(اختياري)',
+    addrPh:'مثال: شارع الجمهورية 1'},
+  types:{erp:'🏢 مبنى مفتوح للجمهور',school:'🏫 مدرسة / جامعة / حضانة',
+    hospital:'🏥 مستشفى / عيادة / دار رعاية',mairie:'🏛️ بلدية / محافظة / مركز قيادة',
+    refuge:'⛺ ملجأ / مخيم / كوخ جبلي',company:'🏭 شركة / موقع صناعي / SEVESO',
+    transport:'🚉 محطة / مطار / محطة طرفية',other:'📍 آخر'},
+  map:{tabImg:'📷 مخطط / صورة',tabGps:'🌍 إحداثيات GPS',dzPick:'اسحب وأفلت أو انقر للاختيار',
+    dzHint:'PNG · JPG · WEBP · بحد أقصى 10 ميغابايت',remove:'✕ إزالة الصورة',
+    optionalHint:'خطة إخلاء، صورة قمر صناعي، خريطة مرسومة باليد…<br><em>خطوة اختيارية — يمكن إعدادها لاحقًا عبر /admin</em>',
+    geo:'📍 استخدام موقعي الحالي',geoWait:'⏳ جارٍ تحديد الموقع…',geoFail:'❌ الموقع غير متاح',
+    geoNo:'تحديد الموقع غير متاح في هذا المتصفح',lat:'خط العرض',lon:'خط الطول',
+    zoom:'مستوى تكبير الخريطة',zoomHint:'(10 = مدينة · 15 = حي · 18 = مبنى)',
+    gpsOk:'✅ تم حفظ GPS:',tilesHint:'💡 سيتم تنزيل البلاطات دون اتصال تلقائيًا عبر <code>sos-guide-fetch-tiles.sh</code> إذا تم تفعيل الإيثرنت في الخطوة التالية.',
+    badFormat:'تنسيق غير مدعوم (PNG، JPG، WEBP فقط)',tooBig:'الملف كبير جدًا (بحد أقصى 10 ميغابايت)'},
+  options:{lora:'📡 اتصال LoRa (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · المدى 2–10 كم',
+    eth:'🌐 اتصال إيثرنت',ethDesc:'محتوى متعدد اللغات + بلاطات خريطة دون اتصال (يتطلب وصولاً مؤقتًا للإنترنت)',
+    chan:'📶 قناة WiFi',chanHint:'القنوات الموصى بها في الاتحاد الأوروبي: 1 أو 6 أو 11 (مميزة بـ ★)'},
+  summary:{node:'العقدة',type:'النوع',country:'البلد',addr:'العنوان',map:'الخريطة',chan:'قناة WiFi',lora:'LoRa mesh',
+    eth:'إيثرنت / بلاطات',lang:'اللغة الافتراضية',none:'غير مُعدّ',on:'✅ مفعّل',off:'❌ معطّل',
+    note:'⚡ التثبيت دون إعادة تشغيل (~30 ثانية).',modify:'← تعديل',install:'✅ تثبيت'},
+  progress:{title:'جارٍ التثبيت',warn:'لا توقف تشغيل الجهاز',sending:'جارٍ إرسال الإعداد…',
+    p1:'تم حفظ الإعداد…',p2:'جارٍ نسخ الخريطة المحلية…',p3:'جارٍ تطبيق شبكة WiFi…',
+    p4:'جارٍ بدء الخدمات…',p5:'جارٍ التحقق من السلامة…',p6:'تم!'},
+  success:{title:'تم الإعداد بنجاح!',text:'عقدة SOS-GUIDE قيد التشغيل.<br>أعد الاتصال بالشبكة:',
+    portal:'البوابة',admin:'الإدارة',
+    compliance:'🇨🇭 مصمم وفق متطلبات PCi-CH · nLPD RS 235.1 · لا يتم جمع بيانات شخصية'},
+  buttons:{back:'← رجوع',next:'متابعة →'}
+},
+he:{
+  steps:['מקום','מפה','אפשרויות','סיכום'],
+  langLabel:'שפה',
+  welcome:{sub:'הגדרה ראשונית · נקודת גישה לחירום',
+    connectedSub:'4 שלבים להפעלת צומת זה',
+    ck1:'זהות המקום (שם, סוג, כתובת)',ck2:'מפה מקומית (תוכנית שהועלתה או קואורדינטות GPS)',
+    ck3:'אפשרויות רשת (LoRa mesh, Ethernet, ערוץ WiFi)',ck4:'סיכום והתקנה (~30 שנ׳)',
+    expire:'הפעלה תפוג בעוד',start:'🚀 התחל הגדרה',connected:'מחובר ·',
+    badge:'מתוכנן עבור ההגנה האזרחית'},
+  expired:{title:'ההפעלה פגה',text:'הפעל מחדש את ה-Raspberry Pi כדי להתחיל שוב.'},
+  identity:{name:'שם מקום / צומת *',namePh:'לדוגמה: בניין העירייה — אולם B',
+    type:'סוג מתקן',country:'מדינה',countryPh:'לדוגמה: שווייץ',addr:'כתובת',optional:'(אופציונלי)',
+    addrPh:'לדוגמה: רחוב הרצל 1, תל אביב'},
+  types:{erp:'🏢 מבנה ציבורי',school:'🏫 בית ספר / אוניברסיטה / פעוטון',
+    hospital:'🏥 בית חולים / מרפאה / בית אבות',mairie:'🏛️ עירייה / מחוז / מרכז פיקוד',
+    refuge:'⛺ מקלט / מחנה / בקתת הרים',company:'🏭 חברה / אתר תעשייתי / SEVESO',
+    transport:'🚉 תחנה / נמל תעופה / טרמינל',other:'📍 אחר'},
+  map:{tabImg:'📷 תוכנית / תמונה',tabGps:'🌍 קואורדינטות GPS',dzPick:'גרור ושחרר או לחץ לבחירה',
+    dzHint:'PNG · JPG · WEBP · עד 10 מ״ב',remove:'✕ הסר תמונה',
+    optionalHint:'תוכנית פינוי, תצלום לוויין, מפה מצוירת ביד…<br><em>שלב אופציונלי — ניתן להגדיר מאוחר יותר דרך /admin</em>',
+    geo:'📍 השתמש במיקומי הנוכחי',geoWait:'⏳ מאתר מיקום…',geoFail:'❌ המיקום אינו זמין',
+    geoNo:'איתור מיקום אינו זמין בדפדפן זה',lat:'קו רוחב',lon:'קו אורך',
+    zoom:'רמת זום של המפה',zoomHint:'(10 = עיר · 15 = שכונה · 18 = בניין)',
+    gpsOk:'✅ GPS נשמר:',tilesHint:'💡 אריחי לא-מקוון יורדו אוטומטית באמצעות <code>sos-guide-fetch-tiles.sh</code> אם Ethernet יופעל בשלב הבא.',
+    badFormat:'תבנית לא נתמכת (PNG, JPG, WEBP בלבד)',tooBig:'הקובץ גדול מדי (עד 10 מ״ב)'},
+  options:{lora:'📡 תקשורת LoRa (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · טווח 2–10 ק״מ',
+    eth:'🌐 חיבור Ethernet',ethDesc:'תוכן רב-לשוני + אריחי מפה לא-מקוונים (דורש גישה זמנית לאינטרנט)',
+    chan:'📶 ערוץ WiFi',chanHint:'ערוצים מומלצים באיחוד האירופי: 1, 6 או 11 (מסומנים ב-★)'},
+  summary:{node:'צומת',type:'סוג',country:'מדינה',addr:'כתובת',map:'מפה',chan:'ערוץ WiFi',lora:'LoRa mesh',
+    eth:'Ethernet / אריחים',lang:'שפת ברירת מחדל',none:'לא הוגדר',on:'✅ מופעל',off:'❌ מושבת',
+    note:'⚡ התקנה ללא הפעלה מחדש (~30 שניות).',modify:'← ערוך',install:'✅ התקן'},
+  progress:{title:'ההתקנה מתבצעת',warn:'אל תכבה את המכשיר',sending:'שולח את ההגדרה…',
+    p1:'ההגדרה נשמרה…',p2:'מעתיק מפה מקומית…',p3:'מחיל רשת WiFi…',
+    p4:'מפעיל שירותים…',p5:'מאמת שלמות…',p6:'הסתיים!'},
+  success:{title:'ההגדרה הצליחה!',text:'צומת SOS-GUIDE פעיל.<br>התחבר מחדש לרשת:',
+    portal:'פורטל',admin:'ניהול',
+    compliance:'🇨🇭 מתוכנן לפי דרישות PCi-CH · nLPD RS 235.1 · לא נאסף מידע אישי'},
+  buttons:{back:'← חזרה',next:'המשך →'}
+},
+fa:{
+  steps:['مکان','نقشه','گزینه‌ها','خلاصه'],
+  langLabel:'زبان',
+  welcome:{sub:'پیکربندی اولیه · نقطه دسترسی اضطراری',
+    connectedSub:'۴ مرحله برای راه‌اندازی این گره',
+    ck1:'هویت مکان (نام، نوع، نشانی)',ck2:'نقشه محلی (طرح بارگذاری‌شده یا مختصات GPS)',
+    ck3:'گزینه‌های شبکه (LoRa mesh، اترنت، کانال WiFi)',ck4:'خلاصه و نصب (~۳۰ ثانیه)',
+    expire:'نشست منقضی می‌شود در',start:'🚀 شروع پیکربندی',connected:'متصل ·',
+    badge:'طراحی‌شده برای حفاظت غیرنظامی'},
+  expired:{title:'نشست منقضی شد',text:'برای شروع دوباره، Raspberry Pi را راه‌اندازی مجدد کنید.'},
+  identity:{name:'نام مکان / گره *',namePh:'مثال: شهرداری — سالن B',
+    type:'نوع مرکز',country:'کشور',countryPh:'مثال: سوئیس',addr:'نشانی',optional:'(اختیاری)',
+    addrPh:'مثال: خیابان جمهوری ۱'},
+  types:{erp:'🏢 ساختمان عمومی',school:'🏫 مدرسه / دانشگاه / مهدکودک',
+    hospital:'🏥 بیمارستان / کلینیک / خانه سالمندان',mairie:'🏛️ شهرداری / فرمانداری / مرکز فرماندهی',
+    refuge:'⛺ پناهگاه / اردوگاه / پناهگاه کوهستانی',company:'🏭 شرکت / سایت صنعتی / SEVESO',
+    transport:'🚉 ایستگاه / فرودگاه / پایانه',other:'📍 سایر'},
+  map:{tabImg:'📷 طرح / عکس',tabGps:'🌍 مختصات GPS',dzPick:'بکشید و رها کنید یا برای انتخاب کلیک کنید',
+    dzHint:'PNG · JPG · WEBP · حداکثر ۱۰ مگابایت',remove:'✕ حذف تصویر',
+    optionalHint:'طرح تخلیه، تصویر ماهواره‌ای، نقشه دست‌نویس…<br><em>مرحله اختیاری — بعداً از طریق /admin قابل تنظیم است</em>',
+    geo:'📍 استفاده از موقعیت فعلی من',geoWait:'⏳ در حال مکان‌یابی…',geoFail:'❌ موقعیت در دسترس نیست',
+    geoNo:'مکان‌یابی در این مرورگر در دسترس نیست',lat:'عرض جغرافیایی',lon:'طول جغرافیایی',
+    zoom:'سطح بزرگ‌نمایی نقشه',zoomHint:'(۱۰ = شهر · ۱۵ = محله · ۱۸ = ساختمان)',
+    gpsOk:'✅ GPS ذخیره شد:',tilesHint:'💡 کاشی‌های آفلاین به‌صورت خودکار از طریق <code>sos-guide-fetch-tiles.sh</code> دانلود می‌شوند، اگر در مرحله بعد اترنت فعال شود.',
+    badFormat:'قالب پشتیبانی‌نشده (فقط PNG، JPG، WEBP)',tooBig:'فایل بسیار بزرگ است (حداکثر ۱۰ مگابایت)'},
+  options:{lora:'📡 ارتباط LoRa (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · برد ۲–۱۰ کیلومتر',
+    eth:'🌐 اتصال اترنت',ethDesc:'محتوای چندزبانه + کاشی‌های نقشه آفلاین (نیازمند دسترسی موقت به اینترنت)',
+    chan:'📶 کانال WiFi',chanHint:'کانال‌های توصیه‌شده اتحادیه اروپا: ۱، ۶ یا ۱۱ (با ★ مشخص شده)'},
+  summary:{node:'گره',type:'نوع',country:'کشور',addr:'نشانی',map:'نقشه',chan:'کانال WiFi',lora:'LoRa mesh',
+    eth:'اترنت / کاشی‌ها',lang:'زبان پیش‌فرض',none:'پیکربندی نشده',on:'✅ فعال',off:'❌ غیرفعال',
+    note:'⚡ نصب بدون راه‌اندازی مجدد (~۳۰ ثانیه).',modify:'← ویرایش',install:'✅ نصب'},
+  progress:{title:'در حال نصب',warn:'دستگاه را خاموش نکنید',sending:'در حال ارسال پیکربندی…',
+    p1:'پیکربندی ذخیره شد…',p2:'در حال کپی نقشه محلی…',p3:'در حال اعمال شبکه WiFi…',
+    p4:'در حال راه‌اندازی سرویس‌ها…',p5:'در حال بررسی یکپارچگی…',p6:'انجام شد!'},
+  success:{title:'پیکربندی موفق بود!',text:'گره SOS-GUIDE فعال است.<br>دوباره به شبکه متصل شوید:',
+    portal:'پورتال',admin:'مدیریت',
+    compliance:'🇨🇭 طراحی‌شده مطابق الزامات PCi-CH · nLPD RS 235.1 · هیچ داده شخصی جمع‌آوری نمی‌شود'},
+  buttons:{back:'← بازگشت',next:'ادامه →'}
+},
+zh:{
+  steps:['地点','地图','选项','摘要'],
+  langLabel:'语言',
+  welcome:{sub:'初始配置 · 紧急接入点',
+    connectedSub:'4 个步骤即可启用此节点',
+    ck1:'地点信息（名称、类型、地址）',ck2:'本地地图（上传的平面图或 GPS 坐标）',
+    ck3:'网络选项（LoRa mesh、以太网、WiFi 信道）',ck4:'摘要与安装（约 30 秒）',
+    expire:'会话将在以下时间后过期',start:'🚀 开始配置',connected:'已连接 ·',
+    badge:'专为民防设计'},
+  expired:{title:'会话已过期',text:'请重启 Raspberry Pi 以重新开始。'},
+  identity:{name:'地点／节点名称 *',namePh:'例如：市政厅 — B 厅',
+    type:'设施类型',country:'国家',countryPh:'例如：瑞士',addr:'地址',optional:'（可选）',
+    addrPh:'例如：共和国大街 1 号'},
+  types:{erp:'🏢 公共建筑',school:'🏫 学校／大学／托儿所',
+    hospital:'🏥 医院／诊所／养老院',mairie:'🏛️ 市政厅／省府／指挥中心',
+    refuge:'⛺ 避难所／营地／山间小屋',company:'🏭 企业／工业场所／SEVESO',
+    transport:'🚉 车站／机场／航站楼',other:'📍 其他'},
+  map:{tabImg:'📷 平面图／照片',tabGps:'🌍 GPS 坐标',dzPick:'拖放或点击选择',
+    dzHint:'PNG · JPG · WEBP · 最大 10 MB',remove:'✕ 移除图片',
+    optionalHint:'疏散图、卫星照片、手绘地图…<br><em>可选步骤 — 之后可通过 /admin 配置</em>',
+    geo:'📍 使用我的当前位置',geoWait:'⏳ 正在定位…',geoFail:'❌ 位置不可用',
+    geoNo:'此浏览器不支持地理定位',lat:'纬度',lon:'经度',
+    zoom:'地图缩放级别',zoomHint:'（10 = 城市 · 15 = 街区 · 18 = 建筑）',
+    gpsOk:'✅ GPS 已保存：',tilesHint:'💡 如果在下一步启用以太网，离线瓦片将通过 <code>sos-guide-fetch-tiles.sh</code> 自动下载。',
+    badFormat:'不支持的格式（仅限 PNG、JPG、WEBP）',tooBig:'文件过大（最大 10 MB）'},
+  options:{lora:'📡 LoRa 通信（mesh）',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · 范围 2–10 公里',
+    eth:'🌐 以太网连接',ethDesc:'多语言内容 + 离线地图瓦片（需要临时互联网访问）',
+    chan:'📶 WiFi 信道',chanHint:'推荐的欧盟信道：1、6 或 11（标记为 ★）'},
+  summary:{node:'节点',type:'类型',country:'国家',addr:'地址',map:'地图',chan:'WiFi 信道',lora:'LoRa mesh',
+    eth:'以太网／瓦片',lang:'默认语言',none:'未配置',on:'✅ 已启用',off:'❌ 已禁用',
+    note:'⚡ 无需重启即可安装（约 30 秒）。',modify:'← 修改',install:'✅ 安装'},
+  progress:{title:'正在安装',warn:'请勿关闭设备',sending:'正在发送配置…',
+    p1:'配置已保存…',p2:'正在复制本地地图…',p3:'正在应用 WiFi 网络…',
+    p4:'正在启动服务…',p5:'正在验证完整性…',p6:'完成！'},
+  success:{title:'配置成功！',text:'SOS-GUIDE 节点已运行。<br>请重新连接到网络：',
+    portal:'门户',admin:'管理',
+    compliance:'🇨🇭 按 PCi-CH 要求设计 · nLPD RS 235.1 · 不收集个人数据'},
+  buttons:{back:'← 返回',next:'继续 →'}
+},
+ja:{
+  steps:['場所','地図','オプション','概要'],
+  langLabel:'言語',
+  welcome:{sub:'初期設定 · 緊急アクセスポイント',
+    connectedSub:'このノードを稼働させる4つのステップ',
+    ck1:'場所の情報（名称、種類、住所）',ck2:'ローカル地図（アップロードした図面または GPS 座標）',
+    ck3:'ネットワークオプション（LoRa mesh、イーサネット、WiFi チャンネル）',ck4:'概要とインストール（約30秒）',
+    expire:'セッションの有効期限',start:'🚀 設定を開始',connected:'接続済み ·',
+    badge:'市民保護のために設計'},
+  expired:{title:'セッションの有効期限が切れました',text:'やり直すには Raspberry Pi を再起動してください。'},
+  identity:{name:'場所／ノード名 *',namePh:'例：市役所 — B ホール',
+    type:'施設の種類',country:'国',countryPh:'例：スイス',addr:'住所',optional:'（任意）',
+    addrPh:'例：共和国通り1番地'},
+  types:{erp:'🏢 公共施設',school:'🏫 学校／大学／保育園',
+    hospital:'🏥 病院／クリニック／介護施設',mairie:'🏛️ 市役所／県庁／指揮所',
+    refuge:'⛺ 避難所／キャンプ／山小屋',company:'🏭 企業／工業施設／SEVESO',
+    transport:'🚉 駅／空港／ターミナル',other:'📍 その他'},
+  map:{tabImg:'📷 図面／写真',tabGps:'🌍 GPS 座標',dzPick:'ドラッグ＆ドロップまたはクリックして選択',
+    dzHint:'PNG · JPG · WEBP · 最大 10 MB',remove:'✕ 画像を削除',
+    optionalHint:'避難計画、衛星写真、手書きの地図…<br><em>任意のステップ — 後で /admin から設定できます</em>',
+    geo:'📍 現在地を使用',geoWait:'⏳ 位置を特定中…',geoFail:'❌ 位置が利用できません',
+    geoNo:'このブラウザでは位置情報が利用できません',lat:'緯度',lon:'経度',
+    zoom:'地図のズームレベル',zoomHint:'（10 = 都市 · 15 = 地区 · 18 = 建物）',
+    gpsOk:'✅ GPS を保存しました：',tilesHint:'💡 次のステップでイーサネットを有効にすると、オフラインタイルが <code>sos-guide-fetch-tiles.sh</code> により自動的にダウンロードされます。',
+    badFormat:'サポートされていない形式（PNG、JPG、WEBP のみ）',tooBig:'ファイルが大きすぎます（最大 10 MB）'},
+  options:{lora:'📡 LoRa 通信（mesh）',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · 範囲 2〜10 km',
+    eth:'🌐 イーサネット接続',ethDesc:'多言語コンテンツ + オフライン地図タイル（一時的なインターネット接続が必要）',
+    chan:'📶 WiFi チャンネル',chanHint:'推奨される EU チャンネル：1、6、11（★ 印）'},
+  summary:{node:'ノード',type:'種類',country:'国',addr:'住所',map:'地図',chan:'WiFi チャンネル',lora:'LoRa mesh',
+    eth:'イーサネット／タイル',lang:'既定の言語',none:'未設定',on:'✅ 有効',off:'❌ 無効',
+    note:'⚡ 再起動なしでインストール（約30秒）。',modify:'← 編集',install:'✅ インストール'},
+  progress:{title:'インストール中',warn:'デバイスの電源を切らないでください',sending:'設定を送信中…',
+    p1:'設定を保存しました…',p2:'ローカル地図をコピー中…',p3:'WiFi ネットワークを適用中…',
+    p4:'サービスを起動中…',p5:'整合性を検証中…',p6:'完了！'},
+  success:{title:'設定に成功しました！',text:'SOS-GUIDE ノードが稼働しています。<br>ネットワークに再接続してください：',
+    portal:'ポータル',admin:'管理',
+    compliance:'🇨🇭 PCi-CH 要件に基づいて設計 · nLPD RS 235.1 · 個人データは収集しません'},
+  buttons:{back:'← 戻る',next:'続行 →'}
+},
+ko:{
+  steps:['장소','지도','옵션','요약'],
+  langLabel:'언어',
+  welcome:{sub:'초기 설정 · 비상 액세스 지점',
+    connectedSub:'이 노드를 가동하기 위한 4단계',
+    ck1:'장소 정보(이름, 유형, 주소)',ck2:'로컬 지도(업로드한 도면 또는 GPS 좌표)',
+    ck3:'네트워크 옵션(LoRa mesh, 이더넷, WiFi 채널)',ck4:'요약 및 설치(약 30초)',
+    expire:'세션 만료까지',start:'🚀 설정 시작',connected:'연결됨 ·',
+    badge:'민방위를 위해 설계됨'},
+  expired:{title:'세션이 만료되었습니다',text:'다시 시작하려면 Raspberry Pi를 재시작하세요.'},
+  identity:{name:'장소/노드 이름 *',namePh:'예: 시청 — B홀',
+    type:'시설 유형',country:'국가',countryPh:'예: 스위스',addr:'주소',optional:'(선택 사항)',
+    addrPh:'예: 공화국로 1'},
+  types:{erp:'🏢 공공 건물',school:'🏫 학교 / 대학교 / 어린이집',
+    hospital:'🏥 병원 / 클리닉 / 요양원',mairie:'🏛️ 시청 / 도청 / 지휘소',
+    refuge:'⛺ 대피소 / 캠프 / 산장',company:'🏭 회사 / 산업 시설 / SEVESO',
+    transport:'🚉 역 / 공항 / 터미널',other:'📍 기타'},
+  map:{tabImg:'📷 도면 / 사진',tabGps:'🌍 GPS 좌표',dzPick:'끌어다 놓거나 클릭하여 선택',
+    dzHint:'PNG · JPG · WEBP · 최대 10 MB',remove:'✕ 이미지 제거',
+    optionalHint:'대피 계획, 위성 사진, 손으로 그린 지도…<br><em>선택 단계 — 나중에 /admin에서 구성 가능</em>',
+    geo:'📍 내 현재 위치 사용',geoWait:'⏳ 위치 확인 중…',geoFail:'❌ 위치를 사용할 수 없음',
+    geoNo:'이 브라우저에서는 위치 정보를 사용할 수 없습니다',lat:'위도',lon:'경도',
+    zoom:'지도 확대/축소 수준',zoomHint:'(10 = 도시 · 15 = 지구 · 18 = 건물)',
+    gpsOk:'✅ GPS 저장됨:',tilesHint:'💡 다음 단계에서 이더넷을 활성화하면 오프라인 타일이 <code>sos-guide-fetch-tiles.sh</code>를 통해 자동으로 다운로드됩니다.',
+    badFormat:'지원되지 않는 형식(PNG, JPG, WEBP만 가능)',tooBig:'파일이 너무 큽니다(최대 10 MB)'},
+  options:{lora:'📡 LoRa 통신(mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · 범위 2~10 km',
+    eth:'🌐 이더넷 연결',ethDesc:'다국어 콘텐츠 + 오프라인 지도 타일(임시 인터넷 접속 필요)',
+    chan:'📶 WiFi 채널',chanHint:'권장 EU 채널: 1, 6 또는 11(★ 표시)'},
+  summary:{node:'노드',type:'유형',country:'국가',addr:'주소',map:'지도',chan:'WiFi 채널',lora:'LoRa mesh',
+    eth:'이더넷 / 타일',lang:'기본 언어',none:'구성되지 않음',on:'✅ 사용',off:'❌ 사용 안 함',
+    note:'⚡ 재시작 없이 설치(약 30초).',modify:'← 수정',install:'✅ 설치'},
+  progress:{title:'설치 중',warn:'장치를 끄지 마세요',sending:'설정 전송 중…',
+    p1:'설정이 저장됨…',p2:'로컬 지도 복사 중…',p3:'WiFi 네트워크 적용 중…',
+    p4:'서비스 시작 중…',p5:'무결성 확인 중…',p6:'완료!'},
+  success:{title:'설정 성공!',text:'SOS-GUIDE 노드가 작동 중입니다.<br>네트워크에 다시 연결하세요:',
+    portal:'포털',admin:'관리',
+    compliance:'🇨🇭 PCi-CH 요구사항에 따라 설계 · nLPD RS 235.1 · 개인정보를 수집하지 않음'},
+  buttons:{back:'← 뒤로',next:'계속 →'}
+},
+hi:{
+  steps:['स्थान','मानचित्र','विकल्प','सारांश'],
+  langLabel:'भाषा',
+  welcome:{sub:'प्रारंभिक कॉन्फ़िगरेशन · आपातकालीन एक्सेस पॉइंट',
+    connectedSub:'इस नोड को चालू करने के लिए 4 चरण',
+    ck1:'स्थान की पहचान (नाम, प्रकार, पता)',ck2:'स्थानीय मानचित्र (अपलोड किया गया नक्शा या GPS निर्देशांक)',
+    ck3:'नेटवर्क विकल्प (LoRa mesh, ईथरनेट, WiFi चैनल)',ck4:'सारांश और इंस्टॉलेशन (~30 सेकंड)',
+    expire:'सत्र समाप्त होगा',start:'🚀 कॉन्फ़िगरेशन शुरू करें',connected:'कनेक्टेड ·',
+    badge:'नागरिक सुरक्षा के लिए डिज़ाइन किया गया'},
+  expired:{title:'सत्र समाप्त हो गया',text:'फिर से शुरू करने के लिए Raspberry Pi को पुनः आरंभ करें।'},
+  identity:{name:'स्थान / नोड का नाम *',namePh:'उदा.: नगर भवन — हॉल B',
+    type:'सुविधा का प्रकार',country:'देश',countryPh:'उदा.: स्विट्ज़रलैंड',addr:'पता',optional:'(वैकल्पिक)',
+    addrPh:'उदा.: रिपब्लिक मार्ग 1'},
+  types:{erp:'🏢 सार्वजनिक भवन',school:'🏫 स्कूल / विश्वविद्यालय / शिशुगृह',
+    hospital:'🏥 अस्पताल / क्लिनिक / वृद्धाश्रम',mairie:'🏛️ नगर भवन / प्रान्त कार्यालय / कमान केंद्र',
+    refuge:'⛺ आश्रय / शिविर / पर्वतीय कुटी',company:'🏭 कंपनी / औद्योगिक स्थल / SEVESO',
+    transport:'🚉 स्टेशन / हवाई अड्डा / टर्मिनल',other:'📍 अन्य'},
+  map:{tabImg:'📷 नक्शा / फ़ोटो',tabGps:'🌍 GPS निर्देशांक',dzPick:'खींचें और छोड़ें या चुनने के लिए क्लिक करें',
+    dzHint:'PNG · JPG · WEBP · अधिकतम 10 MB',remove:'✕ छवि हटाएँ',
+    optionalHint:'निकासी योजना, उपग्रह फ़ोटो, हाथ से बना नक्शा…<br><em>वैकल्पिक चरण — बाद में /admin से कॉन्फ़िगर किया जा सकता है</em>',
+    geo:'📍 मेरा वर्तमान स्थान उपयोग करें',geoWait:'⏳ स्थान पता लगाया जा रहा है…',geoFail:'❌ स्थान उपलब्ध नहीं',
+    geoNo:'इस ब्राउज़र में जियोलोकेशन उपलब्ध नहीं है',lat:'अक्षांश',lon:'देशांतर',
+    zoom:'मानचित्र ज़ूम स्तर',zoomHint:'(10 = शहर · 15 = मोहल्ला · 18 = भवन)',
+    gpsOk:'✅ GPS सहेजा गया:',tilesHint:'💡 यदि अगले चरण में ईथरनेट सक्षम किया जाता है तो ऑफ़लाइन टाइलें <code>sos-guide-fetch-tiles.sh</code> के माध्यम से स्वतः डाउनलोड हो जाएँगी।',
+    badFormat:'असमर्थित प्रारूप (केवल PNG, JPG, WEBP)',tooBig:'फ़ाइल बहुत बड़ी है (अधिकतम 10 MB)'},
+  options:{lora:'📡 LoRa संचार (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · सीमा 2–10 किमी',
+    eth:'🌐 ईथरनेट कनेक्शन',ethDesc:'बहुभाषी सामग्री + ऑफ़लाइन मानचित्र टाइलें (अस्थायी इंटरनेट पहुँच आवश्यक)',
+    chan:'📶 WiFi चैनल',chanHint:'अनुशंसित EU चैनल: 1, 6 या 11 (★ से चिह्नित)'},
+  summary:{node:'नोड',type:'प्रकार',country:'देश',addr:'पता',map:'मानचित्र',chan:'WiFi चैनल',lora:'LoRa mesh',
+    eth:'ईथरनेट / टाइलें',lang:'डिफ़ॉल्ट भाषा',none:'कॉन्फ़िगर नहीं किया गया',on:'✅ सक्षम',off:'❌ अक्षम',
+    note:'⚡ बिना पुनः आरंभ के इंस्टॉलेशन (~30 सेकंड)।',modify:'← संशोधित करें',install:'✅ इंस्टॉल करें'},
+  progress:{title:'इंस्टॉलेशन जारी है',warn:'डिवाइस बंद न करें',sending:'कॉन्फ़िगरेशन भेजा जा रहा है…',
+    p1:'कॉन्फ़िगरेशन सहेजा गया…',p2:'स्थानीय मानचित्र कॉपी हो रहा है…',p3:'WiFi नेटवर्क लागू किया जा रहा है…',
+    p4:'सेवाएँ शुरू हो रही हैं…',p5:'अखंडता सत्यापित की जा रही है…',p6:'पूर्ण!'},
+  success:{title:'कॉन्फ़िगरेशन सफल!',text:'SOS-GUIDE नोड चालू है।<br>नेटवर्क से पुनः कनेक्ट करें:',
+    portal:'पोर्टल',admin:'प्रशासन',
+    compliance:'🇨🇭 PCi-CH आवश्यकताओं के अनुसार डिज़ाइन किया गया · nLPD RS 235.1 · कोई व्यक्तिगत डेटा एकत्र नहीं किया जाता'},
+  buttons:{back:'← वापस',next:'जारी रखें →'}
+},
+th:{
+  steps:['สถานที่','แผนที่','ตัวเลือก','สรุป'],
+  langLabel:'ภาษา',
+  welcome:{sub:'การตั้งค่าเริ่มต้น · จุดเข้าถึงฉุกเฉิน',
+    connectedSub:'4 ขั้นตอนเพื่อเปิดใช้งานโหนดนี้',
+    ck1:'ข้อมูลสถานที่ (ชื่อ ประเภท ที่อยู่)',ck2:'แผนที่ท้องถิ่น (แผนผังที่อัปโหลดหรือพิกัด GPS)',
+    ck3:'ตัวเลือกเครือข่าย (LoRa mesh, อีเทอร์เน็ต, ช่อง WiFi)',ck4:'สรุปและติดตั้ง (~30 วิ)',
+    expire:'เซสชันจะหมดอายุใน',start:'🚀 เริ่มการตั้งค่า',connected:'เชื่อมต่อแล้ว ·',
+    badge:'ออกแบบสำหรับการป้องกันพลเรือน'},
+  expired:{title:'เซสชันหมดอายุ',text:'รีสตาร์ท Raspberry Pi เพื่อเริ่มใหม่'},
+  identity:{name:'ชื่อสถานที่ / โหนด *',namePh:'เช่น: ศาลากลาง — ห้อง B',
+    type:'ประเภทสถานที่',country:'ประเทศ',countryPh:'เช่น: สวิตเซอร์แลนด์',addr:'ที่อยู่',optional:'(ไม่บังคับ)',
+    addrPh:'เช่น: ถนนสาธารณรัฐ 1'},
+  types:{erp:'🏢 อาคารสาธารณะ',school:'🏫 โรงเรียน / มหาวิทยาลัย / สถานรับเลี้ยงเด็ก',
+    hospital:'🏥 โรงพยาบาล / คลินิก / บ้านพักคนชรา',mairie:'🏛️ ศาลากลาง / ที่ว่าการ / ศูนย์บัญชาการ',
+    refuge:'⛺ ที่หลบภัย / ค่าย / กระท่อมบนภูเขา',company:'🏭 บริษัท / โรงงานอุตสาหกรรม / SEVESO',
+    transport:'🚉 สถานี / สนามบิน / อาคารผู้โดยสาร',other:'📍 อื่นๆ'},
+  map:{tabImg:'📷 แผนผัง / รูปภาพ',tabGps:'🌍 พิกัด GPS',dzPick:'ลากแล้ววางหรือคลิกเพื่อเลือก',
+    dzHint:'PNG · JPG · WEBP · สูงสุด 10 MB',remove:'✕ ลบรูปภาพ',
+    optionalHint:'แผนอพยพ ภาพถ่ายดาวเทียม แผนที่วาดมือ…<br><em>ขั้นตอนเสริม — ตั้งค่าภายหลังได้ผ่าน /admin</em>',
+    geo:'📍 ใช้ตำแหน่งปัจจุบันของฉัน',geoWait:'⏳ กำลังระบุตำแหน่ง…',geoFail:'❌ ไม่มีตำแหน่ง',
+    geoNo:'เบราว์เซอร์นี้ไม่รองรับการระบุตำแหน่ง',lat:'ละติจูด',lon:'ลองจิจูด',
+    zoom:'ระดับการซูมแผนที่',zoomHint:'(10 = เมือง · 15 = ย่าน · 18 = อาคาร)',
+    gpsOk:'✅ บันทึก GPS แล้ว:',tilesHint:'💡 ไทล์ออฟไลน์จะถูกดาวน์โหลดอัตโนมัติผ่าน <code>sos-guide-fetch-tiles.sh</code> หากเปิดใช้งานอีเทอร์เน็ตในขั้นตอนถัดไป',
+    badFormat:'รูปแบบไม่รองรับ (เฉพาะ PNG, JPG, WEBP)',tooBig:'ไฟล์ใหญ่เกินไป (สูงสุด 10 MB)'},
+  options:{lora:'📡 การสื่อสาร LoRa (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · ระยะ 2–10 กม.',
+    eth:'🌐 การเชื่อมต่ออีเทอร์เน็ต',ethDesc:'เนื้อหาหลายภาษา + ไทล์แผนที่ออฟไลน์ (ต้องใช้อินเทอร์เน็ตชั่วคราว)',
+    chan:'📶 ช่อง WiFi',chanHint:'ช่องที่แนะนำในสหภาพยุโรป: 1, 6 หรือ 11 (ทำเครื่องหมาย ★)'},
+  summary:{node:'โหนด',type:'ประเภท',country:'ประเทศ',addr:'ที่อยู่',map:'แผนที่',chan:'ช่อง WiFi',lora:'LoRa mesh',
+    eth:'อีเทอร์เน็ต / ไทล์',lang:'ภาษาเริ่มต้น',none:'ยังไม่ได้ตั้งค่า',on:'✅ เปิดใช้งาน',off:'❌ ปิดใช้งาน',
+    note:'⚡ ติดตั้งโดยไม่ต้องรีสตาร์ท (~30 วินาที)',modify:'← แก้ไข',install:'✅ ติดตั้ง'},
+  progress:{title:'กำลังติดตั้ง',warn:'อย่าปิดอุปกรณ์',sending:'กำลังส่งการตั้งค่า…',
+    p1:'บันทึกการตั้งค่าแล้ว…',p2:'กำลังคัดลอกแผนที่ท้องถิ่น…',p3:'กำลังใช้เครือข่าย WiFi…',
+    p4:'กำลังเริ่มบริการ…',p5:'กำลังตรวจสอบความสมบูรณ์…',p6:'เสร็จสิ้น!'},
+  success:{title:'ตั้งค่าสำเร็จ!',text:'โหนด SOS-GUIDE ทำงานอยู่<br>เชื่อมต่อกับเครือข่ายอีกครั้ง:',
+    portal:'พอร์ทัล',admin:'การจัดการ',
+    compliance:'🇨🇭 ออกแบบตามข้อกำหนด PCi-CH · nLPD RS 235.1 · ไม่มีการเก็บข้อมูลส่วนบุคคล'},
+  buttons:{back:'← ย้อนกลับ',next:'ดำเนินการต่อ →'}
+},
+vi:{
+  steps:['Địa điểm','Bản đồ','Tùy chọn','Tóm tắt'],
+  langLabel:'Ngôn ngữ',
+  welcome:{sub:'Cấu hình ban đầu · Điểm truy cập khẩn cấp',
+    connectedSub:'4 bước để đưa nút này vào hoạt động',
+    ck1:'Thông tin địa điểm (tên, loại, địa chỉ)',ck2:'Bản đồ địa phương (sơ đồ đã tải lên hoặc tọa độ GPS)',
+    ck3:'Tùy chọn mạng (LoRa mesh, Ethernet, kênh WiFi)',ck4:'Tóm tắt và cài đặt (~30 giây)',
+    expire:'Phiên sẽ hết hạn sau',start:'🚀 Bắt đầu cấu hình',connected:'Đã kết nối ·',
+    badge:'Được thiết kế cho phòng vệ dân sự'},
+  expired:{title:'Phiên đã hết hạn',text:'Khởi động lại Raspberry Pi để bắt đầu lại.'},
+  identity:{name:'Tên địa điểm / nút *',namePh:'VD: Tòa thị chính — Phòng B',
+    type:'Loại cơ sở',country:'Quốc gia',countryPh:'VD: Thụy Sĩ',addr:'Địa chỉ',optional:'(tùy chọn)',
+    addrPh:'VD: Đường Cộng Hòa 1'},
+  types:{erp:'🏢 Tòa nhà công cộng',school:'🏫 Trường học / Đại học / Nhà trẻ',
+    hospital:'🏥 Bệnh viện / Phòng khám / Viện dưỡng lão',mairie:'🏛️ Tòa thị chính / Tỉnh / Sở chỉ huy',
+    refuge:'⛺ Nơi trú ẩn / Trại / Lều trên núi',company:'🏭 Công ty / Khu công nghiệp / SEVESO',
+    transport:'🚉 Ga / Sân bay / Bến',other:'📍 Khác'},
+  map:{tabImg:'📷 Sơ đồ / Ảnh',tabGps:'🌍 Tọa độ GPS',dzPick:'Kéo và thả hoặc nhấp để chọn',
+    dzHint:'PNG · JPG · WEBP · tối đa 10 MB',remove:'✕ Xóa ảnh',
+    optionalHint:'Kế hoạch sơ tán, ảnh vệ tinh, bản đồ vẽ tay…<br><em>Bước tùy chọn — có thể cấu hình sau qua /admin</em>',
+    geo:'📍 Dùng vị trí hiện tại của tôi',geoWait:'⏳ Đang định vị…',geoFail:'❌ Vị trí không khả dụng',
+    geoNo:'Trình duyệt này không hỗ trợ định vị',lat:'Vĩ độ',lon:'Kinh độ',
+    zoom:'Mức thu phóng bản đồ',zoomHint:'(10 = thành phố · 15 = khu phố · 18 = tòa nhà)',
+    gpsOk:'✅ Đã lưu GPS:',tilesHint:'💡 Các ô bản đồ ngoại tuyến sẽ được tải tự động qua <code>sos-guide-fetch-tiles.sh</code> nếu bật Ethernet ở bước tiếp theo.',
+    badFormat:'Định dạng không được hỗ trợ (chỉ PNG, JPG, WEBP)',tooBig:'Tệp quá lớn (tối đa 10 MB)'},
+  options:{lora:'📡 Liên lạc LoRa (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Tầm 2–10 km',
+    eth:'🌐 Kết nối Ethernet',ethDesc:'Nội dung đa ngôn ngữ + ô bản đồ ngoại tuyến (cần truy cập Internet tạm thời)',
+    chan:'📶 Kênh WiFi',chanHint:'Kênh EU khuyến nghị: 1, 6 hoặc 11 (đánh dấu ★)'},
+  summary:{node:'Nút',type:'Loại',country:'Quốc gia',addr:'Địa chỉ',map:'Bản đồ',chan:'Kênh WiFi',lora:'LoRa mesh',
+    eth:'Ethernet / ô',lang:'Ngôn ngữ mặc định',none:'Chưa cấu hình',on:'✅ Đã bật',off:'❌ Đã tắt',
+    note:'⚡ Cài đặt không cần khởi động lại (~30 giây).',modify:'← Sửa',install:'✅ Cài đặt'},
+  progress:{title:'Đang cài đặt',warn:'Không tắt thiết bị',sending:'Đang gửi cấu hình…',
+    p1:'Đã lưu cấu hình…',p2:'Đang sao chép bản đồ địa phương…',p3:'Đang áp dụng mạng WiFi…',
+    p4:'Đang khởi động dịch vụ…',p5:'Đang xác minh tính toàn vẹn…',p6:'Hoàn tất!'},
+  success:{title:'Cấu hình thành công!',text:'Nút SOS-GUIDE đang hoạt động.<br>Kết nối lại với mạng:',
+    portal:'Cổng',admin:'Quản trị',
+    compliance:'🇨🇭 Được thiết kế theo yêu cầu PCi-CH · nLPD RS 235.1 · Không thu thập dữ liệu cá nhân'},
+  buttons:{back:'← Quay lại',next:'Tiếp tục →'}
 }
 };
 // Les 29 langues du portail (mêmes drapeaux que index.html).
@@ -420,6 +1415,7 @@ const S = {
   // Lieu
   nodeName:    '',
   nodeType:    'erp',
+  nodeCountry: '',
   nodeAddress: '',
   // Carte
   mapTab:         'image',
@@ -442,13 +1438,39 @@ const card = document.getElementById('card');
 let timerInterval = null;
 T = I18N[S.lang] || I18N.en;
 document.documentElement.lang = S.lang;
+const RTL_LANGS=new Set(['ar','he','fa']);
 function setLang(l){
   if(!LANGS.some(x=>x.code===l)) l='fr';
   S.lang=l;
   T=I18N[l]||I18N.en;   // UI du wizard : trad native ou anglais
   document.documentElement.lang=l;
+  document.documentElement.dir = RTL_LANGS.has(l) ? 'rtl' : 'ltr';
   render();
 }
+
+// ── Modale de langue (navbar 🌐) ───────────────────────────────────────────────
+const langModal   = document.getElementById('languageModal');
+const flagGrid    = document.getElementById('flagGrid');
+function buildFlagGrid(){
+  flagGrid.innerHTML = LANGS.map(l=>
+    `<div class="lang-card ${S.lang===l.code?'current':''}" role="button" tabindex="0"
+       data-code="${l.code}" aria-label="${l.label}">
+       <span class="lang-flag">${l.flag}</span><span class="lang-name">${l.label}</span>
+     </div>`).join('');
+  flagGrid.querySelectorAll('.lang-card').forEach(c=>{
+    const pick=()=>{ setLang(c.dataset.code); closeLangModal(); };
+    c.addEventListener('click',pick);
+    c.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); pick(); } });
+  });
+}
+function openLangModal(){ buildFlagGrid(); langModal.classList.add('active'); }
+function closeLangModal(){ langModal.classList.remove('active'); }
+document.getElementById('langBtn').addEventListener('click',openLangModal);
+document.getElementById('closeLangModal').addEventListener('click',closeLangModal);
+langModal.addEventListener('click',e=>{ if(e.target===langModal) closeLangModal(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape' && langModal.classList.contains('active')) closeLangModal(); });
+// Synchroniser direction RTL au chargement
+document.documentElement.dir = RTL_LANGS.has(S.lang) ? 'rtl' : 'ltr';
 
 // ── Timer ─────────────────────────────────────────────────────────────────────
 function startTimer(){
@@ -511,12 +1533,6 @@ function renderWelcome(){
       <p>${T.welcome.sub}</p>
     </div>
     <div class="ch-badge">🇨🇭 ${T.welcome.badge}</div>
-    <div class="form-group">
-      <label for="wizardLang">🌍 ${T.langLabel}</label>
-      <select id="wizardLang">
-        ${LANGS.map(l=>`<option value="${l.code}" ${S.lang===l.code?'selected':''}>${l.flag} ${l.label}</option>`).join('')}
-      </select>
-    </div>
     <div class="connected-badge">
       <div class="dot"></div>
       <div class="conn-info">
@@ -537,7 +1553,6 @@ function renderWelcome(){
     <button class="btn btn-primary" id="startBtn" style="width:100%">
       ${T.welcome.start}
     </button>`;
-  document.getElementById('wizardLang').onchange=e=>setLang(e.target.value);
   document.getElementById('startBtn').onclick=()=>{ S.step=1; render(); };
 }
 
@@ -557,10 +1572,17 @@ function renderIdentity(){
         ${NODE_TYPES.map(v=>`<option value="${v}" ${S.nodeType===v?'selected':''}>${escHtml(T.types[v])}</option>`).join('')}
       </select>
     </div>
-    <div class="form-group">
-      <label>${T.identity.addr} <small style="font-weight:400;text-transform:none">${T.identity.optional}</small></label>
-      <input type="text" id="nodeAddress" placeholder="${escHtml(T.identity.addrPh)}"
-        maxlength="256" value="${escHtml(S.nodeAddress)}" autocomplete="street-address">
+    <div class="form-grid-2">
+      <div class="form-group" style="margin-bottom:0">
+        <label>${T.identity.country} <small style="font-weight:400;text-transform:none">${T.identity.optional}</small></label>
+        <input type="text" id="nodeCountry" placeholder="${escHtml(T.identity.countryPh)}"
+          maxlength="64" value="${escHtml(S.nodeCountry)}" autocomplete="country-name">
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label>${T.identity.addr} <small style="font-weight:400;text-transform:none">${T.identity.optional}</small></label>
+        <input type="text" id="nodeAddress" placeholder="${escHtml(T.identity.addrPh)}"
+          maxlength="256" value="${escHtml(S.nodeAddress)}" autocomplete="street-address">
+      </div>
     </div>
     <div class="btn-group">
       <button class="btn btn-secondary" id="backBtn">${T.buttons.back}</button>
@@ -573,6 +1595,7 @@ function renderIdentity(){
     if(!name){ shake('nodeName'); return; }
     S.nodeName=name;
     S.nodeType=document.getElementById('nodeType').value;
+    S.nodeCountry=document.getElementById('nodeCountry').value.trim();
     S.nodeAddress=document.getElementById('nodeAddress').value.trim();
     S.step=2; render();
   };
@@ -765,6 +1788,10 @@ function renderSummary(){
         <span class="summary-key">${T.summary.type}</span>
         <span class="badge">${escHtml(typeLabel)}</span>
       </div>
+      ${S.nodeCountry?`<div class="summary-row">
+        <span class="summary-key">${T.summary.country}</span>
+        <span class="badge">${escHtml(S.nodeCountry)}</span>
+      </div>`:''}
       ${S.nodeAddress?`<div class="summary-row">
         <span class="summary-key">${T.summary.addr}</span>
         <span class="badge">${escHtml(S.nodeAddress)}</span>
@@ -822,6 +1849,7 @@ function doInstall(){
   fd.append('_csrf',          S.csrf);
   fd.append('nodeName',       S.nodeName);
   fd.append('nodeType',       S.nodeType);
+  fd.append('nodeCountry',    S.nodeCountry);
   fd.append('nodeAddress',    S.nodeAddress);
   fd.append('enableLoRa',     S.enableLoRa     ? 'true' : 'false');
   fd.append('enableEthernet', S.enableEthernet ? 'true' : 'false');

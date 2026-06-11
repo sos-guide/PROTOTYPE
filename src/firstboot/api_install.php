@@ -160,6 +160,9 @@ if (!in_array($defaultLang, $allLangs, true)) {
     $defaultLang = 'fr';
 }
 $nodeAddress    = function_exists('mb_substr') ? mb_substr(trim((string)($_POST['nodeAddress'] ?? '')), 0, 256) : substr(trim((string)($_POST['nodeAddress'] ?? '')), 0, 256);
+// Pays du lieu (optionnel) — lettres/espaces/tirets uniquement
+$nodeCountry    = preg_replace('/[^\pL\s\-\.\,\'\(\)]/u', '', (string)($_POST['nodeCountry'] ?? ''));
+$nodeCountry    = function_exists('mb_substr') ? mb_substr(trim($nodeCountry), 0, 64) : substr(trim($nodeCountry), 0, 64);
 $lat            = (float)($_POST['lat'] ?? 0);
 $lon            = (float)($_POST['lon'] ?? 0);
 $mapZoom        = min(19, max(10, intval($_POST['mapZoom'] ?? 15)));
@@ -200,6 +203,7 @@ if (file_exists(CONFIG_FILE)) {
 
 $config['establishment']['name']    = $nodeName;
 $config['establishment']['type']    = $nodeType;
+$config['establishment']['country'] = $nodeCountry;
 $config['establishment']['address'] = $nodeAddress;
 if ($lat !== 0.0 || $lon !== 0.0) {
     $config['establishment']['lat']     = $lat;

@@ -383,6 +383,7 @@ PL · NL · SV · NO · DA · FI · HU · RO · CS · EL · TR · FA · HI · TH
 | Clé | Type | Description |
 |-----|------|-------------|
 | `establishment.name` | string | Nom du lieu / identifiant du nœud |
+| `establishment.country` | string | Pays du lieu (saisi au starter) |
 | `establishment.address` | string | Adresse complète |
 | `establishment.lat` / `lon` | string | Coordonnées GPS |
 | `establishment.type` | string | `erp`, `ecole`, `hopital`, `mairie`… |

@@ -12,6 +12,18 @@ adhère au [versionnage sémantique](https://semver.org/lang/fr/) (`VERSION` à 
 ## [Non publié]
 
 ### Ajouté
+- **Sélection de langue du starter refondue** : barre de navigation fixe (logo +
+  bouton planète **🌐** + bascule thème) et **modale de langue à drapeaux** identique
+  au portail (`index.html`). Le menu déroulant de langue dans la carte d'accueil est
+  supprimé. Direction **RTL** appliquée automatiquement au wizard pour `ar`/`he`/`fa`.
+- **Traductions du wizard pour les 29 langues** : l'interface du starter
+  (`I18N`) était traduite nativement seulement en fr/en/de/it/rm et retombait sur
+  l'anglais ; elle couvre désormais les **29 langues** (es, pt, nl, pl, ru, uk, tr,
+  el, sv, da, no, fi, cs, hu, ro, ar, he, fa, zh, ja, ko, hi, th, vi ajoutées).
+  ⚠ ar/he/fa/rm/hi/th à faire relire par des locuteurs natifs avant dépôt PCi-CH.
+- **Champ « Pays » du lieu** : ajouté au starter (étape Identité + résumé), validé
+  et stocké par `api_install.php` (`establishment.country`), éditable dans `/admin`
+  (`update_config.php`) et affiché sur le portail sous le nom du lieu.
 - `CHANGELOG.md` — ce fichier ; consignation obligatoire de tous les changements futurs.
 - **Dépôt git initialisé** et relié à `https://github.com/sos-guide/SOS-GUIDE`.
 - **`src/web/lib/sos-theme.css`** — source unique des tokens de design (sombre + clair),

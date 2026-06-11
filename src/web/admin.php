@@ -403,7 +403,13 @@ textarea{min-height:70px;resize:vertical}
                    value="<?= htmlspecialchars($establishment['name'] ?? '') ?>"
                    placeholder="Ex : Mairie de Genève, Caserne Rive">
           </div>
-          <div class="form-group fg-full">
+          <div class="form-group">
+            <label>Pays</label>
+            <input type="text" name="country" maxlength="64"
+                   value="<?= htmlspecialchars($establishment['country'] ?? '') ?>"
+                   placeholder="Ex : Suisse">
+          </div>
+          <div class="form-group">
             <label>Adresse complète</label>
             <input type="text" name="address" maxlength="256"
                    value="<?= htmlspecialchars($establishment['address'] ?? '') ?>">
