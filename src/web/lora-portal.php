@@ -164,6 +164,9 @@ function fmt_time(int $ts): string {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#060a12">
+<meta name="description" content="Messagerie LoRa mesh d'urgence du nœud SOS-GUIDE — hors ligne">
 <title>📡 LoRa Mesh — <?= htmlspecialchars($nodeName) ?></title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='80' font-size='80'%3E📡%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="/lib/sos-theme.css">
@@ -247,9 +250,11 @@ body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,
 .offline-banner p{font-size:.78rem;color:var(--sub);margin-top:.35rem}
 /* Refresh auto */
 .refresh-hint{font-size:.7rem;color:var(--sub);text-align:center;margin-top:.75rem}
+button:focus-visible,a:focus-visible,textarea:focus-visible,.type-btn:focus-visible,.send-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#loraMain">Aller au contenu</a>
 <div class="topbar">
   <div class="topbar-left">
     <span class="status-dot <?= $apiOk ? 'dot-ok' : ($loraEnabled ? 'dot-err' : 'dot-off') ?>"></span>
@@ -265,7 +270,7 @@ body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,
   </div>
 </div>
 
-<div class="main">
+<main class="main" id="loraMain">
 <?php if (!$loraEnabled): ?>
   <div class="offline-banner">
     <strong>📡 Module LoRa non activé</strong>
@@ -306,6 +311,7 @@ body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,
       </div>
       <input type="hidden" name="type" id="typeInput" value="msg">
       <textarea name="body" id="msgBody" maxlength="200"
+        aria-label="Message d'urgence à envoyer"
         placeholder="Écrivez votre message d'urgence… (max 200 caractères)"
         oninput="updateCount()"
         <?= !$apiOk ? 'disabled' : '' ?>></textarea>
@@ -399,7 +405,7 @@ body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,
   🔒 Les messages LoRa sont chiffrés AES-256-GCM et stockés uniquement en RAM.<br>
   Aucune donnée personnelle persistée — conformité nLPD RS 235.1
 </div>
-</div>
+</main>
 
 <script>
 let msgType = 'msg';

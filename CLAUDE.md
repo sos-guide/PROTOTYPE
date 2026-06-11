@@ -96,9 +96,25 @@ Champs principaux : `establishment.name`, `establishment.country` (pays du lieu,
 
 Le design de référence est celui de **sosguide.fr/demo.html**. Les tokens (sombre **et** clair) vivent dans **`src/web/lib/sos-theme.css`** — source unique, chargée par les 4 pages via `<link href="/lib/sos-theme.css">`. **Ne jamais redéfinir `:root` dans une page** ; toute nouvelle page charge ce fichier. Les 4 pages ont le toggle clair/sombre (`body.light-mode`, clé localStorage partagée `sos_guide_theme`). L'ancien portail v2.4 est archivé dans `index-v2.4-portail.html.bak` à la racine (non versionné).
 
-### Accessibilité
+### Accessibilité (WCAG 2.1 AA — niveau atteint, à maintenir)
 
-Le portail est navigable au clavier : helper `a11yButton()` (role=button + tabindex + Enter/Espace) sur toutes les cartes générées, `aria-label` sur les boutons et numéros d'urgence, Échap ferme modales/drawer/outils. Maintenir ce niveau sur tout nouvel élément interactif. La CI vérifie la cohérence DOM via `node src/scripts/check-web-dom.mjs`.
+Le portail est navigable au clavier : helper `a11yButton()` (role=button + tabindex + Enter/Espace) sur toutes les cartes générées, `aria-label` sur les boutons et numéros d'urgence, Échap ferme modales/drawer/outils. La CI vérifie la cohérence DOM via `node src/scripts/check-web-dom.mjs`.
+
+Règles à respecter sur tout nouvel élément :
+- **Contrastes** : tout texte doit faire ≥ 4.5:1 sur son fond. Les tokens de
+  `sos-theme.css` sont calibrés AA — ne pas les éclaircir/assombrir. Texte blanc
+  sur fond bleu ⇒ utiliser `--accent-strong` (jamais `--accent` en fond de bouton).
+- **Formulaires** : chaque champ a un `<label for=>`/`id` (ou `aria-label` si pas
+  de label visible).
+- **Clavier** : tout élément cliquable non natif reçoit `role`, `tabindex="0"`,
+  Enter/Espace (cf. `wireSwitch` dans starter.html) et un style `:focus-visible`.
+- **Landmarks** : `<main>` unique par page, chaque `<nav>` a un `aria-label` ;
+  skip-link `.skip-link` (classe fournie par sos-theme.css) sur les pages à barre.
+- **Contenu rempli par JS** : laisser un texte de repli statique dans les `<h1>`
+  et `<button>` (sinon le validateur et les lecteurs d'écran voient des vides).
+- `prefers-reduced-motion` est géré globalement par sos-theme.css.
+- Validation : `npx html-validate` (preset conformité + règles WCAG) doit rester
+  à **0 erreur** sur les 4 pages.
 
 ### i18n
 

@@ -15,12 +15,14 @@
   /* Bordures */
   --border:rgba(255,255,255,.07);
   --border-h:rgba(255,255,255,.16);
-  /* Texte */
+  /* Texte — contrastes vérifiés WCAG AA (≥4.5:1 sur --card) */
   --text:#e8eef8;
-  --sub:#6b7fa3;
-  --muted:#475569;
+  --sub:#7d90b4;
+  --muted:#7588a8;
   /* Couleurs fonctionnelles */
-  --accent:#3b82f6;
+  --accent:#3b82f6;          /* texte, bordures, focus */
+  --accent-strong:#2563eb;   /* fonds de boutons sous texte blanc (AA 5.2:1) */
+  --accent-strong-h:#1d4ed8; /* survol */
   --blue:#3b82f6;
   --green:#22c55e;
   --red:#ef4444;
@@ -43,7 +45,7 @@ body.light-mode{
   --border-h:rgba(0,0,0,.16);
   --text:#0f172a;
   --sub:#475569;
-  --muted:#94a3b8;
+  --muted:#5d6b82;
   --shadow:0 8px 24px rgba(0,0,0,.08);
 }
 
@@ -56,3 +58,21 @@ body.light-mode{
   cursor:pointer;transition:all .15s;
 }
 .theme-btn:hover{background:var(--card-h);color:var(--text);border-color:var(--border-h)}
+
+/* Accessibilité — WCAG 2.3.3 : désactiver animations et transitions si demandé */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+    scroll-behavior:auto !important;
+  }
+}
+
+/* Accessibilité — lien d'évitement (masqué jusqu'au focus clavier) */
+.skip-link{
+  position:absolute;left:-9999px;top:0;z-index:20000;
+  padding:.6rem 1rem;background:var(--accent-strong);color:#fff;
+  border-radius:0 0 10px 0;font-weight:600;text-decoration:none;
+}
+.skip-link:focus{left:0}

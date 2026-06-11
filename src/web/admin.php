@@ -164,6 +164,10 @@ $portalLangs = [
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#060a12">
+<meta name="description" content="Administration du nœud SOS-GUIDE — configuration du lieu, réseau et services">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='80' font-size='80'%3E⛑️%3C/text%3E%3C/svg%3E">
 <title>⛑️ SOS-GUIDE — Administration v2.5</title>
 <link rel="stylesheet" href="/lib/sos-theme.css">
 <style>
@@ -230,8 +234,8 @@ textarea{min-height:70px;resize:vertical}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;
      padding:.65rem 1.4rem;border-radius:40px;font-weight:600;font-size:.88rem;
      border:none;cursor:pointer;transition:all .15s}
-.btn-primary{background:var(--accent);color:white}
-.btn-primary:hover{background:#2563eb}
+.btn-primary{background:var(--accent-strong);color:white}
+.btn-primary:hover{background:var(--accent-strong-h)}
 .btn-danger{background:rgba(239,68,68,.15);color:var(--red);border:1px solid var(--red)}
 .btn-danger:hover{background:var(--red);color:white}
 .btn-ghost{background:transparent;color:var(--sub);border:1px solid var(--border)}
@@ -281,9 +285,11 @@ textarea{min-height:70px;resize:vertical}
   .form-grid,.grid4{grid-template-columns:1fr}
   .fg-full{grid-column:span 1}
 }
+.btn:focus-visible,button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,.toggle input:focus-visible+.toggle-slider{outline:2px solid var(--accent);outline-offset:2px}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#adminMain">Aller au contenu</a>
 
 <div class="top-bar">
   <h1>⛑️ SOS-GUIDE Administration
@@ -292,7 +298,7 @@ textarea{min-height:70px;resize:vertical}
       <span class="badge badge-err">MODE DÉGRADÉ</span>
     <?php endif; ?>
   </h1>
-  <nav>
+  <nav aria-label="Liens rapides">
     <a href="/">← Portail</a>
     <a href="/admin">⚙️ Config</a>
     <?php if (!empty($ethIp)): ?>
@@ -306,7 +312,7 @@ textarea{min-height:70px;resize:vertical}
 </div>
 
 <div class="layout">
-  <nav class="sidebar">
+  <nav class="sidebar" aria-label="Sections de configuration">
     <span class="section-label">Configuration</span>
     <a href="#lieu"     class="active">🏢 Lieu</a>
     <a href="#contacts">📞 Contacts</a>
@@ -319,7 +325,7 @@ textarea{min-height:70px;resize:vertical}
     <a href="#audit">📋 Audit</a>
   </nav>
 
-  <main class="main">
+  <main class="main" id="adminMain">
 
     <?php if ($degradedMode): ?>
     <div class="degraded-banner">
@@ -398,37 +404,37 @@ textarea{min-height:70px;resize:vertical}
         <h2>🏢 Informations du lieu</h2>
         <div class="form-grid">
           <div class="form-group fg-full">
-            <label>Nom du lieu / nœud *</label>
-            <input type="text" name="name" required maxlength="128"
+            <label for="f_name">Nom du lieu / nœud *</label>
+            <input id="f_name" type="text" name="name" required maxlength="128"
                    value="<?= htmlspecialchars($establishment['name'] ?? '') ?>"
                    placeholder="Ex : Mairie de Genève, Caserne Rive">
           </div>
           <div class="form-group">
-            <label>Pays</label>
-            <input type="text" name="country" maxlength="64"
+            <label for="f_country">Pays</label>
+            <input id="f_country" type="text" name="country" maxlength="64"
                    value="<?= htmlspecialchars($establishment['country'] ?? '') ?>"
                    placeholder="Ex : Suisse">
           </div>
           <div class="form-group">
-            <label>Adresse complète</label>
-            <input type="text" name="address" maxlength="256"
+            <label for="f_address">Adresse complète</label>
+            <input id="f_address" type="text" name="address" maxlength="256"
                    value="<?= htmlspecialchars($establishment['address'] ?? '') ?>">
           </div>
           <div class="form-group">
-            <label>Latitude GPS (ex: 46.9480)</label>
-            <input type="text" name="lat" maxlength="12" pattern="-?\d{1,3}(\.\d{1,8})?"
+            <label for="f_lat">Latitude GPS (ex: 46.9480)</label>
+            <input id="f_lat" type="text" name="lat" maxlength="12" pattern="-?\d{1,3}(\.\d{1,8})?"
                    value="<?= htmlspecialchars($establishment['lat'] ?? '') ?>"
                    placeholder="optionnel">
           </div>
           <div class="form-group">
-            <label>Longitude GPS (ex: 7.4474)</label>
-            <input type="text" name="lon" maxlength="12" pattern="-?\d{1,3}(\.\d{1,8})?"
+            <label for="f_lon">Longitude GPS (ex: 7.4474)</label>
+            <input id="f_lon" type="text" name="lon" maxlength="12" pattern="-?\d{1,3}(\.\d{1,8})?"
                    value="<?= htmlspecialchars($establishment['lon'] ?? '') ?>"
                    placeholder="optionnel">
           </div>
           <div class="form-group">
-            <label>Type d'établissement</label>
-            <select name="type">
+            <label for="f_type">Type d'établissement</label>
+            <select id="f_type" name="type">
               <?php foreach ($types as $v => $l): ?>
               <option value="<?= $v ?>" <?= (($establishment['type'] ?? 'erp') === $v) ? 'selected' : '' ?>>
                 <?= htmlspecialchars($l) ?>
@@ -437,14 +443,14 @@ textarea{min-height:70px;resize:vertical}
             </select>
           </div>
           <div class="form-group">
-            <label>Risque local spécifique</label>
-            <input type="text" name="localRisk" maxlength="256"
+            <label for="f_localRisk">Risque local spécifique</label>
+            <input id="f_localRisk" type="text" name="localRisk" maxlength="256"
                    value="<?= htmlspecialchars($establishment['localRisk'] ?? '') ?>"
                    placeholder="Ex: Zone SEVESO, inondable">
           </div>
           <div class="form-group fg-full">
-            <label>Message de réassurance</label>
-            <textarea name="reassuranceMessage" maxlength="512"><?=
+            <label for="f_reassuranceMessage">Message de réassurance</label>
+            <textarea id="f_reassuranceMessage" name="reassuranceMessage" maxlength="512"><?=
               htmlspecialchars($reassurance['message'] ?? '')
             ?></textarea>
           </div>
@@ -474,24 +480,24 @@ textarea{min-height:70px;resize:vertical}
           foreach ($contactFields as [$name, $lbl]):
           ?>
           <div class="form-group">
-            <label><?= $lbl ?></label>
-            <input type="text" name="<?= $name ?>"
+            <label for="f_<?= $name ?>"><?= $lbl ?></label>
+            <input type="text" id="f_<?= $name ?>" name="<?= $name ?>"
                    value="<?= htmlspecialchars($establishment[$name] ?? '') ?>">
           </div>
           <?php endforeach; ?>
           <div class="form-group fg-full">
-            <label>📍 Adresse PCC (Poste de Commandement)</label>
-            <input type="text" name="localPccAddress" maxlength="256"
+            <label for="f_localPccAddress">📍 Adresse PCC (Poste de Commandement)</label>
+            <input id="f_localPccAddress" type="text" name="localPccAddress" maxlength="256"
                    value="<?= htmlspecialchars($establishment['localPccAddress'] ?? '') ?>">
           </div>
           <div class="form-group fg-full">
-            <label>🚶 Point de rassemblement</label>
-            <input type="text" name="localMeetingPoint" maxlength="256"
+            <label for="f_localMeetingPoint">🚶 Point de rassemblement</label>
+            <input id="f_localMeetingPoint" type="text" name="localMeetingPoint" maxlength="256"
                    value="<?= htmlspecialchars($establishment['localMeetingPoint'] ?? '') ?>">
           </div>
           <div class="form-group fg-full">
-            <label>🗺️ Plan d'évacuation</label>
-            <input type="text" name="localEvacuationPlan" maxlength="512"
+            <label for="f_localEvacuationPlan">🗺️ Plan d'évacuation</label>
+            <input id="f_localEvacuationPlan" type="text" name="localEvacuationPlan" maxlength="512"
                    value="<?= htmlspecialchars($establishment['localEvacuationPlan'] ?? '') ?>">
           </div>
         </div>
@@ -502,8 +508,8 @@ textarea{min-height:70px;resize:vertical}
         <h2>📡 Réseau WiFi</h2>
         <div class="form-grid">
           <div class="form-group">
-            <label>Canal WiFi (EU : 1, 6 ou 11 recommandés)</label>
-            <select name="wifiChannel">
+            <label for="f_wifiChannel">Canal WiFi (EU : 1, 6 ou 11 recommandés)</label>
+            <select id="f_wifiChannel" name="wifiChannel">
               <?php for ($c = 1; $c <= 13; $c++): ?>
               <option value="<?= $c ?>" <?= $wifiChannel === $c ? 'selected' : '' ?>>
                 Canal <?= $c ?><?php if (in_array($c, [1,6,11])): ?> ★<?php endif; ?>
@@ -512,8 +518,8 @@ textarea{min-height:70px;resize:vertical}
             </select>
           </div>
           <div class="form-group">
-            <label>Langue par défaut du portail</label>
-            <select name="defaultLang">
+            <label for="f_defaultLang">Langue par défaut du portail</label>
+            <select id="f_defaultLang" name="defaultLang">
               <?php foreach ($portalLangs as $code => $label): ?>
               <option value="<?= $code ?>" <?= $defaultLang === $code ? 'selected' : '' ?>>
                 <?= $label ?>
@@ -536,7 +542,7 @@ textarea{min-height:70px;resize:vertical}
             <div style="font-size:.8rem;color:var(--sub)">868.1 MHz · AES-256-GCM · Portée 2–10 km · API :8765</div>
           </div>
           <label class="toggle">
-            <input type="checkbox" name="enableLoRa" value="true" <?= $enableLoRa ? 'checked' : '' ?>>
+            <input type="checkbox" name="enableLoRa" value="true" aria-label="Activer le module LoRa" <?= $enableLoRa ? 'checked' : '' ?>>
             <span class="toggle-slider"></span>
           </label>
         </div>
@@ -546,7 +552,7 @@ textarea{min-height:70px;resize:vertical}
             <div style="font-size:.8rem;color:var(--sub)">Accès Internet pour télécharger les contenus multilingues</div>
           </div>
           <label class="toggle">
-            <input type="checkbox" name="enableEthernet" value="true" <?= $enableEthernet ? 'checked' : '' ?>>
+            <input type="checkbox" name="enableEthernet" value="true" aria-label="Activer la connexion Ethernet" <?= $enableEthernet ? 'checked' : '' ?>>
             <span class="toggle-slider"></span>
           </label>
         </div>

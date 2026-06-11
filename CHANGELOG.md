@@ -11,6 +11,30 @@ adhère au [versionnage sémantique](https://semver.org/lang/fr/) (`VERSION` à 
 
 ## [Non publié]
 
+### Corrigé (conformité WCAG 2.1 AA / W3C — audit affichage)
+- **Contrastes AA mesurés et corrigés** dans `sos-theme.css` : `--sub` sombre
+  6b7fa3→7d90b4 (5.5:1), `--muted` sombre 475569→7588a8 (5.0:1), `--muted` clair
+  94a3b8→5d6b82 (5.4:1). Nouveaux tokens `--accent-strong`/`--accent-strong-h`
+  (2563eb/1d4ed8) pour les fonds de boutons sous texte blanc (5.2:1) — appliqués
+  aux `.btn-primary` (admin, starter), `.tool-button` et `.phone-badge` (portail).
+- **Labels associés aux champs** (WCAG 1.3.1) : 14 `for=`/`id` dans admin.php,
+  `aria-label` sur les toggles LoRa/Ethernet et le textarea LoRa, `for=` sur les
+  8 labels des templates JS du starter.
+- **Switches du starter accessibles au clavier** : `role="switch"`, `tabindex`,
+  `aria-checked`, activation Entrée/Espace (helper `wireSwitch`). Styles
+  `:focus-visible` complétés (starter) et ajoutés à admin + lora-portal.
+- **`prefers-reduced-motion`** global dans `sos-theme.css` (WCAG 2.3.3) +
+  classe `.skip-link` ; liens d'évitement ajoutés à admin et lora-portal.
+- **index.html : 13 erreurs de validation corrigées** : `<nav>` nommés
+  (`aria-label`), grille d'urgences en `<ul>/<li>` natifs (au lieu de
+  `role=list/listitem`), `<main>` landmark, textes de repli statiques dans les
+  titres et boutons remplis par le JS (h1, boutons outils, bouton Entrer).
+- **Métadonnées complétées** : `color-scheme`, `theme-color`, description et
+  favicon sur admin ; `color-scheme`, `theme-color`, description sur lora-portal ;
+  `color-scheme` corrigé `dark`→`dark light` + description sur le starter.
+- Résultat : **0 erreur** html-validate (preset conformité + règles WCAG) sur
+  les 4 pages ; tous les ratios de contraste ≥ 4.5:1 (AA texte normal).
+
 ### Ajouté
 - **Sélection de langue du starter refondue** : barre de navigation fixe (logo +
   bouton planète **🌐** + bascule thème) et **modale de langue à drapeaux** identique

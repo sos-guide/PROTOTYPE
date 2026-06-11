@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="color-scheme" content="dark">
+<meta name="color-scheme" content="dark light">
+<meta name="description" content="Assistant de configuration initiale du nœud SOS-GUIDE">
 <meta name="theme-color" content="#060a12">
 <title>⛑️ SOS-GUIDE — Configuration initiale</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='80' font-size='80'%3E⛑️%3C/text%3E%3C/svg%3E">
@@ -124,8 +125,8 @@ body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,
   justify-content:center;gap:.4rem}
 .btn:active{transform:scale(.97)}
 .btn-secondary{background:var(--field);border:1.5px solid var(--border);color:var(--sub)}
-.btn-primary{background:var(--accent);color:#fff}
-.btn-primary:hover{background:#2563eb}
+.btn-primary{background:var(--accent-strong);color:#fff}
+.btn-primary:hover{background:var(--accent-strong-h)}
 
 /* Alert */
 .alert{padding:.6rem .9rem;border-radius:10px;font-size:.78rem;margin-bottom:.75rem;
@@ -209,6 +210,8 @@ body.light-mode #nav{background:rgba(240,244,251,.95)}
 .lang-card:active{transform:scale(.96)}
 .lang-card.current{border-color:var(--accent);background:var(--card-h)}
 .lang-card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.toggle-opt:focus-visible,.tab:focus-visible,.btn:focus-visible,.gps-geo-btn:focus-visible,
+.drop-zone:focus-within{outline:2px solid var(--accent);outline-offset:2px}
 .lang-flag{font-size:1.5rem}
 .lang-name{font-size:.9rem;font-weight:500;color:var(--text)}
 </style>
@@ -1562,24 +1565,24 @@ function renderIdentity(){
   card.innerHTML=`
     ${renderSteps(0)}
     <div class="form-group">
-      <label>${T.identity.name}</label>
+      <label for="nodeName">${T.identity.name}</label>
       <input type="text" id="nodeName" placeholder="${escHtml(T.identity.namePh)}"
         maxlength="128" value="${escHtml(S.nodeName)}" autocomplete="off">
     </div>
     <div class="form-group">
-      <label>${T.identity.type}</label>
+      <label for="nodeType">${T.identity.type}</label>
       <select id="nodeType">
         ${NODE_TYPES.map(v=>`<option value="${v}" ${S.nodeType===v?'selected':''}>${escHtml(T.types[v])}</option>`).join('')}
       </select>
     </div>
     <div class="form-grid-2">
       <div class="form-group" style="margin-bottom:0">
-        <label>${T.identity.country} <small style="font-weight:400;text-transform:none">${T.identity.optional}</small></label>
+        <label for="nodeCountry">${T.identity.country} <small style="font-weight:400;text-transform:none">${T.identity.optional}</small></label>
         <input type="text" id="nodeCountry" placeholder="${escHtml(T.identity.countryPh)}"
           maxlength="64" value="${escHtml(S.nodeCountry)}" autocomplete="country-name">
       </div>
       <div class="form-group" style="margin-bottom:0">
-        <label>${T.identity.addr} <small style="font-weight:400;text-transform:none">${T.identity.optional}</small></label>
+        <label for="nodeAddress">${T.identity.addr} <small style="font-weight:400;text-transform:none">${T.identity.optional}</small></label>
         <input type="text" id="nodeAddress" placeholder="${escHtml(T.identity.addrPh)}"
           maxlength="256" value="${escHtml(S.nodeAddress)}" autocomplete="street-address">
       </div>
@@ -1635,18 +1638,18 @@ function renderMap(){
       <button class="gps-geo-btn" id="geoBtn">${T.map.geo}</button>
       <div class="form-grid-2">
         <div class="form-group">
-          <label>${T.map.lat}</label>
+          <label for="lat">${T.map.lat}</label>
           <input type="number" id="lat" step="0.000001" min="-90" max="90"
             placeholder="48.856614" value="${escHtml(S.lat)}">
         </div>
         <div class="form-group">
-          <label>${T.map.lon}</label>
+          <label for="lon">${T.map.lon}</label>
           <input type="number" id="lon" step="0.000001" min="-180" max="180"
             placeholder="2.352222" value="${escHtml(S.lon)}">
         </div>
       </div>
       <div class="form-group">
-        <label>${T.map.zoom} — <strong id="zoomLabel">${S.mapZoom}</strong>
+        <label for="mapZoom">${T.map.zoom} — <strong id="zoomLabel">${S.mapZoom}</strong>
           <small style="font-weight:400;text-transform:none">${T.map.zoomHint}</small>
         </label>
         <div class="range-row">
@@ -1730,22 +1733,24 @@ function renderMap(){
 function renderOptions(){
   card.innerHTML=`
     ${renderSteps(2)}
-    <div id="toggleLoRa" class="toggle-opt ${S.enableLoRa?'on':''}">
-      <div class="tog"></div>
+    <div id="toggleLoRa" class="toggle-opt ${S.enableLoRa?'on':''}" role="switch"
+      tabindex="0" aria-checked="${S.enableLoRa}" aria-label="${escHtml(T.options.lora)}">
+      <div class="tog" aria-hidden="true"></div>
       <div class="tog-info">
         <strong>${T.options.lora}</strong>
         <span>${T.options.loraDesc}</span>
       </div>
     </div>
-    <div id="toggleEth" class="toggle-opt ${S.enableEthernet?'on':''}">
-      <div class="tog"></div>
+    <div id="toggleEth" class="toggle-opt ${S.enableEthernet?'on':''}" role="switch"
+      tabindex="0" aria-checked="${S.enableEthernet}" aria-label="${escHtml(T.options.eth)}">
+      <div class="tog" aria-hidden="true"></div>
       <div class="tog-info">
         <strong>${T.options.eth}</strong>
         <span>${T.options.ethDesc}</span>
       </div>
     </div>
     <div class="channel-row">
-      <label>${T.options.chan}</label>
+      <label for="wifiChan">${T.options.chan}</label>
       <select id="wifiChan">
         ${Array.from({length:13},(_,i)=>i+1).map(c=>
           `<option value="${c}" ${parseInt(S.channel)===c?'selected':''}>${c}${[1,6,11].includes(c)?' ★':''}</option>`
@@ -1757,12 +1762,15 @@ function renderOptions(){
       <button class="btn btn-secondary" id="backBtn">${T.buttons.back}</button>
       <button class="btn btn-primary" id="nextBtn">${T.buttons.next}</button>
     </div>`;
-  document.getElementById('toggleLoRa').onclick=()=>{
-    S.enableLoRa=!S.enableLoRa; document.getElementById('toggleLoRa').classList.toggle('on',S.enableLoRa);
-  };
-  document.getElementById('toggleEth').onclick=()=>{
-    S.enableEthernet=!S.enableEthernet; document.getElementById('toggleEth').classList.toggle('on',S.enableEthernet);
-  };
+  // Switches accessibles : clic + Entrée/Espace, état exposé via aria-checked
+  function wireSwitch(id, get, set){
+    const el=document.getElementById(id);
+    const flip=()=>{ set(!get()); el.classList.toggle('on',get()); el.setAttribute('aria-checked',String(get())); };
+    el.onclick=flip;
+    el.onkeydown=e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); flip(); } };
+  }
+  wireSwitch('toggleLoRa', ()=>S.enableLoRa,     v=>{S.enableLoRa=v;});
+  wireSwitch('toggleEth',  ()=>S.enableEthernet, v=>{S.enableEthernet=v;});
   document.getElementById('wifiChan').onchange=e=>{ S.channel=e.target.value; };
   document.getElementById('backBtn').onclick=()=>{ S.step=2; render(); };
   document.getElementById('nextBtn').onclick=()=>{ S.step=4; render(); };
