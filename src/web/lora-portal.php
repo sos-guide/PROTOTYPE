@@ -1,6 +1,6 @@
 <?php
 /**
- * SOS-GUIDE — lora-portal.php v2.3
+ * SOS-GUIDE — lora-portal.php v2.5
  * Page LoRa du portail captif : envoi et réception de messages mesh d'urgence
  *
  * Accessible depuis le portail captif : http://10.0.0.1/lora
@@ -166,17 +166,12 @@ function fmt_time(int $ts): string {
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>📡 LoRa Mesh — <?= htmlspecialchars($nodeName) ?></title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='80' font-size='80'%3E📡%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/lib/sos-theme.css">
 <style>
-:root{
-  /* Palette commune SOS-GUIDE (alignée sur index.html / demo) */
-  --bg:#060a12;--bg1:#0c1120;--card:#0f1826;--card-h:#162035;--border:rgba(255,255,255,.07);
-  --text:#e8eef8;--sub:#6b7fa3;--r:14px;
-  --green:#22c55e;--red:#ef4444;--amber:#f59e0b;--blue:#3b82f6;
-}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;
   min-height:100vh;padding-bottom:2rem}
-.topbar{background:rgba(6,10,18,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
+.topbar{background:var(--bg1);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
   padding:.75rem 1.25rem;display:flex;align-items:center;justify-content:space-between;
   position:sticky;top:0;z-index:100}
 .topbar-left{display:flex;align-items:center;gap:.6rem;font-weight:600;font-size:.9rem}
@@ -264,6 +259,8 @@ body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,
     <?php if ($apiOk && $stats): ?>
       <span style="font-size:.72rem;color:var(--sub)"><?= number_format($stats['freq_mhz'] ?? 868.1, 1) ?> MHz</span>
     <?php endif; ?>
+    <button id="themeToggle" type="button" class="back-btn" aria-label="Basculer le thème clair/sombre"
+      style="cursor:pointer;background:none">🌙</button>
     <a href="/" class="back-btn">← Portail</a>
   </div>
 </div>
@@ -437,6 +434,17 @@ document.getElementById('sendForm')?.addEventListener('submit', function() {
   const btn = document.getElementById('sendBtn');
   if (btn) { btn.disabled = true; btn.textContent = 'Envoi…'; }
 });
+</script>
+<script>
+// Thème clair/sombre (clé partagée avec le portail)
+(function(){
+  const k='sos_guide_theme', b=document.getElementById('themeToggle');
+  function set(l){ document.body.classList.toggle('light-mode',l); b.textContent=l?'☀️':'🌙';
+    try{ localStorage.setItem(k, l?'light':'dark'); }catch(e){} }
+  let v='dark'; try{ v=localStorage.getItem(k)||'dark'; }catch(e){}
+  set(v==='light');
+  b.addEventListener('click',()=>set(!document.body.classList.contains('light-mode')));
+})();
 </script>
 </body>
 </html>

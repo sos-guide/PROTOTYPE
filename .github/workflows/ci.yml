@@ -85,6 +85,10 @@ jobs:
           done
           [ "$FAILED" -eq 0 ] && echo "OK: tous les Python syntaxiquement valides" || exit 1
 
+      # ── Web (JS inline + cohérence DOM) ──────────────────────────────────────
+      - name: node — syntaxe JS et IDs du portail/starter
+        run: node src/scripts/check-web-dom.mjs
+
       # ── Cohérence clés structurelles ─────────────────────────────────────────
       - name: Vérifier les langues CH obligatoires déployées
         run: |

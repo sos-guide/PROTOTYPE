@@ -1,6 +1,6 @@
 <?php
 /**
- * SOS-GUIDE Admin Panel v2.4
+ * SOS-GUIDE Admin Panel v2.5
  *
  * CORRECTIONS v2.4 :
  *   ✅ Erreur gracieuse si config.json invalide/absent (+ chargement backup .bak)
@@ -121,18 +121,42 @@ if (isset($_GET['updated'])) {
     $flashType = 'error';
 }
 
-$mapExists = file_exists('/var/www/sos-guide/img/map_location.png');
+// Carte locale : api_install.php sauve img/map_local.{png,webp,jpg} (map_location.png = ancien nom)
+$mapFile = '';
+foreach (['map_local.png', 'map_local.webp', 'map_local.jpg', 'map_location.png'] as $f) {
+    if (file_exists('/var/www/sos-guide/img/' . $f)) { $mapFile = $f; break; }
+}
+$mapExists = $mapFile !== '';
 
+// Types alignés sur le starter v2.5 (+ anciens types v2.4 pour les configs existantes)
 $types = [
-    'erp'         => 'ERP (Public)',
-    'ecole'       => 'École',
-    'mairie'      => 'Mairie',
-    'ehpad'       => 'EHPAD',
-    'entreprise'  => 'Entreprise',
-    'bar'         => 'Bar/Restaurant',
-    'boitedenuit' => 'Discothèque',
-    'hopital'     => 'Hôpital/Clinique',
-    'gymnase'     => 'Gymnase/PA',
+    'erp'         => 'ERP — Établissement recevant du public',
+    'school'      => 'École / Université / Crèche',
+    'hospital'    => 'Hôpital / Clinique / EHPAD',
+    'mairie'      => 'Mairie / Préfecture / PCC',
+    'refuge'      => 'Abri / Camp / Refuge',
+    'company'     => 'Entreprise / Site industriel',
+    'transport'   => 'Gare / Aéroport / Terminal',
+    'other'       => 'Autre',
+    'ecole'       => 'École (ancien)',
+    'ehpad'       => 'EHPAD (ancien)',
+    'entreprise'  => 'Entreprise (ancien)',
+    'bar'         => 'Bar/Restaurant (ancien)',
+    'boitedenuit' => 'Discothèque (ancien)',
+    'hopital'     => 'Hôpital/Clinique (ancien)',
+    'gymnase'     => 'Gymnase/PA (ancien)',
+];
+
+// Langue par défaut du portail (29 langues, modifiable ici comme au starter)
+$defaultLang = $config['defaultLang'] ?? 'fr';
+$portalLangs = [
+    'fr'=>'🇫🇷 Français','en'=>'🇬🇧 English','de'=>'🇩🇪 Deutsch','it'=>'🇮🇹 Italiano',
+    'rm'=>'🇨🇭 Rumantsch','es'=>'🇪🇸 Español','pt'=>'🇵🇹 Português','nl'=>'🇳🇱 Nederlands',
+    'pl'=>'🇵🇱 Polski','ru'=>'🇷🇺 Русский','uk'=>'🇺🇦 Українська','ar'=>'🇸🇦 العربية',
+    'zh'=>'🇨🇳 中文','ja'=>'🇯🇵 日本語','ko'=>'🇰🇷 한국어','tr'=>'🇹🇷 Türkçe',
+    'el'=>'🇬🇷 Ελληνικά','sv'=>'🇸🇪 Svenska','da'=>'🇩🇰 Dansk','no'=>'🇳🇴 Norsk',
+    'fi'=>'🇫🇮 Suomi','cs'=>'🇨🇿 Čeština','hu'=>'🇭🇺 Magyar','ro'=>'🇷🇴 Română',
+    'he'=>'🇮🇱 עברית','fa'=>'🇮🇷 فارسی','hi'=>'🇮🇳 हिन्दी','th'=>'🇹🇭 ไทย','vi'=>'🇻🇳 Tiếng Việt',
 ];
 ?>
 <!DOCTYPE html>
@@ -141,18 +165,12 @@ $types = [
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>⛑️ SOS-GUIDE — Administration v2.5</title>
+<link rel="stylesheet" href="/lib/sos-theme.css">
 <style>
-:root{
-  /* Palette commune SOS-GUIDE (alignée sur index.html / demo) */
-  --bg:#060a12;--card:#0f1826;--card-h:#162035;--border:rgba(255,255,255,.1);
-  --text:#e8eef8;--sub:#6b7fa3;--muted:#475569;
-  --accent:#3b82f6;--green:#22c55e;--red:#ef4444;
-  --yellow:#eab308;--r:14px;
-}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;
      line-height:1.5;min-height:100vh}
-.top-bar{background:#0c1120;border-bottom:1px solid var(--border);
+.top-bar{background:var(--bg1);border-bottom:1px solid var(--border);
          padding:.75rem 1.5rem;display:flex;align-items:center;
          justify-content:space-between;position:sticky;top:0;z-index:100}
 .top-bar h1{font-size:1rem;font-weight:600;display:flex;align-items:center;gap:.5rem}
@@ -161,7 +179,7 @@ body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,
                padding:.3rem .7rem;border-radius:6px;border:1px solid var(--border)}
 .top-bar nav a:hover{border-color:var(--accent);color:var(--accent)}
 .layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 49px)}
-.sidebar{background:#0c1120;border-right:1px solid var(--border);
+.sidebar{background:var(--bg1);border-right:1px solid var(--border);
          padding:1rem;display:flex;flex-direction:column;gap:.25rem}
 .sidebar a{display:flex;align-items:center;gap:.6rem;padding:.55rem .75rem;
            border-radius:8px;font-size:.88rem;color:var(--sub);text-decoration:none;
@@ -281,6 +299,9 @@ textarea{min-height:70px;resize:vertical}
     <a href="#ssh" title="SSH : pi@<?= htmlspecialchars($ethIp) ?> (<?= htmlspecialchars($ethIface) ?>)">🔐 SSH</a>
     <?php endif; ?>
     <a href="PRIVACY.md" target="_blank">🔒 nLPD</a>
+    <button id="themeToggle" type="button" aria-label="Basculer le thème clair/sombre"
+      style="font-size:.8rem;color:var(--sub);background:none;border:1px solid var(--border);
+             border-radius:6px;padding:.3rem .7rem;cursor:pointer">🌙</button>
   </nav>
 </div>
 
@@ -484,6 +505,16 @@ textarea{min-height:70px;resize:vertical}
               <?php endfor; ?>
             </select>
           </div>
+          <div class="form-group">
+            <label>Langue par défaut du portail</label>
+            <select name="defaultLang">
+              <?php foreach ($portalLangs as $code => $label): ?>
+              <option value="<?= $code ?>" <?= $defaultLang === $code ? 'selected' : '' ?>>
+                <?= $label ?>
+              </option>
+              <?php endforeach; ?>
+            </select>
+          </div>
         </div>
         <p style="font-size:.8rem;color:var(--sub);margin-top:.75rem">
           ℹ️ Le réseau WiFi est toujours ouvert (sans mot de passe). Un changement de canal nécessite un <strong>Reload WiFi</strong> (~3s d'interruption).
@@ -530,7 +561,7 @@ textarea{min-height:70px;resize:vertical}
         <h2>🗺️ Carte du lieu</h2>
         <div style="display:flex;align-items:center;gap:.75rem;font-size:.9rem">
           <span class="dot <?= $mapExists ? 'ok' : 'off' ?>"></span>
-          <?= $mapExists ? '✅ Carte PNG présente (map_location.png)' : '⚠️ Aucune carte PNG' ?>
+          <?= $mapExists ? '✅ Carte présente (' . htmlspecialchars($mapFile) . ')' : '⚠️ Aucune carte locale' ?>
         </div>
         <p style="font-size:.82rem;color:var(--sub);margin-top:.75rem">
           Pour ajouter une carte :<br>
@@ -658,5 +689,16 @@ async function reloadNetwork(reloadWifi) {
 }
 </script>
 
+<script>
+// Thème clair/sombre (clé partagée avec le portail)
+(function(){
+  const k='sos_guide_theme', b=document.getElementById('themeToggle');
+  function set(l){ document.body.classList.toggle('light-mode',l); b.textContent=l?'☀️':'🌙';
+    try{ localStorage.setItem(k, l?'light':'dark'); }catch(e){} }
+  let v='dark'; try{ v=localStorage.getItem(k)||'dark'; }catch(e){}
+  set(v==='light');
+  b.addEventListener('click',()=>set(!document.body.classList.contains('light-mode')));
+})();
+</script>
 </body>
 </html>

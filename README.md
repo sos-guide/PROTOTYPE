@@ -76,7 +76,8 @@ SOS-GUIDE/
     │   ├── sos-guide-test.sh        ← Suite tests d'intégration (rapport JSON)
     │   ├── sos-guide-tls-setup.sh   ← Configuration certificat TLS
     │   ├── sos-guide-update.sh      ← Mise à jour automatique contenus JSON via ETH
-    │   └── sos-guide-watchdog-test.sh ← Sonde applicative watchdog matériel
+    │   ├── sos-guide-watchdog-test.sh ← Sonde applicative watchdog matériel
+    │   └── check-web-dom.mjs   ← Vérif CI : JS inline + cohérence des IDs DOM
     │
     ├── systemd/
     │   ├── lora-service.service
@@ -93,7 +94,8 @@ SOS-GUIDE/
         ├── api_reload_network_proxy.php
         ├── lora-portal.php
         ├── lib/
-        │   └── whitelist.php   ← Whitelist IP partagée (WiFi AP + ETH)
+        │   ├── whitelist.php   ← Whitelist IP partagée (WiFi AP + ETH)
+        │   └── sos-theme.css   ← Tokens de design partagés (sombre + clair)
         └── data/
             ├── config.json
             └── *.json          ← Fichiers de langue (29 langues)
@@ -262,7 +264,7 @@ les scripts et les unités systemd avant de configurer le système.
 | Accès | URL | Auth |
 |-------|-----|------|
 | Portail captif | `http://10.0.0.1/` | Aucune |
-| Administration | `http://10.0.0.1/admin` | `admin` / mot de passe généré |
+| Administration | `https://10.0.0.1/admin` (TLS auto-signé, redirection depuis HTTP) | `admin` / mot de passe généré |
 | SSH de secours | `ssh pi@<IP-ETH>` | Mot de passe dans `*-credentials.txt` |
 
 ### Reload à chaud (sans reboot)
@@ -356,7 +358,7 @@ portail captif · sécurité admin · 29 fichiers de langue · LoRa · réseau S
 | Mode dégradé | PHP-FPM stoppé si intégrité compromise — portail HTML accessible |
 | CSRF | Token de session one-shot (api_install + admin) |
 | Rate-limit firstboot | 5 tentatives / 15 min par IP |
-| Admin web | HTTP Basic Auth (`/etc/nginx/.htpasswd`) |
+| Admin web | HTTP Basic Auth (`/etc/nginx/.htpasswd`) + **TLS auto-signé sur :443 par défaut** |
 | LoRa | AES-256-GCM, clé unique par déploiement |
 | Logs | Mémoire volatile (tmpfs) — effacés au redémarrage |
 | IPv6 | Désactivé globalement |
@@ -449,6 +451,7 @@ git push origin feature/ma-contribution
 ```bash
 shellcheck install.sh src/scripts/build-image.sh src/scripts/sos-guide-update.sh src/scripts/sos-guide-test.sh
 python3 -m json.tool src/web/data/config.json
+node src/scripts/check-web-dom.mjs
 sudo bash src/scripts/sos-guide-test.sh
 ```
 

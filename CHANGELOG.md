@@ -13,6 +13,42 @@ adhère au [versionnage sémantique](https://semver.org/lang/fr/) (`VERSION` à 
 
 ### Ajouté
 - `CHANGELOG.md` — ce fichier ; consignation obligatoire de tous les changements futurs.
+- **Dépôt git initialisé** et relié à `https://github.com/sos-guide/SOS-GUIDE`.
+- **`src/web/lib/sos-theme.css`** — source unique des tokens de design (sombre + clair),
+  chargée par les 4 pages ; les blocs `:root` dupliqués sont supprimés.
+- **Mode clair/sombre sur toutes les pages** : starter, admin et portail LoRa ont
+  maintenant le toggle 🌙/☀️ (clé localStorage `sos_guide_theme` partagée avec le portail).
+- **Traduction romanche (rm) du wizard starter** — 5 langues natives (fr/en/de/it/rm),
+  ⚠ à faire relire par un locuteur natif avant dépôt PCi-CH (idem `fa.json`).
+- **Accessibilité du portail** : rôles ARIA, `aria-label` sur tous les boutons et
+  numéros d'urgence, navigation clavier (Enter/Espace) sur les cartes, fermeture
+  des modales/drawer par Échap, styles `:focus-visible`.
+- **Langue par défaut modifiable dans /admin** (sélecteur 29 langues, validée
+  par `update_config.php` avec la même whitelist qu'`api_install.php`).
+- **TLS auto-signé activé par défaut sur /admin** lors de l'installation
+  (`install.sh` appelle `sos-guide-tls-setup.sh`, non bloquant ; le portail
+  captif reste en HTTP par conception).
+- **`src/scripts/check-web-dom.mjs`** — vérification CI de la syntaxe JS inline
+  et de la résolution de tous les `getElementById` (étape ajoutée à `ci.yml`).
+
+### Corrigé
+- **Types d'établissement désynchronisés** : `admin.php`/`update_config.php`
+  utilisaient l'ancienne liste v2.4 (`ecole`, `ehpad`…) — un lieu configuré
+  « École » au starter (`school`) était silencieusement réécrit en `erp` à la
+  première sauvegarde admin. Listes fusionnées (nouveaux types + anciens).
+- `admin.php` cherchait `img/map_location.png` alors qu'`api_install.php` sauve
+  `img/map_local.{png,webp,jpg}` — la carte uploadée au starter n'était jamais
+  détectée par l'admin.
+- `api_install.php` : les tirets cadratins (– —) du nom du lieu étaient avalés
+  par la sanitisation.
+- Mention « Certifié Croix-Rouge Suisse » retirée du starter (claim non prouvé) ;
+  « Conforme PCi-CH » reformulé en « Conçu selon les exigences PCi-CH ».
+- En-têtes PHP harmonisés en v2.5 (admin v2.4, lora-portal v2.3, etc.).
+- Icône 🇫🇷 incongrue (« principes de secourisme ») remplacée par 🩹 dans les
+  29 fichiers de langue et leurs liens de menu.
+- CSS RTL : bordure de titre de section, cartes et drawer adaptés en `dir=rtl`.
+- Test E2E starter→install validé sur le Pi de dev (token CSRF one-shot,
+  config.json écrit avec `defaultLang`, types v2.5 acceptés).
 - **`fa.json` (persan)** — la 29ᵉ langue annoncée partout était absente de `src/web/data/` ;
   le sélecteur du portail proposait فارسی mais retombait silencieusement sur le français.
 - **Sélection de langue au starter** : menu déroulant des **29 langues avec

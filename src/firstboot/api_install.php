@@ -1,6 +1,6 @@
 <?php
 /**
- * SOS-GUIDE — api_install.php v2.4
+ * SOS-GUIDE — api_install.php v2.5
  * Endpoint de configuration initial (mode STARTER → PRODUCTION)
  *
  * CORRECTIONS v2.4 :
@@ -142,7 +142,7 @@ if (empty($submittedToken) || !hash_equals($expectedToken, $submittedToken)) {
 // ── 6. Validation des données de configuration ────────────────────────────────
 $nodeName = trim((string) ($_POST['nodeName'] ?? ''));
 // Nettoyer avant de valider la longueur (évite faux positifs sur chars invalides)
-$nodeName = preg_replace('/[^\pL\pN\s\-\.\,\'\(\)]/u', '', $nodeName);
+$nodeName = preg_replace('/[^\pL\pN\s\-\.\,\'\(\)–—]/u', '', $nodeName);
 $nodeName = function_exists('mb_substr') ? mb_substr(trim($nodeName), 0, 128) : substr(trim($nodeName), 0, 128);
 if (empty($nodeName)) {
     json_error(400, 'Nom du lieu requis (1–128 caractères, lettres/chiffres)');

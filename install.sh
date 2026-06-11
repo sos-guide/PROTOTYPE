@@ -969,6 +969,19 @@ ok "Mode firstboot désactivé"
 ok "Marqueur d'installation créé : ${INSTALL_MARKER} (chmod 400)"
 
 # ══════════════════════════════════════════════════════════════════════════════
+# TLS AUTO-SIGNÉ SUR /ADMIN (activé par défaut, non bloquant)
+# ══════════════════════════════════════════════════════════════════════════════
+# Le portail captif reste en HTTP (les clients en urgence ne peuvent pas
+# accepter un certificat auto-signé) ; seul /admin passe en HTTPS:443.
+if [ -x /usr/local/bin/sos-guide-tls-setup.sh ]; then
+    if bash /usr/local/bin/sos-guide-tls-setup.sh >> /var/log/sos-guide-install.log 2>&1; then
+        ok "TLS auto-signé activé sur /admin (port 443)"
+    else
+        warn "TLS non activé — relancer manuellement : sudo sos-guide-tls-setup.sh"
+    fi
+fi
+
+# ══════════════════════════════════════════════════════════════════════════════
 # RÉSUMÉ
 # ══════════════════════════════════════════════════════════════════════════════
 echo ""

@@ -1,6 +1,6 @@
 <?php
 /**
- * SOS-GUIDE — api_reload_network_proxy.php v2.4
+ * SOS-GUIDE — api_reload_network_proxy.php v2.5
  *
  * Proxy interne : appelé par admin.php via fetch('/api/reload-network-proxy')
  * Il relaie la requête vers /api/reload-network (restreint à 127.0.0.1 par nginx)

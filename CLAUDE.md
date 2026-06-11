@@ -94,9 +94,15 @@ Champs principaux : `establishment.name`, `wifiChannel` (1–13), `wifiPassword`
 
 ### Style des pages web
 
-Le design de référence est celui de **sosguide.fr/demo.html**, implémenté dans `index.html`. Les 4 pages (`index.html`, `admin.php`, `lora-portal.php`, `starter.html`) partagent les mêmes tokens `:root` : fond `#060a12`, surfaces `#0c1120` (bg1) / `#111928` (bg2), cartes `#0f1826`, survol `#162035`, texte `#e8eef8`, texte secondaire `#6b7fa3`, accent bleu `#3b82f6`, vert `#22c55e`, rouge `#ef4444`, radius `14px` (`--r-lg:18px` pour les grandes cartes). Le portail a en plus un **mode clair** (`body.light-mode`, clé localStorage `sos_guide_theme`). Toute nouvelle page ou modification de style doit réutiliser ces tokens. L'ancien portail v2.4 est archivé dans `index-v2.4-portail.html.bak` à la racine.
+Le design de référence est celui de **sosguide.fr/demo.html**. Les tokens (sombre **et** clair) vivent dans **`src/web/lib/sos-theme.css`** — source unique, chargée par les 4 pages via `<link href="/lib/sos-theme.css">`. **Ne jamais redéfinir `:root` dans une page** ; toute nouvelle page charge ce fichier. Les 4 pages ont le toggle clair/sombre (`body.light-mode`, clé localStorage partagée `sos_guide_theme`). L'ancien portail v2.4 est archivé dans `index-v2.4-portail.html.bak` à la racine (non versionné).
+
+### Accessibilité
+
+Le portail est navigable au clavier : helper `a11yButton()` (role=button + tabindex + Enter/Espace) sur toutes les cartes générées, `aria-label` sur les boutons et numéros d'urgence, Échap ferme modales/drawer/outils. Maintenir ce niveau sur tout nouvel élément interactif. La CI vérifie la cohérence DOM via `node src/scripts/check-web-dom.mjs`.
 
 ### i18n
 
 - **Portail** (`index.html`) : 29 fichiers JSON dans `src/web/data/` chargés côté client ; liste `LANGS` + `RTL_LANGS` dans index.html, liste `ALL_LANGS` dans sos-guide-test.sh — **les trois doivent rester synchrones avec data/**.
-- **Starter** (`starter.html`) : menu déroulant des 29 langues avec drapeaux (constante `LANGS`, mêmes drapeaux que le portail). L'UI du wizard est traduite FR/EN/DE/IT via le dictionnaire `I18N` embarqué et retombe sur l'anglais pour les autres codes ; la langue choisie part en `defaultLang` dans `config.json` via api_install.php (whitelist des 29 codes).
+- **Starter** (`starter.html`) : menu déroulant des 29 langues avec drapeaux (constante `LANGS`, mêmes drapeaux que le portail). L'UI du wizard est traduite FR/EN/DE/IT/RM via le dictionnaire `I18N` embarqué et retombe sur l'anglais pour les autres codes ; la langue choisie part en `defaultLang` dans `config.json` via api_install.php (whitelist des 29 codes). `defaultLang` est aussi modifiable dans /admin.
+- **Types d'établissement** : la liste de référence est celle du starter (`erp,school,hospital,mairie,refuge,company,transport,other`) ; admin.php et update_config.php acceptent en plus les anciens types v2.4 — garder les trois listes synchrones.
+- ⚠ `fa.json` et la traduction `rm` (wizard + rm.json) doivent être relus par des locuteurs natifs avant tout dépôt de certification.

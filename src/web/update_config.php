@@ -1,6 +1,6 @@
 <?php
 /**
- * SOS-GUIDE — update_config.php v2.4
+ * SOS-GUIDE — update_config.php v2.5
  *
  * CORRECTIONS v2.4 :
  *   ✅ IP whitelist étendue : ETH privé (192.168.x.x / 172.16-31.x.x / 10.x.x.x)
@@ -125,9 +125,10 @@ $estFields = [
     'localEvacuationPlan' => ['s_text',  512],
 ];
 
+// Types du starter v2.5 + anciens types v2.4 (compat configs existantes)
 $allowedTypes = [
-    'erp','ecole','mairie','ehpad','entreprise',
-    'bar','boitedenuit','hopital','gymnase'
+    'erp','school','hospital','mairie','refuge','company','transport','other',
+    'ecole','ehpad','entreprise','bar','boitedenuit','hopital','gymnase'
 ];
 
 if (empty($config['establishment'])) $config['establishment'] = [];
@@ -148,6 +149,20 @@ if (isset($_POST['reassuranceMessage'])) {
     $old = $config['reassurance']['message'] ?? '';
     if ($old !== $new) $changed['reassuranceMessage'] = ['from' => $old, 'to' => $new];
     $config['reassurance']['message'] = $new;
+}
+
+// ── Langue par défaut du portail (whitelist 29 langues, comme api_install) ────
+if (isset($_POST['defaultLang'])) {
+    $allLangs = ['fr','de','it','rm','en','es','pt','ar','zh','ja','ko','ru','uk','pl','nl',
+                 'sv','no','da','fi','hu','ro','cs','el','tr','fa','hi','th','vi','he'];
+    $newLang  = strtolower(preg_replace('/[^a-zA-Z]/', '', (string) $_POST['defaultLang']));
+    if (!in_array($newLang, $allLangs, true)) {
+        $newLang = $config['defaultLang'] ?? 'fr';
+    }
+    if (($config['defaultLang'] ?? 'fr') !== $newLang) {
+        $changed['defaultLang'] = ['from' => $config['defaultLang'] ?? 'fr', 'to' => $newLang];
+    }
+    $config['defaultLang'] = $newLang;
 }
 
 // ── Canal WiFi ────────────────────────────────────────────────────────────────

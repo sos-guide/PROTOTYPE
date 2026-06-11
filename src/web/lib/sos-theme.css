@@ -1,0 +1,58 @@
+/* ═══════════════════════════════════════════════════════════════
+   SOS-GUIDE — Thème partagé (source unique des tokens)
+   Chargé par : index.html, admin.php, lora-portal.php, starter.html
+   Design de référence : sosguide.fr/demo.html
+   Toute nouvelle page DOIT charger ce fichier au lieu de redéfinir :root.
+═══════════════════════════════════════════════════════════════ */
+:root{
+  /* Surfaces */
+  --bg:#060a12;          /* fond de page */
+  --bg1:#0c1120;         /* barres, drawer, modales */
+  --bg2:#111928;         /* éléments imbriqués */
+  --field:#111928;       /* champs de formulaire */
+  --card:#0f1826;        /* cartes */
+  --card-h:#162035;      /* cartes au survol */
+  /* Bordures */
+  --border:rgba(255,255,255,.07);
+  --border-h:rgba(255,255,255,.16);
+  /* Texte */
+  --text:#e8eef8;
+  --sub:#6b7fa3;
+  --muted:#475569;
+  /* Couleurs fonctionnelles */
+  --accent:#3b82f6;
+  --blue:#3b82f6;
+  --green:#22c55e;
+  --red:#ef4444;
+  --amber:#f59e0b;
+  --yellow:#eab308;
+  /* Géométrie */
+  --nav-h:58px;
+  --r:14px;
+  --r-lg:18px;
+  --shadow:0 8px 24px rgba(0,0,0,.4);
+}
+body.light-mode{
+  --bg:#f0f4fb;
+  --bg1:#e8eef8;
+  --bg2:#dde4f0;
+  --field:#e8eef8;
+  --card:#fff;
+  --card-h:#eff6ff;
+  --border:rgba(0,0,0,.07);
+  --border-h:rgba(0,0,0,.16);
+  --text:#0f172a;
+  --sub:#475569;
+  --muted:#94a3b8;
+  --shadow:0 8px 24px rgba(0,0,0,.08);
+}
+
+/* Bouton de bascule de thème (commun aux pages hors portail) */
+.theme-btn{
+  position:fixed;top:.9rem;right:.9rem;z-index:500;
+  width:36px;height:36px;border-radius:10px;
+  border:1px solid var(--border);background:var(--card);color:var(--sub);
+  display:flex;align-items:center;justify-content:center;font-size:1rem;
+  cursor:pointer;transition:all .15s;
+}
+.theme-btn:hover{background:var(--card-h);color:var(--text);border-color:var(--border-h)}

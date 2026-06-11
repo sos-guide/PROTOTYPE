@@ -8,13 +8,8 @@
 <title>⛑️ SOS-GUIDE — Configuration initiale</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='80' font-size='80'%3E⛑️%3C/text%3E%3C/svg%3E">
 <script src="qrcode.min.js"></script>
+<link rel="stylesheet" href="/lib/sos-theme.css">
 <style>
-:root{
-  /* Palette commune SOS-GUIDE (alignée sur index.html / demo) */
-  --bg:#060a12;--card:#0f1826;--card-h:#162035;--field:#111928;--border:rgba(255,255,255,.1);
-  --text:#e8eef8;--sub:#6b7fa3;--muted:#475569;--accent:#3b82f6;--green:#22c55e;
-  --red:#ef4444;--r:14px;--shadow:0 8px 24px rgba(0,0,0,.4);
-}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;
   min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
@@ -175,10 +170,22 @@ body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,
 </style>
 </head>
 <body>
+<button id="themeToggle" class="theme-btn" aria-label="Basculer le thème clair/sombre">🌙</button>
 <div class="card" id="card"></div>
 <script>
 (function(){
 "use strict";
+
+// Thème clair/sombre (clé partagée avec le portail)
+(function(){
+  const k='sos_guide_theme', b=document.getElementById('themeToggle');
+  function set(l){ document.body.classList.toggle('light-mode',l); b.textContent=l?'☀️':'🌙';
+    try{ localStorage.setItem(k, l?'light':'dark'); }catch(e){} }
+  let v='dark'; try{ v=localStorage.getItem(k)||'dark'; }catch(e){}
+  set(v==='light');
+  b.addEventListener('click',()=>set(!document.body.classList.contains('light-mode')));
+})();
+
 
 // ── i18n du wizard (FR/EN/DE/IT) ─────────────────────────────────────────────
 // La langue choisie est aussi envoyée comme defaultLang → langue par défaut du portail.
@@ -190,7 +197,8 @@ fr:{
     connectedSub:'4 étapes pour mettre ce nœud en service',
     ck1:'Identité du lieu (nom, type, adresse)',ck2:'Carte locale (plan uploadé ou coordonnées GPS)',
     ck3:'Options réseau (LoRa mesh, Ethernet, canal WiFi)',ck4:'Résumé et installation (~30 s)',
-    expire:'Session expire dans',start:'🚀 Démarrer la configuration',connected:'Connecté ·'},
+    expire:'Session expire dans',start:'🚀 Démarrer la configuration',connected:'Connecté ·',
+    badge:'Conçu pour la protection civile'},
   expired:{title:'Session expirée',text:'Redémarrez le Raspberry Pi pour recommencer.'},
   identity:{name:'Nom du lieu / nœud *',namePh:'Ex : Mairie de Lyon — Salle B, Bunker Berne B1',
     type:"Type d'établissement",addr:'Adresse',optional:'(optionnel)',
@@ -218,7 +226,7 @@ fr:{
     p4:'Démarrage des services…',p5:"Vérification de l'intégrité…",p6:'Terminé !'},
   success:{title:'Configuration réussie !',text:'Le nœud SOS-GUIDE est opérationnel.<br>Reconnectez-vous au réseau :',
     portal:'Portail',admin:'Administration',
-    compliance:'🇨🇭 Conforme PCi-CH · nLPD RS 235.1 · Aucune donnée personnelle collectée'},
+    compliance:'🇨🇭 Conçu selon les exigences PCi-CH · nLPD RS 235.1 · Aucune donnée personnelle collectée'},
   buttons:{back:'← Retour',next:'Continuer →'}
 },
 en:{
@@ -228,7 +236,8 @@ en:{
     connectedSub:'4 steps to bring this node online',
     ck1:'Location identity (name, type, address)',ck2:'Local map (uploaded plan or GPS coordinates)',
     ck3:'Network options (LoRa mesh, Ethernet, WiFi channel)',ck4:'Summary and installation (~30 s)',
-    expire:'Session expires in',start:'🚀 Start configuration',connected:'Connected ·'},
+    expire:'Session expires in',start:'🚀 Start configuration',connected:'Connected ·',
+    badge:'Designed for civil protection'},
   expired:{title:'Session expired',text:'Restart the Raspberry Pi to try again.'},
   identity:{name:'Place / node name *',namePh:'E.g.: Lyon Town Hall — Room B, Bern Bunker B1',
     type:'Type of facility',addr:'Address',optional:'(optional)',
@@ -256,7 +265,7 @@ en:{
     p4:'Starting services…',p5:'Verifying integrity…',p6:'Done!'},
   success:{title:'Setup complete!',text:'The SOS-GUIDE node is operational.<br>Reconnect to the network:',
     portal:'Portal',admin:'Administration',
-    compliance:'🇨🇭 PCi-CH compliant · nFADP RS 235.1 · No personal data collected'},
+    compliance:'🇨🇭 Designed to PCi-CH requirements · nFADP RS 235.1 · No personal data collected'},
   buttons:{back:'← Back',next:'Continue →'}
 },
 de:{
@@ -266,7 +275,8 @@ de:{
     connectedSub:'4 Schritte zur Inbetriebnahme dieses Knotens',
     ck1:'Identität des Ortes (Name, Typ, Adresse)',ck2:'Lokale Karte (hochgeladener Plan oder GPS-Koordinaten)',
     ck3:'Netzwerkoptionen (LoRa-Mesh, Ethernet, WLAN-Kanal)',ck4:'Übersicht und Installation (~30 s)',
-    expire:'Sitzung läuft ab in',start:'🚀 Konfiguration starten',connected:'Verbunden ·'},
+    expire:'Sitzung läuft ab in',start:'🚀 Konfiguration starten',connected:'Verbunden ·',
+    badge:'Für den Zivilschutz entwickelt'},
   expired:{title:'Sitzung abgelaufen',text:'Starten Sie den Raspberry Pi neu, um fortzufahren.'},
   identity:{name:'Name des Ortes / Knotens *',namePh:'z. B.: Rathaus Bern — Saal B, Bunker Bern B1',
     type:'Art der Einrichtung',addr:'Adresse',optional:'(optional)',
@@ -294,8 +304,47 @@ de:{
     p4:'Dienste werden gestartet…',p5:'Integrität wird geprüft…',p6:'Fertig!'},
   success:{title:'Konfiguration erfolgreich!',text:'Der SOS-GUIDE-Knoten ist betriebsbereit.<br>Verbinden Sie sich erneut mit dem Netzwerk:',
     portal:'Portal',admin:'Administration',
-    compliance:'🇨🇭 PCi-CH-konform · nDSG SR 235.1 · Keine Personendaten erhoben'},
+    compliance:'🇨🇭 Nach PCi-CH-Anforderungen entwickelt · nDSG SR 235.1 · Keine Personendaten erhoben'},
   buttons:{back:'← Zurück',next:'Weiter →'}
+},
+rm:{
+  steps:['Lieu','Charta','Opziuns','Resumaziun'],
+  langLabel:'Lingua',
+  welcome:{sub:'Configuraziun iniziala · Punct d’access d’urgenza',
+    connectedSub:'4 pass per metter en funcziun quest nod',
+    ck1:'Identitad dal lieu (num, tip, adressa)',ck2:'Charta locala (plan chargià si u coordinatas GPS)',
+    ck3:'Opziuns da rait (LoRa mesh, Ethernet, chanal WiFi)',ck4:'Resumaziun ed installaziun (~30 s)',
+    expire:'La sesida scada en',start:'🚀 Cumenzar la configuraziun',connected:'Connectà ·',
+    badge:'Sviluppà per la protecziun civila'},
+  expired:{title:'Sesida scadida',text:'Reaviar il Raspberry Pi per recumenzar.'},
+  identity:{name:'Num dal lieu / nod *',namePh:'P.ex.: Chasa communala Cuira — Sala B',
+    type:'Tip da l’instituziun',addr:'Adressa',optional:'(facultativ)',
+    addrPh:'P.ex.: Plessurquai 1, 7000 Cuira'},
+  types:{erp:'🏢 Edifizi avert al public',school:'🏫 Scola / Universitad / Canorta',
+    hospital:'🏥 Ospital / Clinica / Chasa da tgira',mairie:'🏛️ Chasa communala / Prefectura',
+    refuge:'⛺ Refugi / Champ / Chamona',company:'🏭 Interpresa / Lieu industrial',
+    transport:'🚉 Staziun / Eroport / Terminal',other:'📍 Auter'},
+  map:{tabImg:'📷 Plan / Foto',tabGps:'🌍 Coordinatas GPS',dzPick:'Trair ed deponer u cliccar per tscherner',
+    dzHint:'PNG · JPG · WEBP · max 10 MB',remove:'✕ Allontanar il maletg',
+    optionalHint:'Plan d’evacuaziun, foto da satellit, charta a maun…<br><em>Pass facultativ — configurabel pli tard via /admin</em>',
+    geo:'📍 Duvrar mia posiziun actuala',geoWait:'⏳ Localisaziun en curs…',geoFail:'❌ Posiziun betg disponibla',
+    geoNo:'Geolocalisaziun betg disponibla en quest navigatur',lat:'Latituda',lon:'Longituda',
+    zoom:'Nivel da zoom da la charta',zoomHint:'(10 = citad · 15 = quartier · 18 = edifizi)',
+    gpsOk:'✅ GPS registrà:',tilesHint:'💡 Las plattas offline vegnan chargiadas automaticamain via <code>sos-guide-fetch-tiles.sh</code> sch’Ethernet è activà en il proxim pass.',
+    badFormat:'Format betg sustegnì (mo PNG, JPG, WEBP)',tooBig:'Datoteca memia gronda (max 10 MB)'},
+  options:{lora:'📡 Communicaziun LoRa (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Distanza 2–10 km',
+    eth:'🌐 Connexiun Ethernet',ethDesc:'Cuntegns plurilings + plattas da charta offline (dovra access ad internet temporar)',
+    chan:'📶 Chanal WiFi',chanHint:'Chanals recumandads UE: 1, 6 u 11 (marcads ★)'},
+  summary:{node:'Nod',type:'Tip',addr:'Adressa',map:'Charta',chan:'Chanal WiFi',lora:'LoRa mesh',
+    eth:'Ethernet / plattas',lang:'Lingua da standard',none:'Betg configurada',on:'✅ Activà',off:'❌ Deactivà',
+    note:'⚡ Installaziun senza reaviar (~30 secundas).',modify:'← Modifitgar',install:'✅ Installar'},
+  progress:{title:'Installaziun en curs',warn:'Betg stizzar l’apparat',sending:'Trametter la configuraziun…',
+    p1:'Configuraziun memorisada…',p2:'Copiar la charta locala…',p3:'Applitgar la rait WiFi…',
+    p4:'Aviar ils servetschs…',p5:'Verifitgar l’integritad…',p6:'Fatg!'},
+  success:{title:'Configuraziun reussida!',text:'Il nod SOS-GUIDE è operativ.<br>As reconnectai cun la rait:',
+    portal:'Portal',admin:'Administraziun',
+    compliance:'🇨🇭 Sviluppà tenor las pretensiuns PCi-CH · nLPD RS 235.1 · Naginas datas persunalas rimnadas'},
+  buttons:{back:'← Enavos',next:'Vinavant →'}
 },
 it:{
   steps:['Luogo','Mappa','Opzioni','Riepilogo'],
@@ -304,7 +353,8 @@ it:{
     connectedSub:'4 passaggi per mettere in servizio questo nodo',
     ck1:'Identità del luogo (nome, tipo, indirizzo)',ck2:'Mappa locale (piantina caricata o coordinate GPS)',
     ck3:'Opzioni di rete (LoRa mesh, Ethernet, canale WiFi)',ck4:'Riepilogo e installazione (~30 s)',
-    expire:'La sessione scade tra',start:'🚀 Avvia la configurazione',connected:'Connesso ·'},
+    expire:'La sessione scade tra',start:'🚀 Avvia la configurazione',connected:'Connesso ·',
+    badge:'Progettato per la protezione civile'},
   expired:{title:'Sessione scaduta',text:'Riavviare il Raspberry Pi per ricominciare.'},
   identity:{name:'Nome del luogo / nodo *',namePh:'Es.: Municipio di Lugano — Sala B, Bunker Berna B1',
     type:'Tipo di struttura',addr:'Indirizzo',optional:'(facoltativo)',
@@ -332,7 +382,7 @@ it:{
     p4:'Avvio dei servizi…',p5:"Verifica dell'integrità…",p6:'Fatto!'},
   success:{title:'Configurazione riuscita!',text:'Il nodo SOS-GUIDE è operativo.<br>Riconnettersi alla rete:',
     portal:'Portale',admin:'Amministrazione',
-    compliance:'🇨🇭 Conforme PCi-CH · nLPD RS 235.1 · Nessun dato personale raccolto'},
+    compliance:'🇨🇭 Progettato secondo i requisiti PCi-CH · nLPD RS 235.1 · Nessun dato personale raccolto'},
   buttons:{back:'← Indietro',next:'Continua →'}
 }
 };
@@ -460,7 +510,7 @@ function renderWelcome(){
       <h1>SOS-GUIDE</h1>
       <p>${T.welcome.sub}</p>
     </div>
-    <div class="ch-badge">🇨🇭 Certifié Croix-Rouge Suisse</div>
+    <div class="ch-badge">🇨🇭 ${T.welcome.badge}</div>
     <div class="form-group">
       <label for="wizardLang">🌍 ${T.langLabel}</label>
       <select id="wizardLang">
