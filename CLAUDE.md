@@ -65,7 +65,7 @@ Deux options, sans hostapd/dnsmasq/iptables (le réseau local reste utilisable) 
 |---------|------|
 | `hostapd` | AP WiFi — réseau ouvert, `ap_isolate=1`, pas de FORWARD vers Internet |
 | `dnsmasq` | DHCP (`.100–.200`) + DNS captif (tous les domaines → `10.0.0.1`) |
-| `nginx` + `php-fpm` | Sert `index.html` (portail captif), `/admin` (htpasswd) et les APIs PHP |
+| `nginx` + `php-fpm` | Sert `index.html` (portail captif), `/admin` (htpasswd), `/lora` (messagerie, ouverte) et les APIs PHP |
 | `lora-service.py` | Mesh LoRa optionnel sur `127.0.0.1:8765` (SX1276 SPI, AES-256-GCM) |
 | `sos-guide-health.timer` | Lance `sos-guide-boot-check.sh` toutes les 5 min — vérification SHA256 ; stoppe PHP-FPM si compromis (mode dégradé) |
 
@@ -121,4 +121,6 @@ Règles à respecter sur tout nouvel élément :
 - **Portail** (`index.html`) : 29 fichiers JSON dans `src/web/data/` chargés côté client ; liste `LANGS` + `RTL_LANGS` dans index.html, liste `ALL_LANGS` dans sos-guide-test.sh — **les trois doivent rester synchrones avec data/**.
 - **Starter** (`starter.html`) : sélection de langue via une **barre de navigation** (bouton planète 🌐) ouvrant une **modale à drapeaux** identique au portail (constante `LANGS`, 29 langues) — plus de menu déroulant dans la carte. L'UI du wizard est traduite nativement dans **les 29 langues** via le dictionnaire `I18N` embarqué (FR/EN/DE/IT/RM + es/pt/nl/pl/ru/uk/tr/el/sv/da/no/fi/cs/hu/ro/ar/he/fa/zh/ja/ko/hi/th/vi) ; `RTL_LANGS` (ar/he/fa) bascule `dir=rtl`. La langue choisie part en `defaultLang` dans `config.json` via api_install.php (whitelist des 29 codes). `defaultLang` est aussi modifiable dans /admin.
 - **Types d'établissement** : la liste de référence est celle du starter (`erp,school,hospital,mairie,refuge,company,transport,other`) ; admin.php et update_config.php acceptent en plus les anciens types v2.4 — garder les trois listes synchrones.
+- **Affiche de fin de config** : l'écran de succès du starter génère une affiche PNG (gabarit `src/web/img/flyer.png` 647×876 + QR WiFi via qrcode.min.js). Zones du gabarit : cadre QR (468,547)–(579,658), bandeaux texte y=724–800 et 819–876. Clés i18n `success.flyer` + objet `flyer{step1,step1b,step2,urlLine}` dans les 29 langues. Le SSID affiché suit la règle d'install.sh : `⛑️ SOS-GUIDE - ` + nom tronqué à 16 caractères.
+- **Animations** : règle projet = le moins possible. Pas d'animations d'entrée décoratives ; seules les transitions de survol/focus et les pulsations *fonctionnelles* (alerte LoRa) sont autorisées.
 - ⚠ Les traductions non latines / minoritaires du wizard et des fichiers `data/` (notamment `rm`, `ar`, `he`, `fa`, `hi`, `th`) doivent être relues par des locuteurs natifs avant tout dépôt de certification.

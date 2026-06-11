@@ -126,6 +126,12 @@ server {
         fastcgi_pass unix:/run/php/php${PHP_VER}-fpm.sock;
     }
 
+    location = /lora {
+        include /etc/nginx/fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $WEB_DIR/lora-portal.php;
+        fastcgi_pass unix:/run/php/php${PHP_VER}-fpm.sock;
+    }
+
     location /admin {
         auth_basic "Administration SOS-GUIDE";
         auth_basic_user_file /etc/nginx/.htpasswd;

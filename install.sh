@@ -485,6 +485,13 @@ server {
         fastcgi_pass unix:/var/run/php/phpPHP_VERSION-fpm.sock;
     }
 
+    # ── Messagerie LoRa (ouverte aux clients WiFi, rate-limitée côté PHP) ──
+    location = /lora {
+        include snippets/fastcgi-php.conf;
+        fastcgi_param SCRIPT_FILENAME \$document_root/lora-portal.php;
+        fastcgi_pass unix:/var/run/php/phpPHP_VERSION-fpm.sock;
+    }
+
     # ── Admin protégé par htpasswd ──────────────────────────────────
     location /admin {
         auth_basic "Administration SOS-GUIDE";

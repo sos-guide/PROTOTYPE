@@ -11,6 +11,26 @@ adhère au [versionnage sémantique](https://semver.org/lang/fr/) (`VERSION` à 
 
 ## [Non publié]
 
+### Ajouté
+- **Affiche imprimable en fin de configuration** : l'écran de succès du starter
+  propose « Télécharger l'affiche (PNG) » — gabarit `img/flyer.png` complété
+  côté client (canvas) avec le nom du lieu, le pays/adresse, les instructions,
+  le SSID et un **QR code WiFi** (connexion au réseau ouvert en un scan).
+  Libellés traduits dans les 29 langues (`I18N.*.flyer`). Repli sur un fond
+  généré si le gabarit est absent.
+
+### Corrigé
+- **`/lora` était inaccessible** : aucune route nginx (prod **et** dev) — le
+  lien « Messagerie LoRa » du portail retombait silencieusement sur index.html.
+  `location = /lora` ajouté dans `install.sh` et `dev-setup-pi.sh`
+  (relancer `dev-setup-pi.sh` sur le Pi de dev pour l'appliquer).
+
+### Modifié
+- **Animations réduites au minimum** : suppression des entrées décoratives du
+  splash (floatIn/slideUp), du popIn des modales et de la pulsation du point
+  « connecté » du starter. Conservés : transitions de survol/focus et la
+  pulsation de la bannière d'alerte LoRa (signal fonctionnel).
+
 ### Corrigé (conformité WCAG 2.1 AA / W3C — audit affichage)
 - **Contrastes AA mesurés et corrigés** dans `sos-theme.css` : `--sub` sombre
   6b7fa3→7d90b4 (5.5:1), `--muted` sombre 475569→7588a8 (5.0:1), `--muted` clair

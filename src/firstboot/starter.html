@@ -140,8 +140,7 @@ body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,
 .connected-badge{display:flex;align-items:center;gap:.65rem;background:rgba(34,197,94,.12);
   border:1px solid rgba(34,197,94,.3);border-radius:12px;padding:.75rem 1rem;margin-bottom:1.25rem}
 .dot{width:10px;height:10px;background:var(--green);border-radius:50%;
-  flex-shrink:0;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  flex-shrink:0}
 .conn-info strong{display:block;font-size:.86rem;color:var(--green)}
 .conn-info span{font-size:.75rem;color:#4ade80}
 
@@ -288,8 +287,9 @@ fr:{
     p4:'Démarrage des services…',p5:"Vérification de l'intégrité…",p6:'Terminé !'},
   success:{title:'Configuration réussie !',text:'Le nœud SOS-GUIDE est opérationnel.<br>Reconnectez-vous au réseau :',
     portal:'Portail',admin:'Administration',
-    compliance:'🇨🇭 Conçu selon les exigences PCi-CH · nLPD RS 235.1 · Aucune donnée personnelle collectée'},
-  buttons:{back:'← Retour',next:'Continuer →'}
+    flyer:'📄 Télécharger l\'affiche (PNG)',compliance:'🇨🇭 Conçu selon les exigences PCi-CH · nLPD RS 235.1 · Aucune donnée personnelle collectée'},
+  buttons:{back:'← Retour',next:'Continuer →'},
+  flyer:{step1:'1. Connectez-vous au WiFi',step1b:'(réseau ouvert, sans mot de passe)',step2:'2. Ouvrez http://10.0.0.1',urlLine:'http://10.0.0.1 — hors ligne, sans Internet'}
 },
 en:{
   steps:['Place','Map','Options','Summary'],
@@ -327,8 +327,9 @@ en:{
     p4:'Starting services…',p5:'Verifying integrity…',p6:'Done!'},
   success:{title:'Setup complete!',text:'The SOS-GUIDE node is operational.<br>Reconnect to the network:',
     portal:'Portal',admin:'Administration',
-    compliance:'🇨🇭 Designed to PCi-CH requirements · nFADP RS 235.1 · No personal data collected'},
-  buttons:{back:'← Back',next:'Continue →'}
+    flyer:'📄 Download the poster (PNG)',compliance:'🇨🇭 Designed to PCi-CH requirements · nFADP RS 235.1 · No personal data collected'},
+  buttons:{back:'← Back',next:'Continue →'},
+  flyer:{step1:'1. Join the WiFi network',step1b:'(open network, no password)',step2:'2. Open http://10.0.0.1',urlLine:'http://10.0.0.1 — offline, no Internet needed'}
 },
 de:{
   steps:['Ort','Karte','Optionen','Übersicht'],
@@ -366,8 +367,9 @@ de:{
     p4:'Dienste werden gestartet…',p5:'Integrität wird geprüft…',p6:'Fertig!'},
   success:{title:'Konfiguration erfolgreich!',text:'Der SOS-GUIDE-Knoten ist betriebsbereit.<br>Verbinden Sie sich erneut mit dem Netzwerk:',
     portal:'Portal',admin:'Administration',
-    compliance:'🇨🇭 Nach PCi-CH-Anforderungen entwickelt · nDSG SR 235.1 · Keine Personendaten erhoben'},
-  buttons:{back:'← Zurück',next:'Weiter →'}
+    flyer:'📄 Plakat herunterladen (PNG)',compliance:'🇨🇭 Nach PCi-CH-Anforderungen entwickelt · nDSG SR 235.1 · Keine Personendaten erhoben'},
+  buttons:{back:'← Zurück',next:'Weiter →'},
+  flyer:{step1:'1. Mit dem WLAN verbinden',step1b:'(offenes Netz, kein Passwort)',step2:'2. http://10.0.0.1 öffnen',urlLine:'http://10.0.0.1 — offline, ohne Internet'}
 },
 rm:{
   steps:['Lieu','Charta','Opziuns','Resumaziun'],
@@ -405,8 +407,9 @@ rm:{
     p4:'Aviar ils servetschs…',p5:'Verifitgar l’integritad…',p6:'Fatg!'},
   success:{title:'Configuraziun reussida!',text:'Il nod SOS-GUIDE è operativ.<br>As reconnectai cun la rait:',
     portal:'Portal',admin:'Administraziun',
-    compliance:'🇨🇭 Sviluppà tenor las pretensiuns PCi-CH · nLPD RS 235.1 · Naginas datas persunalas rimnadas'},
-  buttons:{back:'← Enavos',next:'Vinavant →'}
+    flyer:'📄 Telechargiar il placat (PNG)',compliance:'🇨🇭 Sviluppà tenor las pretensiuns PCi-CH · nLPD RS 235.1 · Naginas datas persunalas rimnadas'},
+  buttons:{back:'← Enavos',next:'Vinavant →'},
+  flyer:{step1:'1. S\'annunziar al WiFi',step1b:'(rait averta, senza pled-clav)',step2:'2. Avrir http://10.0.0.1',urlLine:'http://10.0.0.1 — offline, senza internet'}
 },
 it:{
   steps:['Luogo','Mappa','Opzioni','Riepilogo'],
@@ -444,8 +447,9 @@ it:{
     p4:'Avvio dei servizi…',p5:"Verifica dell'integrità…",p6:'Fatto!'},
   success:{title:'Configurazione riuscita!',text:'Il nodo SOS-GUIDE è operativo.<br>Riconnettersi alla rete:',
     portal:'Portale',admin:'Amministrazione',
-    compliance:'🇨🇭 Progettato secondo i requisiti PCi-CH · nLPD RS 235.1 · Nessun dato personale raccolto'},
-  buttons:{back:'← Indietro',next:'Continua →'}
+    flyer:'📄 Scarica il manifesto (PNG)',compliance:'🇨🇭 Progettato secondo i requisiti PCi-CH · nLPD RS 235.1 · Nessun dato personale raccolto'},
+  buttons:{back:'← Indietro',next:'Continua →'},
+  flyer:{step1:'1. Connettiti al WiFi',step1b:'(rete aperta, senza password)',step2:'2. Apri http://10.0.0.1',urlLine:'http://10.0.0.1 — offline, senza Internet'}
 },
 es:{
   steps:['Lugar','Mapa','Opciones','Resumen'],
@@ -483,8 +487,9 @@ es:{
     p4:'Iniciando los servicios…',p5:'Verificando la integridad…',p6:'¡Listo!'},
   success:{title:'¡Configuración correcta!',text:'El nodo SOS-GUIDE está operativo.<br>Vuelva a conectarse a la red:',
     portal:'Portal',admin:'Administración',
-    compliance:'🇨🇭 Diseñado según los requisitos PCi-CH · nLPD RS 235.1 · No se recopilan datos personales'},
-  buttons:{back:'← Atrás',next:'Continuar →'}
+    flyer:'📄 Descargar el cartel (PNG)',compliance:'🇨🇭 Diseñado según los requisitos PCi-CH · nLPD RS 235.1 · No se recopilan datos personales'},
+  buttons:{back:'← Atrás',next:'Continuar →'},
+  flyer:{step1:'1. Conéctate al WiFi',step1b:'(red abierta, sin contraseña)',step2:'2. Abre http://10.0.0.1',urlLine:'http://10.0.0.1 — sin conexión, sin Internet'}
 },
 pt:{
   steps:['Local','Mapa','Opções','Resumo'],
@@ -522,8 +527,9 @@ pt:{
     p4:'A iniciar os serviços…',p5:'A verificar a integridade…',p6:'Concluído!'},
   success:{title:'Configuração concluída!',text:'O nó SOS-GUIDE está operacional.<br>Volte a ligar-se à rede:',
     portal:'Portal',admin:'Administração',
-    compliance:'🇨🇭 Concebido segundo os requisitos PCi-CH · nLPD RS 235.1 · Não são recolhidos dados pessoais'},
-  buttons:{back:'← Voltar',next:'Continuar →'}
+    flyer:'📄 Transferir o cartaz (PNG)',compliance:'🇨🇭 Concebido segundo os requisitos PCi-CH · nLPD RS 235.1 · Não são recolhidos dados pessoais'},
+  buttons:{back:'← Voltar',next:'Continuar →'},
+  flyer:{step1:'1. Ligue-se ao WiFi',step1b:'(rede aberta, sem palavra-passe)',step2:'2. Abra http://10.0.0.1',urlLine:'http://10.0.0.1 — offline, sem Internet'}
 },
 nl:{
   steps:['Locatie','Kaart','Opties','Overzicht'],
@@ -561,8 +567,9 @@ nl:{
     p4:'Services worden gestart…',p5:'Integriteit wordt gecontroleerd…',p6:'Klaar!'},
   success:{title:'Configuratie geslaagd!',text:'De SOS-GUIDE-node is operationeel.<br>Maak opnieuw verbinding met het netwerk:',
     portal:'Portaal',admin:'Beheer',
-    compliance:'🇨🇭 Ontworpen volgens de PCi-CH-vereisten · nLPD RS 235.1 · Geen persoonsgegevens verzameld'},
-  buttons:{back:'← Terug',next:'Doorgaan →'}
+    flyer:'📄 Poster downloaden (PNG)',compliance:'🇨🇭 Ontworpen volgens de PCi-CH-vereisten · nLPD RS 235.1 · Geen persoonsgegevens verzameld'},
+  buttons:{back:'← Terug',next:'Doorgaan →'},
+  flyer:{step1:'1. Verbind met het WiFi-netwerk',step1b:'(open netwerk, geen wachtwoord)',step2:'2. Open http://10.0.0.1',urlLine:'http://10.0.0.1 — offline, zonder internet'}
 },
 pl:{
   steps:['Miejsce','Mapa','Opcje','Podsumowanie'],
@@ -600,8 +607,9 @@ pl:{
     p4:'Uruchamianie usług…',p5:'Weryfikacja integralności…',p6:'Gotowe!'},
   success:{title:'Konfiguracja zakończona!',text:'Węzeł SOS-GUIDE jest gotowy do pracy.<br>Połącz się ponownie z siecią:',
     portal:'Portal',admin:'Administracja',
-    compliance:'🇨🇭 Zaprojektowano zgodnie z wymaganiami PCi-CH · nLPD RS 235.1 · Nie zbiera się danych osobowych'},
-  buttons:{back:'← Wstecz',next:'Dalej →'}
+    flyer:'📄 Pobierz plakat (PNG)',compliance:'🇨🇭 Zaprojektowano zgodnie z wymaganiami PCi-CH · nLPD RS 235.1 · Nie zbiera się danych osobowych'},
+  buttons:{back:'← Wstecz',next:'Dalej →'},
+  flyer:{step1:'1. Połącz się z WiFi',step1b:'(sieć otwarta, bez hasła)',step2:'2. Otwórz http://10.0.0.1',urlLine:'http://10.0.0.1 — offline, bez Internetu'}
 },
 ru:{
   steps:['Место','Карта','Опции','Сводка'],
@@ -639,8 +647,9 @@ ru:{
     p4:'Запуск служб…',p5:'Проверка целостности…',p6:'Готово!'},
   success:{title:'Настройка завершена!',text:'Узел SOS-GUIDE работает.<br>Подключитесь к сети снова:',
     portal:'Портал',admin:'Администрирование',
-    compliance:'🇨🇭 Разработано согласно требованиям PCi-CH · nLPD RS 235.1 · Персональные данные не собираются'},
-  buttons:{back:'← Назад',next:'Продолжить →'}
+    flyer:'📄 Скачать плакат (PNG)',compliance:'🇨🇭 Разработано согласно требованиям PCi-CH · nLPD RS 235.1 · Персональные данные не собираются'},
+  buttons:{back:'← Назад',next:'Продолжить →'},
+  flyer:{step1:'1. Подключитесь к WiFi',step1b:'(открытая сеть, без пароля)',step2:'2. Откройте http://10.0.0.1',urlLine:'http://10.0.0.1 — офлайн, без Интернета'}
 },
 uk:{
   steps:['Місце','Карта','Опції','Підсумок'],
@@ -678,8 +687,9 @@ uk:{
     p4:'Запуск служб…',p5:'Перевірка цілісності…',p6:'Готово!'},
   success:{title:'Налаштування завершено!',text:'Вузол SOS-GUIDE працює.<br>Підключіться до мережі знову:',
     portal:'Портал',admin:'Адміністрування',
-    compliance:'🇨🇭 Розроблено згідно з вимогами PCi-CH · nLPD RS 235.1 · Персональні дані не збираються'},
-  buttons:{back:'← Назад',next:'Продовжити →'}
+    flyer:'📄 Завантажити плакат (PNG)',compliance:'🇨🇭 Розроблено згідно з вимогами PCi-CH · nLPD RS 235.1 · Персональні дані не збираються'},
+  buttons:{back:'← Назад',next:'Продовжити →'},
+  flyer:{step1:'1. Підключіться до WiFi',step1b:'(відкрита мережа, без пароля)',step2:'2. Відкрийте http://10.0.0.1',urlLine:'http://10.0.0.1 — офлайн, без Інтернету'}
 },
 tr:{
   steps:['Yer','Harita','Seçenekler','Özet'],
@@ -717,8 +727,9 @@ tr:{
     p4:'Hizmetler başlatılıyor…',p5:'Bütünlük doğrulanıyor…',p6:'Tamamlandı!'},
   success:{title:'Yapılandırma başarılı!',text:'SOS-GUIDE düğümü çalışıyor.<br>Ağa yeniden bağlanın:',
     portal:'Portal',admin:'Yönetim',
-    compliance:'🇨🇭 PCi-CH gerekliliklerine göre tasarlandı · nLPD RS 235.1 · Kişisel veri toplanmaz'},
-  buttons:{back:'← Geri',next:'Devam →'}
+    flyer:'📄 Afişi indir (PNG)',compliance:'🇨🇭 PCi-CH gerekliliklerine göre tasarlandı · nLPD RS 235.1 · Kişisel veri toplanmaz'},
+  buttons:{back:'← Geri',next:'Devam →'},
+  flyer:{step1:'1. WiFi ağına bağlanın',step1b:'(açık ağ, şifresiz)',step2:'2. http://10.0.0.1 adresini açın',urlLine:'http://10.0.0.1 — çevrimdışı, İnternetsiz'}
 },
 el:{
   steps:['Τοποθεσία','Χάρτης','Επιλογές','Σύνοψη'],
@@ -756,8 +767,9 @@ el:{
     p4:'Εκκίνηση υπηρεσιών…',p5:'Έλεγχος ακεραιότητας…',p6:'Ολοκληρώθηκε!'},
   success:{title:'Επιτυχής διαμόρφωση!',text:'Ο κόμβος SOS-GUIDE είναι σε λειτουργία.<br>Συνδεθείτε ξανά στο δίκτυο:',
     portal:'Πύλη',admin:'Διαχείριση',
-    compliance:'🇨🇭 Σχεδιασμένο σύμφωνα με τις απαιτήσεις PCi-CH · nLPD RS 235.1 · Δεν συλλέγονται προσωπικά δεδομένα'},
-  buttons:{back:'← Πίσω',next:'Συνέχεια →'}
+    flyer:'📄 Λήψη αφίσας (PNG)',compliance:'🇨🇭 Σχεδιασμένο σύμφωνα με τις απαιτήσεις PCi-CH · nLPD RS 235.1 · Δεν συλλέγονται προσωπικά δεδομένα'},
+  buttons:{back:'← Πίσω',next:'Συνέχεια →'},
+  flyer:{step1:'1. Συνδεθείτε στο WiFi',step1b:'(ανοιχτό δίκτυο, χωρίς κωδικό)',step2:'2. Ανοίξτε http://10.0.0.1',urlLine:'http://10.0.0.1 — εκτός σύνδεσης, χωρίς Internet'}
 },
 sv:{
   steps:['Plats','Karta','Alternativ','Sammanfattning'],
@@ -795,8 +807,9 @@ sv:{
     p4:'Startar tjänster…',p5:'Verifierar integritet…',p6:'Klart!'},
   success:{title:'Konfigurationen lyckades!',text:'SOS-GUIDE-noden är i drift.<br>Anslut till nätverket igen:',
     portal:'Portal',admin:'Administration',
-    compliance:'🇨🇭 Utformad enligt PCi-CH-kraven · nLPD RS 235.1 · Inga personuppgifter samlas in'},
-  buttons:{back:'← Tillbaka',next:'Fortsätt →'}
+    flyer:'📄 Ladda ner affischen (PNG)',compliance:'🇨🇭 Utformad enligt PCi-CH-kraven · nLPD RS 235.1 · Inga personuppgifter samlas in'},
+  buttons:{back:'← Tillbaka',next:'Fortsätt →'},
+  flyer:{step1:'1. Anslut till WiFi',step1b:'(öppet nätverk, inget lösenord)',step2:'2. Öppna http://10.0.0.1',urlLine:'http://10.0.0.1 — offline, utan internet'}
 },
 da:{
   steps:['Sted','Kort','Indstillinger','Oversigt'],
@@ -834,8 +847,9 @@ da:{
     p4:'Starter tjenester…',p5:'Verificerer integritet…',p6:'Færdig!'},
   success:{title:'Konfiguration gennemført!',text:'SOS-GUIDE-noden er i drift.<br>Tilslut til netværket igen:',
     portal:'Portal',admin:'Administration',
-    compliance:'🇨🇭 Designet efter PCi-CH-kravene · nLPD RS 235.1 · Ingen personoplysninger indsamles'},
-  buttons:{back:'← Tilbage',next:'Fortsæt →'}
+    flyer:'📄 Download plakaten (PNG)',compliance:'🇨🇭 Designet efter PCi-CH-kravene · nLPD RS 235.1 · Ingen personoplysninger indsamles'},
+  buttons:{back:'← Tilbage',next:'Fortsæt →'},
+  flyer:{step1:'1. Opret forbindelse til WiFi',step1b:'(åbent netværk, ingen adgangskode)',step2:'2. Åbn http://10.0.0.1',urlLine:'http://10.0.0.1 — offline, uden internet'}
 },
 no:{
   steps:['Sted','Kart','Alternativer','Oppsummering'],
@@ -873,8 +887,9 @@ no:{
     p4:'Starter tjenester…',p5:'Verifiserer integritet…',p6:'Ferdig!'},
   success:{title:'Konfigurasjon vellykket!',text:'SOS-GUIDE-noden er i drift.<br>Koble til nettverket igjen:',
     portal:'Portal',admin:'Administrasjon',
-    compliance:'🇨🇭 Utviklet etter PCi-CH-kravene · nLPD RS 235.1 · Ingen personopplysninger samles inn'},
-  buttons:{back:'← Tilbake',next:'Fortsett →'}
+    flyer:'📄 Last ned plakaten (PNG)',compliance:'🇨🇭 Utviklet etter PCi-CH-kravene · nLPD RS 235.1 · Ingen personopplysninger samles inn'},
+  buttons:{back:'← Tilbake',next:'Fortsett →'},
+  flyer:{step1:'1. Koble til WiFi',step1b:'(åpent nettverk, uten passord)',step2:'2. Åpne http://10.0.0.1',urlLine:'http://10.0.0.1 — frakoblet, uten internett'}
 },
 fi:{
   steps:['Paikka','Kartta','Asetukset','Yhteenveto'],
@@ -912,8 +927,9 @@ fi:{
     p4:'Käynnistetään palveluita…',p5:'Tarkistetaan eheys…',p6:'Valmis!'},
   success:{title:'Määritys onnistui!',text:'SOS-GUIDE-solmu on toiminnassa.<br>Yhdistä verkkoon uudelleen:',
     portal:'Portaali',admin:'Hallinta',
-    compliance:'🇨🇭 Suunniteltu PCi-CH-vaatimusten mukaan · nLPD RS 235.1 · Henkilötietoja ei kerätä'},
-  buttons:{back:'← Takaisin',next:'Jatka →'}
+    flyer:'📄 Lataa juliste (PNG)',compliance:'🇨🇭 Suunniteltu PCi-CH-vaatimusten mukaan · nLPD RS 235.1 · Henkilötietoja ei kerätä'},
+  buttons:{back:'← Takaisin',next:'Jatka →'},
+  flyer:{step1:'1. Yhdistä WiFi-verkkoon',step1b:'(avoin verkko, ei salasanaa)',step2:'2. Avaa http://10.0.0.1',urlLine:'http://10.0.0.1 — offline, ilman internetiä'}
 },
 cs:{
   steps:['Místo','Mapa','Možnosti','Souhrn'],
@@ -951,8 +967,9 @@ cs:{
     p4:'Spouštění služeb…',p5:'Ověřování integrity…',p6:'Hotovo!'},
   success:{title:'Konfigurace úspěšná!',text:'Uzel SOS-GUIDE je v provozu.<br>Znovu se připojte k síti:',
     portal:'Portál',admin:'Správa',
-    compliance:'🇨🇭 Navrženo podle požadavků PCi-CH · nLPD RS 235.1 · Nejsou shromažďovány žádné osobní údaje'},
-  buttons:{back:'← Zpět',next:'Pokračovat →'}
+    flyer:'📄 Stáhnout plakát (PNG)',compliance:'🇨🇭 Navrženo podle požadavků PCi-CH · nLPD RS 235.1 · Nejsou shromažďovány žádné osobní údaje'},
+  buttons:{back:'← Zpět',next:'Pokračovat →'},
+  flyer:{step1:'1. Připojte se k WiFi',step1b:'(otevřená síť, bez hesla)',step2:'2. Otevřete http://10.0.0.1',urlLine:'http://10.0.0.1 — offline, bez internetu'}
 },
 hu:{
   steps:['Hely','Térkép','Beállítások','Összegzés'],
@@ -990,8 +1007,9 @@ hu:{
     p4:'Szolgáltatások indítása…',p5:'Integritás ellenőrzése…',p6:'Kész!'},
   success:{title:'Sikeres konfiguráció!',text:'A SOS-GUIDE csomópont működik.<br>Csatlakozzon újra a hálózathoz:',
     portal:'Portál',admin:'Adminisztráció',
-    compliance:'🇨🇭 A PCi-CH követelményei szerint tervezve · nLPD RS 235.1 · Nem gyűjtünk személyes adatokat'},
-  buttons:{back:'← Vissza',next:'Folytatás →'}
+    flyer:'📄 Plakát letöltése (PNG)',compliance:'🇨🇭 A PCi-CH követelményei szerint tervezve · nLPD RS 235.1 · Nem gyűjtünk személyes adatokat'},
+  buttons:{back:'← Vissza',next:'Folytatás →'},
+  flyer:{step1:'1. Csatlakozzon a WiFi-hez',step1b:'(nyílt hálózat, jelszó nélkül)',step2:'2. Nyissa meg: http://10.0.0.1',urlLine:'http://10.0.0.1 — offline, internet nélkül'}
 },
 ro:{
   steps:['Loc','Hartă','Opțiuni','Rezumat'],
@@ -1029,8 +1047,9 @@ ro:{
     p4:'Se pornesc serviciile…',p5:'Se verifică integritatea…',p6:'Gata!'},
   success:{title:'Configurare reușită!',text:'Nodul SOS-GUIDE este operațional.<br>Reconectați-vă la rețea:',
     portal:'Portal',admin:'Administrare',
-    compliance:'🇨🇭 Conceput conform cerințelor PCi-CH · nLPD RS 235.1 · Nu se colectează date personale'},
-  buttons:{back:'← Înapoi',next:'Continuă →'}
+    flyer:'📄 Descarcă afișul (PNG)',compliance:'🇨🇭 Conceput conform cerințelor PCi-CH · nLPD RS 235.1 · Nu se colectează date personale'},
+  buttons:{back:'← Înapoi',next:'Continuă →'},
+  flyer:{step1:'1. Conectați-vă la WiFi',step1b:'(rețea deschisă, fără parolă)',step2:'2. Deschideți http://10.0.0.1',urlLine:'http://10.0.0.1 — offline, fără Internet'}
 },
 ar:{
   steps:['المكان','الخريطة','الخيارات','الملخص'],
@@ -1068,8 +1087,9 @@ ar:{
     p4:'جارٍ بدء الخدمات…',p5:'جارٍ التحقق من السلامة…',p6:'تم!'},
   success:{title:'تم الإعداد بنجاح!',text:'عقدة SOS-GUIDE قيد التشغيل.<br>أعد الاتصال بالشبكة:',
     portal:'البوابة',admin:'الإدارة',
-    compliance:'🇨🇭 مصمم وفق متطلبات PCi-CH · nLPD RS 235.1 · لا يتم جمع بيانات شخصية'},
-  buttons:{back:'← رجوع',next:'متابعة →'}
+    flyer:'📄 تنزيل الملصق (PNG)',compliance:'🇨🇭 مصمم وفق متطلبات PCi-CH · nLPD RS 235.1 · لا يتم جمع بيانات شخصية'},
+  buttons:{back:'← رجوع',next:'متابعة →'},
+  flyer:{step1:'1. اتصل بشبكة WiFi',step1b:'(شبكة مفتوحة، بدون كلمة مرور)',step2:'2. افتح http://10.0.0.1',urlLine:'http://10.0.0.1 — دون اتصال بالإنترنت'}
 },
 he:{
   steps:['מקום','מפה','אפשרויות','סיכום'],
@@ -1107,8 +1127,9 @@ he:{
     p4:'מפעיל שירותים…',p5:'מאמת שלמות…',p6:'הסתיים!'},
   success:{title:'ההגדרה הצליחה!',text:'צומת SOS-GUIDE פעיל.<br>התחבר מחדש לרשת:',
     portal:'פורטל',admin:'ניהול',
-    compliance:'🇨🇭 מתוכנן לפי דרישות PCi-CH · nLPD RS 235.1 · לא נאסף מידע אישי'},
-  buttons:{back:'← חזרה',next:'המשך →'}
+    flyer:'📄 הורדת הכרזה (PNG)',compliance:'🇨🇭 מתוכנן לפי דרישות PCi-CH · nLPD RS 235.1 · לא נאסף מידע אישי'},
+  buttons:{back:'← חזרה',next:'המשך →'},
+  flyer:{step1:'1. התחבר לרשת WiFi',step1b:'(רשת פתוחה, ללא סיסמה)',step2:'2. פתח את http://10.0.0.1',urlLine:'http://10.0.0.1 — לא מקוון, ללא אינטרנט'}
 },
 fa:{
   steps:['مکان','نقشه','گزینه‌ها','خلاصه'],
@@ -1146,8 +1167,9 @@ fa:{
     p4:'در حال راه‌اندازی سرویس‌ها…',p5:'در حال بررسی یکپارچگی…',p6:'انجام شد!'},
   success:{title:'پیکربندی موفق بود!',text:'گره SOS-GUIDE فعال است.<br>دوباره به شبکه متصل شوید:',
     portal:'پورتال',admin:'مدیریت',
-    compliance:'🇨🇭 طراحی‌شده مطابق الزامات PCi-CH · nLPD RS 235.1 · هیچ داده شخصی جمع‌آوری نمی‌شود'},
-  buttons:{back:'← بازگشت',next:'ادامه →'}
+    flyer:'📄 دانلود پوستر (PNG)',compliance:'🇨🇭 طراحی‌شده مطابق الزامات PCi-CH · nLPD RS 235.1 · هیچ داده شخصی جمع‌آوری نمی‌شود'},
+  buttons:{back:'← بازگشت',next:'ادامه →'},
+  flyer:{step1:'1. به WiFi متصل شوید',step1b:'(شبکه باز، بدون رمز عبور)',step2:'2. http://10.0.0.1 را باز کنید',urlLine:'http://10.0.0.1 — آفلاین، بدون اینترنت'}
 },
 zh:{
   steps:['地点','地图','选项','摘要'],
@@ -1185,8 +1207,9 @@ zh:{
     p4:'正在启动服务…',p5:'正在验证完整性…',p6:'完成！'},
   success:{title:'配置成功！',text:'SOS-GUIDE 节点已运行。<br>请重新连接到网络：',
     portal:'门户',admin:'管理',
-    compliance:'🇨🇭 按 PCi-CH 要求设计 · nLPD RS 235.1 · 不收集个人数据'},
-  buttons:{back:'← 返回',next:'继续 →'}
+    flyer:'📄 下载海报（PNG）',compliance:'🇨🇭 按 PCi-CH 要求设计 · nLPD RS 235.1 · 不收集个人数据'},
+  buttons:{back:'← 返回',next:'继续 →'},
+  flyer:{step1:'1. 连接 WiFi 网络',step1b:'（开放网络，无密码）',step2:'2. 打开 http://10.0.0.1',urlLine:'http://10.0.0.1 — 离线，无需互联网'}
 },
 ja:{
   steps:['場所','地図','オプション','概要'],
@@ -1224,8 +1247,9 @@ ja:{
     p4:'サービスを起動中…',p5:'整合性を検証中…',p6:'完了！'},
   success:{title:'設定に成功しました！',text:'SOS-GUIDE ノードが稼働しています。<br>ネットワークに再接続してください：',
     portal:'ポータル',admin:'管理',
-    compliance:'🇨🇭 PCi-CH 要件に基づいて設計 · nLPD RS 235.1 · 個人データは収集しません'},
-  buttons:{back:'← 戻る',next:'続行 →'}
+    flyer:'📄 ポスターをダウンロード（PNG）',compliance:'🇨🇭 PCi-CH 要件に基づいて設計 · nLPD RS 235.1 · 個人データは収集しません'},
+  buttons:{back:'← 戻る',next:'続行 →'},
+  flyer:{step1:'1. WiFi に接続',step1b:'（オープンネットワーク・パスワード不要）',step2:'2. http://10.0.0.1 を開く',urlLine:'http://10.0.0.1 — オフライン・インターネット不要'}
 },
 ko:{
   steps:['장소','지도','옵션','요약'],
@@ -1263,8 +1287,9 @@ ko:{
     p4:'서비스 시작 중…',p5:'무결성 확인 중…',p6:'완료!'},
   success:{title:'설정 성공!',text:'SOS-GUIDE 노드가 작동 중입니다.<br>네트워크에 다시 연결하세요:',
     portal:'포털',admin:'관리',
-    compliance:'🇨🇭 PCi-CH 요구사항에 따라 설계 · nLPD RS 235.1 · 개인정보를 수집하지 않음'},
-  buttons:{back:'← 뒤로',next:'계속 →'}
+    flyer:'📄 포스터 다운로드 (PNG)',compliance:'🇨🇭 PCi-CH 요구사항에 따라 설계 · nLPD RS 235.1 · 개인정보를 수집하지 않음'},
+  buttons:{back:'← 뒤로',next:'계속 →'},
+  flyer:{step1:'1. WiFi에 연결',step1b:'(개방형 네트워크, 비밀번호 없음)',step2:'2. http://10.0.0.1 열기',urlLine:'http://10.0.0.1 — 오프라인, 인터넷 불필요'}
 },
 hi:{
   steps:['स्थान','मानचित्र','विकल्प','सारांश'],
@@ -1302,8 +1327,9 @@ hi:{
     p4:'सेवाएँ शुरू हो रही हैं…',p5:'अखंडता सत्यापित की जा रही है…',p6:'पूर्ण!'},
   success:{title:'कॉन्फ़िगरेशन सफल!',text:'SOS-GUIDE नोड चालू है।<br>नेटवर्क से पुनः कनेक्ट करें:',
     portal:'पोर्टल',admin:'प्रशासन',
-    compliance:'🇨🇭 PCi-CH आवश्यकताओं के अनुसार डिज़ाइन किया गया · nLPD RS 235.1 · कोई व्यक्तिगत डेटा एकत्र नहीं किया जाता'},
-  buttons:{back:'← वापस',next:'जारी रखें →'}
+    flyer:'📄 पोस्टर डाउनलोड करें (PNG)',compliance:'🇨🇭 PCi-CH आवश्यकताओं के अनुसार डिज़ाइन किया गया · nLPD RS 235.1 · कोई व्यक्तिगत डेटा एकत्र नहीं किया जाता'},
+  buttons:{back:'← वापस',next:'जारी रखें →'},
+  flyer:{step1:'1. WiFi से जुड़ें',step1b:'(खुला नेटवर्क, बिना पासवर्ड)',step2:'2. http://10.0.0.1 खोलें',urlLine:'http://10.0.0.1 — ऑफ़लाइन, बिना इंटरनेट'}
 },
 th:{
   steps:['สถานที่','แผนที่','ตัวเลือก','สรุป'],
@@ -1341,8 +1367,9 @@ th:{
     p4:'กำลังเริ่มบริการ…',p5:'กำลังตรวจสอบความสมบูรณ์…',p6:'เสร็จสิ้น!'},
   success:{title:'ตั้งค่าสำเร็จ!',text:'โหนด SOS-GUIDE ทำงานอยู่<br>เชื่อมต่อกับเครือข่ายอีกครั้ง:',
     portal:'พอร์ทัล',admin:'การจัดการ',
-    compliance:'🇨🇭 ออกแบบตามข้อกำหนด PCi-CH · nLPD RS 235.1 · ไม่มีการเก็บข้อมูลส่วนบุคคล'},
-  buttons:{back:'← ย้อนกลับ',next:'ดำเนินการต่อ →'}
+    flyer:'📄 ดาวน์โหลดโปสเตอร์ (PNG)',compliance:'🇨🇭 ออกแบบตามข้อกำหนด PCi-CH · nLPD RS 235.1 · ไม่มีการเก็บข้อมูลส่วนบุคคล'},
+  buttons:{back:'← ย้อนกลับ',next:'ดำเนินการต่อ →'},
+  flyer:{step1:'1. เชื่อมต่อ WiFi',step1b:'(เครือข่ายเปิด ไม่มีรหัสผ่าน)',step2:'2. เปิด http://10.0.0.1',urlLine:'http://10.0.0.1 — ออฟไลน์ ไม่ต้องใช้อินเทอร์เน็ต'}
 },
 vi:{
   steps:['Địa điểm','Bản đồ','Tùy chọn','Tóm tắt'],
@@ -1380,8 +1407,9 @@ vi:{
     p4:'Đang khởi động dịch vụ…',p5:'Đang xác minh tính toàn vẹn…',p6:'Hoàn tất!'},
   success:{title:'Cấu hình thành công!',text:'Nút SOS-GUIDE đang hoạt động.<br>Kết nối lại với mạng:',
     portal:'Cổng',admin:'Quản trị',
-    compliance:'🇨🇭 Được thiết kế theo yêu cầu PCi-CH · nLPD RS 235.1 · Không thu thập dữ liệu cá nhân'},
-  buttons:{back:'← Quay lại',next:'Tiếp tục →'}
+    flyer:'📄 Tải áp phích (PNG)',compliance:'🇨🇭 Được thiết kế theo yêu cầu PCi-CH · nLPD RS 235.1 · Không thu thập dữ liệu cá nhân'},
+  buttons:{back:'← Quay lại',next:'Tiếp tục →'},
+  flyer:{step1:'1. Kết nối WiFi',step1b:'(mạng mở, không mật khẩu)',step2:'2. Mở http://10.0.0.1',urlLine:'http://10.0.0.1 — ngoại tuyến, không cần Internet'}
 }
 };
 // Les 29 langues du portail (mêmes drapeaux que index.html).
@@ -1922,11 +1950,107 @@ function renderSuccess(){
         ${T.success.portal} : <strong>http://10.0.0.1/</strong><br>
         ${T.success.admin} : <strong>http://10.0.0.1/admin</strong>
       </p>
+      <button class="btn btn-primary" id="flyerBtn" type="button" style="width:100%;margin-top:1.1rem">
+        ${T.success.flyer || I18N.en.success.flyer}
+      </button>
       <div style="margin-top:1.25rem;padding:.65rem;background:rgba(34,197,94,.12);
         border-radius:8px;font-size:.74rem;color:#4ade80;border:1px solid rgba(34,197,94,.3)">
         ${T.success.compliance}
       </div>
     </div>`;
+  document.getElementById('flyerBtn').onclick=downloadFlyer;
+}
+
+// ── Affiche PNG (gabarit img/flyer.png + QR WiFi + infos du nœud) ─────────────
+// Zones mesurées sur le gabarit 647×876 : cadre QR (468,547)-(579,658),
+// bandeau 1 y=724-800, bandeau 2 y=819-876.
+function flyerSsid(){
+  // Même règle qu'install.sh : préfixe + nom tronqué à 16 caractères imprimables
+  const clean=S.nodeName.replace(/[\u0000-\u001f\u007f]/g,'').slice(0,16);
+  return '⛑️ SOS-GUIDE - '+clean;
+}
+function makeQrCanvas(text,size){
+  return new Promise((resolve,reject)=>{
+    const div=document.createElement('div');
+    div.style.cssText='position:absolute;left:-9999px';
+    document.body.appendChild(div);
+    try{
+      new QRCode(div,{text:text,width:size,height:size,
+        correctLevel:QRCode.CorrectLevel.M});
+    }catch(e){ div.remove(); reject(e); return; }
+    setTimeout(()=>{
+      const c=div.querySelector('canvas'), img=div.querySelector('img');
+      if(c){ resolve(c); div.remove(); }
+      else if(img){
+        img.onload=()=>{ const cv=document.createElement('canvas');
+          cv.width=cv.height=size; cv.getContext('2d').drawImage(img,0,0,size,size);
+          resolve(cv); div.remove(); };
+        if(img.complete) img.onload();
+      } else { div.remove(); reject(new Error('QR')); }
+    },60);
+  });
+}
+function loadFlyerTemplate(){
+  return new Promise(resolve=>{
+    const img=new Image();
+    img.onload=()=>resolve(img);
+    img.onerror=()=>resolve(null);   // gabarit absent → fond générique
+    img.src='/img/flyer.png';
+  });
+}
+function fitText(ctx,text,maxW,basePx,font){
+  let px=basePx;
+  do{ ctx.font='bold '+px+'px '+font; px-=2; }
+  while(ctx.measureText(text).width>maxW && px>12);
+}
+async function downloadFlyer(){
+  const btn=document.getElementById('flyerBtn');
+  btn.disabled=true;
+  try{
+    const W=647,H=876,FONT="system-ui,'Segoe UI',sans-serif";
+    const cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+    const ctx=cv.getContext('2d');
+    const tpl=await loadFlyerTemplate();
+    if(tpl){ ctx.drawImage(tpl,0,0,W,H); }
+    else{
+      ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
+      ctx.fillStyle='#111'; ctx.textAlign='center';
+      ctx.font='bold 52px '+FONT; ctx.fillText('⛑️ SOS-GUIDE',W/2,150);
+      ctx.fillStyle='#343434'; ctx.fillRect(24,724,W-48,76); ctx.fillRect(24,819,W-48,57);
+      ctx.strokeStyle='#c1272d'; ctx.lineWidth=4;
+      ctx.strokeRect(460,539,127,127);
+    }
+    // Nom du lieu + pays (zone libre centrale)
+    ctx.fillStyle='#111'; ctx.textAlign='center'; ctx.textBaseline='alphabetic';
+    fitText(ctx,S.nodeName,W-80,34,FONT);
+    ctx.fillText(S.nodeName,W/2,300);
+    const sub=[S.nodeCountry,S.nodeAddress].filter(Boolean).join(' · ');
+    if(sub){ ctx.fillStyle='#555'; fitText(ctx,sub,W-80,20,FONT); ctx.fillText(sub,W/2,336); }
+    // Instructions à gauche du QR
+    ctx.textAlign='left'; ctx.fillStyle='#111';
+    ctx.font='bold 22px '+FONT;  ctx.fillText(T.flyer.step1,48,575);
+    ctx.font='16px '+FONT; ctx.fillStyle='#444';
+    ctx.fillText(T.flyer.step1b,48,600);
+    ctx.font='bold 22px '+FONT; ctx.fillStyle='#111';
+    ctx.fillText(T.flyer.step2,48,640);
+    // QR WiFi (rejoindre le réseau ouvert) dans le cadre rouge
+    const ssid=flyerSsid().replace(/([\\;,:"])/g,'\\$1');
+    const qr=await makeQrCanvas('WIFI:T:nopass;S:'+ssid+';;',222);
+    ctx.imageSmoothingEnabled=false;
+    ctx.drawImage(qr,470,549,107,107);
+    ctx.imageSmoothingEnabled=true;
+    // Bandeau 1 : SSID — bandeau 2 : URL
+    ctx.textAlign='center'; ctx.fillStyle='#fff';
+    const ssidTxt='📶 '+flyerSsid();
+    fitText(ctx,ssidTxt,W-90,26,FONT); ctx.fillText(ssidTxt,W/2,772);
+    fitText(ctx,T.flyer.urlLine,W-90,20,FONT); ctx.fillText(T.flyer.urlLine,W/2,856);
+    // Téléchargement
+    const a=document.createElement('a');
+    a.download='sos-guide-affiche.png';
+    a.href=cv.toDataURL('image/png');
+    a.click();
+  }catch(e){ alert('PNG: '+e.message); }
+  btn.disabled=false;
 }
 
 render();
