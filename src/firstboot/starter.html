@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#060a12">
+<title>⛑️ SOS-GUIDE — Configuration initiale</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='80' font-size='80'%3E⛑️%3C/text%3E%3C/svg%3E">
+<script src="qrcode.min.js"></script>
+<style>
+:root{
+  /* Palette commune SOS-GUIDE (alignée sur index.html / demo) */
+  --bg:#060a12;--card:#0f1826;--card-h:#162035;--field:#111928;--border:rgba(255,255,255,.1);
+  --text:#e8eef8;--sub:#6b7fa3;--muted:#475569;--accent:#3b82f6;--green:#22c55e;
+  --red:#ef4444;--r:14px;--shadow:0 8px 24px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;
+  min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px;
+  padding:2rem 1.75rem;width:100%;max-width:580px;box-shadow:var(--shadow)}
+
+/* Logo */
+.logo{text-align:center;margin-bottom:1.25rem}
+.logo-icon{font-size:3rem;display:block;margin-bottom:.4rem}
+.logo h1{font-size:1.5rem;font-weight:700;letter-spacing:-.02em}
+.logo p{font-size:.85rem;color:var(--sub);margin-top:.3rem}
+
+/* Steps */
+.steps{display:flex;justify-content:space-between;margin-bottom:2rem;position:relative}
+.steps::before{content:'';position:absolute;top:14px;left:14px;right:14px;height:1px;
+  background:var(--border);z-index:0}
+.step{display:flex;flex-direction:column;align-items:center;gap:.4rem;z-index:1;flex:1}
+.step-num{width:28px;height:28px;border-radius:50%;background:var(--field);border:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:600;transition:all .25s}
+.step.active .step-num{background:var(--accent);border-color:var(--accent);color:#fff}
+.step.done .step-num{background:var(--green);border-color:var(--green);color:#fff}
+.step-label{font-size:.68rem;color:var(--sub);font-weight:500;letter-spacing:.03em}
+.step.active .step-label{color:var(--accent)}
+
+/* Form */
+.form-group{margin-bottom:1.1rem}
+.form-group label{display:block;font-size:.76rem;font-weight:600;color:var(--sub);
+  text-transform:uppercase;letter-spacing:.06em;margin-bottom:.35rem}
+.form-group input[type=text],
+.form-group input[type=number],
+.form-group select,
+.form-group textarea{width:100%;padding:.7rem .9rem;background:var(--field);
+  border:1.5px solid var(--border);border-radius:var(--r);color:var(--text);
+  font-size:.92rem;transition:border .2s;font-family:inherit}
+.form-group select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7fa3' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right .8rem center;padding-right:2.5rem}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--accent)}
+.form-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.hint{font-size:.72rem;color:var(--muted);margin-top:.25rem;line-height:1.5}
+
+/* Tabs */
+.tabs{display:flex;border-bottom:2px solid var(--border);margin-bottom:1.25rem;gap:.25rem}
+.tab{flex:1;padding:.55rem .5rem;font-size:.8rem;font-weight:600;color:var(--sub);
+  text-align:center;cursor:pointer;border:none;background:none;
+  border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;border-radius:6px 6px 0 0}
+.tab:hover{color:var(--text);background:var(--field)}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* Drop zone */
+.drop-zone{border:2px dashed var(--border);border-radius:var(--r);
+  padding:1.75rem 1rem;text-align:center;cursor:pointer;transition:all .2s;
+  background:var(--field);position:relative}
+.drop-zone.over,.drop-zone:hover{border-color:var(--accent);background:rgba(59,130,246,.08)}
+.drop-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.dz-icon{font-size:1.8rem;margin-bottom:.4rem}
+.dz-text{font-size:.85rem;color:var(--sub);font-weight:500}
+.dz-hint{font-size:.71rem;color:var(--muted);margin-top:.25rem}
+.img-preview{width:100%;max-height:180px;object-fit:contain;border-radius:10px;
+  margin-top:.75rem;border:1px solid var(--border);background:#000}
+
+/* GPS */
+.range-row{display:flex;align-items:center;gap:.75rem;margin-top:.3rem}
+.range-row input[type=range]{flex:1;accent-color:var(--accent);height:6px}
+.range-val{font-size:.85rem;font-weight:700;color:var(--text);min-width:2.2rem;text-align:right}
+.gps-geo-btn{width:100%;padding:.65rem;border-radius:10px;border:1.5px solid var(--border);
+  background:var(--field);color:var(--sub);font-size:.82rem;font-weight:600;cursor:pointer;
+  margin-bottom:.75rem;display:flex;align-items:center;justify-content:center;gap:.5rem;transition:all .2s}
+.gps-geo-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* Toggles */
+.toggle-opt{display:flex;align-items:flex-start;gap:.85rem;padding:.65rem 0;
+  border-bottom:1px solid var(--border);cursor:pointer;user-select:none}
+.toggle-opt:last-of-type{border:none}
+.tog{width:44px;height:24px;background:var(--border);border-radius:12px;
+  flex-shrink:0;position:relative;transition:background .2s;margin-top:.1rem}
+.tog::after{content:'';position:absolute;width:18px;height:18px;background:#fff;
+  border-radius:9px;top:3px;left:3px;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.toggle-opt.on .tog{background:var(--accent)}
+.toggle-opt.on .tog::after{left:23px}
+.tog-info strong{display:block;font-size:.86rem;font-weight:600}
+.tog-info span{font-size:.74rem;color:var(--sub)}
+
+/* Channel row */
+.channel-row{display:flex;align-items:center;gap:.75rem;padding:.65rem 0}
+.channel-row label{flex:1;font-size:.86rem;font-weight:600}
+.channel-row select{width:auto;min-width:95px;font-size:.82rem;padding:.4rem .7rem}
+
+/* Summary */
+.summary{background:var(--field);border-radius:var(--r);padding:.9rem;margin:1rem 0}
+.summary-row{display:flex;justify-content:space-between;align-items:center;
+  padding:.4rem 0;border-bottom:1px solid var(--border)}
+.summary-row:last-child{border:none}
+.summary-key{font-size:.8rem;color:var(--sub)}
+.badge{background:var(--border);padding:.18rem .65rem;border-radius:20px;
+  font-size:.74rem;font-weight:600;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.badge.green{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3)}
+.badge.red{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3)}
+.badge.grey{background:var(--border);color:var(--muted)}
+
+/* Progress */
+.progress{background:var(--border);border-radius:4px;overflow:hidden;height:8px;margin:1.5rem 0}
+.progress-fill{height:100%;background:var(--accent);border-radius:4px;transition:width .4s}
+.progress-status{text-align:center;font-size:.82rem;color:var(--sub);margin-top:.5rem}
+
+/* Buttons */
+.btn-group{display:flex;gap:.75rem;margin-top:1.5rem}
+.btn{flex:1;padding:.72rem;border-radius:40px;font-weight:600;font-size:.88rem;
+  border:none;cursor:pointer;transition:all .15s;display:flex;align-items:center;
+  justify-content:center;gap:.4rem}
+.btn:active{transform:scale(.97)}
+.btn-secondary{background:var(--field);border:1.5px solid var(--border);color:var(--sub)}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#2563eb}
+
+/* Alert */
+.alert{padding:.6rem .9rem;border-radius:10px;font-size:.78rem;margin-bottom:.75rem;
+  display:none;align-items:flex-start;gap:.5rem;line-height:1.5}
+.alert.show{display:flex}
+.alert.error{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#f87171}
+.alert.info{background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.3);color:#60a5fa}
+.alert.warn{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);color:#fbbf24}
+
+/* Connected badge */
+.connected-badge{display:flex;align-items:center;gap:.65rem;background:rgba(34,197,94,.12);
+  border:1px solid rgba(34,197,94,.3);border-radius:12px;padding:.75rem 1rem;margin-bottom:1.25rem}
+.dot{width:10px;height:10px;background:var(--green);border-radius:50%;
+  flex-shrink:0;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.conn-info strong{display:block;font-size:.86rem;color:var(--green)}
+.conn-info span{font-size:.75rem;color:#4ade80}
+
+/* Welcome checklist */
+.checklist{list-style:none;padding:0;margin:.5rem 0 1.25rem}
+.checklist li{display:flex;align-items:center;gap:.6rem;padding:.3rem 0;
+  font-size:.84rem;color:var(--sub)}
+.checklist li .ck-icon{font-size:1rem;flex-shrink:0}
+
+/* Timer */
+.timer-row{display:flex;justify-content:space-between;align-items:center;
+  background:var(--field);border-radius:10px;padding:.55rem .9rem;
+  font-size:.74rem;color:var(--sub);margin-bottom:1.4rem}
+
+/* Swiss */
+.ch-badge{display:inline-flex;align-items:center;gap:.35rem;background:#e63329;
+  color:#fff;padding:.2rem .6rem;border-radius:4px;font-size:.68rem;font-weight:600;
+  letter-spacing:.04em;margin-bottom:1rem}
+
+/* Success */
+.success-screen{text-align:center;padding:1rem 0}
+.success-screen .big-icon{font-size:3.5rem;margin-bottom:.75rem;display:block}
+.success-screen h2{font-size:1.3rem;font-weight:700;margin-bottom:.5rem}
+.success-screen p{font-size:.86rem;color:var(--sub);line-height:1.6}
+.ssid-badge{display:inline-block;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);
+  color:var(--green);padding:.3rem .9rem;border-radius:8px;font-weight:600;
+  font-size:.88rem;margin:.75rem 0}
+</style>
+</head>
+<body>
+<div class="card" id="card"></div>
+<script>
+(function(){
+"use strict";
+
+// ── i18n du wizard (FR/EN/DE/IT) ─────────────────────────────────────────────
+// La langue choisie est aussi envoyée comme defaultLang → langue par défaut du portail.
+const I18N = {
+fr:{
+  steps:['Lieu','Carte','Options','Résumé'],
+  langLabel:'Langue / Language',
+  welcome:{sub:"Configuration initiale · Point d'accès d'urgence",
+    connectedSub:'4 étapes pour mettre ce nœud en service',
+    ck1:'Identité du lieu (nom, type, adresse)',ck2:'Carte locale (plan uploadé ou coordonnées GPS)',
+    ck3:'Options réseau (LoRa mesh, Ethernet, canal WiFi)',ck4:'Résumé et installation (~30 s)',
+    expire:'Session expire dans',start:'🚀 Démarrer la configuration',connected:'Connecté ·'},
+  expired:{title:'Session expirée',text:'Redémarrez le Raspberry Pi pour recommencer.'},
+  identity:{name:'Nom du lieu / nœud *',namePh:'Ex : Mairie de Lyon — Salle B, Bunker Berne B1',
+    type:"Type d'établissement",addr:'Adresse',optional:'(optionnel)',
+    addrPh:'Ex : 1 place de la République, 69001 Lyon'},
+  types:{erp:'🏢 ERP — Établissement recevant du public',school:'🏫 École / Université / Crèche',
+    hospital:'🏥 Hôpital / Clinique / EHPAD',mairie:'🏛️ Mairie / Préfecture / PCC',
+    refuge:'⛺ Abri / Camp / Refuge de montagne',company:'🏭 Entreprise / Site industriel / SEVESO',
+    transport:'🚉 Gare / Aéroport / Terminal',other:'📍 Autre'},
+  map:{tabImg:'📷 Plan / Photo',tabGps:'🌍 Coordonnées GPS',dzPick:'Glisser-déposer ou cliquer pour choisir',
+    dzHint:'PNG · JPG · WEBP · max 10 Mo',remove:"✕ Retirer l'image",
+    optionalHint:"Plan d'évacuation, photo satellite, carte manuscrite…<br><em>Étape optionnelle — peut être configurée plus tard via /admin</em>",
+    geo:'📍 Utiliser ma position actuelle',geoWait:'⏳ Localisation en cours…',geoFail:'❌ Position non disponible',
+    geoNo:'Géolocalisation non disponible sur ce navigateur',lat:'Latitude',lon:'Longitude',
+    zoom:'Niveau de zoom carte',zoomHint:'(10 = ville · 15 = quartier · 18 = bâtiment)',
+    gpsOk:'✅ GPS enregistré :',tilesHint:"💡 Les tuiles offline seront téléchargées automatiquement via <code>sos-guide-fetch-tiles.sh</code> si Ethernet est activé à l'étape suivante.",
+    badFormat:'Format non supporté (PNG, JPG, WEBP uniquement)',tooBig:'Fichier trop volumineux (max 10 Mo)'},
+  options:{lora:'📡 Communication LoRa (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Portée 2–10 km',
+    eth:'🌐 Connexion Ethernet',ethDesc:'Contenus multilingues + tuiles de carte hors-ligne (requiert accès Internet temporaire)',
+    chan:'📶 Canal WiFi',chanHint:'Canaux recommandés EU : 1, 6 ou 11 (marqués ★)'},
+  summary:{node:'Nœud',type:'Type',addr:'Adresse',map:'Carte',chan:'Canal WiFi',lora:'LoRa mesh',
+    eth:'Ethernet / tuiles',lang:'Langue par défaut',none:'Non configurée',on:'✅ Activé',off:'❌ Désactivé',
+    note:'⚡ Installation sans redémarrage (~30 secondes).',modify:'← Modifier',install:'✅ Installer'},
+  progress:{title:'Installation en cours',warn:"Ne pas éteindre l'appareil",sending:'Envoi de la configuration…',
+    p1:'Configuration enregistrée…',p2:'Copie de la carte locale…',p3:'Application du réseau WiFi…',
+    p4:'Démarrage des services…',p5:"Vérification de l'intégrité…",p6:'Terminé !'},
+  success:{title:'Configuration réussie !',text:'Le nœud SOS-GUIDE est opérationnel.<br>Reconnectez-vous au réseau :',
+    portal:'Portail',admin:'Administration',
+    compliance:'🇨🇭 Conforme PCi-CH · nLPD RS 235.1 · Aucune donnée personnelle collectée'},
+  buttons:{back:'← Retour',next:'Continuer →'}
+},
+en:{
+  steps:['Place','Map','Options','Summary'],
+  langLabel:'Language',
+  welcome:{sub:'Initial setup · Emergency access point',
+    connectedSub:'4 steps to bring this node online',
+    ck1:'Location identity (name, type, address)',ck2:'Local map (uploaded plan or GPS coordinates)',
+    ck3:'Network options (LoRa mesh, Ethernet, WiFi channel)',ck4:'Summary and installation (~30 s)',
+    expire:'Session expires in',start:'🚀 Start configuration',connected:'Connected ·'},
+  expired:{title:'Session expired',text:'Restart the Raspberry Pi to try again.'},
+  identity:{name:'Place / node name *',namePh:'E.g.: Lyon Town Hall — Room B, Bern Bunker B1',
+    type:'Type of facility',addr:'Address',optional:'(optional)',
+    addrPh:'E.g.: 1 place de la République, 69001 Lyon'},
+  types:{erp:'🏢 Public-access building',school:'🏫 School / University / Nursery',
+    hospital:'🏥 Hospital / Clinic / Care home',mairie:'🏛️ Town hall / Prefecture / Command post',
+    refuge:'⛺ Shelter / Camp / Mountain refuge',company:'🏭 Company / Industrial site / SEVESO',
+    transport:'🚉 Station / Airport / Terminal',other:'📍 Other'},
+  map:{tabImg:'📷 Plan / Photo',tabGps:'🌍 GPS coordinates',dzPick:'Drag and drop or click to choose',
+    dzHint:'PNG · JPG · WEBP · max 10 MB',remove:'✕ Remove image',
+    optionalHint:'Evacuation plan, satellite photo, hand-drawn map…<br><em>Optional step — can be set later via /admin</em>',
+    geo:'📍 Use my current position',geoWait:'⏳ Locating…',geoFail:'❌ Position unavailable',
+    geoNo:'Geolocation not available in this browser',lat:'Latitude',lon:'Longitude',
+    zoom:'Map zoom level',zoomHint:'(10 = city · 15 = district · 18 = building)',
+    gpsOk:'✅ GPS saved:',tilesHint:'💡 Offline tiles will be downloaded automatically via <code>sos-guide-fetch-tiles.sh</code> if Ethernet is enabled in the next step.',
+    badFormat:'Unsupported format (PNG, JPG, WEBP only)',tooBig:'File too large (max 10 MB)'},
+  options:{lora:'📡 LoRa communication (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Range 2–10 km',
+    eth:'🌐 Ethernet connection',ethDesc:'Multilingual content + offline map tiles (requires temporary Internet access)',
+    chan:'📶 WiFi channel',chanHint:'Recommended EU channels: 1, 6 or 11 (marked ★)'},
+  summary:{node:'Node',type:'Type',addr:'Address',map:'Map',chan:'WiFi channel',lora:'LoRa mesh',
+    eth:'Ethernet / tiles',lang:'Default language',none:'Not configured',on:'✅ Enabled',off:'❌ Disabled',
+    note:'⚡ Installation without reboot (~30 seconds).',modify:'← Edit',install:'✅ Install'},
+  progress:{title:'Installing',warn:'Do not power off the device',sending:'Sending configuration…',
+    p1:'Configuration saved…',p2:'Copying local map…',p3:'Applying WiFi network…',
+    p4:'Starting services…',p5:'Verifying integrity…',p6:'Done!'},
+  success:{title:'Setup complete!',text:'The SOS-GUIDE node is operational.<br>Reconnect to the network:',
+    portal:'Portal',admin:'Administration',
+    compliance:'🇨🇭 PCi-CH compliant · nFADP RS 235.1 · No personal data collected'},
+  buttons:{back:'← Back',next:'Continue →'}
+},
+de:{
+  steps:['Ort','Karte','Optionen','Übersicht'],
+  langLabel:'Sprache',
+  welcome:{sub:'Erstkonfiguration · Notfall-Zugangspunkt',
+    connectedSub:'4 Schritte zur Inbetriebnahme dieses Knotens',
+    ck1:'Identität des Ortes (Name, Typ, Adresse)',ck2:'Lokale Karte (hochgeladener Plan oder GPS-Koordinaten)',
+    ck3:'Netzwerkoptionen (LoRa-Mesh, Ethernet, WLAN-Kanal)',ck4:'Übersicht und Installation (~30 s)',
+    expire:'Sitzung läuft ab in',start:'🚀 Konfiguration starten',connected:'Verbunden ·'},
+  expired:{title:'Sitzung abgelaufen',text:'Starten Sie den Raspberry Pi neu, um fortzufahren.'},
+  identity:{name:'Name des Ortes / Knotens *',namePh:'z. B.: Rathaus Bern — Saal B, Bunker Bern B1',
+    type:'Art der Einrichtung',addr:'Adresse',optional:'(optional)',
+    addrPh:'z. B.: Bundesplatz 1, 3011 Bern'},
+  types:{erp:'🏢 Öffentlich zugängliches Gebäude',school:'🏫 Schule / Universität / Kita',
+    hospital:'🏥 Spital / Klinik / Pflegeheim',mairie:'🏛️ Rathaus / Präfektur / Führungsstab',
+    refuge:'⛺ Schutzraum / Lager / Berghütte',company:'🏭 Unternehmen / Industriestandort / SEVESO',
+    transport:'🚉 Bahnhof / Flughafen / Terminal',other:'📍 Andere'},
+  map:{tabImg:'📷 Plan / Foto',tabGps:'🌍 GPS-Koordinaten',dzPick:'Ziehen und ablegen oder klicken zum Auswählen',
+    dzHint:'PNG · JPG · WEBP · max. 10 MB',remove:'✕ Bild entfernen',
+    optionalHint:'Evakuierungsplan, Satellitenfoto, handgezeichnete Karte…<br><em>Optionaler Schritt — später über /admin konfigurierbar</em>',
+    geo:'📍 Meinen Standort verwenden',geoWait:'⏳ Standort wird ermittelt…',geoFail:'❌ Standort nicht verfügbar',
+    geoNo:'Geolokalisierung in diesem Browser nicht verfügbar',lat:'Breitengrad',lon:'Längengrad',
+    zoom:'Karten-Zoomstufe',zoomHint:'(10 = Stadt · 15 = Quartier · 18 = Gebäude)',
+    gpsOk:'✅ GPS gespeichert:',tilesHint:'💡 Offline-Kacheln werden automatisch über <code>sos-guide-fetch-tiles.sh</code> heruntergeladen, wenn Ethernet im nächsten Schritt aktiviert wird.',
+    badFormat:'Nicht unterstütztes Format (nur PNG, JPG, WEBP)',tooBig:'Datei zu gross (max. 10 MB)'},
+  options:{lora:'📡 LoRa-Kommunikation (Mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Reichweite 2–10 km',
+    eth:'🌐 Ethernet-Verbindung',ethDesc:'Mehrsprachige Inhalte + Offline-Kartenkacheln (vorübergehender Internetzugang erforderlich)',
+    chan:'📶 WLAN-Kanal',chanHint:'Empfohlene EU-Kanäle: 1, 6 oder 11 (mit ★ markiert)'},
+  summary:{node:'Knoten',type:'Typ',addr:'Adresse',map:'Karte',chan:'WLAN-Kanal',lora:'LoRa-Mesh',
+    eth:'Ethernet / Kacheln',lang:'Standardsprache',none:'Nicht konfiguriert',on:'✅ Aktiviert',off:'❌ Deaktiviert',
+    note:'⚡ Installation ohne Neustart (~30 Sekunden).',modify:'← Ändern',install:'✅ Installieren'},
+  progress:{title:'Installation läuft',warn:'Gerät nicht ausschalten',sending:'Konfiguration wird gesendet…',
+    p1:'Konfiguration gespeichert…',p2:'Lokale Karte wird kopiert…',p3:'WLAN-Netzwerk wird eingerichtet…',
+    p4:'Dienste werden gestartet…',p5:'Integrität wird geprüft…',p6:'Fertig!'},
+  success:{title:'Konfiguration erfolgreich!',text:'Der SOS-GUIDE-Knoten ist betriebsbereit.<br>Verbinden Sie sich erneut mit dem Netzwerk:',
+    portal:'Portal',admin:'Administration',
+    compliance:'🇨🇭 PCi-CH-konform · nDSG SR 235.1 · Keine Personendaten erhoben'},
+  buttons:{back:'← Zurück',next:'Weiter →'}
+},
+it:{
+  steps:['Luogo','Mappa','Opzioni','Riepilogo'],
+  langLabel:'Lingua',
+  welcome:{sub:'Configurazione iniziale · Punto di accesso di emergenza',
+    connectedSub:'4 passaggi per mettere in servizio questo nodo',
+    ck1:'Identità del luogo (nome, tipo, indirizzo)',ck2:'Mappa locale (piantina caricata o coordinate GPS)',
+    ck3:'Opzioni di rete (LoRa mesh, Ethernet, canale WiFi)',ck4:'Riepilogo e installazione (~30 s)',
+    expire:'La sessione scade tra',start:'🚀 Avvia la configurazione',connected:'Connesso ·'},
+  expired:{title:'Sessione scaduta',text:'Riavviare il Raspberry Pi per ricominciare.'},
+  identity:{name:'Nome del luogo / nodo *',namePh:'Es.: Municipio di Lugano — Sala B, Bunker Berna B1',
+    type:'Tipo di struttura',addr:'Indirizzo',optional:'(facoltativo)',
+    addrPh:'Es.: Piazza della Riforma 1, 6900 Lugano'},
+  types:{erp:'🏢 Edificio aperto al pubblico',school:'🏫 Scuola / Università / Asilo',
+    hospital:'🏥 Ospedale / Clinica / Casa di cura',mairie:'🏛️ Municipio / Prefettura / Posto di comando',
+    refuge:'⛺ Rifugio / Campo / Capanna alpina',company:'🏭 Azienda / Sito industriale / SEVESO',
+    transport:'🚉 Stazione / Aeroporto / Terminal',other:'📍 Altro'},
+  map:{tabImg:'📷 Piantina / Foto',tabGps:'🌍 Coordinate GPS',dzPick:'Trascina o clicca per scegliere',
+    dzHint:'PNG · JPG · WEBP · max 10 MB',remove:"✕ Rimuovi l'immagine",
+    optionalHint:'Piano di evacuazione, foto satellitare, mappa disegnata a mano…<br><em>Passaggio facoltativo — configurabile in seguito via /admin</em>',
+    geo:'📍 Usa la mia posizione attuale',geoWait:'⏳ Localizzazione in corso…',geoFail:'❌ Posizione non disponibile',
+    geoNo:'Geolocalizzazione non disponibile su questo browser',lat:'Latitudine',lon:'Longitudine',
+    zoom:'Livello di zoom della mappa',zoomHint:'(10 = città · 15 = quartiere · 18 = edificio)',
+    gpsOk:'✅ GPS registrato:',tilesHint:'💡 Le tessere offline saranno scaricate automaticamente tramite <code>sos-guide-fetch-tiles.sh</code> se Ethernet è attivato al passaggio successivo.',
+    badFormat:'Formato non supportato (solo PNG, JPG, WEBP)',tooBig:'File troppo grande (max 10 MB)'},
+  options:{lora:'📡 Comunicazione LoRa (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Portata 2–10 km',
+    eth:'🌐 Connessione Ethernet',ethDesc:'Contenuti multilingue + tessere mappa offline (richiede accesso Internet temporaneo)',
+    chan:'📶 Canale WiFi',chanHint:'Canali consigliati UE: 1, 6 o 11 (contrassegnati ★)'},
+  summary:{node:'Nodo',type:'Tipo',addr:'Indirizzo',map:'Mappa',chan:'Canale WiFi',lora:'LoRa mesh',
+    eth:'Ethernet / tessere',lang:'Lingua predefinita',none:'Non configurata',on:'✅ Attivato',off:'❌ Disattivato',
+    note:'⚡ Installazione senza riavvio (~30 secondi).',modify:'← Modifica',install:'✅ Installa'},
+  progress:{title:'Installazione in corso',warn:'Non spegnere il dispositivo',sending:'Invio della configurazione…',
+    p1:'Configurazione salvata…',p2:'Copia della mappa locale…',p3:'Applicazione della rete WiFi…',
+    p4:'Avvio dei servizi…',p5:"Verifica dell'integrità…",p6:'Fatto!'},
+  success:{title:'Configurazione riuscita!',text:'Il nodo SOS-GUIDE è operativo.<br>Riconnettersi alla rete:',
+    portal:'Portale',admin:'Amministrazione',
+    compliance:'🇨🇭 Conforme PCi-CH · nLPD RS 235.1 · Nessun dato personale raccolto'},
+  buttons:{back:'← Indietro',next:'Continua →'}
+}
+};
+// Les 29 langues du portail (mêmes drapeaux que index.html).
+// L'UI du wizard est traduite en fr/en/de/it ; pour les autres codes elle
+// retombe sur l'anglais, mais le code choisi part tel quel en defaultLang.
+const LANGS=[
+  {code:'fr',flag:'🇫🇷',label:'Français'},{code:'en',flag:'🇬🇧',label:'English'},
+  {code:'de',flag:'🇩🇪',label:'Deutsch'},{code:'it',flag:'🇮🇹',label:'Italiano'},
+  {code:'rm',flag:'🇨🇭',label:'Rumantsch'},{code:'es',flag:'🇪🇸',label:'Español'},
+  {code:'pt',flag:'🇵🇹',label:'Português'},{code:'nl',flag:'🇳🇱',label:'Nederlands'},
+  {code:'pl',flag:'🇵🇱',label:'Polski'},{code:'ru',flag:'🇷🇺',label:'Русский'},
+  {code:'uk',flag:'🇺🇦',label:'Українська'},{code:'ar',flag:'🇸🇦',label:'العربية'},
+  {code:'zh',flag:'🇨🇳',label:'中文'},{code:'ja',flag:'🇯🇵',label:'日本語'},
+  {code:'ko',flag:'🇰🇷',label:'한국어'},{code:'tr',flag:'🇹🇷',label:'Türkçe'},
+  {code:'el',flag:'🇬🇷',label:'Ελληνικά'},{code:'sv',flag:'🇸🇪',label:'Svenska'},
+  {code:'da',flag:'🇩🇰',label:'Dansk'},{code:'no',flag:'🇳🇴',label:'Norsk'},
+  {code:'fi',flag:'🇫🇮',label:'Suomi'},{code:'cs',flag:'🇨🇿',label:'Čeština'},
+  {code:'hu',flag:'🇭🇺',label:'Magyar'},{code:'ro',flag:'🇷🇴',label:'Română'},
+  {code:'he',flag:'🇮🇱',label:'עברית'},{code:'fa',flag:'🇮🇷',label:'فارسی'},
+  {code:'hi',flag:'🇮🇳',label:'हिन्दी'},{code:'th',flag:'🇹🇭',label:'ไทย'},
+  {code:'vi',flag:'🇻🇳',label:'Tiếng Việt'}
+];
+let T = I18N.fr;
+function langInfo(code){ return LANGS.find(l=>l.code===code) || LANGS[0]; }
+function detectLang(){
+  const nav=(navigator.language||'fr').slice(0,2).toLowerCase();
+  return LANGS.some(l=>l.code===nav) ? nav : 'fr';
+}
+
+// ── État global ───────────────────────────────────────────────────────────────
+const S = {
+  step: 0,
+  lang: detectLang(),
+  // Lieu
+  nodeName:    '',
+  nodeType:    'erp',
+  nodeAddress: '',
+  // Carte
+  mapTab:         'image',
+  mapImageFile:   null,
+  mapImagePreview:null,
+  lat:  '',
+  lon:  '',
+  mapZoom: 15,
+  // Options
+  enableLoRa:     false,
+  enableEthernet: false,
+  // Injectés par firstboot.sh
+  csrf:       '%%CSRF_TOKEN%%',
+  channel:    '%%WIFI_CHANNEL%%',
+  starterSsid:'%%STARTER_SSID%%',
+  timer: 600
+};
+
+const card = document.getElementById('card');
+let timerInterval = null;
+T = I18N[S.lang] || I18N.en;
+document.documentElement.lang = S.lang;
+function setLang(l){
+  if(!LANGS.some(x=>x.code===l)) l='fr';
+  S.lang=l;
+  T=I18N[l]||I18N.en;   // UI du wizard : trad native ou anglais
+  document.documentElement.lang=l;
+  render();
+}
+
+// ── Timer ─────────────────────────────────────────────────────────────────────
+function startTimer(){
+  if(timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(()=>{
+    S.timer--;
+    if(S.timer <= 0){ clearInterval(timerInterval); renderExpired(); return; }
+    const el = document.getElementById('timerBadge');
+    if(el){ const m=Math.floor(S.timer/60),s=S.timer%60; el.textContent='⏳ '+m+':'+String(s).padStart(2,'0'); }
+  }, 1000);
+}
+function stopTimer(){ if(timerInterval) clearInterval(timerInterval); }
+function fmtTimer(){ const m=Math.floor(S.timer/60),s=S.timer%60; return m+':'+String(s).padStart(2,'0'); }
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function escHtml(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function shake(id){
+  const el=document.getElementById(id); if(!el) return;
+  el.style.borderColor='var(--red)'; setTimeout(()=>{ el.style.borderColor=''; },1500);
+}
+function renderSteps(active){
+  const labels=T.steps;
+  return `<div class="steps">
+    ${labels.map((l,i)=>{
+      const cls=i<active?'done':i===active?'active':'';
+      return `<div class="step ${cls}"><div class="step-num">${i<active?'✓':(i+1)}</div>
+        <div class="step-label">${l}</div></div>`;
+    }).join('')}
+  </div>`;
+}
+
+// ── Router ────────────────────────────────────────────────────────────────────
+function render(){
+  switch(S.step){
+    case 0: renderWelcome();  break;
+    case 1: renderIdentity(); break;
+    case 2: renderMap();      break;
+    case 3: renderOptions();  break;
+    case 4: renderSummary();  break;
+    case 5: renderProgress(); break;
+    default: renderWelcome();
+  }
+}
+function renderExpired(){
+  stopTimer();
+  card.innerHTML=`<div class="logo"><span class="logo-icon">⏰</span>
+    <h1>${T.expired.title}</h1><p>${T.expired.text}</p></div>`;
+}
+
+// ── Étape 0 : Accueil (déjà connecté) ────────────────────────────────────────
+function renderWelcome(){
+  startTimer();
+  card.innerHTML=`
+    <div class="logo">
+      <span class="logo-icon">⛑️</span>
+      <h1>SOS-GUIDE</h1>
+      <p>${T.welcome.sub}</p>
+    </div>
+    <div class="ch-badge">🇨🇭 Certifié Croix-Rouge Suisse</div>
+    <div class="form-group">
+      <label for="wizardLang">🌍 ${T.langLabel}</label>
+      <select id="wizardLang">
+        ${LANGS.map(l=>`<option value="${l.code}" ${S.lang===l.code?'selected':''}>${l.flag} ${l.label}</option>`).join('')}
+      </select>
+    </div>
+    <div class="connected-badge">
+      <div class="dot"></div>
+      <div class="conn-info">
+        <strong>${T.welcome.connected} ${escHtml(S.starterSsid)}</strong>
+        <span>${T.welcome.connectedSub}</span>
+      </div>
+    </div>
+    <ul class="checklist">
+      <li><span class="ck-icon">🏢</span> ${T.welcome.ck1}</li>
+      <li><span class="ck-icon">🗺️</span> ${T.welcome.ck2}</li>
+      <li><span class="ck-icon">📡</span> ${T.welcome.ck3}</li>
+      <li><span class="ck-icon">✅</span> ${T.welcome.ck4}</li>
+    </ul>
+    <div class="timer-row">
+      <span>${T.welcome.expire}</span>
+      <span id="timerBadge" style="font-weight:600;color:var(--text)">⏳ ${fmtTimer()}</span>
+    </div>
+    <button class="btn btn-primary" id="startBtn" style="width:100%">
+      ${T.welcome.start}
+    </button>`;
+  document.getElementById('wizardLang').onchange=e=>setLang(e.target.value);
+  document.getElementById('startBtn').onclick=()=>{ S.step=1; render(); };
+}
+
+// ── Étape 1 : Identité du lieu ────────────────────────────────────────────────
+const NODE_TYPES=['erp','school','hospital','mairie','refuge','company','transport','other'];
+function renderIdentity(){
+  card.innerHTML=`
+    ${renderSteps(0)}
+    <div class="form-group">
+      <label>${T.identity.name}</label>
+      <input type="text" id="nodeName" placeholder="${escHtml(T.identity.namePh)}"
+        maxlength="128" value="${escHtml(S.nodeName)}" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <label>${T.identity.type}</label>
+      <select id="nodeType">
+        ${NODE_TYPES.map(v=>`<option value="${v}" ${S.nodeType===v?'selected':''}>${escHtml(T.types[v])}</option>`).join('')}
+      </select>
+    </div>
+    <div class="form-group">
+      <label>${T.identity.addr} <small style="font-weight:400;text-transform:none">${T.identity.optional}</small></label>
+      <input type="text" id="nodeAddress" placeholder="${escHtml(T.identity.addrPh)}"
+        maxlength="256" value="${escHtml(S.nodeAddress)}" autocomplete="street-address">
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-secondary" id="backBtn">${T.buttons.back}</button>
+      <button class="btn btn-primary" id="nextBtn">${T.buttons.next}</button>
+    </div>`;
+  document.getElementById('nodeName').focus();
+  document.getElementById('backBtn').onclick=()=>{ S.step=0; render(); };
+  document.getElementById('nextBtn').onclick=()=>{
+    const name=document.getElementById('nodeName').value.trim();
+    if(!name){ shake('nodeName'); return; }
+    S.nodeName=name;
+    S.nodeType=document.getElementById('nodeType').value;
+    S.nodeAddress=document.getElementById('nodeAddress').value.trim();
+    S.step=2; render();
+  };
+}
+
+// ── Étape 2 : Carte locale ────────────────────────────────────────────────────
+function renderMap(){
+  const imgTab=S.mapTab==='image';
+  const hasImg=!!S.mapImagePreview;
+  const hasGps=!!(S.lat && S.lon);
+  card.innerHTML=`
+    ${renderSteps(1)}
+    <div class="tabs">
+      <button class="tab ${imgTab?'active':''}" id="tabImg">${T.map.tabImg}</button>
+      <button class="tab ${!imgTab?'active':''}" id="tabGps">${T.map.tabGps}</button>
+    </div>
+
+    <!-- Onglet image -->
+    <div class="tab-panel ${imgTab?'active':''}" id="panelImg">
+      <div class="drop-zone ${hasImg?'over':''}" id="dropZone">
+        <input type="file" id="mapFile" accept="image/*">
+        <div class="dz-icon">${hasImg?'✅':'🗺️'}</div>
+        <div class="dz-text">${hasImg?escHtml(S.mapImageFile.name):T.map.dzPick}</div>
+        <div class="dz-hint">${T.map.dzHint}</div>
+      </div>
+      ${hasImg
+        ?`<img src="${escHtml(S.mapImagePreview)}" class="img-preview" alt="Aperçu">
+          <button id="removeImg" style="margin-top:.5rem;font-size:.75rem;color:var(--red);
+            background:none;border:none;cursor:pointer;padding:.25rem 0">${T.map.remove}</button>`
+        :`<p class="hint" style="margin-top:.5rem;text-align:center">
+            ${T.map.optionalHint}
+          </p>`}
+    </div>
+
+    <!-- Onglet GPS -->
+    <div class="tab-panel ${!imgTab?'active':''}" id="panelGps">
+      <button class="gps-geo-btn" id="geoBtn">${T.map.geo}</button>
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label>${T.map.lat}</label>
+          <input type="number" id="lat" step="0.000001" min="-90" max="90"
+            placeholder="48.856614" value="${escHtml(S.lat)}">
+        </div>
+        <div class="form-group">
+          <label>${T.map.lon}</label>
+          <input type="number" id="lon" step="0.000001" min="-180" max="180"
+            placeholder="2.352222" value="${escHtml(S.lon)}">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>${T.map.zoom} — <strong id="zoomLabel">${S.mapZoom}</strong>
+          <small style="font-weight:400;text-transform:none">${T.map.zoomHint}</small>
+        </label>
+        <div class="range-row">
+          <input type="range" id="mapZoom" min="10" max="19" value="${S.mapZoom}">
+          <span class="range-val" id="zoomVal">${S.mapZoom}</span>
+        </div>
+      </div>
+      ${hasGps
+        ?`<div class="alert info show">${T.map.gpsOk} ${escHtml(S.lat)}, ${escHtml(S.lon)}</div>`
+        :`<div class="alert warn show">${T.map.tilesHint}</div>`}
+    </div>
+
+    <div class="btn-group" style="margin-top:1.25rem">
+      <button class="btn btn-secondary" id="backBtn">${T.buttons.back}</button>
+      <button class="btn btn-primary" id="nextBtn">${T.buttons.next}</button>
+    </div>`;
+
+  // Tabs
+  document.getElementById('tabImg').onclick=()=>{ S.mapTab='image'; render(); };
+  document.getElementById('tabGps').onclick=()=>{ S.mapTab='gps';   render(); };
+
+  // Upload image
+  const fi=document.getElementById('mapFile');
+  const dz=document.getElementById('dropZone');
+  function loadFile(f){
+    if(!f) return;
+    if(!f.type.startsWith('image/')){ alert(T.map.badFormat); return; }
+    if(f.size>10*1024*1024){ alert(T.map.tooBig); return; }
+    S.mapImageFile=f;
+    const r=new FileReader();
+    r.onload=ev=>{ S.mapImagePreview=ev.target.result; render(); };
+    r.readAsDataURL(f);
+  }
+  if(fi) fi.addEventListener('change',e=>loadFile(e.target.files[0]));
+  if(dz){
+    dz.addEventListener('dragover',e=>{ e.preventDefault(); dz.classList.add('over'); });
+    dz.addEventListener('dragleave',()=>{ if(!S.mapImagePreview) dz.classList.remove('over'); });
+    dz.addEventListener('drop',e=>{ e.preventDefault(); loadFile(e.dataTransfer.files[0]); });
+  }
+  const removeBtn=document.getElementById('removeImg');
+  if(removeBtn) removeBtn.onclick=()=>{ S.mapImageFile=null; S.mapImagePreview=null; render(); };
+
+  // Géolocalisation
+  const geoBtn=document.getElementById('geoBtn');
+  if(geoBtn) geoBtn.onclick=()=>{
+    if(!navigator.geolocation){ alert(T.map.geoNo); return; }
+    geoBtn.textContent=T.map.geoWait;
+    geoBtn.disabled=true;
+    navigator.geolocation.getCurrentPosition(
+      pos=>{
+        S.lat=pos.coords.latitude.toFixed(6);
+        S.lon=pos.coords.longitude.toFixed(6);
+        render();
+      },
+      ()=>{ geoBtn.textContent=T.map.geoFail; geoBtn.disabled=false; }
+    );
+  };
+
+  // Zoom slider
+  const zSlider=document.getElementById('mapZoom');
+  if(zSlider) zSlider.addEventListener('input',e=>{
+    S.mapZoom=parseInt(e.target.value);
+    const v=document.getElementById('zoomVal');
+    const l=document.getElementById('zoomLabel');
+    if(v) v.textContent=S.mapZoom;
+    if(l) l.textContent=S.mapZoom;
+  });
+
+  // Coords GPS
+  document.getElementById('backBtn').onclick=()=>{ S.step=1; render(); };
+  document.getElementById('nextBtn').onclick=()=>{
+    const latEl=document.getElementById('lat');
+    const lonEl=document.getElementById('lon');
+    if(latEl && latEl.value) S.lat=latEl.value.trim();
+    if(lonEl && lonEl.value) S.lon=lonEl.value.trim();
+    S.step=3; render();
+  };
+}
+
+// ── Étape 3 : Options réseau ──────────────────────────────────────────────────
+function renderOptions(){
+  card.innerHTML=`
+    ${renderSteps(2)}
+    <div id="toggleLoRa" class="toggle-opt ${S.enableLoRa?'on':''}">
+      <div class="tog"></div>
+      <div class="tog-info">
+        <strong>${T.options.lora}</strong>
+        <span>${T.options.loraDesc}</span>
+      </div>
+    </div>
+    <div id="toggleEth" class="toggle-opt ${S.enableEthernet?'on':''}">
+      <div class="tog"></div>
+      <div class="tog-info">
+        <strong>${T.options.eth}</strong>
+        <span>${T.options.ethDesc}</span>
+      </div>
+    </div>
+    <div class="channel-row">
+      <label>${T.options.chan}</label>
+      <select id="wifiChan">
+        ${Array.from({length:13},(_,i)=>i+1).map(c=>
+          `<option value="${c}" ${parseInt(S.channel)===c?'selected':''}>${c}${[1,6,11].includes(c)?' ★':''}</option>`
+        ).join('')}
+      </select>
+    </div>
+    <div class="hint" style="padding-bottom:.5rem">${T.options.chanHint}</div>
+    <div class="btn-group">
+      <button class="btn btn-secondary" id="backBtn">${T.buttons.back}</button>
+      <button class="btn btn-primary" id="nextBtn">${T.buttons.next}</button>
+    </div>`;
+  document.getElementById('toggleLoRa').onclick=()=>{
+    S.enableLoRa=!S.enableLoRa; document.getElementById('toggleLoRa').classList.toggle('on',S.enableLoRa);
+  };
+  document.getElementById('toggleEth').onclick=()=>{
+    S.enableEthernet=!S.enableEthernet; document.getElementById('toggleEth').classList.toggle('on',S.enableEthernet);
+  };
+  document.getElementById('wifiChan').onchange=e=>{ S.channel=e.target.value; };
+  document.getElementById('backBtn').onclick=()=>{ S.step=2; render(); };
+  document.getElementById('nextBtn').onclick=()=>{ S.step=4; render(); };
+}
+
+// ── Étape 4 : Résumé ──────────────────────────────────────────────────────────
+function renderSummary(){
+  const typeLabel=T.types[S.nodeType]||'';
+  const langLabel=langInfo(S.lang).flag+' '+langInfo(S.lang).label;
+  const mapInfo = S.mapImageFile
+    ? '📷 '+escHtml(S.mapImageFile.name)
+    : (S.lat && S.lon)
+      ? `🌍 ${escHtml(S.lat)}, ${escHtml(S.lon)}`
+      : null;
+  card.innerHTML=`
+    ${renderSteps(3)}
+    <div class="summary">
+      <div class="summary-row">
+        <span class="summary-key">${T.summary.node}</span>
+        <span class="badge">${escHtml(S.nodeName)}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-key">${T.summary.type}</span>
+        <span class="badge">${escHtml(typeLabel)}</span>
+      </div>
+      ${S.nodeAddress?`<div class="summary-row">
+        <span class="summary-key">${T.summary.addr}</span>
+        <span class="badge">${escHtml(S.nodeAddress)}</span>
+      </div>`:''}
+      <div class="summary-row">
+        <span class="summary-key">${T.summary.lang}</span>
+        <span class="badge">${langLabel}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-key">${T.summary.map}</span>
+        <span class="badge ${mapInfo?'green':'grey'}">${mapInfo||T.summary.none}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-key">${T.summary.chan}</span>
+        <span class="badge">${S.channel}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-key">${T.summary.lora}</span>
+        <span class="badge ${S.enableLoRa?'green':'red'}">${S.enableLoRa?T.summary.on:T.summary.off}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-key">${T.summary.eth}</span>
+        <span class="badge ${S.enableEthernet?'green':'red'}">${S.enableEthernet?T.summary.on:T.summary.off}</span>
+      </div>
+    </div>
+    ${S.mapImagePreview
+      ?`<img src="${escHtml(S.mapImagePreview)}" class="img-preview" alt="Carte" style="margin-bottom:.75rem">`
+      :''}
+    <div style="font-size:.78rem;color:var(--sub);line-height:1.6;margin:.25rem 0 0">
+      ${T.summary.note}
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-secondary" id="backBtn">${T.summary.modify}</button>
+      <button class="btn btn-primary" id="confirmBtn">${T.summary.install}</button>
+    </div>`;
+  document.getElementById('backBtn').onclick=()=>{ S.step=3; render(); };
+  document.getElementById('confirmBtn').onclick=()=>{ S.step=5; render(); doInstall(); };
+}
+
+// ── Étape 5 : Progression ─────────────────────────────────────────────────────
+function renderProgress(){
+  card.innerHTML=`
+    <div style="text-align:center;margin-bottom:1.5rem">
+      <span style="font-size:2.5rem">⏳</span>
+      <h2 style="font-size:1.2rem;font-weight:700;margin-top:.5rem">${T.progress.title}</h2>
+      <p style="font-size:.82rem;color:var(--sub)">${T.progress.warn}</p>
+    </div>
+    <div class="progress"><div class="progress-fill" id="pFill" style="width:5%"></div></div>
+    <div class="progress-status" id="pStatus">${T.progress.sending}</div>`;
+}
+
+// ── Installation ──────────────────────────────────────────────────────────────
+function doInstall(){
+  const fd=new FormData();
+  fd.append('_csrf',          S.csrf);
+  fd.append('nodeName',       S.nodeName);
+  fd.append('nodeType',       S.nodeType);
+  fd.append('nodeAddress',    S.nodeAddress);
+  fd.append('enableLoRa',     S.enableLoRa     ? 'true' : 'false');
+  fd.append('enableEthernet', S.enableEthernet ? 'true' : 'false');
+  fd.append('wifiChannel',    S.channel);
+  fd.append('lat',            S.lat);
+  fd.append('lon',            S.lon);
+  fd.append('mapZoom',        String(S.mapZoom));
+  fd.append('defaultLang',    S.lang);
+  if(S.mapImageFile) fd.append('mapImage', S.mapImageFile);
+
+  fetch('/api/install',{ method:'POST', body:fd })
+    .then(r=>{
+      if(!r.ok) return r.json().then(d=>{ throw new Error(d.message||'Erreur '+r.status); });
+      return r.json();
+    })
+    .then(data=>{
+      if(!data.success) throw new Error(data.message||'Échec serveur');
+      animateProgress();
+    })
+    .catch(err=>{
+      S.step=4; render();
+      setTimeout(()=>{
+        const a=document.createElement('div');
+        a.className='alert error show';
+        a.innerHTML='❌ '+escHtml(err.message);
+        document.querySelector('.summary').before(a);
+      },100);
+    });
+}
+
+function animateProgress(){
+  const steps=[
+    {pct:15,txt:T.progress.p1},
+    {pct:35,txt:T.progress.p2},
+    {pct:55,txt:T.progress.p3},
+    {pct:72,txt:T.progress.p4},
+    {pct:88,txt:T.progress.p5},
+    {pct:100,txt:T.progress.p6},
+  ];
+  let i=0;
+  function next(){
+    if(i>=steps.length){ renderSuccess(); return; }
+    const el=document.getElementById('pFill');
+    const st=document.getElementById('pStatus');
+    if(el) el.style.width=steps[i].pct+'%';
+    if(st) st.textContent=steps[i].txt;
+    i++;
+    setTimeout(next, i===steps.length?800:1000);
+  }
+  setTimeout(next,300);
+}
+
+function renderSuccess(){
+  stopTimer();
+  card.innerHTML=`
+    <div class="success-screen">
+      <span class="big-icon">✅</span>
+      <h2>${T.success.title}</h2>
+      <p>${T.success.text}</p>
+      <div class="ssid-badge">⛑️ SOS-GUIDE — ${escHtml(S.nodeName)}</div>
+      <p style="margin-top:.75rem;font-size:.78rem;color:var(--muted)">
+        ${T.success.portal} : <strong>http://10.0.0.1/</strong><br>
+        ${T.success.admin} : <strong>http://10.0.0.1/admin</strong>
+      </p>
+      <div style="margin-top:1.25rem;padding:.65rem;background:rgba(34,197,94,.12);
+        border-radius:8px;font-size:.74rem;color:#4ade80;border:1px solid rgba(34,197,94,.3)">
+        ${T.success.compliance}
+      </div>
+    </div>`;
+}
+
+render();
+})();
+</script>
+</body>
+</html>

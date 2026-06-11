@@ -1,0 +1,208 @@
+{
+  "app": { "title": "应急指南" },
+  "drawer": {
+    "title": "导航",
+    "footer": "应急指南 · 版本 1.0",
+    "links": [
+      { "icon": "⛑️", "label": "首页 — 紧急情况", "href": "#splashScreen" },
+      { "icon": "📖", "label": "生存指南", "href": "#mainContent" },
+      { "icon": "🇫🇷", "label": "原则", "href": "#section-principes" },
+      { "icon": "⚙️", "label": "实用工具", "href": "#section-outils" },
+      { "icon": "🚑", "label": "医疗紧急情况", "href": "#section-urgences" },
+      { "icon": "⚠️", "label": "集体情况", "href": "#section-situations" },
+      { "icon": "📞", "label": "协会", "href": "#section-assos" }
+    ]
+  },
+  "local": {
+    "info": { "title": "" },
+    "crisis": "📞 危机",
+    "samu": "🚑 当地急救",
+    "fire": "🚒 消防",
+    "townhall": "🏛️ 市政厅",
+    "prefecture": "🏛️ 省政府",
+    "redcross": "🔴 红十字会",
+    "radio": "📻 当地广播"
+  },
+  "splash": {
+    "title": "生存指南",
+    "subtitle": "本网站<strong>无需互联网连接</strong>即可运行。提供应对紧急情况的基本信息。",
+    "enterButton": "进入完整指南"
+  },
+  "main": {
+    "welcome": {
+      "title": "欢迎",
+      "text": "您的应急指南可离线使用。在此查找应急工具、急救和生存方法。"
+    }
+  },
+  "sections": {
+    "principes": "🇫🇷 急救三大原则",
+    "outils": "⚙️ 实用工具",
+    "urgencesMedicales": "🚑 医疗紧急情况",
+    "situationsCollectives": "⚠️ 集体情况",
+    "associations": "📞 协会与求助电话"
+  },
+  "tools": {
+    "metronome": { "title": "❤️ 心肺复苏节拍器 110 BPM", "start": "开始", "stop": "停止" },
+    "flash": { "stop": "⏹️ 停止SOS闪光" },
+    "torch": { "stop": "🔦 关闭手电筒" },
+    "alarm": { "title": "🚨 声音警报", "start": "触发警报", "stop": "停止警报", "active": "🚨 警报激活", "inactive": "⏹️ 已停止" },
+    "respiration": { "title": "🌬️ 引导呼吸", "start": "开始", "stop": "停止", "inhale": "吸气", "exhale": "呼气" },
+    "whistle": { "title": "🔊 应急哨", "start": "吹哨（3声）", "stop": "停止", "active": "🔊 哨声激活", "inactive": "⏹️ 已停止" }
+  },
+  "urgences": [
+	{ "number": "15", "name": "急救", "class": "samu" },
+	{ "number": "17", "name": "警察", "class": "police" },
+	{ "number": "18", "name": "消防", "class": "pompiers" },
+	{ "number": "112", "name": "欧洲紧急电话", "class": "europe" },
+	{ "number": "114", "name": "听障人士", "class": "ssourd" }
+  ],
+  "principes": [
+    {
+      "icon": "📢", "titre": "报警", "desc": "向急救服务报警", "colorClass": "card-bleu",
+      "contenu": {
+        "steps": [
+          "紧急电话号码：15（急救）、17（警察）、18（消防）、112（欧洲）、114（听障）。",
+          "说明：地点？（确切位置）、事件？（事故性质）、谁？（伤员数量、状况）。",
+          "不要先挂电话：让接线员结束通话。",
+          "尽可能使用定位应用程序。",
+          "如果独自一人且无法说话，请拨打112并保持线路畅通。"
+        ]
+      }
+    },
+    {
+      "icon": "🩺", "titre": "施救", "desc": "进行初步急救", "colorClass": "card-blanc",
+      "contenu": {
+        "steps": [
+          "评估意识（说话、触碰），检查呼吸。",
+          "如果没有呼吸：立即开始胸外按压（100-120次/分钟）。",
+          "无意识但有呼吸：恢复体位（侧卧）。",
+          "出血：按压伤口。仅当按压无效时才使用止血带。",
+          "切勿给无意识的人喝水。",
+          "安抚伤员并覆盖以防体温过低。"
+        ]
+      }
+    },
+    {
+      "icon": "🛡️", "titre": "保护", "desc": "确保安全", "colorClass": "card-rouge",
+      "contenu": {
+        "steps": [
+          "使伤员远离直接危险（火、交通、塌方）。",
+          "标记区域（三角警示牌、危险警示灯）。",
+          "自我保护：手套、口罩（如有）。",
+          "切断危险源（煤气、电力）。",
+          "疑似脊柱受伤时不要移动伤员。"
+        ]
+      }
+    }
+  ],
+  "outils": [
+    { "icon": "❤️", "titre": "心肺复苏节拍器 110 BPM", "desc": "胸外按压节奏。", "action": "openMetronome" },
+    { "icon": "⚡", "titre": "SOS闪光", "desc": "紧急光信号。", "action": "openFlashSOS" },
+    { "icon": "🔦", "titre": "手电筒", "desc": "亮白屏幕。", "action": "openTorche" },
+    { "icon": "🚨", "titre": "声音警报", "desc": "连续警报声 (880 Hz)。", "action": "openAlerte" },
+    { "icon": "🌬️", "titre": "引导呼吸", "desc": "心率协调 (4-4)。", "action": "openRespiration" },
+    { "icon": "🔊", "titre": "应急哨", "desc": "三声哨响信号。", "action": "openSifflet" }
+  ],
+  "urgences_medicales": [
+    {
+      "icon": "🫀", "titre": "心脏病发作", "desc": "休息、呼叫急救、必要时心肺复苏。", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "立即拨打15或112。", "如果清醒，让患者休息并半坐位。", "无意识但有呼吸：恢复体位。", "心脏骤停：胸外按压 (100-120/分钟) + 如有除颤器则使用。" ] }
+    },
+    {
+      "icon": "🩸", "titre": "出血", "desc": "直接按压、止血带、呼叫救援。", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "用干净布按压伤口。", "尽可能抬高伤肢。", "如出血不止：止血带（宽、紧、记录时间）。", "不要拔出刺入的物体。", "让伤员躺下、覆盖、拨打15。" ] }
+    },
+    {
+      "icon": "🧠", "titre": "中风 (FAST)", "desc": "面部、手臂、言语、时间 – 拨打15。", "colorClass": "card-violet",
+      "contenu": { "steps": [ "F：面部不对称？", "A：手臂无力？", "S：言语不清？", "T：时间 – 立即拨打15！", "记录症状开始时间。" ] }
+    },
+    {
+      "icon": "🫁", "titre": "窒息", "desc": "海姆立克急救法。", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "询问“你窒息了吗？”", "如果无法说话或咳嗽：5次背部拍击。", "如果无效：海姆立克急救法。", "失去意识：心肺复苏并拨打15。" ] }
+    },
+    {
+      "icon": "🔥", "titre": "烧伤", "desc": "用温水冷却15分钟，不要刺破水泡。", "colorClass": "card-orange",
+      "contenu": { "steps": [ "立即用温水 (15-25°C) 冷却15分钟。", "脱去未粘连的衣物和首饰。", "用保鲜膜或无菌敷料覆盖。", "不要刺破水泡，不要涂抹药膏。", "大面积烧伤、面部或呼吸道烧伤拨打15。" ] }
+    },
+    {
+      "icon": "💧", "titre": "溺水", "desc": "从水中救出、心肺复苏、呼叫急救。", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "在不危及自身的情况下将伤员从水中救出。", "检查意识和呼吸。", "无呼吸：2次人工呼吸 + 30次按压 (30:2)。", "拨打15或112。", "覆盖以防体温过低。" ] }
+    },
+    {
+      "icon": "💊", "titre": "药物过量 (GHB/MDMA)", "desc": "恢复体位、拨打15、不要让其入睡。", "colorClass": "card-violet",
+      "contenu": { "steps": [ "无意识但有呼吸：恢复体位。", "呼吸停止：心肺复苏 + 人工呼吸。", "立即拨打15。", "不要让患者“睡觉”——持续监护。", "保存可能摄入的物质供急救人员参考。" ] }
+    },
+    {
+      "icon": "🌡️", "titre": "热射病", "desc": "立即降温、拨打15。", "colorClass": "card-orange",
+      "contenu": { "steps": [ "移至阴凉/凉爽处。", "脱衣、喷洒凉水、扇风。", "腋下、颈部、腹股沟放置冰袋。", "拨打15 – 危及生命的紧急情况。", "不要服用退烧药。" ] }
+    },
+    {
+      "icon": "🍺", "titre": "酒精中毒", "desc": "恢复体位、监护、昏迷时拨打15。", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "无意识：恢复体位、监测呼吸。", "不要留其独处、不要催吐。", "昏迷或无规律呼吸：15。", "如果清醒且能吞咽，给予补水。" ] }
+    },
+    {
+      "icon": "🦐", "titre": "过敏性休克", "desc": "严重过敏、注射肾上腺素、拨打15。", "colorClass": "card-rose",
+      "contenu": { "steps": [ "识别：荨麻疹、肿胀、呼吸困难、昏厥。", "注射肾上腺素（如有处方）于大腿。", "平躺、抬高双腿。", "立即拨打15。" ] }
+    },
+    {
+      "icon": "🚗", "titre": "交通事故", "desc": "安全、警示、呼叫救援。", "colorClass": "card-slate",
+      "contenu": { "steps": [ "放置三角警示牌、穿反光背心。", "除非直接危险，否则不要移动伤员。", "拨打15、18或112。", "关闭发动机、拉手刹。", "不要给无意识伤员喝水。" ] }
+    }
+  ],
+  "situations_collectives": [
+    {
+      "icon": "🔥", "titre": "火灾", "desc": "疏散、报警、在烟雾下爬行。", "colorClass": "card-orange",
+      "contenu": { "steps": [ "拨打消防 (18或112)。", "弯腰撤离（在烟雾下爬行）。", "不要使用电梯。", "关闭身后门。", "如果衣服着火：停、倒、滚。" ] }
+    },
+    {
+      "icon": "💨", "titre": "煤气泄漏", "desc": "不要产生火花、开窗、拨打18。", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "不要触动电器开关、不要在现场使用电话。", "打开门窗。", "如可能，切断煤气。", "疏散场所。", "从室外拨打消防 (18或112)。" ] }
+    },
+    {
+      "icon": "⚠️", "titre": "袭击/枪击", "desc": "逃跑、躲藏、报警 (112)。", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "跑开、改变方向。", "如无法逃跑：躲在锁闭房间、关灯、远离窗户。", "手机静音、不要打电话以免暴露。", "只向身份明确的执法人员开门。" ] }
+    },
+    {
+      "icon": "🌊", "titre": "洪水", "desc": "往高处走、切断电源、听从指示。", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "上楼、不要去地下室。", "切断煤气和电力。", "不要使用电梯。", "准备按指示疏散。", "遇直接危险拨打急救 (18, 112)。" ] }
+    },
+    {
+      "icon": "🌍", "titre": "地震", "desc": "蹲下、掩护、抓牢、远离窗户。", "colorClass": "card-violet",
+      "contenu": { "steps": [ "蹲下、躲在坚固桌下、抓牢。", "远离窗户和悬挂物。", "震动停止后：走楼梯疏散。", "不要使用电梯。", "注意余震。" ] }
+    },
+    {
+      "icon": "☣️", "titre": "核生化 (核/放射/生物/化学)", "desc": "就地避难、密封房间、听广播。", "colorClass": "card-slate",
+      "contenu": { "steps": [ "躲进无窗房间。", "关闭门窗、停止通风。", "关上百叶窗、用胶带密封缝隙。", "收听官方指示（当地广播）。", "未经允许不得外出。" ] }
+    }
+  ],
+  "associations": [
+    {
+      "icon": "💬", "titre": "倾听热线", "numero": "09 72 39 40 50", "colorClass": "card-slate",
+      "contenu": { "steps": [ "号码：09 72 39 40 50", "24/7 心理支持、匿名免费。", "情绪困扰、孤独、自杀念头。" ] }
+    },
+    {
+      "icon": "📞", "titre": "3114 – 自杀预防", "numero": "3114", "colorClass": "card-violet",
+      "contenu": { "steps": [ "号码：3114 (免费)", "全国24/7、专业医护人员。" ] }
+    },
+    {
+      "icon": "👶", "titre": "119 – 儿童危险举报", "numero": "119", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "号码：119 (免费)", "举报受虐、忽视、暴力儿童。", "匿名保密、24小时。" ] }
+    },
+    {
+      "icon": "🚺", "titre": "3919 – 妇女暴力求助", "numero": "3919", "colorClass": "card-rose",
+      "contenu": { "steps": [ "号码：3919 (免费)", "为受暴力妇女提供倾听、信息、指导。", "24/7。" ] }
+    },
+    {
+      "icon": "🔍", "titre": "116 006 – 失踪儿童", "numero": "116 006", "colorClass": "card-orange",
+      "contenu": { "steps": [ "号码：116 006 (免费)", "报告失踪儿童、帮助家庭。" ] }
+    },
+    {
+      "icon": "🍷", "titre": "成瘾帮助", "numero": "0 800 235 236", "colorClass": "card-vert",
+      "contenu": { "steps": [ "号码：0 800 235 236 (免费)", "酒精、毒品、赌博成瘾信息与指导。" ] }
+    },
+    {
+      "icon": "❤️", "titre": "红十字倾听", "numero": "0 800 858 858", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "号码：0 800 858 858 (免费)", "心理和社会支持、24/7。" ] }
+    }
+  ]
+}

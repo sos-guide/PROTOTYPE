@@ -1,0 +1,208 @@
+{
+  "app": { "title": "SOS-KALAUZ" },
+  "drawer": {
+    "title": "Navigáció",
+    "footer": "SOS-KALAUZ · 1.0 verzió",
+    "links": [
+      { "icon": "⛑️", "label": "Kezdőlap — Vészhelyzetek", "href": "#splashScreen" },
+      { "icon": "📖", "label": "Túlélési útmutató", "href": "#mainContent" },
+      { "icon": "🇫🇷", "label": "Alapelvek", "href": "#section-principes" },
+      { "icon": "⚙️", "label": "Praktikus eszközök", "href": "#section-outils" },
+      { "icon": "🚑", "label": "Orvosi vészhelyzetek", "href": "#section-urgences" },
+      { "icon": "⚠️", "label": "Tömeges helyzetek", "href": "#section-situations" },
+      { "icon": "📞", "label": "Segélyszervezetek", "href": "#section-assos" }
+    ]
+  },
+  "local": {
+    "info": { "title": "" },
+    "crisis": "📞 Krízis",
+    "samu": "🚑 Helyi mentő",
+    "fire": "🚒 Tűzoltók",
+    "townhall": "🏛️ Polgármesteri Hivatal",
+    "prefecture": "🏛️ Prefektúra",
+    "redcross": "🔴 Vöröskereszt",
+    "radio": "📻 Helyi rádió"
+  },
+  "splash": {
+    "title": "TÚLÉLÉSI ÚTMUTATÓ",
+    "subtitle": "Ez az oldal <strong>internetkapcsolat nélkül</strong> működik. Alapvető információkat nyújt vészhelyzetek kezeléséhez.",
+    "enterButton": "Belépés a teljes útmutatóba"
+  },
+  "main": {
+    "welcome": {
+      "title": "Üdvözöljük",
+      "text": "Az Ön vészhelyzeti útmutatója offline működik. Itt talál vészhelyzeti eszközöket, elsősegélyt és túlélési reflexeket."
+    }
+  },
+  "sections": {
+    "principes": "🇫🇷 Az elsősegély 3 alapelve",
+    "outils": "⚙️ Praktikus eszközök",
+    "urgencesMedicales": "🚑 Orvosi vészhelyzetek",
+    "situationsCollectives": "⚠️ Tömeges helyzetek",
+    "associations": "📞 Segélyszervezetek és segélyhívó számok"
+  },
+  "tools": {
+    "metronome": { "title": "❤️ CPR metronóm 110 BPM", "start": "Indítás", "stop": "Leállítás" },
+    "flash": { "stop": "⏹️ SOS villogás leállítása" },
+    "torch": { "stop": "🔦 Zseblámpa kikapcsolása" },
+    "alarm": { "title": "🚨 Hangjelzés", "start": "Riasztás indítása", "stop": "Riasztás leállítása", "active": "🚨 RIASZTÁS AKTÍV", "inactive": "⏹️ Leállítva" },
+    "respiration": { "title": "🌬️ Vezetett légzés", "start": "Kezdés", "stop": "Leállítás", "inhale": "Belégzés", "exhale": "Kilégzés" },
+    "whistle": { "title": "🔊 Vészhelyzeti síp", "start": "Sípolás (3 fújás)", "stop": "Leállítás", "active": "🔊 Síp aktív", "inactive": "⏹️ Leállítva" }
+  },
+  "urgences": [
+	{ "number": "15", "name": "SAMU", "class": "samu" },
+	{ "number": "17", "name": "RENDŐRSÉG", "class": "police" },
+	{ "number": "18", "name": "TŰZOLTÓSÁG", "class": "pompiers" },
+	{ "number": "112", "name": "EURÓPAI SEGÉLYHÍVÓ", "class": "europe" },
+	{ "number": "114", "name": "HALLÁSSÉRÜLTEK", "class": "ssourd" }
+  ],
+  "principes": [
+    {
+      "icon": "📢", "titre": "ÉRTESÍTÉS", "desc": "Értesíteni a segélyszolgálatokat", "colorClass": "card-bleu",
+      "contenu": {
+        "steps": [
+          "Segélyhívó számok: 112 (egységes), 104 (mentők), 107 (rendőrség), 105 (tűzoltók).",
+          "Mondja el: Hol? (pontos hely), Mi? (baleset típusa), Ki? (sérültek száma, állapota).",
+          "Ne tegye le elsőként – hagyja, hogy az operátor fejezze be a hívást.",
+          "Használjon helymeghatározó alkalmazást, ha lehetséges.",
+          "Ha egyedül van és nem tud beszélni, hívja a 112-t és hagyja nyitva a vonalat."
+        ]
+      }
+    },
+    {
+      "icon": "🩺", "titre": "SEGÍTSÉGNYÚJTÁS", "desc": "Elsősegély nyújtása", "colorClass": "card-blanc",
+      "contenu": {
+        "steps": [
+          "Vizsgálja meg az eszméletet (beszéljen, érintsen), ellenőrizze a légzést.",
+          "Ha nem lélegzik: azonnal kezdje meg a mellkasi nyomásokat (100-120/perc).",
+          "Stabil oldalfekvés, ha eszméletlen, de lélegzik.",
+          "Vérzés: nyomja a sebet. Nyomókötés csak akkor, ha a nyomás nem elegendő.",
+          "Soha ne adjon inni eszméletlen személynek.",
+          "Nyugtassa meg a sérültet, és takarja be a kihűlés elkerülése érdekében."
+        ]
+      }
+    },
+    {
+      "icon": "🛡️", "titre": "VÉDELEM", "desc": "Biztonság megteremtése", "colorClass": "card-rouge",
+      "contenu": {
+        "steps": [
+          "Távolítsa el a sérültet a közvetlen veszélyből (tűz, forgalom, omlás).",
+          "Jelölje meg a helyszínt (elakadásjelző háromszög, vészvillogó).",
+          "Védje magát: kesztyű, maszk, ha van.",
+          "Szüntesse meg a veszélyforrásokat (gáz, áram).",
+          "Gerincsérülés gyanúja esetén ne mozgassa a sérültet."
+        ]
+      }
+    }
+  ],
+  "outils": [
+    { "icon": "❤️", "titre": "CPR metronóm 110 BPM", "desc": "Ritmus a mellkasi nyomásokhoz.", "action": "openMetronome" },
+    { "icon": "⚡", "titre": "SOS villogás", "desc": "Fényjelzés vészhelyzetben.", "action": "openFlashSOS" },
+    { "icon": "🔦", "titre": "Zseblámpa", "desc": "Világos fehér képernyő.", "action": "openTorche" },
+    { "icon": "🚨", "titre": "Hangjelzés", "desc": "Folyamatos riasztás (880 Hz).", "action": "openAlerte" },
+    { "icon": "🌬️", "titre": "Vezetett légzés", "desc": "Szívkoherencia (4-4).", "action": "openRespiration" },
+    { "icon": "🔊", "titre": "Vészhelyzeti síp", "desc": "3 fújásos jelzés.", "action": "openSifflet" }
+  ],
+  "urgences_medicales": [
+    {
+      "icon": "🫀", "titre": "Szívinfarktus", "desc": "Pihenés, mentő hívása, CPR ha szükséges.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Azonnal hívja a 112-t vagy a 104-et.", "Helyezze a beteget pihenő, félig ülő helyzetbe, ha eszméleténél van.", "Eszméletlen, de lélegzik: stabil oldalfekvés.", "Szívmegállás: mellkasi nyomások (100-120/perc) + defibrillátor, ha van." ] }
+    },
+    {
+      "icon": "🩸", "titre": "Vérzés", "desc": "Közvetlen nyomás, nyomókötés, segítség hívása.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Nyomja a sebet tiszta ruhával.", "Emelje meg a sérült végtagot, ha lehetséges.", "Ha a vérzés nem áll el: nyomókötés (széles, szoros, jegyezze fel az időt).", "Soha ne távolítsa el a sebben lévő tárgyakat.", "Fektesse le a sérültet, takarja be, hívja a 104-et." ] }
+    },
+    {
+      "icon": "🧠", "titre": "Sztrók (FAST)", "desc": "Arc, Kar, Beszéd, Idő – hívja a 104-et.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "A: Arc aszimmetrikus?", "K: Kar gyengesége?", "B: Beszéd zavara?", "I: Idő – azonnal hívja a 104-et!", "Jegyezze fel a tünetek kezdetének idejét." ] }
+    },
+    {
+      "icon": "🫁", "titre": "Fulladás", "desc": "Heimlich-féle műfogás.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Kérdezze meg: 'Fullad?'", "Ha nem tud beszélni vagy köhögni: 5 ütés a lapockák közé.", "Ha hatástalan: Heimlich-műfogás.", "Eszméletvesztés: kezdje el a CPR-t és hívja a 104-et." ] }
+    },
+    {
+      "icon": "🔥", "titre": "Égési sérülések", "desc": "Hűtse langyos vízzel 15 percig, ne szúrja ki a hólyagokat.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Azonnal hűtse langyos vízzel (15-25°C) 15 percig.", "Távolítsa el a nem letapadt ruházatot és ékszereket.", "Fedje be frissentartó fóliával vagy steril kötszerrel.", "Ne szúrja ki a hólyagokat, ne kenje be krémmel.", "Kiterjedt égés, arc vagy légutak égése esetén hívja a 104-et." ] }
+    },
+    {
+      "icon": "💧", "titre": "Fulladás (vízben)", "desc": "Emelje ki a vízből, CPR, mentő hívása.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Saját testi épsége veszélyeztetése nélkül emelje ki a sérültet a vízből.", "Ellenőrizze az eszméletet és a légzést.", "Ha nem lélegzik: 2 befúvás + 30 mellkasi nyomás (30:2).", "Hívja a 112-t vagy a 104-et.", "Takarja be a kihűlés elkerülése érdekében." ] }
+    },
+    {
+      "icon": "💊", "titre": "Túladagolás (GHB/MDMA)", "desc": "Stabil oldalfekvés, hívja a 104-et, ne hagyja elaludni.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Eszméletlen, de lélegzik: stabil oldalfekvés.", "Légzésleállás: CPR + befúvások.", "Azonnal hívja a 104-et.", "Ne hagyja, hogy a személy 'elaludjon' – folyamatosan figyelje.", "Őrizze meg az esetlegesen fogyasztott szereket a mentők számára." ] }
+    },
+    {
+      "icon": "🌡️", "titre": "Hőguta", "desc": "Azonnali hűtés, hívja a 104-et.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Vigye árnyékba / hűvös helyre.", "Vetkőztesse le, permetezze hideg vízzel, legyezze.", "Jegelje a hónaljat, nyakat, ágyékot.", "Hívja a 104-et – életveszélyes állapot.", "Ne adjon lázcsillapítót." ] }
+    },
+    {
+      "icon": "🍺", "titre": "Alkoholmérgezés", "desc": "Stabil oldalfekvés, megfigyelés, 104 ha kóma.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Eszméletlen: stabil oldalfekvés, figyelje a légzést.", "Ne hagyja magára, ne hánytasson.", "Kóma vagy rendszertelen légzés: 104.", "Folyadékpótlás, ha eszméleténél van és nyelni tud." ] }
+    },
+    {
+      "icon": "🦐", "titre": "Anafilaxiás sokk", "desc": "Súlyos allergia, adrenalin beadása, hívja a 104-et.", "colorClass": "card-rose",
+      "contenu": { "steps": [ "Ismerje fel: csalánkiütés, duzzanat, légzési nehézség, ájulás.", "Adja be az adrenalint (ha felírták) a combba.", "Fektesse le, emelje fel a lábait.", "Azonnal hívja a 104-et." ] }
+    },
+    {
+      "icon": "🚗", "titre": "Közúti baleset", "desc": "Biztonság, jelzés, segítség hívása.", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Helyezze ki az elakadásjelző háromszöget, viseljen láthatósági mellényt.", "Ne mozgassa a sérülteket, csak ha közvetlen veszély fenyeget.", "Hívja a 104-et, 105-öt vagy 112-t.", "Állítsa le a motorokat, húzza be a kéziféket.", "Ne adjon inni eszméletlen sérülteknek." ] }
+    }
+  ],
+  "situations_collectives": [
+    {
+      "icon": "🔥", "titre": "Tűz", "desc": "Evakuáljon, riasszon, kússzon a füst alatt.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Hívja a tűzoltókat (105 vagy 112).", "Hajolva távozzon (kússzon a füst alatt).", "Ne használja a liftet.", "Csukja be maga mögött az ajtókat.", "Ha a ruha meggyullad: álljon meg, feküdjön le és guruljon." ] }
+    },
+    {
+      "icon": "💨", "titre": "Gázszivárgás", "desc": "Ne keltsen szikrát, nyisson ablakot, hívja a 105-öt.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Ne használjon villanykapcsolót, ne telefonáljon a helyszínen.", "Nyissa ki az ajtókat és ablakokat.", "Zárja el a gázt, ha lehetséges.", "Ürítse ki a helyiséget.", "Hívja a tűzoltókat (105 vagy 112) kívülről." ] }
+    },
+    {
+      "icon": "⚠️", "titre": "Terrorcselekmény / Lövöldözés", "desc": "Meneküljön, bújjon el, riasszon (112).", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Fusson el, változtasson irányt.", "Ha a menekülés lehetetlen: bújjon el egy zárt helyiségben, kapcsolja le a villanyt, maradjon távol az ablakoktól.", "Némítsa le a telefont, ne hívjon, hogy ne árulja el magát.", "Csak azonosított rendvédelmi erőknek nyisson ajtót." ] }
+    },
+    {
+      "icon": "🌊", "titre": "Árvíz", "desc": "Menjen magasabb területre, kapcsolja ki az áramot, kövesse az utasításokat.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Menjen a felsőbb emeletekre, ne a pincébe.", "Zárja el a gázt és kapcsolja ki az áramot.", "Ne használja a liftet.", "Készüljön fel az evakuálásra, ha utasítják.", "Közvetlen veszély esetén hívja a segélyhívót (105, 112)." ] }
+    },
+    {
+      "icon": "🌍", "titre": "Földrengés", "desc": "Bújjon stabil bútor alá, kapaszkodjon, maradjon távol az ablakoktól.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Bújjon egy stabil asztal alá, védje a fejét, kapaszkodjon.", "Maradjon távol az ablakoktól és a függő tárgyaktól.", "A rengés után: evakuáljon a lépcsőn.", "Ne használja a liftet.", "Figyeljen az utórengésekre." ] }
+    },
+    {
+      "icon": "☣️", "titre": "CBRN (Vegyi/Biológiai/Radióakív/Nukleáris)", "desc": "Maradjon bent, szigetelje el a szobát, hallgasson rádiót.", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Menjen egy ablak nélküli szobába.", "Csukja be az ajtókat, ablakokat, állítsa le a szellőzést.", "Húzza le a redőnyöket, ragassza le a réseket szigetelőszalaggal.", "Hallgassa a hivatalos utasításokat (helyi rádió).", "Ne menjen ki, amíg nem engedélyezik." ] }
+    }
+  ],
+  "associations": [
+    {
+      "icon": "💬", "titre": "Lelki Elsősegély Telefonszolgálat", "numero": "116-123", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Szám: 116-123 (ingyenes)", "24 órás pszichológiai támogatás, névtelen és ingyenes.", "Lelki válság, magány, öngyilkossági gondolatok esetén." ] }
+    },
+    {
+      "icon": "📞", "titre": "112 – Egységes Segélyhívó", "numero": "112", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Szám: 112 (ingyenes)", "Országos, 0-24 órában." ] }
+    },
+    {
+      "icon": "👶", "titre": "116-111 – Kék Vonal", "numero": "116-111", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Szám: 116-111", "Gyermekek és fiatalok lelki segélyvonala." ] }
+    },
+    {
+      "icon": "🚺", "titre": "NANE – Nők elleni erőszak", "numero": "06-80-505-101", "colorClass": "card-rose",
+      "contenu": { "steps": [ "Szám: 06-80-505-101", "Segítség bántalmazott nőknek." ] }
+    },
+    {
+      "icon": "🔍", "titre": "116 000 – Eltűnt gyermekek", "numero": "116 000", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Szám: 116 000", "Bejelentés eltűnt gyermekekről, családok támogatása." ] }
+    },
+    {
+      "icon": "🍷", "titre": "Drog Stop", "numero": "06-80-505-678", "colorClass": "card-vert",
+      "contenu": { "steps": [ "Szám: 06-80-505-678", "Információ és tanácsadás szenvedélybetegségekről." ] }
+    },
+    {
+      "icon": "❤️", "titre": "Magyar Vöröskereszt", "numero": "06-1-374-0500", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Szám: 06-1-374-0500", "Pszichoszociális támogatás." ] }
+    }
+  ]
+}

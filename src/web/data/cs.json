@@ -1,0 +1,208 @@
+{
+  "app": { "title": "SOS-PRŮVODCE" },
+  "drawer": {
+    "title": "Navigace",
+    "footer": "SOS-PRŮVODCE · verze 1.0",
+    "links": [
+      { "icon": "⛑️", "label": "Domů — Nouzové situace", "href": "#splashScreen" },
+      { "icon": "📖", "label": "Průvodce přežitím", "href": "#mainContent" },
+      { "icon": "🇫🇷", "label": "Principy", "href": "#section-principes" },
+      { "icon": "⚙️", "label": "Praktické nástroje", "href": "#section-outils" },
+      { "icon": "🚑", "label": "Lékařské pohotovosti", "href": "#section-urgences" },
+      { "icon": "⚠️", "label": "Hromadné situace", "href": "#section-situations" },
+      { "icon": "📞", "label": "Organizace", "href": "#section-assos" }
+    ]
+  },
+  "local": {
+    "info": { "title": "" },
+    "crisis": "📞 Krizová linka",
+    "samu": "🚑 Místní záchranka",
+    "fire": "🚒 Hasiči",
+    "townhall": "🏛️ Radnice",
+    "prefecture": "🏛️ Prefektura",
+    "redcross": "🔴 Červený kříž",
+    "radio": "📻 Místní rádio"
+  },
+  "splash": {
+    "title": "PRŮVODCE PŘEŽITÍM",
+    "subtitle": "Tato stránka funguje <strong>bez připojení k internetu</strong>. Poskytuje nezbytné informace pro zvládnutí nouzové situace.",
+    "enterButton": "Vstoupit do kompletního průvodce"
+  },
+  "main": {
+    "welcome": {
+      "title": "Vítejte",
+      "text": "Váš nouzový průvodce funguje offline. Najdete zde nouzové nástroje, první pomoc a reflexy přežití."
+    }
+  },
+  "sections": {
+    "principes": "🇫🇷 3 principy první pomoci",
+    "outils": "⚙️ Praktické nástroje",
+    "urgencesMedicales": "🚑 Lékařské pohotovosti",
+    "situationsCollectives": "⚠️ Hromadné situace",
+    "associations": "📞 Organizace a tísňová čísla"
+  },
+  "tools": {
+    "metronome": { "title": "❤️ Metronom KPR 110 BPM", "start": "Spustit", "stop": "Zastavit" },
+    "flash": { "stop": "⏹️ Zastavit SOS blesk" },
+    "torch": { "stop": "🔦 Vypnout svítilnu" },
+    "alarm": { "title": "🚨 Zvukový alarm", "start": "Spustit alarm", "stop": "Zastavit alarm", "active": "🚨 ALARM AKTIVNÍ", "inactive": "⏹️ Zastaveno" },
+    "respiration": { "title": "🌬️ Řízené dýchání", "start": "Začít", "stop": "Zastavit", "inhale": "Nádech", "exhale": "Výdech" },
+    "whistle": { "title": "🔊 Nouzová píšťalka", "start": "Zapískat (3x)", "stop": "Zastavit", "active": "🔊 Píšťalka aktivní", "inactive": "⏹️ Zastaveno" }
+  },
+  "urgences": [
+	{ "number": "15", "name": "SAMU", "class": "samu" },
+	{ "number": "17", "name": "POLICIE", "class": "police" },
+	{ "number": "18", "name": "HASIČI", "class": "pompiers" },
+	{ "number": "112", "name": "EVROPSKÉ TÍSŇOVÉ VOLÁNÍ", "class": "europe" },
+	{ "number": "114", "name": "NESLYŠÍCÍ", "class": "ssourd" }
+  ],
+  "principes": [
+    {
+      "icon": "📢", "titre": "VAROVAT", "desc": "Varovat záchranné složky", "colorClass": "card-bleu",
+      "contenu": {
+        "steps": [
+          "Tísňová čísla: 155 (záchranka), 158 (policie), 150 (hasiči), 112 (evropské).",
+          "Uveďte: Kde? (přesné místo), Co? (druh nehody), Kdo? (počet zraněných, stav).",
+          "Nezavěšujte první – nechte operátora ukončit hovor.",
+          "Pokud možno použijte lokalizační aplikaci.",
+          "Pokud jste sami a nemůžete mluvit, vytočte 112 a nechte linku otevřenou."
+        ]
+      }
+    },
+    {
+      "icon": "🩺", "titre": "ZACHRÁNIT", "desc": "Poskytnout první pomoc", "colorClass": "card-blanc",
+      "contenu": {
+        "steps": [
+          "Zhodnoťte vědomí (oslovte, dotkněte se), zkontrolujte dech.",
+          "Pokud nedýchá: okamžitě zahajte srdeční masáž (100-120 stlačení/min).",
+          "Stabilizovaná poloha na boku, pokud je v bezvědomí, ale dýchá.",
+          "Krvácení: stlačte ránu. Škrtidlo použijte pouze při neúčinném tlaku.",
+          "Nikdy nepodávejte tekutiny osobě v bezvědomí.",
+          "Uklidněte postiženého a přikryjte, abyste zabránili podchlazení."
+        ]
+      }
+    },
+    {
+      "icon": "🛡️", "titre": "CHRÁNIT", "desc": "Zajistit bezpečnost", "colorClass": "card-rouge",
+      "contenu": {
+        "steps": [
+          "Odstraňte postiženého z bezprostředního nebezpečí (oheň, doprava, zřícení).",
+          "Označte místo (výstražný trojúhelník, výstražná světla).",
+          "Chraňte sebe: rukavice, rouška pokud je k dispozici.",
+          "Přerušte zdroje nebezpečí (plyn, elektřina).",
+          "Nepohybujte zraněným při podezření na poranění páteře."
+        ]
+      }
+    }
+  ],
+  "outils": [
+    { "icon": "❤️", "titre": "Metronom KPR 110 BPM", "desc": "Rytmus pro srdeční masáž.", "action": "openMetronome" },
+    { "icon": "⚡", "titre": "SOS blesk", "desc": "Světelný tísňový signál.", "action": "openFlashSOS" },
+    { "icon": "🔦", "titre": "Svítilna", "desc": "Jasná bílá obrazovka.", "action": "openTorche" },
+    { "icon": "🚨", "titre": "Zvukový alarm", "desc": "Nepřetržitý alarm (880 Hz).", "action": "openAlerte" },
+    { "icon": "🌬️", "titre": "Řízené dýchání", "desc": "Srdeční koherence (4-4).", "action": "openRespiration" },
+    { "icon": "🔊", "titre": "Nouzová píšťalka", "desc": "Signál 3 písknutí.", "action": "openSifflet" }
+  ],
+  "urgences_medicales": [
+    {
+      "icon": "🫀", "titre": "Infarkt", "desc": "Klid, volejte 155, KPR pokud nutno.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Okamžitě volejte 155 nebo 112.", "Uložte postiženého do polosedu, je-li při vědomí.", "Bezvědomí s dechem: stabilizovaná poloha na boku.", "Zástava srdce: srdeční masáž (100-120/min) + defibrilátor je-li k dispozici." ] }
+    },
+    {
+      "icon": "🩸", "titre": "Krvácení", "desc": "Přímý tlak, škrtidlo, volejte pomoc.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Tlačte na ránu čistou látkou.", "Zvedněte poraněnou končetinu, pokud lze.", "Pokud krvácení neustává: škrtidlo (široké, pevné, zaznamenejte čas).", "Nikdy neodstraňujte předměty vězící v ráně.", "Položte postiženého, přikryjte, volejte 155." ] }
+    },
+    {
+      "icon": "🧠", "titre": "Mrtvice (FAST)", "desc": "Tvář, Paže, Řeč, Čas – volejte 155.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "T: Tvář asymetrická?", "P: Paže slabost?", "Ř: Řeč nesrozumitelná?", "Č: Čas – okamžitě volejte 155!", "Zaznamenejte čas prvních příznaků." ] }
+    },
+    {
+      "icon": "🫁", "titre": "Dušení", "desc": "Heimlichův manévr.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Zeptejte se 'Dusíte se?'", "Pokud nemůže mluvit nebo kašlat: 5 úderů do zad.", "Pokud neúčinné: Heimlichův manévr.", "Ztráta vědomí: zahajte KPR a volejte 155." ] }
+    },
+    {
+      "icon": "🔥", "titre": "Popáleniny", "desc": "Chlaďte vlažnou vodou 15 min, nepropichujte puchýře.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Ihned chlaďte vlažnou vodou (15-25°C) po dobu 15 minut.", "Odstraňte nepřilnutý oděv a šperky.", "Překryjte potravinářskou fólií nebo sterilním krytím.", "Nepropichujte puchýře, nenanášejte krémy.", "Volejte 155 při rozsáhlých popáleninách, obličeje nebo dýchacích cest." ] }
+    },
+    {
+      "icon": "💧", "titre": "Tonutí", "desc": "Vytáhněte z vody, KPR, volejte 155.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Vytáhněte postiženého z vody bez ohrožení sebe.", "Zkontrolujte vědomí a dech.", "Pokud nedýchá: 2 vdechy + 30 stlačení (30:2).", "Volejte 155 nebo 112.", "Přikryjte, aby nedošlo k podchlazení." ] }
+    },
+    {
+      "icon": "💊", "titre": "Předávkování (GHB/MDMA)", "desc": "Stabilizovaná poloha, volejte 155, nenechte spát.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Bezvědomí s dechem: stabilizovaná poloha na boku.", "Zástava dechu: KPR + umělé dýchání.", "Okamžitě volejte 155.", "Nenechte osobu 'spát' – neustále sledujte.", "Uschovejte případné požité látky pro záchranáře." ] }
+    },
+    {
+      "icon": "🌡️", "titre": "Úpal", "desc": "Okamžité chlazení, volejte 155.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Přemístěte do stínu / chladného místa.", "Svlékněte, postřikujte chladnou vodou, ovívejte.", "Led na podpaží, krk, třísla.", "Volejte 155 – život ohrožující stav.", "Nepodávejte léky na snížení horečky." ] }
+    },
+    {
+      "icon": "🍺", "titre": "Intoxikace alkoholem", "desc": "Stabilizovaná poloha, sledujte, volejte 155 při kómatu.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Bezvědomí: stabilizovaná poloha na boku, sledujte dech.", "Nenechávejte o samotě, nevyvolávejte zvracení.", "Kóma nebo nepravidelný dech: 155.", "Hydratujte, je-li při vědomí a může polykat." ] }
+    },
+    {
+      "icon": "🦐", "titre": "Anafylaktický šok", "desc": "Těžká alergie, aplikujte adrenalin, volejte 155.", "colorClass": "card-rose",
+      "contenu": { "steps": [ "Rozpoznejte: kopřivka, otok, dýchací potíže, mdloby.", "Aplikujte adrenalin (je-li předepsán) do stehna.", "Položte na záda, zvedněte nohy.", "Okamžitě volejte 155." ] }
+    },
+    {
+      "icon": "🚗", "titre": "Dopravní nehoda", "desc": "Bezpečnost, označení, volejte pomoc.", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Umístěte výstražný trojúhelník, použijte reflexní vestu.", "Nepohybujte zraněnými, pokud nehrozí bezprostřední nebezpečí.", "Volejte 155, 150 nebo 112.", "Vypněte motory, zatáhněte ruční brzdu.", "Nepodávejte tekutiny osobám v bezvědomí." ] }
+    }
+  ],
+  "situations_collectives": [
+    {
+      "icon": "🔥", "titre": "Požár", "desc": "Evakuujte, varujte, plazte se pod kouřem.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Volejte hasiče (150 nebo 112).", "Opusťte prostor v předklonu (plazte se pod kouřem).", "Nepoužívejte výtah.", "Zavírejte za sebou dveře.", "Pokud hoří oděv: zastavte se, lehněte si a kutálejte se." ] }
+    },
+    {
+      "icon": "💨", "titre": "Únik plynu", "desc": "Nevytvářejte jiskry, otevřete okna, volejte 150.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Nemanipulujte s elektrickými spínači, nepoužívejte telefon na místě.", "Otevřete dveře a okna.", "Uzavřete přívod plynu, pokud lze.", "Evakuujte prostor.", "Volejte hasiče (150 nebo 112) zvenčí." ] }
+    },
+    {
+      "icon": "⚠️", "titre": "Útok / Střelba", "desc": "Utečte, skryjte se, varujte (112).", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Utečte, měňte směr.", "Není-li únik možný: skryjte se v uzamčené místnosti, zhasněte světla, držte se dál od oken.", "Ztlumte telefon, nevolejte, abyste se neprozradili.", "Otevřete pouze identifikovaným bezpečnostním složkám." ] }
+    },
+    {
+      "icon": "🌊", "titre": "Povodeň", "desc": "Vystupte do vyšších pater, vypněte elektřinu, řiďte se pokyny.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Jděte do vyšších pater, ne do sklepa.", "Uzavřete plyn a vypněte elektřinu.", "Nepoužívejte výtah.", "Připravte se na evakuaci, bude-li nařízena.", "Volejte tísňovou linku (150, 112) při bezprostředním nebezpečí." ] }
+    },
+    {
+      "icon": "🌍", "titre": "Zemětřesení", "desc": "Schovejte se pod pevný stůl, držte se, držte se dál od oken.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Schovejte se pod pevný stůl, kryjte hlavu, držte se.", "Držte se dál od oken a visících předmětů.", "Po otřesech: evakuujte po schodech.", "Nepoužívejte výtah.", "Buďte ve střehu před dotřesy." ] }
+    },
+    {
+      "icon": "☣️", "titre": "CBRN (Chemické/Biologické/Radiologické/Jaderné)", "desc": "Zůstaňte uvnitř, utěsněte místnost, poslouchejte rádio.", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Ukryjte se v místnosti bez oken.", "Zavřete dveře, okna, vypněte ventilaci.", "Zatáhněte rolety, utěsněte škvíry lepicí páskou.", "Poslouchejte oficiální pokyny (místní rádio).", "Nevycházejte ven, dokud to nebude povoleno." ] }
+    }
+  ],
+  "associations": [
+    {
+      "icon": "💬", "titre": "Linka důvěry", "numero": "116 123", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Číslo: 116 123 (bezplatné)", "Psychologická podpora 24/7, anonymní a zdarma.", "Pro tíseň, osamělost, sebevražedné myšlenky." ] }
+    },
+    {
+      "icon": "📞", "titre": "112 – Tísňová linka", "numero": "112", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Číslo: 112 (bezplatné)", "Celostátní, 24/7. Školení zdravotníci." ] }
+    },
+    {
+      "icon": "👶", "titre": "Linka bezpečí dětí", "numero": "116 111", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Číslo: 116 111", "Pomoc dětem a mladistvým v krizi.", "Anonymní a důvěrné." ] }
+    },
+    {
+      "icon": "🚺", "titre": "Bílý kruh bezpečí", "numero": "116 006", "colorClass": "card-rose",
+      "contenu": { "steps": [ "Číslo: 116 006", "Pomoc obětem trestných činů, včetně domácího násilí." ] }
+    },
+    {
+      "icon": "🔍", "titre": "116 000 – Pohřešované děti", "numero": "116 000", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Číslo: 116 000", "Nahlášení pohřešovaných dětí, pomoc rodinám." ] }
+    },
+    {
+      "icon": "🍷", "titre": "Protidrogová linka", "numero": "800 350 000", "colorClass": "card-vert",
+      "contenu": { "steps": [ "Číslo: 800 350 000", "Poradenství v oblasti závislostí (alkohol, drogy, hazard)." ] }
+    },
+    {
+      "icon": "❤️", "titre": "Český červený kříž", "numero": "800 111 111", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Číslo: 800 111 111", "Psychosociální podpora." ] }
+    }
+  ]
+}

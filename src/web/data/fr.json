@@ -1,0 +1,528 @@
+{
+  "_meta": {
+    "lang": "fr",
+    "version": "2.5",
+    "standard": "ERC/ILCOR 2021 · PSC1 · HAS · Croix-Rouge Française",
+    "updated": "2026-06"
+  },
+  "app": { "title": "SOS-GUIDE" },
+  "drawer": {
+    "title": "Navigation",
+    "footer": "SOS-GUIDE · v2.5",
+    "links": [
+      { "icon": "⛑️", "label": "Accueil — Urgences",      "href": "#splashScreen" },
+      { "icon": "📖", "label": "Guide de survie",          "href": "#mainContent" },
+      { "icon": "⛑️", "label": "Les 3 gestes qui sauvent","href": "#section-principes" },
+      { "icon": "⚙️", "label": "Outils pratiques",        "href": "#section-outils" },
+      { "icon": "🚑", "label": "Urgences médicales",       "href": "#section-urgences" },
+      { "icon": "⚠️", "label": "Situations collectives",   "href": "#section-situations" },
+      { "icon": "📞", "label": "Associations",             "href": "#section-assos" }
+    ]
+  },
+  "local": {
+    "info":       { "title": "" },
+    "crisis":     "📞 Crise locale",
+    "samu":       "🚑 SAMU local",
+    "fire":       "🚒 Pompiers locaux",
+    "townhall":   "🏛️ Mairie",
+    "prefecture": "🏛️ Préfecture",
+    "redcross":   "🔴 Croix-Rouge",
+    "radio":      "📻 Radio locale"
+  },
+  "splash": {
+    "title": "GUIDE DE SURVIE",
+    "subtitle": "Ce guide fonctionne <strong>sans connexion Internet</strong>. Il fournit les informations essentielles pour faire face à une situation d'urgence.",
+    "enterButton": "Accéder au guide complet"
+  },
+  "main": {
+    "welcome": {
+      "title": "Bienvenue",
+      "text": "Votre guide d'urgence fonctionne sans Internet. Retrouvez ici les outils d'urgence, les gestes qui sauvent et les réflexes de survie."
+    }
+  },
+  "sections": {
+    "principes":            "⛑️ Les 3 gestes qui sauvent (PAS)",
+    "outils":               "⚙️ Outils pratiques",
+    "urgencesMedicales":    "🚑 Urgences médicales",
+    "situationsCollectives":"⚠️ Situations collectives",
+    "associations":         "📞 Associations & numéros d'aide"
+  },
+  "tools": {
+    "metronome":  { "title": "❤️ Métronome RCP 100-120 BPM", "start": "Démarrer", "stop": "Arrêter" },
+    "flash":      { "stop": "⏹️ Arrêter le flash SOS" },
+    "torch":      { "stop": "🔦 Éteindre la lampe" },
+    "alarm":      { "title": "🚨 Alerte sonore", "start": "Déclencher l'alarme", "stop": "Arrêter l'alarme", "active": "🚨 ALARME ACTIVE", "inactive": "⏹️ Arrêtée" },
+    "respiration":{ "title": "🌬️ Respiration guidée", "start": "Commencer", "stop": "Arrêter", "inhale": "Inspirez", "exhale": "Expirez" },
+    "whistle":    { "title": "🔊 Sifflet d'urgence", "start": "Siffler (3 coups)", "stop": "Arrêter", "active": "🔊 Sifflement actif", "inactive": "⏹️ Arrêt" },
+    "timer":      { "title": "⏱️ Minuterie d'urgence", "start": "Démarrer", "stop": "Arrêter", "reset": "Réinitialiser", "presets": ["20 min — Brûlure eau froide", "2 min — Relève RCP", "Garrot — noter heure"] }
+  },
+  "urgences": [
+    { "number": "15",  "name": "SAMU",                    "class": "samu" },
+    { "number": "17",  "name": "POLICE",                  "class": "police" },
+    { "number": "18",  "name": "POMPIERS",                "class": "pompiers" },
+    { "number": "112", "name": "URGENCES EUROPÉENNES",    "class": "europe" },
+    { "number": "114", "name": "SOURDS / MALENTENDANTS",  "class": "ssourd" },
+    { "number": "115", "name": "SAMU SOCIAL",             "class": "samu" }
+  ],
+  "principes": [
+    {
+      "icon": "🛡️",
+      "titre": "1. PROTÉGER",
+      "desc": "Sécuriser la zone avant tout geste",
+      "colorClass": "card-rouge",
+      "_note": "CORRECTION v2.5 : PROTÉGER est le PREMIER principe (doctrine PAS : Protéger → Alerter → Secourir)",
+      "contenu": {
+        "steps": [
+          "Évaluer le danger : est-ce que la zone est sûre ? Ne jamais se précipiter sans regarder.",
+          "Mettre en sécurité : éloigner la victime d'un danger immédiat (feu, circulation, éboulement, gaz).",
+          "Baliser la zone (triangle de signalisation, allumage des feux de détresse, bras écartés).",
+          "Se protéger soi-même : gants, masque si disponibles. Ne pas devenir une seconde victime.",
+          "Couper les sources de danger accessibles (gaz, électricité) SANS se mettre en danger.",
+          "Ne pas déplacer un blessé sauf danger immédiat et vital (incendie, noyade, écrasement imminent)."
+        ]
+      }
+    },
+    {
+      "icon": "📢",
+      "titre": "2. ALERTER",
+      "desc": "Donner l'alerte rapidement et efficacement",
+      "colorClass": "card-bleu",
+      "contenu": {
+        "steps": [
+          "Numéros d'urgence : 15 (SAMU), 17 (Police), 18 (Pompiers), 112 (Europe), 114 (sourds/malentendants).",
+          "Indiquer : OÙ ? (adresse précise ou point de repère), QUOI ? (nature de l'accident), COMBIEN ? (nombre de victimes, état).",
+          "Décrire les gestes déjà réalisés et attendre les instructions de l'opérateur.",
+          "Ne pas raccrocher le premier : laisser l'opérateur clôturer l'appel.",
+          "Utiliser une application de localisation si possible (112.eu ou What3Words).",
+          "Si seul et impossible de parler, composer le 112 et laisser la ligne ouverte — les secours peuvent vous localiser."
+        ]
+      }
+    },
+    {
+      "icon": "🩺",
+      "titre": "3. SECOURIR",
+      "desc": "Porter les premiers gestes de secours",
+      "colorClass": "card-blanc",
+      "contenu": {
+        "steps": [
+          "Évaluer la conscience : parler fort (« Vous m'entendez ? »), toucher les épaules. Si pas de réponse : inconscient.",
+          "Évaluer la respiration : incliner la tête en arrière, écouter et sentir pendant 10 secondes maximum.",
+          "Si ne respire pas : démarrer la RCP — 30 compressions sternales (5-6 cm de profondeur, 100-120/min) puis 2 insufflations. Continuer jusqu'à l'arrivée des secours.",
+          "Si inconsciente mais qui respire normalement : Position Latérale de Sécurité (PLS) — surveiller la respiration.",
+          "En cas d'hémorragie : compression directe ferme avec tissu propre. Garrot uniquement si compression inefficace (noter l'heure de pose).",
+          "Rassurer la victime, lui parler calmement, la couvrir pour prévenir l'hypothermie.",
+          "Ne jamais donner à boire ou à manger à une personne inconsciente ou susceptible d'être opérée."
+        ]
+      }
+    }
+  ],
+  "outils": [
+    {
+      "icon": "❤️",
+      "titre": "Métronome RCP 100-120 BPM",
+      "desc": "Rythme officiel ERC pour massage cardiaque (5-6 cm de profondeur).",
+      "action": "openMetronome"
+    },
+    {
+      "icon": "⏱️",
+      "titre": "Minuterie d'urgence",
+      "desc": "Brûlure (20 min eau froide) · Garrot (noter heure) · Relève RCP (2 min).",
+      "action": "openTimer"
+    },
+    {
+      "icon": "⚡",
+      "titre": "Flash SOS",
+      "desc": "Signal lumineux de détresse morse (· · · — — — · · ·).",
+      "action": "openFlashSOS"
+    },
+    {
+      "icon": "🔦",
+      "titre": "Lampe torche",
+      "desc": "Écran blanc lumineux — éclairage d'urgence.",
+      "action": "openTorche"
+    },
+    {
+      "icon": "🚨",
+      "titre": "Alerte sonore",
+      "desc": "Alarme sonore continue 880 Hz — signal de détresse.",
+      "action": "openAlerte"
+    },
+    {
+      "icon": "🌬️",
+      "titre": "Respiration guidée",
+      "desc": "Cohérence cardiaque 4-4 — gestion du stress en situation de crise.",
+      "action": "openRespiration"
+    },
+    {
+      "icon": "🔊",
+      "titre": "Sifflet d'urgence",
+      "desc": "Signal sonore 3 coups — code universel de détresse.",
+      "action": "openSifflet"
+    }
+  ],
+  "urgences_medicales": [
+    {
+      "icon": "🫀",
+      "titre": "Arrêt cardiaque",
+      "desc": "RCP immédiate · défibrillateur · 15 ou 112.",
+      "colorClass": "card-rouge",
+      "contenu": {
+        "steps": [
+          "Vérifier l'absence de conscience et de respiration (10 secondes max).",
+          "Appeler immédiatement le 15 ou 112 — ou demander à quelqu'un de le faire pendant que vous commencez la RCP.",
+          "Commencer la RCP : 30 compressions sternales, 5-6 cm de profondeur, 100-120/min, bras tendus.",
+          "Alterner 30 compressions / 2 insufflations (bouche-à-bouche). Si refus ou impossible : compressions seules.",
+          "Utiliser un défibrillateur (DEA) dès qu'il est disponible — suivre les instructions vocales.",
+          "Ne jamais arrêter avant l'arrivée des secours ou épuisement total.",
+          "Si malaise cardiaque sans perte de connaissance : repos semi-assis, pas d'effort, appel 15 immédiat."
+        ]
+      }
+    },
+    {
+      "icon": "🧠",
+      "titre": "AVC — Agir vite (VITE)",
+      "desc": "Chaque minute compte : 2 millions de neurones par minute.",
+      "colorClass": "card-rouge",
+      "_note": "CORRECTION v2.5 : card-rouge (urgence vitale absolue) + wording HAS standardisé",
+      "contenu": {
+        "steps": [
+          "V — Visage : demandez de sourire. Une moitié du visage est-elle déviée ou immobile ?",
+          "I — Inaptitude : demandez de lever les deux bras. Un bras tombe ou ne monte pas ?",
+          "T — Troubles de la parole : demandez de répéter une phrase simple. Parole pâteuse, incompréhensible ?",
+          "E — En urgence : appeler immédiatement le 15. Préciser l'heure de début des symptômes.",
+          "Ne pas donner à manger, à boire ni de médicament. Ne pas laisser la personne seule.",
+          "Si perte de connaissance avec respiration : PLS. Si arrêt respiratoire : RCP."
+        ]
+      }
+    },
+    {
+      "icon": "🩸",
+      "titre": "Hémorragie grave",
+      "desc": "Compression directe · garrot si nécessaire · 15.",
+      "colorClass": "card-rouge",
+      "contenu": {
+        "steps": [
+          "Comprimer la plaie immédiatement avec un tissu propre épais, fermement, sans relâcher.",
+          "Maintenir la pression sans interrompre — même si le tissu est imbibé, en ajouter un par-dessus.",
+          "Surélever le membre blessé si possible (au-dessus du niveau du cœur).",
+          "Si le saignement ne s'arrête pas en 5 minutes : poser un garrot (large, 5 cm mini) à 7-10 cm au-dessus de la plaie. Serrer jusqu'à arrêt du saignement. Noter l'heure avec minuterie.",
+          "Ne jamais retirer un objet planté dans la plaie — le maintenir en place.",
+          "Allonger la victime, couvrir, surveiller l'état de conscience. Appeler le 15."
+        ]
+      }
+    },
+    {
+      "icon": "🫁",
+      "titre": "Étouffement (obstruction)",
+      "desc": "Claques dans le dos · manœuvre de Heimlich.",
+      "colorClass": "card-rouge",
+      "_note": "CORRECTION v2.5 : card-rouge (urgence vitale) + description Heimlich précise ERC",
+      "contenu": {
+        "steps": [
+          "Demander : « Vous étouffez-vous ? » — si la personne tousse efficacement, encourager à tousser.",
+          "Si ne peut plus parler, tousser ni respirer : 5 claques vigoureuses dans le dos (entre les omoplates, talon de la main, penchez-la en avant).",
+          "Si les claques sont inefficaces : manœuvre de Heimlich — se placer derrière la victime, poing fermé positionné dans le creux épigastrique (entre le nombril et le sternum), autre main par-dessus, 5 compressions brusques vers le haut et l'arrière.",
+          "Alterner 5 claques dans le dos / 5 compressions abdominales jusqu'à libération ou perte de connaissance.",
+          "Si perte de connaissance : allonger doucement, appeler le 15, commencer la RCP (les compressions peuvent libérer l'obstruction).",
+          "Nourrisson : 5 claques dans le dos (tête vers le bas) + 5 compressions thoraciques (2 doigts, jamais abdominales)."
+        ]
+      }
+    },
+    {
+      "icon": "🔥",
+      "titre": "Brûlures",
+      "desc": "Eau froide 20 min · ne pas percer · appel 15 si grave.",
+      "colorClass": "card-orange",
+      "_note": "CORRECTION v2.5 : eau froide 15-20°C (pas 'tiède'), durée 20 min (pas 15)",
+      "contenu": {
+        "steps": [
+          "Refroidir IMMÉDIATEMENT sous eau froide du robinet (15-20°C) pendant 20 minutes — utiliser la minuterie.",
+          "Ne jamais utiliser d'eau glacée, de glace, de beurre, de dentifrice ou de produit quelconque.",
+          "Retirer délicatement les vêtements et bijoux non adhérents à la plaie pendant le refroidissement.",
+          "Couvrir d'un film alimentaire étirable (propre) ou d'un pansement stérile non compressif.",
+          "Ne jamais percer les cloques — elles protègent contre l'infection.",
+          "Appeler le 15 si : brûlure étendue (paume de main = 1%), brûlure du visage/mains/voies respiratoires, enfant, personne âgée, brûlure profonde (blanche ou noire)."
+        ]
+      }
+    },
+    {
+      "icon": "💧",
+      "titre": "Noyade",
+      "desc": "Sortir de l'eau · réanimation · 15.",
+      "colorClass": "card-rouge",
+      "contenu": {
+        "steps": [
+          "Sortir la victime de l'eau sans se mettre en danger (bouée, corde, perche — ne pas plonger si non formé).",
+          "Allonger à plat, vérifier conscience et respiration.",
+          "Si ne respire pas : commencer par 5 insufflations (insufflation prioritaire en cas de noyade — ERC 2021), puis RCP 30:2.",
+          "Appeler le 15 ou 112 dès que possible.",
+          "Couvrir pour prévenir l'hypothermie — la noyade refroidit rapidement le corps.",
+          "Ne jamais pratiquer de drainage de l'eau pulmonaire — inefficace et dangereux."
+        ]
+      }
+    },
+    {
+      "icon": "🦐",
+      "titre": "Choc anaphylactique",
+      "desc": "Allergie grave · adrénaline · 15 immédiat.",
+      "colorClass": "card-rouge",
+      "_note": "CORRECTION v2.5 : card-rouge (urgence vitale)",
+      "contenu": {
+        "steps": [
+          "Reconnaître : urticaire généralisée, gonflement du visage/gorge/lèvres, difficulté à respirer, malaise, chute de tension.",
+          "Si stylo auto-injecteur d'adrénaline prescrit : injecter immédiatement en intramusculaire sur la face externe de la cuisse (au travers du vêtement si besoin).",
+          "Allonger la victime, jambes surélevées (sauf difficultés respiratoires : position semi-assise).",
+          "Appeler le 15 immédiatement — même après injection, une 2e dose peut être nécessaire.",
+          "Si arrêt cardiaque : RCP immédiate.",
+          "Ne jamais laisser seule une personne en choc anaphylactique."
+        ]
+      }
+    },
+    {
+      "icon": "🌡️",
+      "titre": "Coup de chaleur (hyperthermie)",
+      "desc": "Refroidissement immédiat · urgence vitale · 15.",
+      "colorClass": "card-orange",
+      "contenu": {
+        "steps": [
+          "Placer la personne immédiatement à l'ombre ou dans un endroit frais.",
+          "Déshabiller, asperger abondamment d'eau fraîche sur l'ensemble du corps, ventiler (éventail, ventilateur).",
+          "Appliquer de la glace ou des poches froides aux aisselles, cou et aine (zones à gros vaisseaux).",
+          "Appeler le 15 — le coup de chaleur est une urgence vitale (température > 40°C).",
+          "Si consciente : donner à boire de l'eau fraîche (pas glacée) par petites gorgées.",
+          "Ne jamais donner d'antipyrétiques (paracétamol, ibuprofène) — inefficaces sur coup de chaleur."
+        ]
+      }
+    },
+    {
+      "icon": "💊",
+      "titre": "Intoxication / Surdosage",
+      "desc": "PLS · appel 15 · ne pas laisser dormir.",
+      "colorClass": "card-violet",
+      "_note": "CORRECTION v2.5 : titre moins stigmatisant (était 'Overdose GHB/MDMA')",
+      "contenu": {
+        "steps": [
+          "Si inconscient mais respire : PLS, surveiller la respiration en continu.",
+          "Si arrêt respiratoire : RCP immédiate — commencer par 5 insufflations.",
+          "Appeler le 15 immédiatement — préciser la substance suspectée si connue.",
+          "Ne pas laisser la personne « dormir » — elle peut basculer en arrêt respiratoire.",
+          "Ne pas faire vomir (risque de fausse route), ne pas donner d'eau.",
+          "Rassembler les emballages, flacons, substances visibles pour les transmettre aux secours."
+        ]
+      }
+    },
+    {
+      "icon": "🍺",
+      "titre": "Intoxication alcoolique",
+      "desc": "PLS · surveillance respiratoire · 15 si coma.",
+      "colorClass": "card-orange",
+      "contenu": {
+        "steps": [
+          "Si inconscient : PLS immédiate, surveiller la respiration toutes les 2 minutes.",
+          "Ne jamais laisser seul, ne jamais faire vomir (risque de fausse route).",
+          "Si coma (aucune réponse aux stimuli) ou respiration irrégulière/absente : appeler le 15.",
+          "Couvrir pour éviter l'hypothermie.",
+          "Si conscient et capable d'avaler : hydrater avec de l'eau, pas de café ni alcool."
+        ]
+      }
+    },
+    {
+      "icon": "🚗",
+      "titre": "Accident de la route",
+      "desc": "Protéger · alerter · ne pas déplacer les blessés.",
+      "colorClass": "card-slate",
+      "contenu": {
+        "steps": [
+          "Protéger d'abord : allumer les feux de détresse, poser le triangle (100 m avant), enfiler le gilet jaune.",
+          "Ne pas déplacer les blessés sauf danger immédiat (incendie, explosion imminente).",
+          "Appeler le 15, 18 ou 112 — préciser le nombre de blessés et leur état.",
+          "Couper le contact des véhicules, serrer le frein à main.",
+          "Ne jamais fumer à proximité du sinistre.",
+          "Ne pas donner à boire aux victimes inconscientes ou susceptibles d'être opérées."
+        ]
+      }
+    }
+  ],
+  "situations_collectives": [
+    {
+      "icon": "🔥",
+      "titre": "Incendie",
+      "desc": "Évacuez · alertez · rampez sous les fumées.",
+      "colorClass": "card-orange",
+      "contenu": {
+        "steps": [
+          "Donner l'alerte : appuyer sur le déclencheur d'alarme incendie ou appeler le 18/112.",
+          "Évacuer immédiatement — quitter les lieux en se baissant (les fumées montent, l'air pur est en bas).",
+          "Fermer les portes derrière soi sans les verrouiller (ralentit la progression du feu).",
+          "Ne jamais utiliser l'ascenseur — emprunter les escaliers.",
+          "Si coupé par les flammes : se confiner, boucher les interstices avec des linges mouillés, signaler sa présence à la fenêtre.",
+          "Si vêtements brûlent : ne pas courir (alimente les flammes), s'allonger et rouler sur soi-même."
+        ]
+      }
+    },
+    {
+      "icon": "💨",
+      "titre": "Fuite de gaz",
+      "desc": "Pas d'étincelle · ouvrir fenêtres · évacuer · 18.",
+      "colorClass": "card-cyan",
+      "contenu": {
+        "steps": [
+          "Ne toucher à aucun interrupteur électrique (même l'éteindre crée une étincelle).",
+          "Ne pas téléphoner dans la pièce, ne pas allumer de flamme.",
+          "Ouvrir portes et fenêtres en grand pour ventiler.",
+          "Couper l'arrivée de gaz au compteur si accessible sans risque.",
+          "Évacuer tous les occupants immédiatement.",
+          "Appeler les pompiers (18 ou 112) depuis l'extérieur du bâtiment, à distance."
+        ]
+      }
+    },
+    {
+      "icon": "⚠️",
+      "titre": "Attentat / Fusillade",
+      "desc": "Fuir · se cacher · alerter le 17 ou 112.",
+      "colorClass": "card-rouge",
+      "_note": "CORRECTION v2.5 : 'mode silencieux' (pas 'éteindre') — la géolocalisation secours nécessite le téléphone allumé",
+      "contenu": {
+        "steps": [
+          "FUIR en priorité : s'éloigner rapidement, se baisser, changer de direction, ne pas récupérer ses affaires.",
+          "Si fuite impossible : se mettre à l'abri dans une pièce, fermer et bloquer la porte, éteindre les lumières, s'éloigner des fenêtres et portes.",
+          "Mettre le téléphone en MODE SILENCIEUX (pas éteint — ne jamais éteindre : les secours peuvent géolocaliser et rappeler).",
+          "Alerter le 17 (Police) ou 112 discrètement par SMS ou en laissant la ligne ouverte si impossible de parler.",
+          "Ne ouvrir la porte qu'aux forces de l'ordre après vérification (elles se présentent et montrent leur badge).",
+          "Secourir les blessés uniquement une fois en zone sûre — appliquer l'ordre PAS."
+        ]
+      }
+    },
+    {
+      "icon": "🌊",
+      "titre": "Inondation",
+      "desc": "Monter en hauteur · couper électricité · écouter consignes.",
+      "colorClass": "card-cyan",
+      "contenu": {
+        "steps": [
+          "Monter immédiatement aux étages supérieurs — ne jamais descendre au sous-sol.",
+          "Couper le gaz et l'électricité au tableau si accessible sans risque.",
+          "Ne pas prendre l'ascenseur.",
+          "Ne jamais marcher ni conduire dans une eau courante (30 cm d'eau courante renverse un adulte, 50 cm emporte une voiture).",
+          "Se préparer à évacuer : documents, médicaments, eau potable en hauteur.",
+          "Écouter la radio locale. Appeler le 18 ou 112 en cas de danger immédiat."
+        ]
+      }
+    },
+    {
+      "icon": "🌍",
+      "titre": "Séisme",
+      "desc": "Se baisser · se couvrir · tenir · puis évacuer.",
+      "colorClass": "card-violet",
+      "contenu": {
+        "steps": [
+          "Pendant la secousse : se baisser, se couvrir la tête et la nuque (sous une table solide ou contre un mur porteur), tenir.",
+          "S'éloigner des vitres, fenêtres, objets suspendus, étagères.",
+          "Ne pas courir dehors pendant la secousse (chutes de façades, fils électriques).",
+          "Après la secousse : évacuer calmement par les escaliers, ne pas utiliser l'ascenseur.",
+          "Couper gaz et électricité si possible.",
+          "Se tenir informé des répliques (souvent aussi fortes que la première secousse).",
+          "Ne pas réintégrer un bâtiment sans autorisation des autorités."
+        ]
+      }
+    },
+    {
+      "icon": "☣️",
+      "titre": "NRBC (nucléaire · radiologique · biologique · chimique)",
+      "desc": "Se confiner · obturer · écouter la radio officielle.",
+      "colorClass": "card-slate",
+      "_note": "CORRECTION v2.5 : 'pièce avec peu d'ouvertures' (pas 'sans fenêtre')",
+      "contenu": {
+        "steps": [
+          "Se confiner immédiatement dans la pièce avec le moins d'ouvertures possible, de préférence en hauteur (les gaz lourds descendent).",
+          "Fermer et calfeutrer toutes les ouvertures : scotch épais sur les vitres, portes, aérations, interrupteurs.",
+          "Arrêter la ventilation mécanique (VMC) et la climatisation.",
+          "Mouiller des linges et les placer contre les bas de portes.",
+          "Écouter uniquement les consignes officielles (radio à piles, alerte gouvernementale).",
+          "Ne sortir qu'après autorisation officielle explicite — même si l'air semble normal."
+        ]
+      }
+    }
+  ],
+  "associations": [
+    {
+      "icon": "💬",
+      "titre": "SOS Amitié",
+      "numero": "09 72 39 40 50",
+      "colorClass": "card-slate",
+      "contenu": {
+        "steps": [
+          "Numéro : 09 72 39 40 50 (appel non surtaxé).",
+          "Écoute et soutien psychologique 24h/24, 7j/7, anonyme et gratuit.",
+          "Pour toute détresse morale, solitude intense, pensées suicidaires."
+        ]
+      }
+    },
+    {
+      "icon": "📞",
+      "titre": "3114 — Prévention du suicide",
+      "numero": "3114",
+      "colorClass": "card-violet",
+      "contenu": {
+        "steps": [
+          "Numéro : 3114 (appel gratuit, 24h/24, 7j/7).",
+          "Numéro national de prévention du suicide — professionnels de santé formés.",
+          "Pour les personnes en crise, les proches et les professionnels confrontés à une situation."
+        ]
+      }
+    },
+    {
+      "icon": "🏠",
+      "titre": "115 — SAMU Social",
+      "numero": "115",
+      "colorClass": "card-bleu",
+      "_note": "AJOUT v2.5 : numéro manquant dans la version précédente",
+      "contenu": {
+        "steps": [
+          "Numéro : 115 (appel gratuit, 24h/24, 7j/7).",
+          "Pour les personnes sans abri, en grande précarité ou en détresse sociale.",
+          "Mise à l'abri d'urgence, orientation vers hébergement, aide alimentaire."
+        ]
+      }
+    },
+    {
+      "icon": "👶",
+      "titre": "119 — Allô Enfance en danger",
+      "numero": "119",
+      "colorClass": "card-rouge",
+      "contenu": {
+        "steps": [
+          "Numéro : 119 (gratuit, 24h/24, 7j/7).",
+          "Signalement de mineurs en danger : maltraitance, négligence, violences, abus.",
+          "Anonyme et confidentiel — tout citoyen peut signaler."
+        ]
+      }
+    },
+    {
+      "icon": "🚺",
+      "titre": "3919 — Violences faites aux femmes",
+      "numero": "3919",
+      "colorClass": "card-rose",
+      "contenu": {
+        "steps": [
+          "Numéro : 3919 (gratuit, 24h/24, 7j/7).",
+          "Écoute, information et orientation pour les femmes victimes de violences.",
+          "Violences conjugales, harcèlement, viols, violences au travail."
+        ]
+      }
+    },
+    {
+      "icon": "🔍",
+      "titre": "116 000 — Enfants disparus",
+      "numero": "116 000",
+      "colorClass": "card-orange",
+      "contenu": {
+        "steps": [
+          "Numéro : 116 000 (gratuit, 24h/24, 7j/7).",
+          "Signalement de disparition d'enfant, soutien et accompagnement des familles.",
+          "Numéro européen harmonisé — disponible dans 27 pays de l'UE."
+        ]
+      }
+    }
+  ]
+}

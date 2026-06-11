@@ -1,0 +1,208 @@
+{
+  "app": { "title": "긴급 가이드" },
+  "drawer": {
+    "title": "내비게이션",
+    "footer": "긴급 가이드 · 버전 1.0",
+    "links": [
+      { "icon": "⛑️", "label": "홈 — 긴급 상황", "href": "#splashScreen" },
+      { "icon": "📖", "label": "생존 가이드", "href": "#mainContent" },
+      { "icon": "🇫🇷", "label": "원칙", "href": "#section-principes" },
+      { "icon": "⚙️", "label": "실용 도구", "href": "#section-outils" },
+      { "icon": "🚑", "label": "의료 응급 상황", "href": "#section-urgences" },
+      { "icon": "⚠️", "label": "집단 상황", "href": "#section-situations" },
+      { "icon": "📞", "label": "지원 단체", "href": "#section-assos" }
+    ]
+  },
+  "local": {
+    "info": { "title": "" },
+    "crisis": "📞 위기",
+    "samu": "🚑 지역 구급대",
+    "fire": "🚒 소방서",
+    "townhall": "🏛️ 시청",
+    "prefecture": "🏛️ 도청",
+    "redcross": "🔴 적십자",
+    "radio": "📻 지역 라디오"
+  },
+  "splash": {
+    "title": "생존 가이드",
+    "subtitle": "이 사이트는 <strong>인터넷 연결 없이</strong> 작동합니다. 긴급 상황에 대처하기 위한 필수 정보를 제공합니다.",
+    "enterButton": "전체 가이드 접속"
+  },
+  "main": {
+    "welcome": {
+      "title": "환영합니다",
+      "text": "긴급 가이드는 오프라인으로 작동합니다. 긴급 도구, 응급처치 및 생존 반사 작용을 여기에서 찾으십시오."
+    }
+  },
+  "sections": {
+    "principes": "🇫🇷 응급처치 3대 원칙",
+    "outils": "⚙️ 실용 도구",
+    "urgencesMedicales": "🚑 의료 응급 상황",
+    "situationsCollectives": "⚠️ 집단 상황",
+    "associations": "📞 지원 단체 및 도움말 번호"
+  },
+  "tools": {
+    "metronome": { "title": "❤️ CPR 메트로놈 110 BPM", "start": "시작", "stop": "정지" },
+    "flash": { "stop": "⏹️ SOS 플래시 중지" },
+    "torch": { "stop": "🔦 손전등 끄기" },
+    "alarm": { "title": "🚨 소리 경보", "start": "경보 울리기", "stop": "경보 중지", "active": "🚨 경보 작동 중", "inactive": "⏹️ 중지됨" },
+    "respiration": { "title": "🌬️ 안내 호흡", "start": "시작", "stop": "정지", "inhale": "들이쉬기", "exhale": "내쉬기" },
+    "whistle": { "title": "🔊 비상 호루라기", "start": "호루라기 불기 (3회)", "stop": "정지", "active": "🔊 호루라기 작동 중", "inactive": "⏹️ 중지됨" }
+  },
+  "urgences": [
+	{ "number": "15", "name": "SAMU", "class": "samu" },
+	{ "number": "17", "name": "경찰", "class": "police" },
+	{ "number": "18", "name": "소방", "class": "pompiers" },
+	{ "number": "112", "name": "유럽 긴급 전화", "class": "europe" },
+	{ "number": "114", "name": "청각장애인", "class": "ssourd" }
+  ],
+  "principes": [
+    {
+      "icon": "📢", "titre": "신고", "desc": "긴급 서비스에 신고", "colorClass": "card-bleu",
+      "contenu": {
+        "steps": [
+          "긴급 전화번호: 119 (구급/소방), 112 (경찰).",
+          "알릴 내용: 어디? (정확한 위치), 무엇? (사고 유형), 누가? (부상자 수, 상태).",
+          "먼저 전화를 끊지 마십시오 – 상담원이 통화를 종료할 때까지 기다리십시오.",
+          "가능하면 위치 확인 앱을 사용하십시오.",
+          "혼자이고 말할 수 없는 경우 112로 전화하고 회선을 열어 두십시오."
+        ]
+      }
+    },
+    {
+      "icon": "🩺", "titre": "구조", "desc": "응급처치 제공", "colorClass": "card-blanc",
+      "contenu": {
+        "steps": [
+          "의식 평가 (말하기, 만지기), 호흡 확인.",
+          "호흡이 없으면 즉시 심폐소생술 시작 (100-120회/분).",
+          "의식이 없지만 호흡하는 경우 회복 자세.",
+          "출혈: 상처를 직접 압박. 압박으로 지혈되지 않으면 지혈대 사용.",
+          "의식이 없는 사람에게 절대 마실 것을 주지 마십시오.",
+          "환자를 안심시키고 저체온증을 예방하기 위해 덮어 주십시오."
+        ]
+      }
+    },
+    {
+      "icon": "🛡️", "titre": "보호", "desc": "안전 확보", "colorClass": "card-rouge",
+      "contenu": {
+        "steps": [
+          "즉각적인 위험 (화재, 교통, 붕괴)으로부터 환자를 멀리 옮기십시오.",
+          "구역 표시 (경고 삼각대, 비상등).",
+          "자신을 보호하십시오: 장갑, 마스크(있는 경우).",
+          "위험원 차단 (가스, 전기).",
+          "척추 손상이 의심되는 부상자는 이동시키지 마십시오."
+        ]
+      }
+    }
+  ],
+  "outils": [
+    { "icon": "❤️", "titre": "CPR 메트로놈 110 BPM", "desc": "심장 압박 리듬.", "action": "openMetronome" },
+    { "icon": "⚡", "titre": "SOS 플래시", "desc": "긴급 광 신호.", "action": "openFlashSOS" },
+    { "icon": "🔦", "titre": "손전등", "desc": "밝은 흰색 화면.", "action": "openTorche" },
+    { "icon": "🚨", "titre": "소리 경보", "desc": "연속 경보음 (880 Hz).", "action": "openAlerte" },
+    { "icon": "🌬️", "titre": "안내 호흡", "desc": "심장 일관성 (4-4).", "action": "openRespiration" },
+    { "icon": "🔊", "titre": "비상 호루라기", "desc": "3회 호루라기 신호.", "action": "openSifflet" }
+  ],
+  "urgences_medicales": [
+    {
+      "icon": "🫀", "titre": "심장마비", "desc": "휴식, 119 신고, 필요시 CPR.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "즉시 119에 전화하십시오.", "의식이 있으면 반쯤 앉은 자세로 휴식을 취하십시오.", "의식이 없으나 호흡 중: 회복 자세.", "심정지: 심폐소생술 (100-120회/분) + 제세동기(있는 경우)." ] }
+    },
+    {
+      "icon": "🩸", "titre": "출혈", "desc": "직접 압박, 지혈대, 도움 요청.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "깨끗한 천으로 상처를 누르십시오.", "가능하면 부상당한 팔다리를 올리십시오.", "출혈이 멈추지 않으면 지혈대 (넓고 단단히, 시간 기록).", "상처에 박힌 물체를 절대 제거하지 마십시오.", "환자를 눕히고 덮고 119에 전화하십시오." ] }
+    },
+    {
+      "icon": "🧠", "titre": "뇌졸중 (FAST)", "desc": "얼굴, 팔, 말, 시간 – 119 신고.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "F: 얼굴 비대칭?", "A: 팔 약화?", "S: 말 어눌함?", "T: 시간 – 즉시 119 신고!", "증상 시작 시간을 기록하십시오." ] }
+    },
+    {
+      "icon": "🫁", "titre": "기도 폐쇄", "desc": "하임리히법.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "'질식하고 있습니까?'라고 물어보십시오.", "말하거나 기침할 수 없으면 등 두드리기 5회.", "효과가 없으면 하임리히법.", "의식 상실: 심폐소생술 시작 및 119 신고." ] }
+    },
+    {
+      "icon": "🔥", "titre": "화상", "desc": "미지근한 물로 15분간 식히기, 물집 터뜨리지 않기.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "즉시 미지근한 물 (15-25°C)로 15분간 식히십시오.", "들러붙지 않은 옷과 장신구를 제거하십시오.", "랩이나 멸균 드레싱으로 덮으십시오.", "물집을 터뜨리지 말고 크림을 바르지 마십시오.", "광범위 화상, 얼굴 또는 기도 화상 시 119 신고." ] }
+    },
+    {
+      "icon": "💧", "titre": "익사", "desc": "물에서 구조, CPR, 119 신고.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "자신을 위험에 빠뜨리지 않고 환자를 물에서 꺼내십시오.", "의식과 호흡을 확인하십시오.", "호흡이 없으면 인공호흡 2회 + 가슴 압박 30회 (30:2).", "119 또는 112 신고.", "저체온증 예방을 위해 덮으십시오." ] }
+    },
+    {
+      "icon": "💊", "titre": "약물 과다복용 (GHB/MDMA)", "desc": "회복 자세, 119 신고, 잠들지 않게 하기.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "의식이 없으나 호흡 중: 회복 자세.", "호흡 정지: CPR + 인공호흡.", "즉시 119 신고.", "환자가 '잠들지' 않도록 지속적으로 모니터링.", "복용한 물질을 구급대원을 위해 보관." ] }
+    },
+    {
+      "icon": "🌡️", "titre": "열사병", "desc": "즉시 냉각, 119 신고.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "그늘/서늘한 곳으로 이동.", "옷을 벗기고 시원한 물을 뿌리고 부채질.", "겨드랑이, 목, 사타구니에 얼음찜질.", "119 신고 – 생명 위협.", "해열제를 주지 마십시오." ] }
+    },
+    {
+      "icon": "🍺", "titre": "알코올 중독", "desc": "회복 자세, 관찰, 혼수 시 119.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "의식 없음: 회복 자세, 호흡 관찰.", "혼자 두지 말고 구토를 유도하지 마십시오.", "혼수 또는 불규칙 호흡: 119.", "의식이 있고 삼킬 수 있으면 수분 공급." ] }
+    },
+    {
+      "icon": "🦐", "titre": "아나필락시스 쇼크", "desc": "중증 알레르기, 에피네프린 주사, 119 신고.", "colorClass": "card-rose",
+      "contenu": { "steps": [ "인식: 두드러기, 부기, 호흡 곤란, 실신.", "에피네프린(처방된 경우)을 허벅지에 주사.", "똑바로 눕히고 다리를 올리십시오.", "즉시 119 신고." ] }
+    },
+    {
+      "icon": "🚗", "titre": "교통사고", "desc": "안전, 표시, 도움 요청.", "colorClass": "card-slate",
+      "contenu": { "steps": [ "경고 삼각대 설치, 반사 조끼 착용.", "즉각적인 위험이 없는 한 부상자를 이동시키지 마십시오.", "119, 112 신고.", "엔진 끄기, 주차 브레이크 당기기.", "의식이 없는 부상자에게 음료를 주지 마십시오." ] }
+    }
+  ],
+  "situations_collectives": [
+    {
+      "icon": "🔥", "titre": "화재", "desc": "대피, 신고, 연기 아래로 기어가기.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "소방서(119) 신고.", "몸을 낮춰 이동 (연기 아래로 기어가기).", "엘리베이터 사용 금지.", "출입문 닫기.", "옷에 불이 붙으면: 멈추고, 바닥에 누워 구르기." ] }
+    },
+    {
+      "icon": "💨", "titre": "가스 누출", "desc": "스파크 발생 금지, 창문 열기, 119 신고.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "전기 스위치 작동 금지, 현장에서 휴대폰 사용 금지.", "문과 창문 열기.", "가능하면 가스 차단.", "건물 대피.", "외부에서 소방서(119) 신고." ] }
+    },
+    {
+      "icon": "⚠️", "titre": "테러 / 총격", "desc": "도주, 은신, 신고 (112).", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "뛰어 도망가고 방향 전환.", "도주 불가 시: 잠긴 방에 숨고, 불 끄기, 창문에서 떨어지기.", "휴대폰 무음, 발각되지 않도록 전화하지 않기.", "신원 확인된 경찰에게만 문 열기." ] }
+    },
+    {
+      "icon": "🌊", "titre": "홍수", "desc": "높은 곳으로 이동, 전기 차단, 지시 따르기.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "위층으로 이동, 지하실 가지 않기.", "가스 및 전기 차단.", "엘리베이터 사용 금지.", "지시가 있으면 대피 준비.", "즉각적 위험 시 긴급 신고 (119)." ] }
+    },
+    {
+      "icon": "🌍", "titre": "지진", "desc": "엎드리고, 가리고, 붙잡고, 창문에서 떨어지기.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "튼튼한 탁자 아래로 엎드리고 머리 가리고 붙잡기.", "창문과 매달린 물건에서 떨어지기.", "진동 후 계단으로 대피.", "엘리베이터 사용 금지.", "여진에 유의." ] }
+    },
+    {
+      "icon": "☣️", "titre": "CBRN (화학/생물학/방사능/핵)", "desc": "실내 대피, 방 밀폐, 라디오 청취.", "colorClass": "card-slate",
+      "contenu": { "steps": [ "창문 없는 방으로 대피.", "문과 창문 닫기, 환기 중지.", "셔터 닫기, 틈새 테이프로 밀봉.", "공식 지침 청취 (지역 라디오).", "허가 전까지 외출 금지." ] }
+    }
+  ],
+  "associations": [
+    {
+      "icon": "💬", "titre": "자살예방상담전화", "numero": "1393", "colorClass": "card-slate",
+      "contenu": { "steps": [ "번호: 1393", "24시간 심리 상담, 익명 및 무료.", "정서적 고통, 외로움, 자살 생각." ] }
+    },
+    {
+      "icon": "📞", "titre": "119 – 구급/소방", "numero": "119", "colorClass": "card-violet",
+      "contenu": { "steps": [ "번호: 119", "전국 응급 의료 서비스." ] }
+    },
+    {
+      "icon": "👶", "titre": "112 – 아동학대 신고", "numero": "112", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "번호: 112", "아동 학대, 방임 신고." ] }
+    },
+    {
+      "icon": "🚺", "titre": "1366 – 여성긴급전화", "numero": "1366", "colorClass": "card-rose",
+      "contenu": { "steps": [ "번호: 1366", "가정폭력, 성폭력 피해 여성 지원." ] }
+    },
+    {
+      "icon": "🔍", "titre": "116 000 – 실종아동", "numero": "116 000", "colorClass": "card-orange",
+      "contenu": { "steps": [ "번호: 116 000", "실종 아동 신고, 가족 지원." ] }
+    },
+    {
+      "icon": "🍷", "titre": "중독 상담", "numero": "1899-0001", "colorClass": "card-vert",
+      "contenu": { "steps": [ "번호: 1899-0001", "알코올, 약물, 도박 중독 정보 및 상담." ] }
+    },
+    {
+      "icon": "❤️", "titre": "대한적십자사", "numero": "1577-8179", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "번호: 1577-8179", "심리사회적 지원." ] }
+    }
+  ]
+}

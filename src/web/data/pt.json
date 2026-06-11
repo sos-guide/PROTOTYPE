@@ -1,0 +1,208 @@
+{
+  "app": { "title": "SOS-GUIA" },
+  "drawer": {
+    "title": "Navegação",
+    "footer": "SOS-GUIA · versão 1.0",
+    "links": [
+      { "icon": "⛑️", "label": "Início — Emergências", "href": "#splashScreen" },
+      { "icon": "📖", "label": "Guia de sobrevivência", "href": "#mainContent" },
+      { "icon": "🇫🇷", "label": "Princípios", "href": "#section-principes" },
+      { "icon": "⚙️", "label": "Ferramentas práticas", "href": "#section-outils" },
+      { "icon": "🚑", "label": "Emergências médicas", "href": "#section-urgences" },
+      { "icon": "⚠️", "label": "Situações coletivas", "href": "#section-situations" },
+      { "icon": "📞", "label": "Associações", "href": "#section-assos" }
+    ]
+  },
+  "local": {
+    "info": { "title": "" },
+    "crisis": "📞 Crise",
+    "samu": "🚑 SAMU local",
+    "fire": "🚒 Bombeiros",
+    "townhall": "🏛️ Câmara Municipal",
+    "prefecture": "🏛️ Prefeitura",
+    "redcross": "🔴 Cruz Vermelha",
+    "radio": "📻 Rádio local"
+  },
+  "splash": {
+    "title": "GUIA DE SOBREVIVÊNCIA",
+    "subtitle": "Este site funciona <strong>sem ligação à Internet</strong>. Fornece informações essenciais para enfrentar uma situação de emergência.",
+    "enterButton": "Aceder ao guia completo"
+  },
+  "main": {
+    "welcome": {
+      "title": "Bem-vindo",
+      "text": "O seu guia de emergência funciona offline. Encontre aqui ferramentas de emergência, primeiros socorros e reflexos de sobrevivência."
+    }
+  },
+  "sections": {
+    "principes": "🇫🇷 Os 3 princípios dos primeiros socorros",
+    "outils": "⚙️ Ferramentas práticas",
+    "urgencesMedicales": "🚑 Emergências médicas",
+    "situationsCollectives": "⚠️ Situações coletivas",
+    "associations": "📞 Associações e números de ajuda"
+  },
+  "tools": {
+    "metronome": { "title": "❤️ Metrónomo RCP 110 BPM", "start": "Iniciar", "stop": "Parar" },
+    "flash": { "stop": "⏹️ Parar flash SOS" },
+    "torch": { "stop": "🔦 Desligar lanterna" },
+    "alarm": { "title": "🚨 Alerta sonoro", "start": "Ativar alarme", "stop": "Parar alarme", "active": "🚨 ALARME ATIVO", "inactive": "⏹️ Parado" },
+    "respiration": { "title": "🌬️ Respiração guiada", "start": "Começar", "stop": "Parar", "inhale": "Inspirar", "exhale": "Expirar" },
+    "whistle": { "title": "🔊 Apito de emergência", "start": "Apitar (3 toques)", "stop": "Parar", "active": "🔊 Apito ativo", "inactive": "⏹️ Parado" }
+  },
+  "urgences": [
+	{ "number": "15", "name": "SAMU", "class": "samu" },
+	{ "number": "17", "name": "POLÍCIA", "class": "police" },
+	{ "number": "18", "name": "BOMBEIROS", "class": "pompiers" },
+	{ "number": "112", "name": "EMERGÊNCIA EUROPEIA", "class": "europe" },
+	{ "number": "114", "name": "SURDOS", "class": "ssourd" }
+  ],
+  "principes": [
+    {
+      "icon": "📢", "titre": "ALERTAR", "desc": "Dar o alerta aos serviços de emergência", "colorClass": "card-bleu",
+      "contenu": {
+        "steps": [
+          "Números de emergência: 112 (número único europeu).",
+          "Indique: Onde? (local exato), O quê? (tipo de acidente), Quem? (número de vítimas, estado).",
+          "Não desligue primeiro: deixe o operador terminar a chamada.",
+          "Utilize uma aplicação de localização se possível.",
+          "Se estiver sozinho e não puder falar, marque 112 e deixe a linha aberta."
+        ]
+      }
+    },
+    {
+      "icon": "🩺", "titre": "SOCORRER", "desc": "Prestar os primeiros gestos", "colorClass": "card-blanc",
+      "contenu": {
+        "steps": [
+          "Avaliar a consciência (falar, tocar), verificar respiração.",
+          "Se não respira: iniciar massagem cardíaca (100-120 compressões/min).",
+          "Posição Lateral de Segurança (PLS) se inconsciente mas respira.",
+          "Hemorragia: comprimir a ferida. Torniquete só se a compressão falhar.",
+          "Nunca dar de beber a uma pessoa inconsciente.",
+          "Tranquilizar a vítima e cobri-la para evitar hipotermia."
+        ]
+      }
+    },
+    {
+      "icon": "🛡️", "titre": "PROTEGER", "desc": "Colocar em segurança", "colorClass": "card-rouge",
+      "contenu": {
+        "steps": [
+          "Afastar a vítima de perigo imediato (fogo, trânsito, desabamento).",
+          "Sinalizar a zona (triângulo, luzes de emergência).",
+          "Proteger-se: luvas, máscara se disponível.",
+          "Cortar fontes de perigo (gás, eletricidade).",
+          "Não mover um ferido com suspeita de trauma raquidiano."
+        ]
+      }
+    }
+  ],
+  "outils": [
+    { "icon": "❤️", "titre": "Metrónomo RCP 110 BPM", "desc": "Ritmo para massagem cardíaca.", "action": "openMetronome" },
+    { "icon": "⚡", "titre": "Flash SOS", "desc": "Sinal luminoso de socorro.", "action": "openFlashSOS" },
+    { "icon": "🔦", "titre": "Lanterna", "desc": "Ecrã branco brilhante.", "action": "openTorche" },
+    { "icon": "🚨", "titre": "Alerta sonoro", "desc": "Alarme contínuo (880 Hz).", "action": "openAlerte" },
+    { "icon": "🌬️", "titre": "Respiração guiada", "desc": "Coerência cardíaca (4-4).", "action": "openRespiration" },
+    { "icon": "🔊", "titre": "Apito de emergência", "desc": "Sinal de 3 toques.", "action": "openSifflet" }
+  ],
+  "urgences_medicales": [
+    {
+      "icon": "🫀", "titre": "Ataque cardíaco", "desc": "Repouso, chamar 112, RCP se necessário.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Ligar imediatamente 112.", "Colocar a pessoa em repouso, semissentada se consciente.", "Se inconsciente e respira: PLS.", "Se paragem cardíaca: massagem cardíaca (100-120/min) + DAE se disponível." ] }
+    },
+    {
+      "icon": "🩸", "titre": "Hemorragia", "desc": "Compressão direta, torniquete, chamar ajuda.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Comprimir a ferida com um pano limpo.", "Elevar o membro se possível.", "Se não parar: torniquete (largo, apertado, anotar hora).", "Nunca retirar objetos encravados.", "Deitar a vítima, cobrir, ligar 112." ] }
+    },
+    {
+      "icon": "🧠", "titre": "AVC (FAST)", "desc": "Face, Braço, Fala, Tempo – ligar 112.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "F: Face assimétrica?", "B: Braço fraco?", "F: Fala arrastada?", "T: Tempo – ligar imediatamente 112!", "Anotar a hora dos primeiros sintomas." ] }
+    },
+    {
+      "icon": "🫁", "titre": "Engasgamento", "desc": "Manobra de Heimlich.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Perguntar 'Está engasgado?'", "Se não consegue falar ou tossir: 5 pancadas nas costas.", "Se ineficaz: manobra de Heimlich.", "Se inconsciente: RCP e ligar 112." ] }
+    },
+    {
+      "icon": "🔥", "titre": "Queimaduras", "desc": "Arrefecer com água morna 15 min, não furar bolhas.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Arrefecer imediatamente com água morna (15-25°C) durante 15 min.", "Remover roupa não aderente e joias.", "Cobrir com película aderente ou penso estéril.", "Não furar bolhas nem aplicar cremes.", "Ligar 112 para queimaduras extensas, rosto ou vias respiratórias." ] }
+    },
+    {
+      "icon": "💧", "titre": "Afogamento", "desc": "Retirar da água, RCP, chamar 112.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Retirar a vítima da água sem se colocar em perigo.", "Verificar consciência e respiração.", "Se não respira: 2 ventilações + 30 compressões (30:2).", "Ligar 112.", "Cobrir para evitar hipotermia." ] }
+    },
+    {
+      "icon": "💊", "titre": "Overdose (GHB/MDMA)", "desc": "PLS, ligar 112, não deixar dormir.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Se inconsciente mas respira: PLS.", "Se paragem respiratória: RCP + ventilações.", "Ligar imediatamente 112.", "Não deixar a pessoa 'dormir' – monitorizar continuamente.", "Guardar eventuais substâncias para os serviços de emergência." ] }
+    },
+    {
+      "icon": "🌡️", "titre": "Golpe de calor", "desc": "Arrefecer imediatamente, ligar 112.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Levar para sombra / local fresco.", "Despir, borrifar com água fresca, ventilar.", "Gelo nas axilas, pescoço, virilhas.", "Ligar 112 – emergência vital.", "Não dar antipiréticos." ] }
+    },
+    {
+      "icon": "🍺", "titre": "Intoxicação alcoólica", "desc": "PLS, vigilância, ligar 112 se coma.", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Se inconsciente: PLS, vigiar respiração.", "Não deixar sozinho, não provocar vómito.", "Se coma ou respiração irregular: 112.", "Hidratar se consciente e capaz de engolir." ] }
+    },
+    {
+      "icon": "🦐", "titre": "Choque anafilático", "desc": "Alergia grave, injetar adrenalina, ligar 112.", "colorClass": "card-rose",
+      "contenu": { "steps": [ "Reconhecer: urticária, inchaço, dificuldade respiratória, desmaio.", "Injetar adrenalina (se prescrita) na coxa.", "Deitar com pernas elevadas.", "Ligar imediatamente 112." ] }
+    },
+    {
+      "icon": "🚗", "titre": "Acidente rodoviário", "desc": "Segurança, sinalização, chamar ajuda.", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Colocar triângulo, usar colete refletor.", "Não mover feridos salvo perigo imediato.", "Ligar 112.", "Desligar motores, puxar travão de mão.", "Não dar de beber a vítimas inconscientes." ] }
+    }
+  ],
+  "situations_collectives": [
+    {
+      "icon": "🔥", "titre": "Incêndio", "desc": "Evacuar, alertar, rastejar sob o fumo.", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Chamar bombeiros (112).", "Sair abaixado (rastejar sob o fumo).", "Não usar elevador.", "Fechar portas atrás de si.", "Se roupa arder: parar, deitar e rolar." ] }
+    },
+    {
+      "icon": "💨", "titre": "Fuga de gás", "desc": "Não criar faíscas, abrir janelas, chamar 112.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Não acionar interruptores, não usar telefone no local.", "Abrir portas e janelas.", "Cortar o gás se possível.", "Evacuar o local.", "Chamar bombeiros (112) do exterior." ] }
+    },
+    {
+      "icon": "⚠️", "titre": "Atentado / Tiroteio", "desc": "Fugir, esconder, alertar (112).", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Fugir a correr, mudar de direção.", "Se fuga impossível: esconder-se em sala fechada, apagar luzes, afastar-se de janelas.", "Silenciar telemóvel, não ligar para não se denunciar.", "Abrir apenas a forças de ordem identificadas." ] }
+    },
+    {
+      "icon": "🌊", "titre": "Inundação", "desc": "Subir para andares altos, cortar eletricidade, seguir instruções.", "colorClass": "card-cyan",
+      "contenu": { "steps": [ "Ir para andares superiores, não para cave.", "Cortar gás e eletricidade.", "Não usar elevador.", "Preparar-se para evacuar se indicado.", "Ligar emergência (112) se perigo imediato." ] }
+    },
+    {
+      "icon": "🌍", "titre": "Sismo", "desc": "Baixar, proteger, agarrar, longe de janelas.", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Baixar, proteger-se sob mesa robusta, agarrar.", "Afastar-se de janelas e objetos suspensos.", "Após o abalo: evacuar pelas escadas.", "Não usar elevador.", "Manter-se informado sobre réplicas." ] }
+    },
+    {
+      "icon": "☣️", "titre": "NRBQ (Nuclear/Radiológico/Biológico/Químico)", "desc": "Confinar-se, selar divisão, ouvir rádio.", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Abrigar-se em divisão sem janelas.", "Fechar portas, janelas, parar ventilação.", "Fechar persianas, selar frestas com fita adesiva.", "Ouvir instruções oficiais (rádio local).", "Não sair até autorização." ] }
+    }
+  ],
+  "associations": [
+    {
+      "icon": "💬", "titre": "SOS Voz Amiga", "numero": "213 544 545", "colorClass": "card-slate",
+      "contenu": { "steps": [ "Número: 213 544 545", "Apoio psicológico 24h, anónimo e gratuito.", "Para angústia, solidão, pensamentos suicidas." ] }
+    },
+    {
+      "icon": "📞", "titre": "Linha de Emergência Social", "numero": "144", "colorClass": "card-violet",
+      "contenu": { "steps": [ "Número: 144 (gratuito)", "Nacional, 24/7. Profissionais de saúde formados." ] }
+    },
+    {
+      "icon": "👶", "titre": "Linha Criança em Perigo", "numero": "116 111", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Número: 116 111", "Denúncia de menores em perigo (maus-tratos, abusos).", "Anónimo e confidencial." ] }
+    },
+    {
+      "icon": "🚺", "titre": "Linha de Apoio à Vítima", "numero": "116 006", "colorClass": "card-rose",
+      "contenu": { "steps": [ "Número: 116 006 (gratuito)", "Apoio a vítimas de violência doméstica.", "24h/7." ] }
+    },
+    {
+      "icon": "🔍", "titre": "116 000 – Crianças desaparecidas", "numero": "116 000", "colorClass": "card-orange",
+      "contenu": { "steps": [ "Número: 116 000 (gratuito)", "Sinalização de desaparecimento de menores." ] }
+    },
+    {
+      "icon": "🍷", "titre": "Linha Vida – Dependências", "numero": "1414", "colorClass": "card-vert",
+      "contenu": { "steps": [ "Número: 1414 (custo chamada local)", "Informação e orientação sobre dependências (álcool, drogas, jogo)." ] }
+    },
+    {
+      "icon": "❤️", "titre": "Cruz Vermelha Portuguesa", "numero": "219 421 500", "colorClass": "card-rouge",
+      "contenu": { "steps": [ "Número: 219 421 500", "Apoio psicossocial." ] }
+    }
+  ]
+}

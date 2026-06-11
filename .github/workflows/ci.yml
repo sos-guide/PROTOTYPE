@@ -1,0 +1,123 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  lint:
+    name: Lint & Validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq shellcheck jq php-cli python3
+
+      # ── Shell ────────────────────────────────────────────────────────────────
+      - name: shellcheck — scripts système
+        run: |
+          shellcheck -S error \
+            install.sh \
+            src/scripts/build-image.sh \
+            src/scripts/sos-guide-update.sh \
+            src/scripts/sos-guide-boot-check.sh \
+            src/scripts/sos-guide-regen-hash.sh \
+            src/scripts/sos-guide-fetch-tiles.sh \
+            src/scripts/sos-guide-tls-setup.sh \
+            src/scripts/sos-guide-test.sh \
+            src/scripts/sos-guide-reset-starter.sh \
+            src/firstboot/firstboot.sh \
+            src/firstboot/finalize_install.sh
+
+      # ── JSON ─────────────────────────────────────────────────────────────────
+      - name: jq — fichiers de langue (29 langues)
+        run: |
+          FAILED=0
+          for f in src/web/data/*.json; do
+            if ! jq empty "$f" 2>/dev/null; then
+              echo "FAIL: $f n'est pas un JSON valide"
+              FAILED=$((FAILED+1))
+            fi
+          done
+          [ "$FAILED" -eq 0 ] && echo "OK: tous les JSON valides" || exit 1
+
+      - name: jq — rm.json présent et valide (PCi-CH obligatoire)
+        run: |
+          [ -f src/web/data/rm.json ] || { echo "FAIL: rm.json absent — PCi-CH bloquant"; exit 1; }
+          jq empty src/web/data/rm.json || { echo "FAIL: rm.json invalide"; exit 1; }
+          echo "OK: rm.json valide"
+
+      - name: jq — config.json initial valide
+        run: |
+          jq empty src/web/data/config.json || { echo "FAIL: config.json invalide"; exit 1; }
+          echo "OK: config.json valide"
+
+      # ── PHP ──────────────────────────────────────────────────────────────────
+      - name: php -l — syntaxe PHP
+        run: |
+          FAILED=0
+          for f in src/web/*.php src/firstboot/*.php; do
+            [ -f "$f" ] || continue
+            if ! php -l "$f" > /dev/null 2>&1; then
+              echo "FAIL: $f — erreur de syntaxe PHP"
+              php -l "$f" || true
+              FAILED=$((FAILED+1))
+            fi
+          done
+          [ "$FAILED" -eq 0 ] && echo "OK: tous les PHP syntaxiquement valides" || exit 1
+
+      # ── Python ───────────────────────────────────────────────────────────────
+      - name: python — syntaxe scripts Python
+        run: |
+          FAILED=0
+          for f in src/scripts/*.py src/web/*.py; do
+            [ -f "$f" ] || continue
+            if ! python3 -m py_compile "$f" 2>/dev/null; then
+              echo "FAIL: $f — erreur de syntaxe Python"
+              FAILED=$((FAILED+1))
+            fi
+          done
+          [ "$FAILED" -eq 0 ] && echo "OK: tous les Python syntaxiquement valides" || exit 1
+
+      # ── Cohérence clés structurelles ─────────────────────────────────────────
+      - name: Vérifier les langues CH obligatoires déployées
+        run: |
+          FAILED=0
+          for lang in fr de it rm en; do
+            f="src/web/data/${lang}.json"
+            if [ ! -f "$f" ] || ! jq empty "$f" 2>/dev/null; then
+              echo "FAIL: ${lang}.json absent ou invalide — obligatoire CH/PCi-CH"
+              FAILED=$((FAILED+1))
+            fi
+          done
+          [ "$FAILED" -eq 0 ] && echo "OK: 5 langues CH présentes" || exit 1
+
+      - name: Vérifier que install.sh contient le watchdog
+        run: |
+          grep -q "watchdog" install.sh || \
+            { echo "FAIL: configuration watchdog absente de install.sh"; exit 1; }
+          echo "OK: watchdog présent dans install.sh"
+
+      - name: Vérifier que finalize_install.sh est un thin wrapper
+        run: |
+          LINES=$(wc -l < src/firstboot/finalize_install.sh)
+          [ "$LINES" -lt 50 ] || \
+            { echo "FAIL: finalize_install.sh a $LINES lignes — risque de divergence avec install.sh"; exit 1; }
+          grep -q "sos-guide-install.sh" src/firstboot/finalize_install.sh || \
+            { echo "FAIL: finalize_install.sh ne délègue pas à sos-guide-install.sh"; exit 1; }
+          echo "OK: finalize_install.sh thin wrapper ($LINES lignes)"
+
+      - name: Vérifier les drop-ins systemd
+        run: |
+          for svc in hostapd dnsmasq nginx; do
+            f="src/systemd/${svc}.service.d/sos-guide-restart.conf"
+            [ -f "$f" ] || { echo "FAIL: drop-in Restart absent pour $svc"; exit 1; }
+            grep -q "Restart=always" "$f" || { echo "FAIL: Restart=always absent dans $f"; exit 1; }
+          done
+          echo "OK: drop-ins Restart=always présents pour hostapd, dnsmasq, nginx"

@@ -1,0 +1,19 @@
+[Unit]
+Description=SOS-GUIDE — Mise à jour automatique du contenu JSON (si ETH disponible)
+Documentation=https://sos-guide.fr
+After=network-online.target
+Wants=network-online.target
+
+[Timer]
+# Première vérification 5 minutes après le démarrage
+OnBootSec=5min
+# Puis toutes les 6 heures
+OnUnitActiveSec=6h
+# Tolérance de 15 minutes (évite la surcharge au redémarrage simultané de plusieurs nœuds)
+RandomizedDelaySec=15min
+# Persiste si la machine était éteinte au moment de la mise à jour planifiée
+Persistent=true
+Unit=sos-guide-update.service
+
+[Install]
+WantedBy=timers.target
