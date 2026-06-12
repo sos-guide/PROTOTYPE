@@ -161,7 +161,8 @@ if [ -d "$SRC_DIR" ]; then
     # Scripts vers /usr/local/bin
     for script in lora-service.py sos-guide-boot-check.sh sos-guide-regen-hash.sh \
                   sos-guide-fetch-tiles.sh sos-guide-update.sh sos-guide-tls-setup.sh \
-                  sos-guide-reset-starter.sh sos-guide-watchdog-test.sh; do
+                  sos-guide-reset-starter.sh sos-guide-watchdog-test.sh \
+                  sos-guide-set-credentials.sh sos-guide-tor-setup.sh; do
         src="${SRC_DIR}/scripts/${script}"
         if [ -f "$src" ]; then
             cp "$src" "/usr/local/bin/${script}"
@@ -228,6 +229,7 @@ if [ ! -f "$CONFIG_FILE" ]; then
   "wifiChannel": 11,
   "enableLoRa": false,
   "enableEthernet": false,
+  "enableTor": false,
   "installed": false
 }
 DEFAULTCFG
@@ -262,6 +264,7 @@ NODE_NAME=$(jq -r '.establishment.name // "SOS-GUIDE"' "$CONFIG_FILE" \
 [ -z "$NODE_NAME" ] && NODE_NAME="SOS-GUIDE"
 ENABLE_LORA=$(jq -r '.enableLoRa // false'                  "$CONFIG_FILE")
 ENABLE_ETHERNET=$(jq -r '.enableEthernet // false'          "$CONFIG_FILE")
+ENABLE_TOR=$(jq -r '.enableTor // false'                    "$CONFIG_FILE")
 WIFI_CHANNEL=$(jq -r '.wifiChannel // "11"' "$CONFIG_FILE" | tr -dc '0-9' | cut -c1-2)
 # Valider que le canal WiFi est dans la plage autorisée (1-13, Suisse)
 if [ -z "$WIFI_CHANNEL" ] || [ "$WIFI_CHANNEL" -lt 1 ] || [ "$WIFI_CHANNEL" -gt 13 ]; then
@@ -485,6 +488,16 @@ server {
         fastcgi_pass unix:/var/run/php/phpPHP_VERSION-fpm.sock;
     }
 
+    # ── Actions admin sensibles : WiFi on/off + changement de mots de passe ──
+    # Double protection : auth_basic (htpasswd) + token CSRF côté PHP.
+    location = /api/admin-action {
+        auth_basic "Administration SOS-GUIDE";
+        auth_basic_user_file /etc/nginx/.htpasswd;
+        include snippets/fastcgi-php.conf;
+        fastcgi_param SCRIPT_FILENAME \$document_root/api_admin_action.php;
+        fastcgi_pass unix:/var/run/php/phpPHP_VERSION-fpm.sock;
+    }
+
     # ── Messagerie LoRa (ouverte aux clients WiFi, rate-limitée côté PHP) ──
     location = /lora {
         include snippets/fastcgi-php.conf;
@@ -493,14 +506,27 @@ server {
     }
 
     # ── Admin protégé par htpasswd ──────────────────────────────────
-    location /admin {
+    # admin.php vit à la racine du webroot : /admin est mappé explicitement
+    location = /admin {
         auth_basic "Administration SOS-GUIDE";
         auth_basic_user_file /etc/nginx/.htpasswd;
-        try_files \$uri \$uri/ =404;
-        location ~ \.php$ {
-            include snippets/fastcgi-php.conf;
-            fastcgi_pass unix:/var/run/php/phpPHP_VERSION-fpm.sock;
-        }
+        include snippets/fastcgi-php.conf;
+        fastcgi_param SCRIPT_FILENAME \$document_root/admin.php;
+        fastcgi_pass unix:/var/run/php/phpPHP_VERSION-fpm.sock;
+    }
+
+    # Endpoints d'écriture appelés depuis /admin — même protection
+    location = /update_config.php {
+        auth_basic "Administration SOS-GUIDE";
+        auth_basic_user_file /etc/nginx/.htpasswd;
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/phpPHP_VERSION-fpm.sock;
+    }
+    location = /api_fetch_tiles.php {
+        auth_basic "Administration SOS-GUIDE";
+        auth_basic_user_file /etc/nginx/.htpasswd;
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/phpPHP_VERSION-fpm.sock;
     }
 
     location ~ \.php$ {
@@ -540,6 +566,34 @@ server {
     access_log off;
     location = /generate_204 { return 302 http://10.0.0.1/; }
     location /               { return 302 http://10.0.0.1/; }
+}
+
+# ── Vhost du service caché Tor (canal Ethernet → .onion) ────────────
+# Écoute UNIQUEMENT sur 127.0.0.1:9080 (cible de HiddenServicePort).
+# Surface restreinte : identité du nœud + manifeste de mise à jour.
+# N'expose ni le portail captif, ni /admin, ni les APIs d'écriture.
+server {
+    listen 127.0.0.1:9080;
+    server_name _;
+    root /var/www/sos-guide;
+    access_log off;
+    add_header X-Robots-Tag "noindex, nofollow";
+
+    location = /lib/sos-theme.css { }
+
+    # Manifeste de contenu téléchargeable par un nœud pair (lecture seule).
+    location /data/ {
+        alias /var/www/sos-guide/data/;
+        location = /data/config.json { deny all; }   # données du lieu : jamais distribuées
+        add_header Cache-Control "no-store";
+    }
+
+    # Toute autre requête → page d'identification unique.
+    location / {
+        include snippets/fastcgi-php.conf;
+        fastcgi_param SCRIPT_FILENAME \$document_root/tor-node.php;
+        fastcgi_pass unix:/var/run/php/phpPHP_VERSION-fpm.sock;
+    }
 }
 NGINXEOF
 
@@ -675,6 +729,17 @@ www-data ALL=(root) NOPASSWD: /sbin/ip link set * up
 www-data ALL=(root) NOPASSWD: /sbin/ip addr add * dev *
 www-data ALL=(root) NOPASSWD: /bin/systemctl enable --now lora-service
 www-data ALL=(root) NOPASSWD: /bin/systemctl disable --now lora-service
+# v2.5 — Toggle WiFi on/off depuis /admin (api_admin_action.php)
+www-data ALL=(root) NOPASSWD: /bin/systemctl start hostapd
+www-data ALL=(root) NOPASSWD: /bin/systemctl stop hostapd
+www-data ALL=(root) NOPASSWD: /bin/systemctl start dnsmasq
+www-data ALL=(root) NOPASSWD: /bin/systemctl stop dnsmasq
+# v2.5 — Changement de mots de passe (portail admin + compte système), mot de passe via STDIN
+www-data ALL=(root) NOPASSWD: /usr/local/bin/sos-guide-set-credentials.sh admin
+www-data ALL=(root) NOPASSWD: /usr/local/bin/sos-guide-set-credentials.sh system
+# v2.5 — Service caché Tor (activation/désactivation depuis /admin)
+www-data ALL=(root) NOPASSWD: /usr/local/bin/sos-guide-tor-setup.sh
+www-data ALL=(root) NOPASSWD: /usr/local/bin/sos-guide-tor-setup.sh --disable
 SUDOEOF
 chmod 440 "$SUDOERS_FILE"
 if visudo -c -f "$SUDOERS_FILE" &>/dev/null; then
@@ -986,6 +1051,23 @@ if [ -x /usr/local/bin/sos-guide-tls-setup.sh ]; then
     else
         warn "TLS non activé — relancer manuellement : sudo sos-guide-tls-setup.sh"
     fi
+fi
+
+# ── Service caché Tor (canal Ethernet → .onion : mises à jour + identification) ─
+# Activé uniquement si enableTor=true ET Ethernet présent (Tor a besoin de sortir).
+if [ "$ENABLE_TOR" = "true" ]; then
+    if [ -x /usr/local/bin/sos-guide-tor-setup.sh ]; then
+        if bash /usr/local/bin/sos-guide-tor-setup.sh >> /var/log/sos-guide-install.log 2>&1; then
+            ONION_ADDR=$(cat /var/lib/sos-guide/onion_hostname 2>/dev/null || echo '?')
+            ok "Service caché Tor actif — ${ONION_ADDR}"
+        else
+            warn "Tor non activé — relancer : sudo sos-guide-tor-setup.sh (voir journalctl -u tor)"
+        fi
+    fi
+else
+    # Si désactivé dans la config, on s'assure que le service caché est retiré.
+    [ -x /usr/local/bin/sos-guide-tor-setup.sh ] && \
+        bash /usr/local/bin/sos-guide-tor-setup.sh --disable >/dev/null 2>&1 || true
 fi
 
 # ══════════════════════════════════════════════════════════════════════════════

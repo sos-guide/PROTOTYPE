@@ -64,6 +64,11 @@ $reassurance    = $config['reassurance']   ?? ['message' => ''];
 $wifiChannel    = intval($config['wifiChannel'] ?? 11);
 $enableLoRa     = $config['enableLoRa']     ?? false;
 $enableEthernet = $config['enableEthernet'] ?? false;
+$enableTor      = $config['enableTor']      ?? false;
+
+// Adresse .onion du nœud de secours Tor (publiée par sos-guide-tor-setup.sh)
+$onionFile = '/var/lib/sos-guide/onion_hostname';
+$onionAddr = is_readable($onionFile) ? trim((string) file_get_contents($onionFile)) : '';
 
 // ── Statut des services ───────────────────────────────────────────────────────
 function svc_active(string $name): bool {
@@ -556,6 +561,27 @@ textarea{min-height:70px;resize:vertical}
             <span class="toggle-slider"></span>
           </label>
         </div>
+        <div class="toggle-row">
+          <div>
+            <strong>🧅 Nœud de secours Tor (canal Ethernet → .onion)</strong>
+            <div style="font-size:.8rem;color:var(--sub)">Service caché pour <strong>mises à jour</strong> de contenu et <strong>identification</strong> du nœud. N'expose jamais le portail. Nécessite Ethernet.</div>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" name="enableTor" value="true" aria-label="Activer le nœud de secours Tor" <?= $enableTor ? 'checked' : '' ?>>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <?php if ($enableTor && $onionAddr): ?>
+        <div style="margin-top:1rem;padding:.6rem .8rem;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.35);border-radius:8px;font-size:.82rem">
+          🧅 <strong>Adresse .onion du nœud :</strong>
+          <code style="word-break:break-all;color:#a78bfa"><?= htmlspecialchars($onionAddr) ?></code>
+          <div style="color:var(--sub);margin-top:.3rem">Accessible via Tor Browser — identité signée + manifeste de mise à jour.</div>
+        </div>
+        <?php elseif ($enableTor): ?>
+        <div style="margin-top:1rem;padding:.6rem .8rem;background:rgba(234,179,8,.1);border-radius:8px;font-size:.82rem;color:var(--yellow)">
+          ⏳ Tor activé — génération de l'adresse .onion en cours (recharger dans ~20 s). Sinon : <code>journalctl -u tor</code>
+        </div>
+        <?php endif; ?>
         <?php if ($enableLoRa && $services['lora']): ?>
         <div style="margin-top:1rem;padding:.6rem;background:rgba(34,197,94,.1);border-radius:8px;font-size:.82rem">
           ✅ lora-service actif ·
@@ -621,6 +647,58 @@ textarea{min-height:70px;resize:vertical}
         </span>
       </div>
       <?php endif; ?>
+    </div>
+
+    <!-- SÉCURITÉ & ACCÈS -->
+    <div class="card" id="securite" style="margin-top:1.25rem">
+      <h2>🔒 Sécurité &amp; accès</h2>
+
+      <!-- Alimentation WiFi (action live, hors formulaire) -->
+      <div class="toggle-row" style="align-items:flex-start">
+        <div>
+          <strong>📶 Point d'accès WiFi (hostapd)</strong>
+          <div style="font-size:.8rem;color:var(--sub)">
+            État : <span class="dot <?= $services['hostapd'] ? 'ok' : 'off' ?>" style="display:inline-block;vertical-align:middle"></span>
+            <strong style="color:var(--<?= $services['hostapd'] ? 'green' : 'muted' ?>)"><?= $services['hostapd'] ? 'ALLUMÉ' : 'ÉTEINT' ?></strong>.
+            Éteindre coupe le WiFi de survie : <strong>rallumage uniquement par Ethernet/Tor ou accès physique</strong>.
+          </div>
+          <div id="wifiPowerResult" style="font-size:.82rem;margin-top:.5rem;display:none"></div>
+        </div>
+        <div style="display:flex;gap:.5rem;flex-shrink:0">
+          <?php if ($services['hostapd']): ?>
+          <button type="button" class="btn btn-danger btn-sm" onclick="wifiPower('off')">⏻ Éteindre</button>
+          <?php else: ?>
+          <button type="button" class="btn btn-primary btn-sm" onclick="wifiPower('on')">⏼ Allumer</button>
+          <?php endif; ?>
+        </div>
+      </div>
+
+      <!-- Changement du mot de passe admin du portail -->
+      <div style="padding:.9rem 0;border-bottom:1px solid var(--border)">
+        <strong style="font-size:.92rem">🔑 Mot de passe administrateur (/admin)</strong>
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.6rem;align-items:flex-end">
+          <div class="form-group" style="flex:1;min-width:200px">
+            <label for="adminPass">Nouveau mot de passe (8–128 caractères)</label>
+            <input type="password" id="adminPass" autocomplete="new-password" minlength="8" maxlength="128" placeholder="••••••••">
+          </div>
+          <button type="button" class="btn btn-primary btn-sm" onclick="setPass('set_admin_pass','adminPass')">Mettre à jour</button>
+        </div>
+        <div id="adminPassResult" style="font-size:.82rem;margin-top:.4rem;display:none"></div>
+      </div>
+
+      <!-- Changement du mot de passe du compte Linux du Pi -->
+      <div style="padding:.9rem 0 .2rem">
+        <strong style="font-size:.92rem">🖥️ Mot de passe du compte système (SSH du Raspberry Pi)</strong>
+        <div style="font-size:.78rem;color:var(--sub);margin-top:.2rem">Compte de login principal du Pi (utilisé pour <code>ssh</code>).</div>
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.6rem;align-items:flex-end">
+          <div class="form-group" style="flex:1;min-width:200px">
+            <label for="sysPass">Nouveau mot de passe (8–128 caractères)</label>
+            <input type="password" id="sysPass" autocomplete="new-password" minlength="8" maxlength="128" placeholder="••••••••">
+          </div>
+          <button type="button" class="btn btn-primary btn-sm" onclick="setPass('set_system_pass','sysPass')">Mettre à jour</button>
+        </div>
+        <div id="sysPassResult" style="font-size:.82rem;margin-top:.4rem;display:none"></div>
+      </div>
     </div>
 
     <!-- AUDIT LOG -->
@@ -698,6 +776,53 @@ async function reloadNetwork(reloadWifi) {
         btn.textContent = reloadWifi ? '📡 Reload WiFi' : '🔄 Reload services';
         setTimeout(() => location.reload(), 3000);
     }
+}
+
+// ── Actions admin sensibles (WiFi on/off, mots de passe) ─────────────────────
+async function adminAction(fields) {
+    const body = new FormData();
+    body.append('csrf_token', document.getElementById('csrf_token').value);
+    for (const [k, v] of Object.entries(fields)) body.append(k, v);
+    const resp = await fetch('/api/admin-action', { method: 'POST', body });
+    // Le token CSRF tourne à chaque appel : on recharge la page après une action.
+    return resp.json();
+}
+
+function showResult(id, ok, msg) {
+    const el = document.getElementById(id);
+    el.style.display = 'block';
+    el.style.color = ok ? 'var(--green)' : 'var(--red)';
+    el.textContent = (ok ? '✅ ' : '❌ ') + msg;
+}
+
+async function wifiPower(state) {
+    const btn = event.target; btn.disabled = true;
+    if (state === 'off' && !confirm(
+        "Éteindre le WiFi déconnecte tous les survivants connectés.\n" +
+        "Vous ne pourrez le rallumer que par Ethernet/Tor ou accès physique au Pi.\n\nContinuer ?"
+    )) { btn.disabled = false; return; }
+    try {
+        const d = await adminAction({ action: 'wifi', state });
+        showResult('wifiPowerResult', d.success,
+            (d.log || []).join(' · ') + (d.warning ? ' — ⚠️ ' + d.warning : ''));
+        if (d.success) setTimeout(() => location.reload(), 2500);
+    } catch (e) { showResult('wifiPowerResult', false, 'Erreur réseau : ' + e.message); }
+    finally { btn.disabled = false; }
+}
+
+async function setPass(action, inputId) {
+    const btn = event.target;
+    const input = document.getElementById(inputId);
+    const resultId = inputId === 'adminPass' ? 'adminPassResult' : 'sysPassResult';
+    const pw = input.value;
+    if (pw.length < 8) { showResult(resultId, false, 'Mot de passe trop court (8 caractères minimum).'); return; }
+    btn.disabled = true;
+    try {
+        const d = await adminAction({ action, password: pw });
+        showResult(resultId, d.success, d.message || (d.success ? 'Mis à jour.' : 'Échec.'));
+        if (d.success) input.value = '';
+    } catch (e) { showResult(resultId, false, 'Erreur réseau : ' + e.message); }
+    finally { btn.disabled = false; }
 }
 </script>
 

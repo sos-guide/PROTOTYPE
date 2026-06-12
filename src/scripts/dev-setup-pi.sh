@@ -132,6 +132,21 @@ server {
         fastcgi_pass unix:/run/php/php${PHP_VER}-fpm.sock;
     }
 
+    # Actions admin sensibles (WiFi on/off + mots de passe). REMOTE_ADDR forcé
+    # à 127.0.0.1 en dev pour passer la whitelist IP (comme /api/install).
+    location = /api/admin-action {
+        include /etc/nginx/fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $WEB_DIR/api_admin_action.php;
+        fastcgi_param REMOTE_ADDR     "127.0.0.1";
+        fastcgi_pass unix:/run/php/php${PHP_VER}-fpm.sock;
+    }
+    location = /api/reload-network-proxy {
+        include /etc/nginx/fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $WEB_DIR/api_reload_network_proxy.php;
+        fastcgi_param REMOTE_ADDR     "127.0.0.1";
+        fastcgi_pass unix:/run/php/php${PHP_VER}-fpm.sock;
+    }
+
     location /admin {
         auth_basic "Administration SOS-GUIDE";
         auth_basic_user_file /etc/nginx/.htpasswd;

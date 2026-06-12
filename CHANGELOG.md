@@ -12,6 +12,33 @@ adhère au [versionnage sémantique](https://semver.org/lang/fr/) (`VERSION` à 
 ## [Non publié]
 
 ### Ajouté
+- **Nœud de secours Tor (canal Ethernet → `.onion`)** : nouveau service caché Tor
+  servant une **surface restreinte** d'identification du nœud et de manifeste de
+  mise à jour, sans jamais exposer le portail captif. Script
+  `src/scripts/sos-guide-tor-setup.sh` (génère le `HiddenService`, publie
+  l'adresse dans `/var/lib/sos-guide/onion_hostname`), page
+  `src/web/tor-node.php` (HTML + `?format=json` + `?manifest=1`) servie sur un
+  vhost nginx dédié `127.0.0.1:9080`. Champ `enableTor` dans `config.json`,
+  activable depuis `/admin`. Modèle à trois canaux désormais explicite :
+  **WiFi = page statique de survie · LoRa = messages d'urgence · Ethernet/Tor =
+  mises à jour + identification**.
+- **`/admin` : interrupteur WiFi ON/OFF** (allumage/extinction de `hostapd` +
+  `dnsmasq` en direct) et **gestion des mots de passe** : changement du mot de
+  passe administrateur du portail (htpasswd) **et** du compte Linux du Pi (SSH),
+  via la nouvelle carte « Sécurité & accès ». Backend `src/web/api_admin_action.php`
+  (token CSRF à usage unique + whitelist IP + audit) et script root
+  `src/scripts/sos-guide-set-credentials.sh` (mot de passe lu sur **STDIN**, jamais
+  en argument visible dans `ps`). Route nginx `/api/admin-action` (auth_basic +
+  CSRF) ajoutée dans `install.sh` et `dev-setup-pi.sh`.
+- **Optimisations CSS « contexte d'urgence » (`lib/sos-theme.css`, 4 pages)** :
+  cibles tactiles ≥ 44 px et `touch-action:manipulation` (suppression du délai de
+  300 ms), `content-visibility:auto` sur les longues listes (first-paint plus
+  rapide sur téléphone/Pi modeste), `overscroll-behavior` (numéros d'urgence
+  toujours visibles en haut d'écran), prise en charge du **contraste élevé
+  système** (`forced-colors`), **styles d'impression** (un survivant peut
+  imprimer/PDF les numéros d'urgence, liens `tel:` rendus en clair), césure des
+  longues traductions et `-webkit-text-size-adjust` (pas de zoom auto cassant le
+  layout). `sudoers` étendu (start/stop hostapd+dnsmasq, scripts credentials/tor).
 - **Affiche imprimable en fin de configuration** : l'écran de succès du starter
   propose « Télécharger l'affiche (PNG) » — gabarit `img/flyer.png` complété
   côté client (canvas) avec le nom du lieu, le pays/adresse, les instructions,
@@ -26,6 +53,13 @@ adhère au [versionnage sémantique](https://semver.org/lang/fr/) (`VERSION` à 
   (relancer `dev-setup-pi.sh` sur le Pi de dev pour l'appliquer).
 
 ### Modifié
+- **CLAUDE.md restructuré et complété** : ajout de l'arborescence annotée du dépôt,
+  du tableau des 14 scripts de `src/scripts/`, de la liste des APIs PHP
+  (`whitelist.php` inclus), des invariants vérifiés par la CI (`ci.yml`) et des
+  services `sos-guide-update.timer`/watchdog. Correction : `finalize_install.sh`
+  est documenté comme thin wrapper (< 50 lignes) déléguant à `sos-guide-install.sh`,
+  et non plus comme copie d'`install.sh`. Rappel ajouté : toute nouvelle route
+  nginx doit être déclarée dans `install.sh` **et** `dev-setup-pi.sh`.
 - **Animations réduites au minimum** : suppression des entrées décoratives du
   splash (floatIn/slideUp), du popIn des modales et de la pulsation du point
   « connecté » du starter. Conservés : transitions de survol/focus et la

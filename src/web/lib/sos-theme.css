@@ -76,3 +76,67 @@ body.light-mode{
   border-radius:0 0 10px 0;font-weight:600;text-decoration:none;
 }
 .skip-link:focus{left:0}
+
+/* ═══════════════════════════════════════════════════════════════
+   Optimisations « contexte d'urgence » — communes aux 4 pages
+   Objectif : page lisible et actionnable en < 1 s, au pouce, sur
+   un téléphone bas de gamme connecté au WiFi du nœud, sans réseau.
+═══════════════════════════════════════════════════════════════ */
+
+/* Rendu : police système immédiate (aucun téléchargement de font),
+   anti-crénelage et césure pour les longs mots traduits (de/fi/nl). */
+html{
+  -webkit-text-size-adjust:100%;            /* pas de zoom auto iOS qui casse le layout */
+  text-rendering:optimizeLegibility;
+  -webkit-tap-highlight-color:transparent;  /* on gère le retour visuel nous-mêmes */
+}
+body{overflow-wrap:break-word;word-break:break-word}
+
+/* Empêche le « rubber-band » qui masque les numéros d'urgence en haut
+   d'écran quand on scrolle vite, et fige le pull-to-refresh accidentel. */
+html,body{overscroll-behavior-y:none}
+
+/* Cibles tactiles : tout élément interactif fait au moins 44×44 px
+   (WCAG 2.5.5 / recommandation Apple/Google) — atteignable sous stress. */
+a[role=button],button,.btn,.nav-btn,.theme-btn,
+.urgence-card,.card,.lang-card{
+  min-height:44px;
+  touch-action:manipulation;                /* supprime le délai de 300 ms au tap */
+}
+/* Le rail du toggle reste fin, mais reçoit la zone tactile sans grandir. */
+.toggle{touch-action:manipulation}
+
+/* Liens téléphoniques : toujours assez gros et nets, même imbriqués. */
+a[href^="tel:"]{ text-decoration:none; }
+
+/* Performance de peinture : les longues listes (situations, langues,
+   alertes LoRa) ne sont rendues que lorsqu'elles approchent l'écran.
+   Gain net de first-paint sur un Pi/téléphone modeste. */
+.grid-situations,.grid-assos,.lang-grid,#loraAlertsList{
+  content-visibility:auto;
+  contain-intrinsic-size:auto 400px;
+}
+
+/* Focus clavier visible et homogène partout (au-delà des règles par page). */
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* Mode « contraste élevé » système (Windows/Android) : on respecte les
+   couleurs imposées plutôt que d'imposer nos dégradés illisibles. */
+@media (forced-colors: active){
+  .urgence-card,.card,.btn,.nav-btn{border:1px solid CanvasText}
+  .urgence-number,.urgence-name{forced-color-adjust:none}
+}
+
+/* Impression : un survivant peut imprimer/PDF les numéros d'urgence.
+   On masque la navigation et on force un rendu lisible sur papier. */
+@media print{
+  #nav,.theme-btn,.hamburger,.drawer,.drawer-overlay,
+  .nav-right,.btn-enter,.top-bar nav,.sidebar{display:none !important}
+  body{background:#fff !important;color:#000 !important}
+  .urgence-card{
+    background:#fff !important;color:#000 !important;
+    border:2px solid #000 !important;break-inside:avoid;
+  }
+  .urgence-number,.urgence-name,.urgence-card::after{color:#000 !important;opacity:1 !important}
+  a[href^="tel:"]::after{content:" (" attr(href) ")";font-size:.8em}
+}

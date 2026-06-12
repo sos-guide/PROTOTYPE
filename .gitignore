@@ -41,3 +41,6 @@ venv/
 
 # Claude Code local
 .claude/settings.local.json
+
+# CLAUDE.md — guide interne, reste UNIQUEMENT dans la source (hors GitHub & Pi)
+CLAUDE.md

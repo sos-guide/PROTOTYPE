@@ -193,6 +193,15 @@ if (($config['enableEthernet'] ?? false) !== $newEth) {
 }
 $config['enableEthernet'] = $newEth;
 
+// ── Service caché Tor (nœud de secours : mises à jour + identification) ───────
+$torChanged = false;
+$newTor = isset($_POST['enableTor']) && $_POST['enableTor'] === 'true';
+if (($config['enableTor'] ?? false) !== $newTor) {
+    $changed['enableTor'] = ['from' => $config['enableTor'] ?? false, 'to' => $newTor];
+    $torChanged = true;
+}
+$config['enableTor'] = $newTor;
+
 // ── Détecter si hostapd doit être redémarré ───────────────────────────────────
 $oldName     = $before['establishment']['name'] ?? '';
 $newName     = $config['establishment']['name']  ?? '';
@@ -316,6 +325,18 @@ if ($loraChanged) {
     }
 }
 
+// service caché Tor — si état a changé (la génération .onion peut prendre ~20 s :
+// on lance en arrière-plan pour ne pas bloquer la réponse admin).
+if ($torChanged) {
+    if ($newTor) {
+        exec('sudo /usr/local/bin/sos-guide-tor-setup.sh >/dev/null 2>&1 &');
+        $reloadLog[] = 'Tor : activation du nœud de secours en cours (.onion sous ~20 s)';
+    } else {
+        exec('sudo /usr/local/bin/sos-guide-tor-setup.sh --disable >/dev/null 2>&1');
+        $reloadLog[] = 'Tor : nœud de secours désactivé';
+    }
+}
+
 // ── Audit structuré ───────────────────────────────────────────────────────────
 audit([
     'ts'              => date('c'),
@@ -326,6 +347,7 @@ audit([
     'channel_changed' => $channelChanged,
     'lora_changed'    => $loraChanged,
     'eth_changed'     => $ethChanged,
+    'tor_changed'     => $torChanged,
     'hash_ok'         => $hashOk,
     'reload_log'      => $reloadLog,
     'reload_errors'   => $reloadErrors,

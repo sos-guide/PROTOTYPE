@@ -32,6 +32,8 @@ jobs:
             src/scripts/sos-guide-tls-setup.sh \
             src/scripts/sos-guide-test.sh \
             src/scripts/sos-guide-reset-starter.sh \
+            src/scripts/sos-guide-set-credentials.sh \
+            src/scripts/sos-guide-tor-setup.sh \
             src/firstboot/firstboot.sh \
             src/firstboot/finalize_install.sh
 
