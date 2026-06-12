@@ -12,6 +12,17 @@ adhère au [versionnage sémantique](https://semver.org/lang/fr/) (`VERSION` à 
 ## [Non publié]
 
 ### Ajouté
+- **Starter plus complet** : l'étape « Lieu » du wizard propose désormais une section
+  repliable **« Contacts d'urgence locaux »** (SAMU, police, pompiers, cellule de
+  crise — `type=tel inputmode=tel`), un **point de rassemblement** et un **message
+  de réassurance**. L'étape « Options » gagne le **toggle nœud de secours Tor**
+  (`enableTor`). Tous ces champs sont transmis à `api_install.php`, assainis (numéros
+  filtrés, longueurs bornées) puis écrits dans `config.json` (seuls les champs
+  renseignés sont persistés).
+- **i18n du wizard à repli profond** : `mergeT(lang)` fusionne récursivement la langue
+  choisie au-dessus du français — toute clé manquante (ex. nouveaux champs) retombe
+  sur le libellé français au lieu d'afficher « undefined ». Les nouvelles clés sont
+  fournies en FR ; les 28 autres langues les héritent en attendant relecture native.
 - **Nœud de secours Tor (canal Ethernet → `.onion`)** : nouveau service caché Tor
   servant une **surface restreinte** d'identification du nœud et de manifeste de
   mise à jour, sans jamais exposer le portail captif. Script
@@ -47,6 +58,13 @@ adhère au [versionnage sémantique](https://semver.org/lang/fr/) (`VERSION` à 
   généré si le gabarit est absent.
 
 ### Corrigé
+- **Conformité HTML/WCAG** : `index.html` — titres de modales `<h3>` → `<h2>`
+  (suppression du saut de niveau h1→h3, sélecteur CSS `.modal-header h2` mis à jour).
+  `starter.html` — ajout d'un repère **`<main>`** (`#wizardMain`) autour du wizard.
+  Audit hors-ligne (IDs dupliqués, `alt`, étiquettes de formulaire, ordre des titres,
+  repères) : `index.html` + pages PHP rendues (`admin.php`, `lora-portal.php`) à
+  0 problème ; restes sur `starter.html` = `id` dans des littéraux de gabarit JS
+  (un seul monté à la fois dans le DOM réel — faux positifs).
 - **`/lora` était inaccessible** : aucune route nginx (prod **et** dev) — le
   lien « Messagerie LoRa » du portail retombait silencieusement sur index.html.
   `location = /lora` ajouté dans `install.sh` et `dev-setup-pi.sh`

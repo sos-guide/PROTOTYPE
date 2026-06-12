@@ -50,7 +50,17 @@ body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,
   background-repeat:no-repeat;background-position:right .8rem center;padding-right:2.5rem}
 .form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--accent)}
 .form-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+@media (max-width:520px){.form-grid-2{grid-template-columns:1fr}}
 .hint{font-size:.72rem;color:var(--muted);margin-top:.25rem;line-height:1.5}
+.contacts-block{margin-top:1rem;border:1px solid var(--border);border-radius:12px;
+  background:var(--bg2,rgba(255,255,255,.02));padding:0 .9rem}
+.contacts-block summary{cursor:pointer;padding:.8rem 0;font-weight:600;font-size:.92rem;
+  list-style:none;display:flex;align-items:center;gap:.4rem}
+.contacts-block summary::-webkit-details-marker{display:none}
+.contacts-block summary::before{content:'▸';color:var(--accent);transition:transform .15s}
+.contacts-block[open] summary::before{transform:rotate(90deg)}
+.contacts-block[open]{padding-bottom:1rem}
+.contacts-block summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
 
 /* Tabs */
 .tabs{display:flex;border-bottom:2px solid var(--border);margin-bottom:1.25rem;gap:.25rem}
@@ -232,7 +242,9 @@ body.light-mode #nav{background:rgba(240,244,251,.95)}
     <div class="lang-grid" id="flagGrid"></div>
   </div>
 </div>
-<div class="card" id="card"></div>
+<main id="wizardMain" aria-label="Assistant de configuration">
+  <div class="card" id="card"></div>
+</main>
 <script>
 (function(){
 "use strict";
@@ -263,7 +275,14 @@ fr:{
   expired:{title:'Session expirée',text:'Redémarrez le Raspberry Pi pour recommencer.'},
   identity:{name:'Nom du lieu / nœud *',namePh:'Ex : Mairie de Lyon — Salle B, Bunker Berne B1',
     type:"Type d'établissement",country:'Pays',countryPh:'Ex : Suisse',addr:'Adresse',optional:'(optionnel)',
-    addrPh:'Ex : 1 place de la République, 69001 Lyon'},
+    addrPh:'Ex : 1 place de la République, 69001 Lyon',
+    contactsTitle:'📞 Contacts d\'urgence locaux',
+    contactsHint:'Ces numéros remplacent les numéros par défaut sur le portail. Modifiables plus tard via /admin.',
+    numPh:'Ex : +41 22 555 00 00',
+    samu:'🚑 SAMU / Ambulance',police:'🚓 Police / Gendarmerie',pompiers:'🚒 Pompiers',
+    crisis:'☎️ Cellule de crise locale',
+    meeting:'🚶 Point de rassemblement',meetingPh:'Ex : Parking nord, place centrale',
+    reassure:'💬 Message de réassurance',reassurePh:'Ex : Restez calme, les secours sont informés et arrivent.'},
   types:{erp:'🏢 ERP — Établissement recevant du public',school:'🏫 École / Université / Crèche',
     hospital:'🏥 Hôpital / Clinique / EHPAD',mairie:'🏛️ Mairie / Préfecture / PCC',
     refuge:'⛺ Abri / Camp / Refuge de montagne',company:'🏭 Entreprise / Site industriel / SEVESO',
@@ -278,9 +297,10 @@ fr:{
     badFormat:'Format non supporté (PNG, JPG, WEBP uniquement)',tooBig:'Fichier trop volumineux (max 10 Mo)'},
   options:{lora:'📡 Communication LoRa (mesh)',loraDesc:'SX1276 / RAK3172 · 868 MHz EU868 · AES-256-GCM · Portée 2–10 km',
     eth:'🌐 Connexion Ethernet',ethDesc:'Contenus multilingues + tuiles de carte hors-ligne (requiert accès Internet temporaire)',
+    tor:'🧅 Nœud de secours Tor',torDesc:'Service caché .onion pour mises à jour et identification du nœud (nécessite Ethernet)',
     chan:'📶 Canal WiFi',chanHint:'Canaux recommandés EU : 1, 6 ou 11 (marqués ★)'},
   summary:{node:'Nœud',type:'Type',country:'Pays',addr:'Adresse',map:'Carte',chan:'Canal WiFi',lora:'LoRa mesh',
-    eth:'Ethernet / tuiles',lang:'Langue par défaut',none:'Non configurée',on:'✅ Activé',off:'❌ Désactivé',
+    eth:'Ethernet / tuiles',tor:'Nœud Tor',lang:'Langue par défaut',none:'Non configurée',on:'✅ Activé',off:'❌ Désactivé',
     note:'⚡ Installation sans redémarrage (~30 secondes).',modify:'← Modifier',install:'✅ Installer'},
   progress:{title:'Installation en cours',warn:"Ne pas éteindre l'appareil",sending:'Envoi de la configuration…',
     p1:'Configuration enregistrée…',p2:'Copie de la carte locale…',p3:'Application du réseau WiFi…',
@@ -1458,6 +1478,14 @@ const S = {
   // Options
   enableLoRa:     false,
   enableEthernet: false,
+  enableTor:      false,
+  // Contacts d'urgence locaux (optionnels — surchargent les numéros par défaut)
+  localSamuNumber:     '',
+  localPoliceNumber:   '',
+  localPompiersNumber: '',
+  localCrisisNumber:   '',
+  localMeetingPoint:   '',
+  reassuranceMessage:  '',
   // Injectés par firstboot.sh
   csrf:       '%%CSRF_TOKEN%%',
   channel:    '%%WIFI_CHANNEL%%',
@@ -1467,13 +1495,25 @@ const S = {
 
 const card = document.getElementById('card');
 let timerInterval = null;
-T = I18N[S.lang] || I18N.en;
+// Repli profond vers le français : toute clé i18n manquante dans une langue
+// (ex. champs récemment ajoutés) retombe sur la valeur française au lieu
+// d'afficher « undefined » dans l'interface du wizard.
+function deepMerge(base, over){
+  const out = Array.isArray(base) ? base.slice() : { ...base };
+  for (const k in (over || {})){
+    out[k] = (base && typeof base[k] === 'object' && base[k] && !Array.isArray(base[k]) && typeof over[k] === 'object')
+      ? deepMerge(base[k], over[k]) : over[k];
+  }
+  return out;
+}
+function mergeT(lang){ return deepMerge(I18N.fr, I18N[lang] || {}); }
+T = mergeT(S.lang);
 document.documentElement.lang = S.lang;
 const RTL_LANGS=new Set(['ar','he','fa']);
 function setLang(l){
   if(!LANGS.some(x=>x.code===l)) l='fr';
   S.lang=l;
-  T=I18N[l]||I18N.en;   // UI du wizard : trad native ou anglais
+  T=mergeT(l);   // UI du wizard : trad native, repli français sur clé manquante
   document.documentElement.lang=l;
   document.documentElement.dir = RTL_LANGS.has(l) ? 'rtl' : 'ltr';
   render();
@@ -1615,6 +1655,44 @@ function renderIdentity(){
           maxlength="256" value="${escHtml(S.nodeAddress)}" autocomplete="street-address">
       </div>
     </div>
+
+    <details class="contacts-block">
+      <summary>${T.identity.contactsTitle} <small style="font-weight:400;text-transform:none">${T.identity.optional}</small></summary>
+      <p class="hint" style="margin:.4rem 0 .75rem">${T.identity.contactsHint}</p>
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label for="localSamuNumber">${T.identity.samu}</label>
+          <input type="tel" id="localSamuNumber" inputmode="tel" maxlength="32"
+            placeholder="${escHtml(T.identity.numPh)}" value="${escHtml(S.localSamuNumber)}">
+        </div>
+        <div class="form-group">
+          <label for="localPoliceNumber">${T.identity.police}</label>
+          <input type="tel" id="localPoliceNumber" inputmode="tel" maxlength="32"
+            placeholder="${escHtml(T.identity.numPh)}" value="${escHtml(S.localPoliceNumber)}">
+        </div>
+        <div class="form-group">
+          <label for="localPompiersNumber">${T.identity.pompiers}</label>
+          <input type="tel" id="localPompiersNumber" inputmode="tel" maxlength="32"
+            placeholder="${escHtml(T.identity.numPh)}" value="${escHtml(S.localPompiersNumber)}">
+        </div>
+        <div class="form-group">
+          <label for="localCrisisNumber">${T.identity.crisis}</label>
+          <input type="tel" id="localCrisisNumber" inputmode="tel" maxlength="32"
+            placeholder="${escHtml(T.identity.numPh)}" value="${escHtml(S.localCrisisNumber)}">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="localMeetingPoint">${T.identity.meeting}</label>
+        <input type="text" id="localMeetingPoint" maxlength="256"
+          placeholder="${escHtml(T.identity.meetingPh)}" value="${escHtml(S.localMeetingPoint)}">
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label for="reassuranceMessage">${T.identity.reassure}</label>
+        <textarea id="reassuranceMessage" maxlength="512" rows="2"
+          placeholder="${escHtml(T.identity.reassurePh)}">${escHtml(S.reassuranceMessage)}</textarea>
+      </div>
+    </details>
+
     <div class="btn-group">
       <button class="btn btn-secondary" id="backBtn">${T.buttons.back}</button>
       <button class="btn btn-primary" id="nextBtn">${T.buttons.next}</button>
@@ -1628,6 +1706,12 @@ function renderIdentity(){
     S.nodeType=document.getElementById('nodeType').value;
     S.nodeCountry=document.getElementById('nodeCountry').value.trim();
     S.nodeAddress=document.getElementById('nodeAddress').value.trim();
+    S.localSamuNumber=document.getElementById('localSamuNumber').value.trim();
+    S.localPoliceNumber=document.getElementById('localPoliceNumber').value.trim();
+    S.localPompiersNumber=document.getElementById('localPompiersNumber').value.trim();
+    S.localCrisisNumber=document.getElementById('localCrisisNumber').value.trim();
+    S.localMeetingPoint=document.getElementById('localMeetingPoint').value.trim();
+    S.reassuranceMessage=document.getElementById('reassuranceMessage').value.trim();
     S.step=2; render();
   };
 }
@@ -1777,6 +1861,14 @@ function renderOptions(){
         <span>${T.options.ethDesc}</span>
       </div>
     </div>
+    <div id="toggleTor" class="toggle-opt ${S.enableTor?'on':''}" role="switch"
+      tabindex="0" aria-checked="${S.enableTor}" aria-label="${escHtml(T.options.tor)}">
+      <div class="tog" aria-hidden="true"></div>
+      <div class="tog-info">
+        <strong>${T.options.tor}</strong>
+        <span>${T.options.torDesc}</span>
+      </div>
+    </div>
     <div class="channel-row">
       <label for="wifiChan">${T.options.chan}</label>
       <select id="wifiChan">
@@ -1799,6 +1891,7 @@ function renderOptions(){
   }
   wireSwitch('toggleLoRa', ()=>S.enableLoRa,     v=>{S.enableLoRa=v;});
   wireSwitch('toggleEth',  ()=>S.enableEthernet, v=>{S.enableEthernet=v;});
+  wireSwitch('toggleTor',  ()=>S.enableTor,      v=>{S.enableTor=v;});
   document.getElementById('wifiChan').onchange=e=>{ S.channel=e.target.value; };
   document.getElementById('backBtn').onclick=()=>{ S.step=2; render(); };
   document.getElementById('nextBtn').onclick=()=>{ S.step=4; render(); };
@@ -1852,6 +1945,10 @@ function renderSummary(){
         <span class="summary-key">${T.summary.eth}</span>
         <span class="badge ${S.enableEthernet?'green':'red'}">${S.enableEthernet?T.summary.on:T.summary.off}</span>
       </div>
+      <div class="summary-row">
+        <span class="summary-key">${T.summary.tor}</span>
+        <span class="badge ${S.enableTor?'green':'red'}">${S.enableTor?T.summary.on:T.summary.off}</span>
+      </div>
     </div>
     ${S.mapImagePreview
       ?`<img src="${escHtml(S.mapImagePreview)}" class="img-preview" alt="Carte" style="margin-bottom:.75rem">`
@@ -1889,6 +1986,13 @@ function doInstall(){
   fd.append('nodeAddress',    S.nodeAddress);
   fd.append('enableLoRa',     S.enableLoRa     ? 'true' : 'false');
   fd.append('enableEthernet', S.enableEthernet ? 'true' : 'false');
+  fd.append('enableTor',      S.enableTor      ? 'true' : 'false');
+  fd.append('localSamuNumber',     S.localSamuNumber);
+  fd.append('localPoliceNumber',   S.localPoliceNumber);
+  fd.append('localPompiersNumber', S.localPompiersNumber);
+  fd.append('localCrisisNumber',   S.localCrisisNumber);
+  fd.append('localMeetingPoint',   S.localMeetingPoint);
+  fd.append('reassuranceMessage',  S.reassuranceMessage);
   fd.append('wifiChannel',    S.channel);
   fd.append('lat',            S.lat);
   fd.append('lon',            S.lon);

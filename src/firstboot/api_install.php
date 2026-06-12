@@ -150,7 +150,25 @@ if (empty($nodeName)) {
 
 $enableLoRa     = isset($_POST['enableLoRa'])     && $_POST['enableLoRa']     === 'true';
 $enableEthernet = isset($_POST['enableEthernet']) && $_POST['enableEthernet'] === 'true';
+$enableTor      = isset($_POST['enableTor'])      && $_POST['enableTor']      === 'true';
 $wifiChannel    = intval($_POST['wifiChannel'] ?? 11);
+
+// ── Contacts d'urgence locaux (optionnels) ───────────────────────────────────
+// Numéros : on ne garde que chiffres, +, espaces, tirets, points et parenthèses.
+$phone = static function (string $key): string {
+    $v = preg_replace('/[^0-9+\s\-\.\(\)]/', '', (string)($_POST[$key] ?? ''));
+    return substr(trim($v), 0, 32);
+};
+$localSamuNumber     = $phone('localSamuNumber');
+$localPoliceNumber   = $phone('localPoliceNumber');
+$localPompiersNumber = $phone('localPompiersNumber');
+$localCrisisNumber   = $phone('localCrisisNumber');
+$cut = static function (string $key, int $max): string {
+    $v = trim((string)($_POST[$key] ?? ''));
+    return function_exists('mb_substr') ? mb_substr($v, 0, $max) : substr($v, 0, $max);
+};
+$localMeetingPoint   = $cut('localMeetingPoint', 256);
+$reassuranceMessage  = $cut('reassuranceMessage', 512);
 $nodeType       = preg_replace('/[^a-z]/', '', strtolower((string)($_POST['nodeType'] ?? 'erp')));
 // Langue par défaut du portail (choisie au starter) — whitelist des 29 langues
 $allLangs    = ['fr','de','it','rm','en','es','pt','ar','zh','ja','ko','ru','uk','pl','nl',
@@ -210,10 +228,22 @@ if ($lat !== 0.0 || $lon !== 0.0) {
     $config['establishment']['lon']     = $lon;
     $config['establishment']['mapZoom'] = $mapZoom;
 }
+// Contacts d'urgence locaux (n'écrire que les champs renseignés)
+foreach ([
+    'localSamuNumber'     => $localSamuNumber,
+    'localPoliceNumber'   => $localPoliceNumber,
+    'localPompiersNumber' => $localPompiersNumber,
+    'localCrisisNumber'   => $localCrisisNumber,
+    'localMeetingPoint'   => $localMeetingPoint,
+] as $k => $v) {
+    if ($v !== '') $config['establishment'][$k] = $v;
+}
+if ($reassuranceMessage !== '') $config['reassurance']['message'] = $reassuranceMessage;
 $config['wifiChannel']  = $wifiChannel;
 $config['defaultLang']  = $defaultLang;
 $config['enableLoRa']   = $enableLoRa;
 $config['enableEthernet'] = $enableEthernet;
+$config['enableTor']    = $enableTor;
 $config['installed']    = false;
 $config['installDate']  = date('c');
 // S-03/N-02 : IP du configurateur non persistée (donnée personnelle — nLPD art. 6)
